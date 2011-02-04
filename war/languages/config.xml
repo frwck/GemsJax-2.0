@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="ISO-8859-15"?>
+
+<config>
+
+	<language name="english" icon="img/languages/english.jpg" url="/languages/english.xml" default="true" />
+	<language name="deutsch" icon="img/languages/deutsch.jpg" url="/languages/deutsch.xml" default="false" />
+
+</config>
