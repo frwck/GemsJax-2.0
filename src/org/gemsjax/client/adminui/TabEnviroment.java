@@ -5,7 +5,10 @@ import org.gemsjax.client.adminui.tabs.LoadingTab;
 import org.gemsjax.client.adminui.tabs.SearchResultTab;
 import org.gemsjax.client.desktopenviroment.DropDownMenuButton;
 import org.gemsjax.client.desktopenviroment.DropDownMenuButton.DropDownMenu;
+import org.gemsjax.client.presenter.CreateExperimentPresenter;
+import org.gemsjax.client.view.implementation.CreateExperimentViewImpl;
 
+import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.types.Side;
@@ -26,6 +29,8 @@ public class TabEnviroment extends TabSet{
 	private static TabEnviroment instance;
 
 	private DropDownMenuButton logoMenu;
+	private int iii = 0;
+	
 	
 	private TabEnviroment(){
 		super();
@@ -34,31 +39,6 @@ public class TabEnviroment extends TabSet{
 		
 		// Styling
 		this.setWidth(AdminApplicationUI.contentWidth);
-		
-		
-		this.addTab(new SearchResultTab("Search Result"));
-		
-		this.addTab(new LoadingTab("Loading Animation Tab"));
-		
-		this.addTab(new Tab("Tab3"));
-		this.addTab(new Tab("Tab4"));
-		this.addTab(new Tab("Tab5"));
-		this.addTab(new Tab("Tab6"));
-		this.addTab(new Tab("Tab7"));
-		this.addTab(new Tab("Tab8"));
-		this.addTab(new Tab("Tab9"));
-		this.addTab(new Tab("Tab10"));
-		this.addTab(new Tab("Tab11"));
-		this.addTab(new Tab("Tab12"));
-		this.addTab(new Tab("Tab13"));
-		this.addTab(new Tab("Tab14"));
-		this.addTab(new Tab("Tab15"));
-		this.addTab(new Tab("Tab16"));
-		this.addTab(new Tab("Tab18"));
-		this.addTab(new Tab("Tab19"));
-		this.addTab(new Tab("Tab20"));
-		this.addTab(new Tab("Tab21"));
-
 		
 		this.setTabBarPosition(Side.TOP);
 		
@@ -72,9 +52,44 @@ public class TabEnviroment extends TabSet{
 	public static TabEnviroment getInstance()
 	{
 		if (instance == null)
+		{
 			instance = new TabEnviroment();
-		
+			demo();
+		}
 		return instance;
+	}
+	
+	
+	// TODO remove DEMO TABS
+	private static void demo()
+	{
+		final LoadingTab loadingTab = new LoadingTab("Loading Tab Test");
+		loadingTab.setContent(new Label("Test"));
+		// TODO remove demo timer	
+		new Timer()
+		{
+			public void run()
+			{
+				
+				
+					if (instance.iii%2==0)
+						loadingTab.showContent();
+					else
+						loadingTab.showLoading();
+					
+					instance.iii++;
+			}
+		}.scheduleRepeating(2000);
+		
+		instance.addTab(new SearchResultTab("Search Result"));
+		instance.addTab(loadingTab);
+		instance.addTab(new CreateExperimentViewImpl("New Experiment"));
+		instance.addTab(new Tab("Tab3"));
+		instance.addTab(new Tab("Tab4"));
+		instance.addTab(new Tab("Tab5"));
+		instance.addTab(new Tab("Tab6"));
+		
+
 	}
 	
 	

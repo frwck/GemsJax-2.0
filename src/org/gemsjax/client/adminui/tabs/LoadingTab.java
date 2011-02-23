@@ -1,5 +1,7 @@
 package org.gemsjax.client.adminui.tabs;
 
+import org.gemsjax.client.adminui.TabEnviroment;
+
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -12,6 +14,7 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.layout.VStack;
 import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.TabSet;
 
 
 public class LoadingTab extends Tab{
@@ -22,13 +25,11 @@ public class LoadingTab extends Tab{
 	public VLayout loadingCanvas;
 	private boolean showingLoading;
 	
-	private static int i =0;
-	
 	public LoadingTab(String title)
 	{
 		super(title);
 		
-		content= new Label("Test");
+		content = new Canvas();
 		this.setPane(content);
 		
 		showingLoading = false;
@@ -91,25 +92,11 @@ public class LoadingTab extends Tab{
 		});
 		
 		
-		new Timer()
-		{
-			public void run()
-			{
-				
-				
-					if (i%2==0)
-						showContent();
-					else
-						showLoading();
-					
-				i++;
-			}
-		}.scheduleRepeating(2000);
-		
-		
 	}
 	
-	
+	/**
+	 * Show the loading animation and hide the normal content
+	 */
 	public void showLoading()
 	{
 		if (!showingLoading)
@@ -120,15 +107,34 @@ public class LoadingTab extends Tab{
 		
 	}
 	
+	/**
+	 * Display the normal content and hide the loading animation
+	 */
 	public void showContent()
 	{
 		if (content != null) 
-			this.getTabSet().updateTab(this, content);
+		{
+			// TODO why TabSet is Null?
+			TabSet ts=this.getTabSet();
+			
+			TabEnviroment.getInstance().updateTab(this, content);
+		}
+			
 		
 		showingLoading = false;
-		
+	
 		
 	}
 	
 	
+	/**
+	 * Set the normal content that is displayed, when not the loading animation ha
+	 * @param content
+	 */
+	public void setContent(Canvas content)
+	{
+		this.content = content;
+	}
+	
+		
 }
