@@ -1,6 +1,7 @@
 package org.gemsjax.client.adminui.tabs;
 
 import org.gemsjax.client.adminui.TabEnviroment;
+import org.gemsjax.client.model.language.Language;
 
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
@@ -25,7 +26,7 @@ public class LoadingTab extends Tab{
 	public VLayout loadingCanvas;
 	private boolean showingLoading;
 	
-	public LoadingTab(String title)
+	public LoadingTab(String title, Language currentLanguage)
 	{
 		super(title);
 		

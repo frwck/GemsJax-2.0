@@ -1,12 +1,16 @@
 package org.gemsjax.client;
 
-import org.gemsjax.client.adminui.AdminApplicationUI;
+import org.gemsjax.client.adminui.AdminApplicationViewImpl;
 import org.gemsjax.client.desktopenviroment.DesktopEnviromentUI;
 import org.gemsjax.client.event.LoadingAnimationEvent;
+import org.gemsjax.client.model.language.LanguageManager;
+import org.gemsjax.client.presenter.AdminApplicationPresenter;
+import org.gemsjax.client.presenter.CreateExperimentPresenter;
 import org.gemsjax.client.presenter.LoadingPresenter;
 import org.gemsjax.client.presenter.LoginPresenter;
 import org.gemsjax.client.presenter.Presenter;
 import org.gemsjax.client.view.LoadingView;
+import org.gemsjax.client.view.implementation.CreateExperimentViewImpl;
 import org.gemsjax.client.view.implementation.LoadingViewImpl;
 import org.gemsjax.client.view.implementation.LoginViewImpl;
 import org.gemsjax.client.websocket.WebSocket;
@@ -49,6 +53,7 @@ public class AdminApplicationController {
 	private AdminApplicationController()
 	{
 		eventBus = new SimpleEventBus();
+		LanguageManager.getInstance().setEventBus(eventBus);
 	}
 
 	
@@ -75,9 +80,12 @@ public class AdminApplicationController {
 	public void start()
 	{
 		//loginPresenter = new LoginPresenter(eventBus, new LoginViewImpl(), RootPanel.get());
-		//loadingPresenter = new LoadingPresenter(eventBus, new LoadingViewImpl(), RootPanel.get());
+		//loadingPresenter = new LoadingPresenter(eventBus, new LoadingViewImpl());
+		// AdminApplicationViewImpl.getInstance();
+		new AdminApplicationPresenter(eventBus, AdminApplicationViewImpl.getInstance());
 		
-		AdminApplicationUI.getInstance();
+		// TODO remove Demo
+		//new CreateExperimentPresenter(eventBus, new CreateExperimentViewImpl(LanguageManager.getInstance().getCurrentLanguage()));
 			
 	}
 	

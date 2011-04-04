@@ -14,12 +14,16 @@
 	
 	
 	<!-- MainMenu staff -->
-	<word name="menu-new-meta-model">New Meta-Model</word>
-	<word name="menu-my-meta-models">My Meta-Models</word>
-	<word name="menu-new-experiment">New Experiment</word>
-	<word name="menu-my-experiments">My Experiments</word>
 	
+	<word name="main-menu-metamodels">meta-models</word>
+	<word name="main-menu-settings">settings</word>
+	<word name="main-menu-experiments">experiments</word>
+	<word name="main-menu-notifications">notifications</word>
+	<word name="main-menu-logout">logout</word>
 	
+	<!-- CreateExperiment -->
+	<word name="create-experiment-title">Create Experiment</word>
+	<word name="create-experiment-description">Description</word>
 	
 	
 

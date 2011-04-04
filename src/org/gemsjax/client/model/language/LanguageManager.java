@@ -4,21 +4,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.gemsjax.client.event.LanguageChangedEvent;
-import org.gemsjax.client.event.LanguageConfigLoadEvent;
-import org.gemsjax.client.event.LanguageConfigLoadEvent.LangugaeConfigLoadEventType;
-import org.gemsjax.client.event.LanguageLoadEvent.LanguageLoadEventType;
-import org.gemsjax.client.event.LanguageLoadEvent;
+import org.gemsjax.client.event.LanguageManagerEvent;
+import org.gemsjax.client.event.LanguageManagerEvent.LanguageManagerEventType;
 import org.gemsjax.client.exception.XmlException;
 import org.gemsjax.client.handler.LanguageChangeHandler;
-import org.gemsjax.client.handler.LanguageConfigLoadHandler;
-import org.gemsjax.client.handler.LanguageLoadHandler;
 
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -26,7 +22,8 @@ import com.google.gwt.xml.client.XMLParser;
 
 /**
  * The LanguageManager manages the languages for the user interface.
- * <b>Notice:</b> This is a singleton, so use the method {@link #getInstance()} 
+ * <b>Notice:</b> This is a singleton, so use the method {@link #getInstance()} <br />
+ * <b>Important:</b> Do not forget to set the global Presenter {@link EventBus} via {@link #setEventBus(EventBus)};
  * @author Hannes Dorfmann
  *
  */
@@ -34,9 +31,7 @@ public class LanguageManager {
 	
 	private static LanguageManager instance;
 	private LanguageConfiguration currentLanguageConfiguration;
-	private List<LanguageChangeHandler> languageChangeHandlerList;
-	private List<LanguageConfigLoadHandler> languageConfigLoadHandlerList;
-	private List<LanguageLoadHandler> languageLoadHandlerList;
+	private EventBus eventBus;
 	private List<LanguageConfiguration> supportedLanguagesList;
 
 	/**
@@ -52,13 +47,19 @@ public class LanguageManager {
 	
 	private LanguageManager()
 	{
-		languageChangeHandlerList = new LinkedList<LanguageChangeHandler>();
 		supportedLanguagesList = new LinkedList<LanguageConfiguration>();
-		languageConfigLoadHandlerList = new LinkedList<LanguageConfigLoadHandler>();
-		languageLoadHandlerList = new LinkedList<LanguageLoadHandler>();
 		
 		// The url for the config file
 		languageConfigUrl =  "/languages/config.xml";
+	}
+	
+	/**
+	 * Set the {@link EventBus}. This normally should be the EventBus that uses all the Presenters
+	 * @param eventbus
+	 */
+	public void setEventBus(EventBus eventbus)
+	{
+		this.eventBus = eventbus;
 	}
 	
 	/**
@@ -80,6 +81,7 @@ public class LanguageManager {
 	 */
 	public Language getCurrentLanguage()
 	{
+
 		return currentLanguageConfiguration.getLanguage();
 	}
 	
@@ -97,7 +99,7 @@ public class LanguageManager {
 	 *  by calling the {@link LanguageChangeHandler#onLanguageChanged()} method
 	 * @param language
 	 */
-	public void setCurrentLanguageConfiguratoin(LanguageConfiguration languageConfiguration)
+	public void setCurrentLanguageConfiguration(LanguageConfiguration languageConfiguration)
 	{
 		// if the the language was not already loaded
 		if (languageConfiguration.getLanguage()==null)
@@ -105,80 +107,11 @@ public class LanguageManager {
 		else
 		{	// else when the language was already laoded, set it to the current language
 			this.currentLanguageConfiguration = languageConfiguration;
-			fireEvent(new LanguageChangedEvent(languageConfiguration.getLanguage()));
+			eventBus.fireEvent(new LanguageChangedEvent(languageConfiguration.getLanguage()));
 		}
 		
 	}
 	
-	
-	
-	/**
-	 * Add a {@link LanguageChangeHandler}
-	 * @param listener
-	 */
-	public void addLanguageChangeHandler(LanguageChangeHandler listener)
-	{
-		if (!languageChangeHandlerList.contains(listener))
-			languageChangeHandlerList.add(listener);
-	}
-	
-	/**
-	 * Remove a {@link LanguageChangeHandler}
-	 * @param listener
-	 */
-	public void removeLanguageChangeHandler(LanguageChangeHandler listener)
-	{
-		languageChangeHandlerList.remove(listener);
-	}
-	
-	
-	/**
-	 * Add a {@link LanguageLoadHandler}
-	 * @param listener
-	 */
-	public void addLanguageLoadHandler(LanguageLoadHandler listener)
-	{
-		if (!languageLoadHandlerList.contains(listener))
-			languageLoadHandlerList.add(listener);
-	}
-
-	
-	/**
-	 * Remove a {@link LanguageLoadHandler}
-	 * @param listener
-	 */
-	public void removeLanguageLoadListener(LanguageLoadHandler listener)
-	{
-		languageLoadHandlerList.remove(listener);
-	}
-	
-	/**
-	 * Add a {@link LanguageConfigLoadHandler} 
-	 * @param listener
-	 */
-	public void addLanguageConfigLoadHandler(LanguageConfigLoadHandler listener)
-	{
-		if (!languageConfigLoadHandlerList.contains(listener))
-			this.languageConfigLoadHandlerList.add(listener);
-	}
-	
-	/**
-	 * Remove a {@link LanguageConfigLoadHandler}
-	 * @param listener
-	 */
-	public void removeLanguageConfigLoadHandler(LanguageConfigLoadHandler listener)
-	{
-		this.languageConfigLoadHandlerList.remove(listener);
-	}
-	
-	/**
-	 * Notify all {@link LanguageChangeHandler}
-	 */
-	private void fireEvent(LanguageChangedEvent event)
-	{
-		for (LanguageChangeHandler cl:languageChangeHandlerList)
-			cl.onLanguageChanged(event);
-	}
 	
 	/**
 	 * Get a list with all supported Languages ({@link LanguageConfiguration})
@@ -251,7 +184,7 @@ public class LanguageManager {
 	public void loadConfig() throws RequestException
 	{
 		// Start Loading
-		fireEvent(new LanguageConfigLoadEvent(LangugaeConfigLoadEventType.START));
+		eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.START_LOADING_LANGUAGE));
 		
 		// Send a HTTP GET to the server to get the config xml file
 		RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, languageConfigUrl);
@@ -266,25 +199,26 @@ public class LanguageManager {
 						// Parse the config file
 						parseConfig(response.getText());
 						
-						LanguageConfiguration def = getDefaultLanguage();
-						
+						LanguageConfiguration def = getDefaultLanguageConfiguration();
+						currentLanguageConfiguration = getDefaultLanguageConfiguration();
 						// Load the default Language and set it to the current language
 						loadLanguage(def, true);
 						
-						fireEvent(new LanguageConfigLoadEvent(LangugaeConfigLoadEventType.FINISH));
+						
+						eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.LANGUAGE_LOADED));
 						
 					} catch (XmlException e) {
-						fireEvent(new LanguageConfigLoadEvent(LangugaeConfigLoadEventType.ERROR, e));
+						eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.ERROR, e));
 						
 					}
 				}
 				else
-					fireEvent(new LanguageConfigLoadEvent(LangugaeConfigLoadEventType.ERROR, new Exception("Language configuraton file not found")));
+					eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.ERROR, new Exception("Language configuraton file not found")));
 			}
 			
 			@Override
 			public void onError(Request request, Throwable exception) {
-				fireEvent(new LanguageConfigLoadEvent(LangugaeConfigLoadEventType.ERROR, exception));
+				eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.ERROR, new Exception(exception)));
 			}
 		});
 		
@@ -299,7 +233,7 @@ public class LanguageManager {
 	 * Get the default language
 	 * @return
 	 */
-	public LanguageConfiguration getDefaultLanguage()
+	public LanguageConfiguration getDefaultLanguageConfiguration()
 	{
 		for (LanguageConfiguration lc : this.supportedLanguagesList)
 			if (lc.isDefault())
@@ -314,12 +248,12 @@ public class LanguageManager {
 	 * Load a language by loading the corresponding XML file via HTTP GET from the server
 	 * @param languageConfiguration {@link LanguageConfiguration} 
 	 * @param setCurrentLanguageConfiguration If this flag is true, the now loaded language will be set to the current Language 
-	 * @see #setCurrentLanguageConfiguratoin(LanguageConfiguration)
+	 * @see #setCurrentLanguageConfiguration(LanguageConfiguration)
 	 */
 	private void loadLanguage(final LanguageConfiguration languageConfiguration, final boolean setCurrentLanguageConfiguration)
 	{
 		
-		fireEvent(new LanguageLoadEvent(LanguageLoadEventType.START));
+		eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.START_LOADING_LANGUAGE));
 		
 		try
 		{
@@ -333,32 +267,32 @@ public class LanguageManager {
 					{
 						try {
 							Language language = new Language(response.getText());
-							
+						
 							languageConfiguration.setLanguage(language);
-							fireEvent(new LanguageLoadEvent(LanguageLoadEventType.FINISH));
+							eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.LANGUAGE_LOADED));
 							
 							if (setCurrentLanguageConfiguration)
 							{
 								// Set the new loaded language and LanguageConfiguration as the current
 								LanguageManager.this.currentLanguageConfiguration=languageConfiguration;
-								fireEvent(new LanguageChangedEvent(language)); // Fire event that language has been changed
+								eventBus.fireEvent(new LanguageChangedEvent(language)); // Fire event that language has been changed
 							}
 						} catch (XmlException e) {
 							
-							fireEvent(new LanguageLoadEvent(LanguageLoadEventType.ERROR, e));
+							eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.ERROR, e));
 							e.printStackTrace();
 						}
 					}
 					else
 					{
-						fireEvent(new LanguageLoadEvent(LanguageLoadEventType.ERROR, new Exception("Language file not found "+response.getStatusCode())));
+						eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.ERROR, new Exception("Language file not found "+response.getStatusCode())));
 					}
 					
 				}
 				
 				@Override
 				public void onError(Request request, Throwable exception) {
-					fireEvent(new LanguageLoadEvent(LanguageLoadEventType.ERROR, exception));
+					eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.ERROR, new Exception(exception)));
 					
 				}
 			});
@@ -366,7 +300,7 @@ public class LanguageManager {
 		}
 		catch (Exception ex)
 		{
-			fireEvent(new LanguageLoadEvent(LanguageLoadEventType.ERROR, ex));
+			eventBus.fireEvent(new LanguageManagerEvent(LanguageManagerEventType.ERROR, ex));
 		}
 		
 		
@@ -382,26 +316,6 @@ public class LanguageManager {
 	public String getConfigUrl()
 	{
 		return languageConfigUrl;
-	}
-	
-	
-	/**
-	 * Notify all {@link LanguageConfigLoadHandler} that something happened during the loading process by firing {@link LanguageConfigLoadEvent}
-	 */
-	private void fireEvent(LanguageConfigLoadEvent event)
-	{
-		for (LanguageConfigLoadHandler l : languageConfigLoadHandlerList)
-			l.onLoadingLanguageConfigAction(event);
-	}
-	
-	/**
-	 * Fire a {@link LanguageLoadEvent} to all {@link LanguageLoadHandler}
-	 * @param event
-	 */
-	private void fireEvent(LanguageLoadEvent event)
-	{
-		for (LanguageLoadHandler l : this.languageLoadHandlerList)
-			l.onLanguageLoadAction(event);
 	}
 	
 	

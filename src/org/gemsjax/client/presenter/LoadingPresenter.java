@@ -3,22 +3,26 @@ package org.gemsjax.client.presenter;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.gemsjax.client.event.LanguageManagerEvent;
+import org.gemsjax.client.event.LanguageManagerEvent.LanguageManagerEventType;
 import org.gemsjax.client.event.LoadingAnimationEvent;
 import org.gemsjax.client.event.LoadingAnimationEvent.LoadingAnimationEventType;
+import org.gemsjax.client.handler.LanguageManagerHandler;
 import org.gemsjax.client.handler.LoadingAnimationEventHandler;
+import org.gemsjax.client.model.language.LanguageManager;
 import org.gemsjax.client.util.preloader.ResourceLoaderEvent;
+import org.gemsjax.client.util.preloader.ResourceLoaderEvent.ResourceLoaderEventType;
 import org.gemsjax.client.util.preloader.ResourcePreloader;
 import org.gemsjax.client.util.preloader.ResourcePreloaderHandler;
-import org.gemsjax.client.util.preloader.ResourceLoaderEvent.ResourceLoaderEventType;
 import org.gemsjax.client.view.LoadingView;
+
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
+import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
@@ -29,6 +33,7 @@ import com.google.gwt.xml.client.XMLParser;
  * {@link LoadingView#hideIt()}.<br />
  * It also has a {@link ResourcePreloader} Object to preload resources. This will be initially be done  
  * by loading the {@value #resourceFileURL} file ({@link #resourceFileURL}. <br /><br />
+ * Since it is a {@link LanguageManagerHandler} it also observer the {@link LanguageManager} for {@link LanguageManagerEvent}s
  * 
  * As this is a {@link Presenter}, other {@link Presenter} can  fire {@link LoadingAnimationEvent}s  
  * (from Type {@link LoadingAnimationEventType#SHOW} or {@link LoadingAnimationEventType#HIDE} via the 
@@ -39,7 +44,7 @@ import com.google.gwt.xml.client.XMLParser;
  * @author Hannes Dorfmann
  *
  */
-public class LoadingPresenter  extends Presenter implements LoadingAnimationEventHandler, ResourcePreloaderHandler {
+public class LoadingPresenter extends Presenter implements LoadingAnimationEventHandler, ResourcePreloaderHandler, LanguageManagerHandler {
 	
 	private static final String resourceFileURL = "/resources.xml";
 
@@ -58,15 +63,27 @@ public class LoadingPresenter  extends Presenter implements LoadingAnimationEven
 	private List <Object> historySourceEventList;
 	
 	
-	public LoadingPresenter(EventBus eventBus, LoadingView view, HasWidgets container)
+	private LanguageManager languageManager;
+	
+	
+	public LoadingPresenter(EventBus eventBus, LoadingView view)
 	{
 		super(eventBus);
 		this.view = view;
 		resourcePreloader = new ResourcePreloader();
-		container.add(view.asWidget());
 		historySourceEventList = new LinkedList<Object>();
 		bind();
 		loadResourcesFile();
+		languageManager = LanguageManager.getInstance();
+		
+		try {
+			view.setLoadingMessage("loading languages");
+			showLoadingOverlay(languageManager);
+			languageManager.loadConfig();
+		} catch (RequestException e) {
+			hideLoadingOverlay(languageManager);
+			e.printStackTrace();
+		}
 		
 		
 	}
@@ -78,7 +95,9 @@ public class LoadingPresenter  extends Presenter implements LoadingAnimationEven
 	private void bind()
 	{
 		eventBus.addHandler(LoadingAnimationEvent.TYPE, this);
+		eventBus.addHandler(LanguageManagerEvent.TYPE, this);
 		resourcePreloader.addResourceLoaderHandler(this);
+		
 	}
 	
 	
@@ -139,7 +158,7 @@ public class LoadingPresenter  extends Presenter implements LoadingAnimationEven
 					// show the overlay
 					showLoadingOverlay(resourcePreloader);
 					resourcePreloader.startLoading(false);
-					
+					view.setLoadingMessage("preload resources");
 					
 				}
 
@@ -174,10 +193,28 @@ public class LoadingPresenter  extends Presenter implements LoadingAnimationEven
 			if (event.getType()==ResourceLoaderEventType.ERROR)
 				view.setLoadingMessage(""+resourcePreloader.getLoadedResourcesWithErrorsInPercent()+" % <br /> error while loading "+event.getResourceURL());
 		else
+		//TODO check if it works correct
 		if (event.getType()==ResourceLoaderEventType.ALL_RESOURCES_LOADED)
 			hideLoadingOverlay(resourcePreloader);
 		
 		
+	}
+
+
+	@Override
+	public void onLanguageManagerEvent(LanguageManagerEvent event) {
+		
+		if (event.getType()== LanguageManagerEventType.START_LOADING_LANGUAGE)
+			showLoadingOverlay(LanguageManager.getInstance());
+		else
+		if (event.getType()== LanguageManagerEventType.LANGUAGE_LOADED)
+			hideLoadingOverlay(LanguageManager.getInstance());
+		else
+		if (event.getType() == LanguageManagerEventType.ERROR)
+		{
+			Window.alert("Error while loading Language config File");
+			hideLoadingOverlay(LanguageManager.getInstance());
+		}
 	}
 	
 	

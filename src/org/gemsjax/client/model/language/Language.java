@@ -111,7 +111,11 @@ public class Language
 	 */
 	public String get(String identifier)
 	{
-		return wordMap.get(identifier);
+		String ret =  wordMap.get(identifier);
+		// TODO remove debug
+		if (ret == null)
+			Window.alert(identifier+" not defined for this Language");
+		return ret;
 	}
 	
 	

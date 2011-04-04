@@ -5,6 +5,7 @@ import org.gemsjax.client.adminui.tabs.LoadingTab;
 import org.gemsjax.client.adminui.tabs.SearchResultTab;
 import org.gemsjax.client.desktopenviroment.DropDownMenuButton;
 import org.gemsjax.client.desktopenviroment.DropDownMenuButton.DropDownMenu;
+import org.gemsjax.client.model.language.LanguageManager;
 import org.gemsjax.client.presenter.CreateExperimentPresenter;
 import org.gemsjax.client.view.implementation.CreateExperimentViewImpl;
 
@@ -38,7 +39,7 @@ public class TabEnviroment extends TabSet{
 		this.setAlign(Alignment.CENTER);
 		
 		// Styling
-		this.setWidth(AdminApplicationUI.contentWidth);
+		this.setWidth(AdminApplicationViewImpl.contentWidth);
 		
 		this.setTabBarPosition(Side.TOP);
 		
@@ -63,7 +64,7 @@ public class TabEnviroment extends TabSet{
 	// TODO remove DEMO TABS
 	private static void demo()
 	{
-		final LoadingTab loadingTab = new LoadingTab("Loading Tab Test");
+		final LoadingTab loadingTab = new LoadingTab("Loading Tab Test", LanguageManager.getInstance().getCurrentLanguage());
 		loadingTab.setContent(new Label("Test"));
 		// TODO remove demo timer	
 		new Timer()
@@ -83,7 +84,6 @@ public class TabEnviroment extends TabSet{
 		
 		instance.addTab(new SearchResultTab("Search Result"));
 		instance.addTab(loadingTab);
-		instance.addTab(new CreateExperimentViewImpl("New Experiment"));
 		instance.addTab(new Tab("Tab3"));
 		instance.addTab(new Tab("Tab4"));
 		instance.addTab(new Tab("Tab5"));

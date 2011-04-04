@@ -1,6 +1,9 @@
 package org.gemsjax.client.adminui;
 
 import org.apache.tools.ant.NoBannerLogger;
+import org.gemsjax.client.model.language.Language;
+import org.gemsjax.client.model.language.LanguageManager;
+import org.gemsjax.client.view.LanguageChangeableView;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Overflow;
@@ -8,6 +11,7 @@ import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.layout.HStack;
 
 
@@ -22,7 +26,7 @@ import com.smartgwt.client.widgets.layout.HStack;
  * @author Hannes Dorfmann
  *
  */
-public class UserBox extends HStack{
+public class UserBox extends HStack implements LanguageChangeableView{
 
 	/**
 	 * A Item which is simply a GUI Component (a {@link Label}) and can contain html and text
@@ -52,6 +56,16 @@ public class UserBox extends HStack{
 		{
 			this();
 			this.setContents(contents);
+			this.setText(contents);
+		}
+		
+		/**
+		 * Set the displayable text
+		 * @param text
+		 */
+		public void setText(String text)
+		{
+			this.setContents("<a href=\"#\">"+text+"</a>");
 		}
 		
 		
@@ -111,8 +125,14 @@ public class UserBox extends HStack{
 	 */
 	private static UserBox instance;
 	
+	private UserBoxItem notificationsItem;
+	private UserBoxItem metaModelsItem;
+	private UserBoxItem experimentsItem;
+	private UserBoxItem settingsItem;
+	private UserBoxItem logoutItem;
+	private UserBoxItem dashBoardItem;
 	
-	private UserBox()
+	private UserBox(Language currentLanguage)
 	{
 		super();
 		
@@ -127,22 +147,28 @@ public class UserBox extends HStack{
 		borderLeft.setWidth(7);
 		borderLeft.setHeight(37);
 		
-		
-		UserBoxItem notificationItem = new UserBoxItem("<a href=\"#\">notifications</a>");
+		dashBoardItem = new UserBoxItem("<a href=\"#\">welcome</a>");
+		notificationsItem = new UserBoxItem(currentLanguage.get("main-menu-notifications"));
+		metaModelsItem=new UserBoxItem(currentLanguage.get("main-menu-metamodels"));
+		experimentsItem = new UserBoxItem(currentLanguage.get("main-menu-experiments"));
+		settingsItem = new UserBoxItem(currentLanguage.get("main-menu-settings"));
+		logoutItem = new UserBoxItem(currentLanguage.get("main-menu-logout"));
 		
 		this.addMember(borderLeft);
-		this.addMember(new UserBoxItem("<a href=\"#\">welcome</a>"));
+		//TODO display username
+		this.addMember(dashBoardItem);
+		
 		this.addMember(new UserBoxItemSeparator());
-		this.addMember(new UserBoxItem("<a href=\"#\">metamodels</a>"));
+		this.addMember(metaModelsItem);
 		this.addMember(new UserBoxItemSeparator());
-		this.addMember(new UserBoxItem("<a href=\"#\">experiments</a>"));
+		this.addMember(experimentsItem);
 		this.addMember(new UserBoxItemSeparator());
-		this.addMember(notificationItem);
+		this.addMember(notificationsItem);
 		this.addMember(new NotificationCountLabel());
 		this.addMember(new UserBoxItemSeparator());
-		this.addMember(new UserBoxItem("<a href=\"#\">settings</a>"));
+		this.addMember(settingsItem);
 		this.addMember(new UserBoxItemSeparator());
-		this.addMember(new UserBoxItem("<a href=\"#\">logout</a>"));
+		this.addMember(logoutItem);
 		this.addMember(borderRight);
 		
 		
@@ -159,12 +185,58 @@ public class UserBox extends HStack{
 	public static UserBox getInstance()
 	{
 		if (instance == null)
-			instance = new UserBox();
+			instance = new UserBox(LanguageManager.getInstance().getCurrentLanguage());
 		
 		
 		return instance;
 	}
+
+
+	@Override
+	public void changeLanguage(Language newLanguage) {
+		
+		notificationsItem.setText(newLanguage.get("main-menu-notifications"));
+		metaModelsItem.setText(newLanguage.get("main-menu-metamodels"));
+		experimentsItem.setText(newLanguage.get("main-menu-experiments"));
+		settingsItem.setText(newLanguage.get("main-menu-settings"));
+		logoutItem.setText(newLanguage.get("main-menu-logout"));
+	}
 	
+	
+	
+	public HasClickHandlers getDashBoardMenuItem()
+	{
+		return dashBoardItem;
+	}
+	
+	
+	public HasClickHandlers getNotificationsMenuItem()
+	{
+		return notificationsItem;
+	}
+	
+	
+	public HasClickHandlers getMetaModelsItem()
+	{
+		return metaModelsItem;
+	}
+	
+	
+	public HasClickHandlers getExpetimetsItem()
+	{
+		return experimentsItem;
+	}
+	
+	public HasClickHandlers getSettingsItem()
+	{
+		return settingsItem;
+	}
+	
+	
+	public HasClickHandlers getLogoutItem()
+	{
+		return logoutItem;
+	}
 	
 	
 	

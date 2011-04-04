@@ -15,7 +15,7 @@ import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.layout.VStack;
 
-public class LoadingViewImpl extends VLayout implements LoadingView {
+public class LoadingViewImpl extends Window implements LoadingView {
 	
 	/**
 	 * The url to the logo image
@@ -35,36 +35,82 @@ public class LoadingViewImpl extends VLayout implements LoadingView {
 	{
 		super();
 
+		/*
 		this.setStyleName("loadingViewBackground");
+		 
 		this.setWidth100();
 		this.setHeight100();
+		*/
+		
+		this.setWidth(100);
+		this.setHeight(100);
 		
 		
-		Label spacerTop = new Label();
-		Label spacerBottom = new Label();
+		this.setBackgroundColor("none");
 		
-		spacerTop.setWidth("*");
-		spacerBottom.setWidth("*");
 		
 		// Label
 		this.loadingLabel = new Label();
 		this.loadingLabel.setAlign(Alignment.CENTER);
 		this.loadingLabel.setStyleName("loadingLabel");
 		setLoadingMessage("start loading");
+		loadingLabel.setValign(VerticalAlignment.TOP);
+		loadingLabel.setAlign(Alignment.CENTER);
+		
+		// Loading Animation Img
+		Img loadingImg = new Img("/images/loadingsnake.gif");
+		loadingImg.setWidth(45);
+		loadingImg.setHeight(45);
+		loadingImg.setAlign(Alignment.CENTER);
+		loadingImg.setValign(VerticalAlignment.BOTTOM);
+		
+	
+		Label loadingAnimation = new Label("<img src=\""+"/images/loadingsnake.gif"+"\" width=\"50\" />");
+		loadingAnimation.setAlign(Alignment.CENTER);
+		loadingAnimation.setValign(VerticalAlignment.BOTTOM);
+		//loadingAnimation.setHeight100();
+		
 		
 		// VStack
 		VStack loadingContent = new VStack();
-		Label imgLabel = new Label();
-		imgLabel.setContents("<img src=\""+logoURL+"\" width=\"300\" /> <br /><br /> "+
-									" <img src=\""+loadingURL+"\" width=\"32\" /> <br /> <br />");
-		imgLabel.setAlign(Alignment.CENTER);
-		loadingContent.addMember(imgLabel);
-		loadingContent.addMember(loadingLabel);
+		loadingContent.setHeight100();
+		loadingContent.setWidth100();
+		loadingContent.setAlign(Alignment.CENTER);
+		loadingContent.setMembersMargin(20);
 		
-		this.setMembersMargin(10);
-		this.addMember(spacerTop);
-		this.addMember(loadingContent);
-		this.addMember(spacerBottom);
+		loadingContent.addMember(loadingAnimation);
+		loadingContent.addMember(loadingLabel);
+	
+		
+		
+		this.setStyleName("loadingWindow");
+		this.addItem(loadingContent);
+		
+		this.setIsModal(true);
+		this.setWidth100();
+		this.setHeight100();
+		this.setOpacity(100);
+		this.setModalMaskOpacity(50);
+		this.setShowModalMask(true);
+		this.setModalMaskStyle("loadingViewBackground");
+		this.setBorder("none");
+		this.setShowHeader(false);
+		this.setShowStatusBar(false);
+		this.setShowTitle(false);
+		this.setShowCloseButton(false);
+		this.setCanDragResize(false);
+		this.setCanDragReposition(false);
+		this.setEdgeSize(0);
+		this.setEdgeOpacity(0);
+		
+		
+		
+		
+		this.draw();
+		this.bringToFront();
+		this.centerInPage();
+		
+		
 		
 	}
 	
