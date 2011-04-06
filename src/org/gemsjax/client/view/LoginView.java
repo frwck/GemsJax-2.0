@@ -12,7 +12,7 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
  * @author Hannes Dorfmann
  *
  */
-public interface LoginView extends LanguageChangeableView {
+public interface LoginView {
 	
 
 	/**

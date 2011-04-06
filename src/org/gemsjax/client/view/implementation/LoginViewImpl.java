@@ -1,10 +1,9 @@
 package org.gemsjax.client.view.implementation;
 
-import org.gemsjax.client.model.language.Language;
+import org.gemsjax.client.UserLanguage;
 import org.gemsjax.client.view.LoginView;
 
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
@@ -16,7 +15,6 @@ import com.smartgwt.client.widgets.events.MouseOutHandler;
 import com.smartgwt.client.widgets.events.MouseOverEvent;
 import com.smartgwt.client.widgets.events.MouseOverHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.PasswordItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -32,7 +30,7 @@ public class LoginViewImpl extends Window implements LoginView{
 	private Label forgotPasswordLabel;
 	private Label newRegistrationLabel;
 
-	public LoginViewImpl()
+	public LoginViewImpl(UserLanguage Language)
 	{
 		super();
 		
@@ -145,20 +143,6 @@ public class LoginViewImpl extends Window implements LoginView{
 		
 		
 		this.addItem(layoutStack);
-		
-	}
-
-
-
-	@Override
-	public void changeLanguage(Language newLanguage) {
-		
-		usernameField.setTitle(newLanguage.get("username"));
-		passwordField.setTitle(newLanguage.get("password"));
-		loginButton.setTitle(newLanguage.get("login"));
-		welcomeLabel.setContents(newLanguage.get("login-welcome"));
-		forgotPasswordLabel.setContents("login-forgot-password");
-		newRegistrationLabel.setContents("login-new-registration");
 		
 	}
 

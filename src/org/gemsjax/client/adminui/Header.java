@@ -1,8 +1,6 @@
 package org.gemsjax.client.adminui;
 
-import org.gemsjax.client.model.language.Language;
-import org.gemsjax.client.view.LanguageChangeableView;
-
+import org.gemsjax.client.UserLanguage;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
@@ -11,15 +9,14 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.PickerIcon;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.HStack;
 
 
 /**
- * This is the Header of the Admin GUI. Its implemented as Singleton, so use {@link #getInstance()}
+ * This is the Header of the Admin GUI.
  * @author Hannes Dorfmann
  *
  */
-public class Header extends HLayout implements LanguageChangeableView{
+public class Header extends HLayout{
 	
 	
 	private class SearchField extends TextItem
@@ -38,12 +35,7 @@ public class Header extends HLayout implements LanguageChangeableView{
 	}
 	
 	
-
-	/**
-	 * Singleton instance
-	 */
-	private static Header instance;
-	/**
+	 /**
 	 * The url path to the logo
 	 */
 	private static String logoUrl =  "/images/logo_dark_200.png";
@@ -56,10 +48,15 @@ public class Header extends HLayout implements LanguageChangeableView{
 	private Img logo;
 	private UserBox userBox;
 	
-	private Header()
+	private UserLanguage language;
+	
+	public Header(UserLanguage language)
 	{
 		// Setup this HStack 
 		super();
+		
+		this.language = language;
+		
 		this.setWidth(AdminApplicationViewImpl.contentWidth);
 		this.setHeight(Header.headerHeight);
 		this.setMembersMargin(0);
@@ -76,7 +73,7 @@ public class Header extends HLayout implements LanguageChangeableView{
 		spacer.setWidth("*");
 		
 		//UserBox
-		this.userBox = UserBox.getInstance();
+		this.userBox = new UserBox(language);
 		
 		DynamicForm searchForm = new DynamicForm();
 		searchForm.setFields(new SearchField());
@@ -94,30 +91,7 @@ public class Header extends HLayout implements LanguageChangeableView{
 				
 	}
 	
-	
-	
-	
-	/**
-	 * Access to the singleton instance
-	 * @return
-	 */
-	public static Header getInstance()
-	{
-		if (instance==null)
-			instance = new Header();
-		
-		return instance;
-	}
 
-
-
-
-	@Override
-	public void changeLanguage(Language newLanguage) {
-		userBox.changeLanguage(newLanguage);
-		
-	}
-	
 	
 
 	public HasClickHandlers getDashBoardMenuItem()

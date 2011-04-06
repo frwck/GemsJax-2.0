@@ -1,24 +1,17 @@
 package org.gemsjax.client;
 
 import org.gemsjax.client.adminui.AdminApplicationViewImpl;
-import org.gemsjax.client.desktopenviroment.DesktopEnviromentUI;
 import org.gemsjax.client.event.LoadingAnimationEvent;
-import org.gemsjax.client.model.language.LanguageManager;
 import org.gemsjax.client.presenter.AdminApplicationPresenter;
-import org.gemsjax.client.presenter.CreateExperimentPresenter;
 import org.gemsjax.client.presenter.LoadingPresenter;
 import org.gemsjax.client.presenter.LoginPresenter;
 import org.gemsjax.client.presenter.Presenter;
 import org.gemsjax.client.view.LoadingView;
-import org.gemsjax.client.view.implementation.CreateExperimentViewImpl;
-import org.gemsjax.client.view.implementation.LoadingViewImpl;
-import org.gemsjax.client.view.implementation.LoginViewImpl;
 import org.gemsjax.client.websocket.WebSocket;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.RootPanel;
 
 
 /**
@@ -33,6 +26,12 @@ public class AdminApplicationController {
 	 * Singleton instance
 	 */
 	private static AdminApplicationController instance;
+	
+	/**
+	 * The {@link UserLanguage} 
+	 */
+	private UserLanguage language = GWT.create(UserLanguage.class);
+	
 	
 	/**
 	 * All {@link Presenter}s can communicate with each other an this {@link AdminApplicationController} by firing Events via this {@link EventBus}
@@ -53,7 +52,6 @@ public class AdminApplicationController {
 	private AdminApplicationController()
 	{
 		eventBus = new SimpleEventBus();
-		LanguageManager.getInstance().setEventBus(eventBus);
 	}
 
 	
@@ -75,20 +73,20 @@ public class AdminApplicationController {
 	
 	
 	/**
-	 * Start the "admin" app with the {@link LoadingPresenter} and the {@link LoginPresenter}
+	 * Start the "admin" app by initializing the {@link LanguageManager}.
+	 * When the {@link LanguageManager} initialization is done the application can 
+	 * "start" by calling {@link #startAfterCorrectLanguageManagerInitialization()}.
+	 * <b>NOTE:</b> Since thie {@link AdminApplicationController} implements {@link LanguageManagerHandler} 
+	 * the method {@link #startAfterCorrectLanguageManagerInitialization()} will be called automatically  when a {@link LanguageManagerEvent}
+	 * with the type {@link LanguageManagerEventType#INITIALIZED} will be received
 	 */
 	public void start()
 	{
-		//loginPresenter = new LoginPresenter(eventBus, new LoginViewImpl(), RootPanel.get());
-		//loadingPresenter = new LoadingPresenter(eventBus, new LoadingViewImpl());
-		// AdminApplicationViewImpl.getInstance();
-		new AdminApplicationPresenter(eventBus, AdminApplicationViewImpl.getInstance());
+		// TODO weiter do, add Loading and LoginPresenter
+		new AdminApplicationPresenter(eventBus, new AdminApplicationViewImpl(language));
 		
-		// TODO remove Demo
-		//new CreateExperimentPresenter(eventBus, new CreateExperimentViewImpl(LanguageManager.getInstance().getCurrentLanguage()));
-			
 	}
-	
+
 	
 	
 }

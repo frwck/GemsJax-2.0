@@ -1,14 +1,8 @@
 package org.gemsjax.client.adminui;
 
-import org.apache.tools.ant.NoBannerLogger;
-import org.gemsjax.client.model.language.Language;
-import org.gemsjax.client.model.language.LanguageManager;
-import org.gemsjax.client.view.LanguageChangeableView;
-
+import org.gemsjax.client.UserLanguage;
 import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
@@ -22,11 +16,10 @@ import com.smartgwt.client.widgets.layout.HStack;
 /**
  * The UserBox is the GUI Component that displays the Main Menu, User Menu, Notifications Menu, search field, Account-Settings Menu 
  *<br />
- *Its a Singleton
  * @author Hannes Dorfmann
  *
  */
-public class UserBox extends HStack implements LanguageChangeableView{
+public class UserBox extends HStack {
 
 	/**
 	 * A Item which is simply a GUI Component (a {@link Label}) and can contain html and text
@@ -120,10 +113,6 @@ public class UserBox extends HStack implements LanguageChangeableView{
 	
 
 	
-	/**
-	 * Singleton instance
-	 */
-	private static UserBox instance;
 	
 	private UserBoxItem notificationsItem;
 	private UserBoxItem metaModelsItem;
@@ -131,11 +120,12 @@ public class UserBox extends HStack implements LanguageChangeableView{
 	private UserBoxItem settingsItem;
 	private UserBoxItem logoutItem;
 	private UserBoxItem dashBoardItem;
+	private UserLanguage language;
 	
-	private UserBox(Language currentLanguage)
+	public UserBox(UserLanguage language)
 	{
 		super();
-		
+		this.language = language;
 		// notificationItem
 		
 		Img borderLeft = new Img("/images/userbox_left_border.png");
@@ -148,11 +138,11 @@ public class UserBox extends HStack implements LanguageChangeableView{
 		borderLeft.setHeight(37);
 		
 		dashBoardItem = new UserBoxItem("<a href=\"#\">welcome</a>");
-		notificationsItem = new UserBoxItem(currentLanguage.get("main-menu-notifications"));
-		metaModelsItem=new UserBoxItem(currentLanguage.get("main-menu-metamodels"));
-		experimentsItem = new UserBoxItem(currentLanguage.get("main-menu-experiments"));
-		settingsItem = new UserBoxItem(currentLanguage.get("main-menu-settings"));
-		logoutItem = new UserBoxItem(currentLanguage.get("main-menu-logout"));
+		notificationsItem = new UserBoxItem(language.NotificationsMenuItem());
+		metaModelsItem= new UserBoxItem(language.MetaModelsMenuItem());
+		experimentsItem = new UserBoxItem(language.ExperimentsMenuItem());
+		settingsItem = new UserBoxItem(language.SettingsMenuItem());
+		logoutItem = new UserBoxItem(language.Logout());
 		
 		this.addMember(borderLeft);
 		//TODO display username
@@ -179,27 +169,6 @@ public class UserBox extends HStack implements LanguageChangeableView{
 		this.setHeight(37);
 		this.setAlign(Alignment.RIGHT);
 		
-	}
-	
-	
-	public static UserBox getInstance()
-	{
-		if (instance == null)
-			instance = new UserBox(LanguageManager.getInstance().getCurrentLanguage());
-		
-		
-		return instance;
-	}
-
-
-	@Override
-	public void changeLanguage(Language newLanguage) {
-		
-		notificationsItem.setText(newLanguage.get("main-menu-notifications"));
-		metaModelsItem.setText(newLanguage.get("main-menu-metamodels"));
-		experimentsItem.setText(newLanguage.get("main-menu-experiments"));
-		settingsItem.setText(newLanguage.get("main-menu-settings"));
-		logoutItem.setText(newLanguage.get("main-menu-logout"));
 	}
 	
 	

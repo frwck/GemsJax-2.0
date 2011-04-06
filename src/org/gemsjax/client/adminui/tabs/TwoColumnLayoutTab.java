@@ -1,5 +1,7 @@
 package org.gemsjax.client.adminui.tabs;
 
+import org.gemsjax.client.UserLanguage;
+
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.tab.Tab;
@@ -19,9 +21,12 @@ public class TwoColumnLayoutTab extends Tab{
 	private Canvas rightColumnCanvas;
 	private HLayout layout;
 	
-	public TwoColumnLayoutTab(String title)
+	private UserLanguage language;
+	
+	public TwoColumnLayoutTab(String title, UserLanguage language)
 	{
 		super(title);
+		this.language = language;
 		
 		layout = new HLayout();
 		layout.setWidth100();

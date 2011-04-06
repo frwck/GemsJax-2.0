@@ -1,5 +1,6 @@
 package org.gemsjax.client.adminui.tabs;
 
+import org.gemsjax.client.UserLanguage;
 import org.gemsjax.client.adminui.widgets.BigMenuButton;
 import org.gemsjax.client.adminui.widgets.Title;
 import org.gemsjax.client.adminui.widgets.VerticalBigMenuButtonBar;
@@ -15,8 +16,8 @@ public class SearchResultTab extends TwoColumnLayoutTab{
 	private VStack content; 
 	private BigMenuButton allResultsButton, othersMenuButton, metaModelmenuButton, experimentMenuButton, notificationsMenuButton;
 	
-	public SearchResultTab(String t) {
-		super(t);
+	public SearchResultTab(String t, UserLanguage language) {
+		super(t, language);
 		
 		VerticalBigMenuButtonBar bigMenuButtonBar = new VerticalBigMenuButtonBar(200,10,60);
 		bigMenuButtonBar.setMargin(5);

@@ -1,11 +1,11 @@
 package org.gemsjax.client.adminui;
 
+import org.gemsjax.client.UserLanguage;
 import org.gemsjax.client.adminui.tabs.TwoColumnLayoutTab;
 import org.gemsjax.client.adminui.tabs.LoadingTab;
 import org.gemsjax.client.adminui.tabs.SearchResultTab;
 import org.gemsjax.client.desktopenviroment.DropDownMenuButton;
 import org.gemsjax.client.desktopenviroment.DropDownMenuButton.DropDownMenu;
-import org.gemsjax.client.model.language.LanguageManager;
 import org.gemsjax.client.presenter.CreateExperimentPresenter;
 import org.gemsjax.client.view.implementation.CreateExperimentViewImpl;
 
@@ -30,12 +30,20 @@ public class TabEnviroment extends TabSet{
 	private static TabEnviroment instance;
 
 	private DropDownMenuButton logoMenu;
+	
+	private UserLanguage language;
+	
 	private int iii = 0;
 	
 	
-	private TabEnviroment(){
+	public TabEnviroment(UserLanguage language){
 		super();
 		
+		//TODO Implement TabEnviroment as pure Singleton when demo has been removed
+		//TODO remove hack
+		instance = this;
+		
+		this.language = language;
 		this.setAlign(Alignment.CENTER);
 		
 		// Styling
@@ -44,27 +52,19 @@ public class TabEnviroment extends TabSet{
 		this.setTabBarPosition(Side.TOP);
 		
 		this.draw();
+		demo();
 	}
+
 	
-	/**
-	 * Get the {@link TabEnviroment} instance (Singleton)
-	 * @return
-	 */
 	public static TabEnviroment getInstance()
 	{
-		if (instance == null)
-		{
-			instance = new TabEnviroment();
-			demo();
-		}
 		return instance;
 	}
 	
-	
 	// TODO remove DEMO TABS
-	private static void demo()
+	private void demo()
 	{
-		final LoadingTab loadingTab = new LoadingTab("Loading Tab Test", LanguageManager.getInstance().getCurrentLanguage());
+		final LoadingTab loadingTab = new LoadingTab("Loading Tab Test", language);
 		loadingTab.setContent(new Label("Test"));
 		// TODO remove demo timer	
 		new Timer()
@@ -82,7 +82,7 @@ public class TabEnviroment extends TabSet{
 			}
 		}.scheduleRepeating(2000);
 		
-		instance.addTab(new SearchResultTab("Search Result"));
+		instance.addTab(new SearchResultTab("Search Result", language));
 		instance.addTab(loadingTab);
 		instance.addTab(new Tab("Tab3"));
 		instance.addTab(new Tab("Tab4"));
