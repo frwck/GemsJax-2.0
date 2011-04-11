@@ -1,6 +1,5 @@
 package org.gemsjax.client.view.implementation;
 
-import org.gemsjax.client.desktopenviroment.TopBar;
 import org.gemsjax.client.view.LoadingView;
 
 import com.google.gwt.user.client.ui.RootPanel;
