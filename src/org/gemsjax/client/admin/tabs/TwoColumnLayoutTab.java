@@ -1,6 +1,6 @@
 package org.gemsjax.client.admin.tabs;
 
-import org.gemsjax.client.UserLanguage;
+import org.gemsjax.client.admin.UserLanguage;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.HLayout;

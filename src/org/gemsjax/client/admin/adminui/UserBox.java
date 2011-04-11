@@ -1,6 +1,7 @@
 package org.gemsjax.client.admin.adminui;
 
-import org.gemsjax.client.UserLanguage;
+import org.gemsjax.client.admin.UserLanguage;
+
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Img;

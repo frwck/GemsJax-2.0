@@ -1,4 +1,4 @@
-package org.gemsjax.client;
+package org.gemsjax.client.admin;
 
 public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	

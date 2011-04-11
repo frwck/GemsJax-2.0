@@ -1,7 +1,10 @@
-package org.gemsjax.client.admin.adminui;
+package org.gemsjax.client.admin.view.implementation;
 
 
-import org.gemsjax.client.UserLanguage;
+import org.gemsjax.client.admin.UserLanguage;
+import org.gemsjax.client.admin.adminui.Footer;
+import org.gemsjax.client.admin.adminui.Header;
+import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.view.AdminUIView;
 
 import com.smartgwt.client.widgets.Canvas;

@@ -1,10 +1,11 @@
 package org.gemsjax.client.admin.adminui;
 
-import org.gemsjax.client.UserLanguage;
+import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.presenter.CreateExperimentPresenter;
 import org.gemsjax.client.admin.tabs.LoadingTab;
 import org.gemsjax.client.admin.tabs.SearchResultTab;
 import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
+import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.view.implementation.CreateExperimentViewImpl;
 
 import com.google.gwt.user.client.Timer;

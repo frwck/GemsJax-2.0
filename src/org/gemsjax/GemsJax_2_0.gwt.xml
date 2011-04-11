@@ -28,7 +28,7 @@
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='shared'/>
-  <entry-point class="org.gemsjax.client.GemsJaxClient"/>
+  <entry-point class="org.gemsjax.client.admin.GemsJaxClient"/>
 
  <!-- compile only for chrome/safari  -->
  <set-property name="user.agent" value="safari"/>

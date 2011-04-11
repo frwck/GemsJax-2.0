@@ -1,12 +1,12 @@
-package org.gemsjax.client;
+package org.gemsjax.client.admin;
 
-import org.gemsjax.client.admin.adminui.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
 import org.gemsjax.client.admin.presenter.LoginPresenter;
 import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.admin.view.LoadingView;
+import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.websocket.WebSocket;
 
 import com.google.gwt.core.client.GWT;

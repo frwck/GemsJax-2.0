@@ -1,6 +1,6 @@
 package org.gemsjax.client.admin.tabs;
 
-import org.gemsjax.client.UserLanguage;
+import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.Title;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;

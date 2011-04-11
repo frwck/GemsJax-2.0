@@ -1,6 +1,6 @@
 package org.gemsjax.client.admin.view.implementation;
 
-import org.gemsjax.client.UserLanguage;
+import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.view.LoginView;
 
 import com.smartgwt.client.types.Alignment;

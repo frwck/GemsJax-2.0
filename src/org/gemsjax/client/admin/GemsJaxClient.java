@@ -1,4 +1,4 @@
-package org.gemsjax.client;
+package org.gemsjax.client.admin;
 
 import org.gemsjax.client.websocket.WebSocket;
 
