@@ -60,9 +60,16 @@ public interface LoginView {
 	public void bringToFront();
 	
 	/**
+	 * Hide the LoginView. This should be normally be done, when the Login was successful
+	 */
+	public void hide();
+	
+	
+	/**
 	 * Set the username which should be displayed
 	 * @param username
 	 */
 	public void setUsername(String username);
+	
 	
 }

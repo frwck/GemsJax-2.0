@@ -46,4 +46,11 @@ public interface AdminUIView {
 	public void hide();
 	
 	
+	/**
+	 * Set the username of the user which is already logged in
+	 * @param username
+	 
+	public void setUsername(String username);
+	*/
+	
 }

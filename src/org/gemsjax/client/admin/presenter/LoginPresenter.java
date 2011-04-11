@@ -1,16 +1,17 @@
 package org.gemsjax.client.admin.presenter;
 
-import org.gemsjax.client.admin.event.ShowLoginFormEvent;
-import org.gemsjax.client.admin.handler.ShowLoginFormEventHandler;
+import org.gemsjax.client.admin.event.LoginEvent;
+import org.gemsjax.client.admin.event.LoginEvent.LoginEventType;
+import org.gemsjax.client.admin.event.LogoutEvent;
+import org.gemsjax.client.admin.handler.LogoutHandler;
 import org.gemsjax.client.admin.view.LoginView;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.HasWidgets;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 
-public class LoginPresenter extends Presenter implements ShowLoginFormEventHandler{
+public class LoginPresenter extends Presenter implements LogoutHandler{
 
 	private EventBus eventBus;
 	private LoginView view;
@@ -19,9 +20,12 @@ public class LoginPresenter extends Presenter implements ShowLoginFormEventHandl
 	{
 		super(eventBus);
 		this.eventBus = eventBus;
+		eventBus.addHandler(LogoutEvent.TYPE, this);
 		this.view = view;
 		container.add(view.asWidget());
 		bind();
+		// We start by displaying the login form
+		view.bringToFront();
 	}
 	
 	
@@ -74,17 +78,17 @@ public class LoginPresenter extends Presenter implements ShowLoginFormEventHandl
 	
 	private void onLoginClicked()
 	{
+		//TODO remove login demo
+		eventBus.fireEvent(new LoginEvent(view.getUsername(), LoginEventType.SUCCESSFUL));
 		
 	}
 
 
 	@Override
-	public void onShowLoginForm(ShowLoginFormEvent event) {
+	public void onLogout(LogoutEvent event) {
 		view.bringToFront();
-		
-		if (event.getPreviousLoggedInUsername()!=null)
-			view.setUsername(event.getPreviousLoggedInUsername());
-		
+		view.setUsername(event.getLastLogedInUsername());
+		//TODO maybe add the reason for the logout
 	}
 	
 	

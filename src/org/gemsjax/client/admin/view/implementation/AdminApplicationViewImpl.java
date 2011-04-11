@@ -5,6 +5,7 @@ import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.adminui.Footer;
 import org.gemsjax.client.admin.adminui.Header;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
+import org.gemsjax.client.admin.adminui.UserBox;
 import org.gemsjax.client.admin.view.AdminUIView;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -145,5 +146,7 @@ public class AdminApplicationViewImpl implements AdminUIView{
 	public void hide() {
 		uiLayout.hide();
 	}
+
+
 
 }

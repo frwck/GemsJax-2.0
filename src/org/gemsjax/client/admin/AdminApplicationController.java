@@ -7,11 +7,14 @@ import org.gemsjax.client.admin.presenter.LoginPresenter;
 import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
+import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
+import org.gemsjax.client.admin.view.implementation.LoginViewImpl;
 import org.gemsjax.client.websocket.WebSocket;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.user.client.ui.RootPanel;
 
 
 /**
@@ -82,9 +85,10 @@ public class AdminApplicationController {
 	 */
 	public void start()
 	{
-		// TODO weiter do, add Loading and LoginPresenter
 		new AdminApplicationPresenter(eventBus, new AdminApplicationViewImpl(language));
-		
+		// TODO integrate loading Presenter
+		//loadingPresenter = new LoadingPresenter(eventBus, new LoadingViewImpl());
+		loginPresenter = new LoginPresenter(eventBus, new LoginViewImpl(language), RootPanel.get());
 	}
 
 	
