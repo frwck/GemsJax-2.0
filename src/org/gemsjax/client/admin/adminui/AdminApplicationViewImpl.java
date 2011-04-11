@@ -1,0 +1,146 @@
+package org.gemsjax.client.admin.adminui;
+
+
+import org.gemsjax.client.UserLanguage;
+import org.gemsjax.client.admin.view.AdminUIView;
+
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.events.HasClickHandlers;
+import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.VLayout;
+
+/**
+ * This is the base class for the GUI. 
+ * @author Hannes Dorfmann
+ *
+ */
+public class AdminApplicationViewImpl implements AdminUIView{
+	
+	/**
+	 * The width of the "visible" content. This is the width of the {@link Header}, {@link Footer} and the {@link TabEnviroment}
+	 */
+	public static String contentWidth="90%";
+	
+	
+	
+	private VLayout uiLayout;
+	
+	
+	private UserLanguage language;
+	
+	private Header header;
+	private TabEnviroment tabEnviroment;
+	
+	
+	public AdminApplicationViewImpl(UserLanguage language)
+	{
+		this.language = language;
+		createUI();
+		
+	}
+	
+	
+	private void createUI()
+	{
+		// Set the 
+		uiLayout = new VLayout();
+		uiLayout.setWidth100();
+		uiLayout.setHeight100();
+		uiLayout.setMargin(0);
+		
+		Header header = new Header(language);
+		
+		// Header
+		Canvas spacerHeaderLeft = new Canvas();
+		Canvas spacerHeaderRight = new Canvas();
+	
+		HLayout headerCenteringLayout = new HLayout();
+		headerCenteringLayout.setWidth100();
+		headerCenteringLayout.setHeight(Header.headerHeight);
+		spacerHeaderLeft.setWidth("*");
+		spacerHeaderRight.setWidth("*");
+		
+		headerCenteringLayout.addMember(spacerHeaderLeft);
+		headerCenteringLayout.addMember(header);
+		headerCenteringLayout.addMember(spacerHeaderRight);
+		
+		
+		
+		// TabEnviroment
+		tabEnviroment = new TabEnviroment(language);
+		Canvas spacerTabLeft = new Canvas();
+		Canvas spacerTabRight = new Canvas();
+	
+		HLayout tabCenteringLayout = new HLayout();
+		tabCenteringLayout.setWidth100();
+		tabCenteringLayout.setHeight("*");
+		spacerTabLeft.setWidth("*");
+		spacerTabRight.setWidth("*");
+		
+		tabCenteringLayout.addMember(spacerTabLeft);
+		tabCenteringLayout.addMember(tabEnviroment);
+		tabCenteringLayout.addMember(spacerTabRight);
+		
+		
+		
+		
+		// Add parts
+		uiLayout.addMember(headerCenteringLayout);
+		uiLayout.addMember(tabCenteringLayout);
+		uiLayout.addMember(Footer.getInstance());
+		
+		uiLayout.draw();
+		uiLayout.hide();
+		
+	}
+	
+	
+	
+	
+
+
+
+
+
+	@Override
+	public HasClickHandlers getUserMenuExperiments() {
+		return header.getDashBoardMenuItem();
+	}
+
+
+	@Override
+	public HasClickHandlers getUserMenuMetaModels() {
+		return header.getMetaModelsItem();
+	}
+
+
+	@Override
+	public HasClickHandlers getUserMenuSettings() {
+		return header.getSettingsItem();
+	}
+
+
+	@Override
+	public HasClickHandlers getUserMenuLogout() {
+		return header.getLogoutItem();
+	}
+
+
+	@Override
+	public HasClickHandlers getUserMenuNotifications() {
+		return header.getNotificationsMenuItem();
+	}
+
+
+	@Override
+	public void show() {
+		uiLayout.show();
+	}
+
+
+	@Override
+	public void hide() {
+		uiLayout.hide();
+	}
+
+}
