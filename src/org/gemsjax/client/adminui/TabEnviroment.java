@@ -4,8 +4,6 @@ import org.gemsjax.client.UserLanguage;
 import org.gemsjax.client.adminui.tabs.TwoColumnLayoutTab;
 import org.gemsjax.client.adminui.tabs.LoadingTab;
 import org.gemsjax.client.adminui.tabs.SearchResultTab;
-import org.gemsjax.client.desktopenviroment.DropDownMenuButton;
-import org.gemsjax.client.desktopenviroment.DropDownMenuButton.DropDownMenu;
 import org.gemsjax.client.presenter.CreateExperimentPresenter;
 import org.gemsjax.client.view.implementation.CreateExperimentViewImpl;
 
@@ -29,7 +27,6 @@ public class TabEnviroment extends TabSet{
 	
 	private static TabEnviroment instance;
 
-	private DropDownMenuButton logoMenu;
 	
 	private UserLanguage language;
 	
@@ -90,36 +87,6 @@ public class TabEnviroment extends TabSet{
 		instance.addTab(new Tab("Tab6"));
 		
 
-	}
-	
-	
-	/**
-	 * Generates the MainMenu
-	 */
-	private void generateMainMenu()
-	{
-		logoMenu.setWidth(115);
-		logoMenu.setHeight(30);
-		logoMenu.setHoverClass("logoHover");
-		logoMenu.setPadding(5);
-		
-		DropDownMenu menu = logoMenu.getDropDownMenu();
-		menu.addStyleName("dropDownMainMenu");
-		menu.setPosition(5, 30);
-		
-		
-		for (int i =0; i<5;i++)
-		{
-			Label label = new Label("<a href=\"#\">Label "+i+"</a>");
-			label.setHeight(20);
-			menu.addMenuItem(label);
-		};
-			
-		
-		menu.draw();
-		logoMenu.draw();
-	
-		
 	}
 
 }
