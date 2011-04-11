@@ -31,9 +31,14 @@
   <entry-point class="org.gemsjax.client.GemsJaxClient"/>
 
  <!-- compile only for chrome/safari  -->
- <!-- <set-property name="user.agent" value="safari"/> -->
+ <set-property name="user.agent" value="safari"/>
  
  <!--  <inherits name="com.google.gwt.junit.JUnit"/> -->
+ 
+ 
+ 
+ <!-- languages -->
+ <extend-property name="locale" values="de"/>
 
 
 </module>
