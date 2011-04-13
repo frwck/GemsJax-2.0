@@ -49,7 +49,7 @@ public class GemsJaxServlet extends WebSocketServlet {
 	        sslConnector.setKeyPassword("teamworkpasswordqwe");
 	        server.addConnector(sslConnector);
 	 
-	      
+	      // TODO remove this extra info
 	        // If you want to use only https remove the first Selector
 	      for (Connector c: server.getConnectors())
 	    	  System.out.println(c);
