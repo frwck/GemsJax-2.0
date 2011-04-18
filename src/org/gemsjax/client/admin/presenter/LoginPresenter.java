@@ -1,17 +1,23 @@
 package org.gemsjax.client.admin.presenter;
 
+import org.gemsjax.client.admin.AdminApplicationController;
 import org.gemsjax.client.admin.event.LoginEvent;
 import org.gemsjax.client.admin.event.LoginEvent.LoginEventType;
 import org.gemsjax.client.admin.event.LogoutEvent;
+import org.gemsjax.client.admin.handler.LoginHandler;
 import org.gemsjax.client.admin.handler.LogoutHandler;
 import org.gemsjax.client.admin.view.LoginView;
+import org.gemsjax.shared.FieldVerifier;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
+import com.smartgwt.client.util.BooleanCallback;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 
-public class LoginPresenter extends Presenter implements LogoutHandler{
+public class LoginPresenter extends Presenter implements LogoutHandler, LoginHandler{
 
 	private EventBus eventBus;
 	private LoginView view;
@@ -21,9 +27,11 @@ public class LoginPresenter extends Presenter implements LogoutHandler{
 		super(eventBus);
 		this.eventBus = eventBus;
 		eventBus.addHandler(LogoutEvent.TYPE, this);
+		eventBus.addHandler(LoginEvent.TYPE, this);
 		this.view = view;
 		container.add(view.asWidget());
 		bind();
+		view.resetView();
 		// We start by displaying the login form
 		view.bringToFront();
 	}
@@ -78,8 +86,40 @@ public class LoginPresenter extends Presenter implements LogoutHandler{
 	
 	private void onLoginClicked()
 	{
-		//TODO remove login demo
-		eventBus.fireEvent(new LoginEvent(view.getUsername(), LoginEventType.SUCCESSFUL));
+		
+		view.setLoginButtonEnabled(false);
+		
+		if (!FieldVerifier.isValidUsername(view.getUsername()) )
+		{
+			
+			SC.warn(AdminApplicationController.getInstance().getLanguage().IsNotValidUsernameMessage(), new BooleanCallback() {
+				
+				@Override
+				public void execute(Boolean value) {
+					view.setFocusOnUsernameField();				
+					view.setLoginButtonEnabled(true);
+				}
+			});
+			
+			
+			
+		}
+		else
+			if (!FieldVerifier.isNotEmpty(view.getPassword()))
+			{
+				SC.warn(AdminApplicationController.getInstance().getLanguage().PasswordIsEmptyMessage(), new BooleanCallback() {
+					
+					@Override
+					public void execute(Boolean value) {
+						view.setFocusOnPasswordField();				
+						view.setLoginButtonEnabled(true);
+					}
+				});
+			}
+			else
+				//TODO remove login demo
+				eventBus.fireEvent(new LoginEvent(view.getUsername(), LoginEventType.SUCCESSFUL));
+			
 		
 	}
 
@@ -88,7 +128,17 @@ public class LoginPresenter extends Presenter implements LogoutHandler{
 	public void onLogout(LogoutEvent event) {
 		view.bringToFront();
 		view.setUsername(event.getLastLogedInUsername());
-		//TODO maybe add the reason for the logout
+		//TODO maybe display somewhere the reason for the logout
+	}
+
+
+	@Override
+	public void onLogin(LoginEvent event) {
+		
+		if (event.wasSuccessful())
+			view.hide();
+		
+		// TODO login incorrect
 	}
 	
 	

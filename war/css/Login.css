@@ -25,29 +25,15 @@
 
 
 
-
 .loginLinkLabel
 {
 	margin-top:15px;
 	margin-bottom:10px;
-	
-	color:#03F;
-	font:Verdana, Geneva, sans-serif 14px;
-	cursor:pointer;
-	
-	
 }
 
-.loginLinkLabelHover
-{
-	margin-top:15px;
-	margin-bottom:10px;
 
-	color:#FC0;
-	font:Verdana, Geneva, sans-serif 14px;
-	cursor:pointer;
 
-}
+
 
 
 

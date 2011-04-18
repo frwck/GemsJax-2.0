@@ -15,7 +15,9 @@ public class AdminApplicationPresenter extends Presenter implements LoginHandler
 	
 	public AdminApplicationPresenter(EventBus eventBus, AdminUIView view) {
 		super(eventBus);
+		eventBus.addHandler(LoginEvent.TYPE, this);
 		this.view = view;
+		bind();
 	}
 	
 	
@@ -37,9 +39,10 @@ public class AdminApplicationPresenter extends Presenter implements LoginHandler
 		if (event.wasSuccessful())
 		{
 			//TODO maybe we should display the username somewhere in the gui
-			//view.setUsername(event.getUsername());
 			view.show();
 		}
+		
+		
 			
 	}
 	

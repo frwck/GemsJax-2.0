@@ -71,5 +71,26 @@ public interface LoginView {
 	 */
 	public void setUsername(String username);
 	
+	/**
+	 * Set the Focus on the username field
+	 */
+	public void setFocusOnUsernameField();
+	
+	/**
+	 * Set the Focus on the password field
+	 */
+	public void setFocusOnPasswordField();
+	
+	
+	/**
+	 * Set the login button to be clickable or not.
+	 * @param enable
+	 */
+	public void setLoginButtonEnabled(boolean enable);
+	
+	/**
+	 * Reset the view. That means, that all input fields will be set to the default value
+	 */
+	public void resetView();
 	
 }

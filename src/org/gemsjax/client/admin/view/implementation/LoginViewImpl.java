@@ -7,10 +7,12 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
+import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.events.MouseOutEvent;
 import com.smartgwt.client.widgets.events.MouseOutHandler;
@@ -20,10 +22,17 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.PasswordItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.KeyDownEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyDownHandler;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.layout.VStack;
+
+
+// TODO make language changeable
 
 public class LoginViewImpl extends VLayout implements LoginView{
 	
@@ -70,7 +79,7 @@ public class LoginViewImpl extends VLayout implements LoginView{
 		middleLayout.setWidth100();
 		
 		middleLayout.addMember(eastSpacer);
-		middleLayout.addMember(createLoginForm());
+		middleLayout.addMember(createLoginForm(Language));
 		middleLayout.addMember(westSpacer);
 		
 		
@@ -81,7 +90,7 @@ public class LoginViewImpl extends VLayout implements LoginView{
 	
 	
 	
-	private VStack createLoginForm()
+	private VStack createLoginForm(UserLanguage Language)
 	{
 		// Logo
 		Img logo = new Img("/images/logo_dark_200.png");
@@ -90,7 +99,7 @@ public class LoginViewImpl extends VLayout implements LoginView{
 		logo.setAlign(Alignment.CENTER);
 		
 		// Welcome label
-		welcomeLabel = new Label("Sign in");
+		welcomeLabel = new Label(Language.LoginTitle());
 		welcomeLabel.setAlign(Alignment.CENTER);
 		welcomeLabel.setValign(VerticalAlignment.CENTER);
 		welcomeLabel.setStyleName("loginWelcomeLabel");
@@ -99,62 +108,48 @@ public class LoginViewImpl extends VLayout implements LoginView{
 		// username and password
 		DynamicForm form = new DynamicForm();
 		usernameField = new TextItem();
-		usernameField.setTitle("Username");
+		usernameField.setTitle(Language.Username());
 		passwordField = new PasswordItem();
-		passwordField.setTitle("Password");
+		passwordField.setTitle(Language.Password());
+		usernameField.addKeyPressHandler(new KeyPressHandler() {
+			
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getKeyName().equals("Enter"))
+					loginButton.fireEvent(new ClickEvent(loginButton.getJsObj()));
+			}
+		});
+		
+		
+		passwordField.addKeyPressHandler(new KeyPressHandler() {
+			
+			@Override
+			public void onKeyPress(KeyPressEvent event) {
+				if (event.getKeyName().equals("Enter"))
+					loginButton.fireEvent(new ClickEvent(loginButton.getJsObj()));
+			}
+		});
+		
+		
 		form.setFields(new FormItem[]{usernameField, passwordField});
 		form.setAlign(Alignment.CENTER);
 		
 		form.draw();
 		
 		// Login Button
-		loginButton = new IButton("Login");
+		loginButton = new IButton(Language.Login());
 		loginButton.setAlign(Alignment.CENTER);
 		loginButton.setWidth100();
 	
 		
 		
 		// Forgot password
-		forgotPasswordLabel = new Label();
-		//forgotPasswordLabel.setStyleName("loginLinkLabel");
-		forgotPasswordLabel.addMouseOverHandler(new MouseOverHandler() {
-			
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				forgotPasswordLabel.setStyleName("loginLinkLabelHover");
-			}
-		});
-		
-		forgotPasswordLabel.addMouseOutHandler(new MouseOutHandler() {
-			
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				forgotPasswordLabel.setStyleName("loginLinkLabel");
-			}
-		});
-		
-		
-		
+		forgotPasswordLabel = new Label("<a href=\"#\">"+Language.ForgetPassword()+"</a>");
+		forgotPasswordLabel.setStyleName("loginLinkLabel");
 		
 		// new Registration
-		newRegistrationLabel = new Label();
-		//newRegistrationLabel.setStyleName("loginLinkLabel");
-		newRegistrationLabel.addMouseOverHandler(new MouseOverHandler() {
-			
-			@Override
-			public void onMouseOver(MouseOverEvent event) {
-				forgotPasswordLabel.setStyleName("loginLinkLabelHover");
-			}
-		});
-		
-		newRegistrationLabel.addMouseOutHandler(new MouseOutHandler() {
-			
-			@Override
-			public void onMouseOut(MouseOutEvent event) {
-				forgotPasswordLabel.setStyleName("loginLinkLabel");
-			}
-		});
-		
+		newRegistrationLabel = new Label("<a href=\"#\">"+Language.NewUser()+"</a>");
+		newRegistrationLabel.setStyleName("loginLinkLabel");
 		
 		HStack bottomLabels = new HStack();
 		bottomLabels.setMembersMargin(50);
@@ -242,8 +237,9 @@ public class LoginViewImpl extends VLayout implements LoginView{
 	@Override
 	public void bringToFront() {
 		// TODO is it ok to clear the whole rootpanel
-		RootPanel.get().clear();
-		RootPanel.get().add(this);
+		//RootPanel.get().clear();
+		//RootPanel.get().add(this);
+		this.show();
 		
 		
 	}
@@ -251,13 +247,38 @@ public class LoginViewImpl extends VLayout implements LoginView{
 
 
 	@Override
-	public void hide() {
-		RootPanel.get().remove(this);
+	public void setFocusOnUsernameField() {
+		//TODO implement that the username field get the focus
+	}
+
+
+
+	@Override
+	public void setFocusOnPasswordField() {
+		//TODO implement that the password field get the focus
 		
 	}
 
 
 
+	@Override
+	public void setLoginButtonEnabled(boolean enable) {
+		if (enable)
+			loginButton.enable();
+		else
+			loginButton.disable();
+		
+	}
+
+
+
+	@Override
+	public void resetView() {
+		usernameField.clearValue();
+		passwordField.clearValue();
+		loginButton.enable();
+	}
+	
 	
 
 }

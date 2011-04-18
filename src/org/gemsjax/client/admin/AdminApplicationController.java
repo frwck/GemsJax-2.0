@@ -33,7 +33,7 @@ public class AdminApplicationController {
 	/**
 	 * The {@link UserLanguage} 
 	 */
-	private UserLanguage language = GWT.create(UserLanguage.class);
+	private static UserLanguage language = GWT.create(UserLanguage.class);
 	
 	
 	/**
@@ -74,6 +74,15 @@ public class AdminApplicationController {
 		return instance;
 	}
 	
+	/**
+	 * Get the current Language
+	 * @return
+	 */
+	public UserLanguage getLanguage()
+	{
+		return language;
+	}
+	
 	
 	/**
 	 * Start the "admin" app by initializing the {@link LanguageManager}.
@@ -85,10 +94,14 @@ public class AdminApplicationController {
 	 */
 	public void start()
 	{
-		new AdminApplicationPresenter(eventBus, new AdminApplicationViewImpl(language));
-		// TODO integrate loading Presenter
-		//loadingPresenter = new LoadingPresenter(eventBus, new LoadingViewImpl());
+		
+		new LoadingPresenter(eventBus, new LoadingViewImpl());
+		
+		// Important: first create the loginPresenter and than the AdminApplicationPresenter: So the LoginPresenter will receive LoginEvents as the first
 		loginPresenter = new LoginPresenter(eventBus, new LoginViewImpl(language), RootPanel.get());
+		new AdminApplicationPresenter(eventBus, new AdminApplicationViewImpl(language));
+	
+		
 	}
 
 	

@@ -5,6 +5,20 @@ body
 	background:#FFF url(/images/background.gif) repeat-x;
 }
 
+a, a:link, a:visited{
+	color:#03F;
+	font:Verdana, Geneva, sans-serif 14px;
+	cursor:pointer;
+	text-decoration: none;
+}
+
+a:hover
+{
+	color:orange;
+	font:Verdana, Geneva, sans-serif 14px;
+	cursor:pointer;
+	text-decoration: none;
+}
 
 
 /** 

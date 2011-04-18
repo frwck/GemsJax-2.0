@@ -4,6 +4,11 @@ import org.gemsjax.client.admin.handler.LoginHandler;
 
 import com.google.gwt.event.shared.GwtEvent;
 
+/**
+ * This Event is used to inform the {@link LoginHandler} that something happens
+ * @author Hannes Dorfmann
+ *
+ */
 public class LoginEvent extends GwtEvent<LoginHandler>{
 	
 	public enum LoginEventType
