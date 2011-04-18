@@ -16,10 +16,12 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
 import com.google.gwt.xml.client.NodeList;
 import com.google.gwt.xml.client.XMLParser;
+import com.smartgwt.client.util.SC;
 
 /**
  * This Presenter manages the {@link LoadingView} by calling {@link LoadingView#displayIt()} and 
@@ -93,6 +95,7 @@ public class LoadingPresenter extends Presenter implements LoadingAnimationEvent
 	{
 		historySourceEventList.add(source);
 		view.bringToFront();
+		
 	}
 	
 	/**
@@ -157,8 +160,13 @@ public class LoadingPresenter extends Presenter implements LoadingAnimationEvent
 
 	@Override
 	public void onLoadingAnimationEvent(LoadingAnimationEvent event) {
+		
+		//TODO maybe a loading message history stack would be a good idea
 		if (event.getType() == LoadingAnimationEventType.SHOW)
+		{
 			showLoadingOverlay(event.getSource());
+			view.setLoadingMessage(event.getDisplayingMessage());
+		}
 		else
 		if (event.getType()==LoadingAnimationEventType.HIDE)
 			hideLoadingOverlay(event.getSource());
@@ -168,13 +176,14 @@ public class LoadingPresenter extends Presenter implements LoadingAnimationEvent
 	@Override
 	public void onResourceLoader(ResourceLoaderEvent event) {
 		
+		//TODO displaying percent doesnt work correct
 		if (event.getType()==ResourceLoaderEventType.SINGLE_RESOURCE_LOADED)
 			view.setLoadingMessage(""+resourcePreloader.getLoadedResourcesWithErrorsInPercent()+" % <br /> last loaded: "+event.getResourceURL());
 		else
 			if (event.getType()==ResourceLoaderEventType.ERROR)
 				view.setLoadingMessage(""+resourcePreloader.getLoadedResourcesWithErrorsInPercent()+" % <br /> error while loading "+event.getResourceURL());
 		else
-		//TODO check if it works correct
+		
 		if (event.getType()==ResourceLoaderEventType.ALL_RESOURCES_LOADED)
 			hideLoadingOverlay(resourcePreloader);
 		

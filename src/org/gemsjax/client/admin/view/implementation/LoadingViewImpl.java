@@ -113,7 +113,13 @@ public class LoadingViewImpl extends Window implements LoadingView {
 		
 	}
 	
-
+	@Override
+	public void bringToFront()
+	{
+		//com.google.gwt.user.client.Window.alert("Bring TO front");
+		this.show();
+		super.bringToFront();
+	}
 
 	@Override
 	public void hideIt() {

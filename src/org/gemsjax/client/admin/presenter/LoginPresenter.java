@@ -1,6 +1,8 @@
 package org.gemsjax.client.admin.presenter;
 
 import org.gemsjax.client.admin.AdminApplicationController;
+import org.gemsjax.client.admin.event.LoadingAnimationEvent;
+import org.gemsjax.client.admin.event.LoadingAnimationEvent.LoadingAnimationEventType;
 import org.gemsjax.client.admin.event.LoginEvent;
 import org.gemsjax.client.admin.event.LoginEvent.LoginEventType;
 import org.gemsjax.client.admin.event.LogoutEvent;
@@ -10,6 +12,7 @@ import org.gemsjax.client.admin.view.LoginView;
 import org.gemsjax.shared.FieldVerifier;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.smartgwt.client.util.BooleanCallback;
@@ -118,7 +121,7 @@ public class LoginPresenter extends Presenter implements LogoutHandler, LoginHan
 			}
 			else
 				//TODO remove login demo
-				eventBus.fireEvent(new LoginEvent(view.getUsername(), LoginEventType.SUCCESSFUL));
+				simulateCorrectLogin();
 			
 		
 	}
@@ -142,7 +145,18 @@ public class LoginPresenter extends Presenter implements LogoutHandler, LoginHan
 	}
 	
 	
-	
+	private void simulateCorrectLogin()
+	{
+		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.SHOW, this, AdminApplicationController.getInstance().getLanguage().WaitWhileLoginIn()));
+		new Timer(){
+
+			@Override
+			public void run() {
+				eventBus.fireEvent(new LoginEvent(view.getUsername(), LoginEventType.SUCCESSFUL));
+				eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, LoginPresenter.this));
+			}}.schedule(3000);
+		
+	}
 	
 	
 	

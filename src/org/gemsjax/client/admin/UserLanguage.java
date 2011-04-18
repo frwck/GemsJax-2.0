@@ -27,6 +27,9 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("New User")
 	  String NewUser();  
 	  
+	  @DefaultStringValue("Login. Please wait.")
+	  String WaitWhileLoginIn();
+	  
 	  /**
 	   * If you try to login, but the password field was empty
 	   * @return

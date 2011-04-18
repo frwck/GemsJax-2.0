@@ -35,11 +35,21 @@ public class LoadingAnimationEvent extends GwtEvent<LoadingAnimationEventHandler
 	
 	private LoadingAnimationEventType type;
 	private Object source;
+	private String displayingMessage;
+	
 	
 	public LoadingAnimationEvent (LoadingAnimationEventType type, Object source)
 	{
 		this.type = type;
 		this.source = source;
+		this.displayingMessage = "";
+	}
+	
+	public LoadingAnimationEvent (LoadingAnimationEventType type, Object source, String displayingMessage)
+	{
+		this.type = type;
+		this.source = source;
+		this.displayingMessage = displayingMessage;
 	}
 	
 	/**
@@ -58,6 +68,16 @@ public class LoadingAnimationEvent extends GwtEvent<LoadingAnimationEventHandler
 	public LoadingAnimationEventType getType()
 	{
 		return type;
+	}
+	
+	
+	/**
+	 * Get the Message which should be displayed in the LoadingView
+	 * @return
+	 */
+	public String getDisplayingMessage()
+	{
+		return displayingMessage;
 	}
 
 

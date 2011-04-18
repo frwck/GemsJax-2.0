@@ -239,6 +239,7 @@ public class LoginViewImpl extends VLayout implements LoginView{
 		// TODO is it ok to clear the whole rootpanel
 		//RootPanel.get().clear();
 		//RootPanel.get().add(this);
+		super.bringToFront();
 		this.show();
 		
 		
