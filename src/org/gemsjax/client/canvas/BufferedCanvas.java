@@ -171,6 +171,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		 
 		 // draw from Backbuffer to the Front Canvas
 		 canvasContext.drawImage(backBufferContext.getCanvas(), 0, 0);
+		
 	}
 	
 	
