@@ -14,9 +14,11 @@ public class MetaModelCanvasTab extends Tab {
 	{
 		super(title);
 		try {
-			this.setPane(new BufferedCanvas());
+			BufferedCanvas bc = new BufferedCanvas();
+			this.setPane(bc);
+			bc.initCanvasSize();
 		} catch (CanvasSupportException e) {
-			SC.say(e.getStackTrace().toString());
+			SC.say(e.getMessage());
 		}
 	}
 

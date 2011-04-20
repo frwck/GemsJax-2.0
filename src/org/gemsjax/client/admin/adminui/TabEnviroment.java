@@ -83,7 +83,8 @@ public class TabEnviroment extends TabSet{
 		
 		instance.addTab(new SearchResultTab("Search Result", language));
 		instance.addTab(loadingTab);
-		instance.addTab(new MetaModelCanvasTab("MetaModel Canvas", language));
+		MetaModelCanvasTab mct = new MetaModelCanvasTab("MetaModel Canvas", language);
+		instance.addTab(mct);
 		instance.addTab(new Tab("Tab3"));
 		instance.addTab(new Tab("Tab4"));
 		instance.addTab(new Tab("Tab5"));
