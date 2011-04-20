@@ -70,7 +70,7 @@ public class LoadingTab extends Tab{
 		
 		
 		
-		
+		/*
 		loadingImage.addClickHandler(new ClickHandler() {
 			
 			@Override
@@ -88,7 +88,7 @@ public class LoadingTab extends Tab{
 				showLoading();
 			}
 		});
-		
+		*/
 		
 	}
 	
@@ -112,7 +112,7 @@ public class LoadingTab extends Tab{
 	{
 		if (content != null) 
 		{
-			// TODO why TabSet is Null?
+			
 			TabSet ts=this.getTabSet();
 			
 			TabEnviroment.getInstance().updateTab(this, content);

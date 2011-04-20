@@ -42,6 +42,13 @@ public class WebSocket {
     	System.out.println("An Error occurred");
     }
 
+    
+    public static native boolean isSupported() /*-{
+	   return window.WebSocket;
+	}-*/;
+    
+    
+    
     public native void connect(String server) /*-{
         var that = this;
         if (!window.WebSocket) {

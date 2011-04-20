@@ -3,6 +3,7 @@ package org.gemsjax.client.admin.adminui;
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.presenter.CreateExperimentPresenter;
 import org.gemsjax.client.admin.tabs.LoadingTab;
+import org.gemsjax.client.admin.tabs.MetaModelCanvasTab;
 import org.gemsjax.client.admin.tabs.SearchResultTab;
 import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
@@ -82,6 +83,7 @@ public class TabEnviroment extends TabSet{
 		
 		instance.addTab(new SearchResultTab("Search Result", language));
 		instance.addTab(loadingTab);
+		instance.addTab(new MetaModelCanvasTab("MetaModel Canvas", language));
 		instance.addTab(new Tab("Tab3"));
 		instance.addTab(new Tab("Tab4"));
 		instance.addTab(new Tab("Tab5"));

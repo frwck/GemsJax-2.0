@@ -4,6 +4,9 @@ import org.gemsjax.client.websocket.WebSocket;
 
 import com.google.gwt.core.client.EntryPoint;
 
+
+//TODO BrowserSupportCheck
+
 public class GemsJaxClient implements EntryPoint {
 
 	private WebSocket webSocket;
