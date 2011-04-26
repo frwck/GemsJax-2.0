@@ -16,13 +16,13 @@ public interface Drawable {
 	 * Get the x coordinate of the Object of the TOP-LEFT Corner
 	 * @return
 	 */
-	public int getX();
+	public double getX();
 	
 	/**
 	 * Get the y coordinate of the Object of the TOP-LEFT Corner
 	 * @return
 	 */
-	public int getY();
+	public double getY();
 	
 	/**
 	 * Get the z coordinate. This will be used for overlapping objects.
@@ -30,23 +30,23 @@ public interface Drawable {
 	 * z value will be painted in the foreground, the other object will be painted overlapping in the background.
 	 * @return
 	 */
-	public int getZ();
+	public double getZ();
 	
 	
 	/**
 	 * @see #getX()
 	 */
-	public void setX(int x);
+	public void setX(double x);
 	
 	/**
 	 * @see #getY()
 	 */
-	public void setY(int y);
+	public void setY(double y);
 	
 	/**
 	 * @see #getZ()
 	 */
-	public void setZ(int z);
+	public void setZ(double z);
 	
 	
 	/**

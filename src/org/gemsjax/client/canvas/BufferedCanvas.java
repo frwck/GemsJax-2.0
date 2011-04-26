@@ -61,10 +61,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		canvas.setWidth("100%");
 		canvas.setHeight("100%");
 		
-		// TODO needed?
-		/*
-		
-	    */
+		redrawColor = CssColor.make("#FFFFFF");
 		
 		canvasContext = canvas.getContext2d();
 	    backBufferContext = backBuffer.getContext2d();
@@ -76,6 +73,10 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		
 		this.setWidth100();
 		this.setHeight100();
+		
+		int width = this.getWidth();
+		int height = this.getHeight();
+		setCanvasSize(width, height);
 	
 	}
 	
@@ -97,6 +98,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	    backBuffer.setCoordinateSpaceWidth(width);
 	    backBuffer.setCoordinateSpaceHeight(height);
 	    
+	    redrawCanvas();
 	}
 	
 	
@@ -175,9 +177,12 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	}
 	
 	
+	
+	private DrawTest d = new DrawTest();
+	
 	private void drawObjects()
 	{
-		
+		d.draw(backBufferContext);
 	}
 
 
