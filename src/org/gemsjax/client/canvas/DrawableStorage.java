@@ -6,7 +6,12 @@ import java.util.List;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 
-
+/**
+ * The {@link DrawableStorage} is part of the {@link BufferedCanvas}.
+ * This class manages (Z-index, check for mouseEvenets {@link #getDrawableAt(double, double)}, etv.) the {@link Drawable}s that are painted with the {@link BufferedCanvas}
+ * @author Hannes Dorfmann
+ *
+ */
 public class DrawableStorage {
 	
 
@@ -66,17 +71,30 @@ public class DrawableStorage {
 	
 	
 	
-	
+	/**
+	 * remove a {@link Drawable}
+	 * @param d
+	 */
 	public void remove(Drawable d)
 	{
 		elements.remove(d);
 	}
 	
+	/**
+	 * Get all {@link Drawable}s in the order in wich they should be painted on the Canvas
+	 * @return
+	 */
 	public Collection<Drawable> getAllElements()
 	{
 		return elements;
 	}
 	
+	
+	/**
+	 * Get the next z index and increment 
+	 * @return
+	 * @throws DoubleLimitException
+	 */
 	public double getNextZIndex() throws DoubleLimitException
 	{
 		if (nextZIndex>DoubleLimitException.MAX)

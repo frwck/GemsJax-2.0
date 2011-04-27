@@ -13,6 +13,8 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
@@ -69,10 +71,23 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		
 		//TODO remove sample data
 		try {
-			drawableStorage.add(new DrawTest(100, 200, "red"));
-			drawableStorage.add(new DrawTest(300, 50, "blue"));
-			drawableStorage.add(new DrawTest(310, 60, "green"));
-			drawableStorage.add(new DrawTest(320, 60, "cyan"));
+			// Hardcore performance test
+			/*for (int i =0; i<10000;i++)
+			{
+			*/
+				drawableStorage.add(new DrawTest(Random.nextInt()%1000, Random.nextInt()%800, "red"));
+				drawableStorage.add(new DrawTest(Random.nextInt()%1000, Random.nextInt()%800, "blue"));
+				drawableStorage.add(new DrawTest(Random.nextInt()%1000, Random.nextInt()%800, "green"));
+				drawableStorage.add(new DrawTest(Random.nextInt()%1000, Random.nextInt()%800, "cyan"));
+			/*
+			
+			new Timer(){
+
+				@Override
+				public void run() {
+					redrawCanvas();
+				}}.scheduleRepeating(2000);
+			*/
 		} catch (DoubleLimitException e) {
 			Window.alert(e.getMessage());
 		}
