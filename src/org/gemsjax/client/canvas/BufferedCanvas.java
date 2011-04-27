@@ -1,5 +1,7 @@
 package org.gemsjax.client.canvas;
 
+import org.gemsjax.client.admin.exception.DoubleLimitException;
+
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
@@ -41,11 +43,16 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	 */
 	private CssColor redrawColor;
 	
+	
+	private DrawableStorage drawableStorage;
+	
 	private Context2d canvasContext;
 	private Context2d backBufferContext;
 	
 	private int canvasWidth;
 	private int Canvasheight;
+	
+
 	
 
 	
@@ -56,6 +63,21 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		
 		if (canvas == null || backBuffer == null)
 			throw new CanvasSupportException("Can not create a HTML5 <canvas> element. <canvas> is not supported by this browser");
+		
+		
+		drawableStorage = new DrawableStorage();
+		
+		//TODO remove sample data
+		try {
+			drawableStorage.add(new DrawTest(100, 200, "red"));
+			drawableStorage.add(new DrawTest(300, 50, "blue"));
+			drawableStorage.add(new DrawTest(310, 60, "green"));
+			drawableStorage.add(new DrawTest(320, 60, "cyan"));
+		} catch (DoubleLimitException e) {
+			Window.alert(e.getMessage());
+		}
+		
+		
 		
 		
 		canvas.setWidth("100%");
@@ -77,6 +99,8 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		int width = this.getWidth();
 		int height = this.getHeight();
 		setCanvasSize(width, height);
+		
+	
 	
 	}
 	
@@ -177,18 +201,17 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	}
 	
 	
-	
-	private DrawTest d = new DrawTest();
-	
 	private void drawObjects()
 	{
-		d.draw(backBufferContext);
+		for (Drawable d: drawableStorage.getAllElements())
+			d.draw(backBufferContext);
 	}
 
 
 	@Override
 	public void onClick(ClickEvent event) {
-		// TODO Canvas: click
+		Window.alert(event.getRelativeX(canvas.getElement())+" "+event.getRelativeY(canvas.getElement()));
+		Window.alert(drawableStorage.getDrawableAt(event.getRelativeX(canvas.getElement()),event.getRelativeY(canvas.getElement())).toString());
 	}
 
 

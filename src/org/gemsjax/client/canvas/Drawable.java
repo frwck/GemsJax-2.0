@@ -56,7 +56,7 @@ public interface Drawable {
 	 * @param y
 	 * @return
 	 */
-	public boolean isCoordinateOfThis(int x, int y);
+	public boolean isCoordinateOfThis(double x, double y);
 	
 	
 	/**

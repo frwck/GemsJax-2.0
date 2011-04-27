@@ -10,10 +10,13 @@ public class DrawTest implements Drawable{
 
 	
 	private double x, y,z;
+	private double width = 100, height = 200;
+	private String color;
 	
-	public DrawTest() {
-		 x = 20;
-		 y = 100;
+	public DrawTest(double x, double y,  String color) {
+		 this.x = x;
+		 this.y = y;
+		 this.color = color;
 	}
 	
 	@Override
@@ -47,18 +50,22 @@ public class DrawTest implements Drawable{
 		this.z=z;
 	}
 
+	
+	private boolean isBetween(double minValue, double maxValue, double valueToCheck)
+	{
+		return valueToCheck>=minValue && valueToCheck<=maxValue;
+	}
+	
 	@Override
-	public boolean isCoordinateOfThis(int x, int y) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isCoordinateOfThis(double x, double y) {
+		return (isBetween(this.x, this.x+width, x) && isBetween(this.y, this.y+height,y));
 	}
 
 	@Override
 	public void draw(Context2d context) {
 		
-		int width = 100;
-		int height = 200;
-		context.setFillStyle("red");
+		
+		context.setFillStyle(color);
 		context.fillRect(x, y, width, height);
 		
 	}
