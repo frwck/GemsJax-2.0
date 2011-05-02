@@ -12,11 +12,13 @@ public class DrawTest implements Drawable{
 	private double x, y,z;
 	private double width = 100, height = 200;
 	private String color;
+	private boolean canBeMoved;
 	
 	public DrawTest(double x, double y,  String color) {
 		 this.x = x;
 		 this.y = y;
 		 this.color = color;
+		 canBeMoved = true;
 	}
 	
 	@Override
@@ -80,6 +82,11 @@ public class DrawTest implements Drawable{
 	public void drawOnSelected(Context2d context) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean canBeMoved() {
+		return canBeMoved;
 	}
 
 }

@@ -9,7 +9,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  */
 public interface Drawable {
 	
-	//TODO is getX() and getY() needed? normally the isCoordinateOfThis should be enought.
+	//TODO is Z index needed?
 	
 	
 	/**
@@ -47,6 +47,9 @@ public interface Drawable {
 	 * @see #getZ()
 	 */
 	public void setZ(double z);
+	
+	
+	public boolean canBeMoved();
 	
 	
 	/**

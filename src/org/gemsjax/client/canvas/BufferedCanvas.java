@@ -11,13 +11,12 @@ import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.user.client.Random;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
-import com.smartgwt.client.widgets.events.ResizedEvent;
-import com.smartgwt.client.widgets.events.ResizedHandler;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -28,7 +27,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Hannes Dorfmann
  *
  */
-public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHandler, MouseDownHandler, MouseUpHandler{
+public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHandler, MouseDownHandler, MouseUpHandler, MouseOutHandler{
 	
 	/**
 	 * The {@link Canvas} element which displayes the elements
@@ -55,6 +54,10 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	private int Canvasheight;
 	
 
+	private boolean isMouseDown;
+	private double mouseDownX, mouseDownY, mouseDownInitialDrawableX, mouseDownInitialDrawableY;
+	private Drawable currentMouseDownDrawable;
+	
 	
 
 	
@@ -66,6 +69,13 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		if (canvas == null || backBuffer == null)
 			throw new CanvasSupportException("Can not create a HTML5 <canvas> element. <canvas> is not supported by this browser");
 		
+		isMouseDown = false;
+		mouseDownX = -200;
+		mouseDownY = -200;
+		
+		
+		
+		
 		
 		drawableStorage = new DrawableStorage();
 		
@@ -75,10 +85,10 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			/*for (int i =0; i<10000;i++)
 			{
 			*/
-				drawableStorage.add(new DrawTest(Random.nextInt()%1000, Random.nextInt()%800, "red"));
-				drawableStorage.add(new DrawTest(Random.nextInt()%1000, Random.nextInt()%800, "blue"));
-				drawableStorage.add(new DrawTest(Random.nextInt()%1000, Random.nextInt()%800, "green"));
-				drawableStorage.add(new DrawTest(Random.nextInt()%1000, Random.nextInt()%800, "cyan"));
+				drawableStorage.add(new DrawTest(100, 200, "red"));
+				drawableStorage.add(new DrawTest(500, 300, "blue"));
+				drawableStorage.add(new DrawTest(400, 150, "green"));
+				drawableStorage.add(new DrawTest(600, 10, "cyan"));
 			/*
 			
 			new Timer(){
@@ -157,6 +167,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		canvas.addClickHandler(this);
 		canvas.addMouseDownHandler(this);
 		canvas.addMouseUpHandler(this);
+		canvas.addMouseOutHandler(this);
 		
 		   // TODO add Support for touchscreen devices
 		    /*
@@ -204,6 +215,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	 */
 	public void redrawCanvas()
 	{
+		// TODO To increase the performance just redraw the part on the canvas, that has been changed
 		// Clear the backBuffer
 		 backBufferContext.setFillStyle(redrawColor);
 		 backBufferContext.fillRect(0, 0, canvasWidth, Canvasheight);
@@ -225,29 +237,62 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 
 	@Override
 	public void onClick(ClickEvent event) {
-		Window.alert(event.getRelativeX(canvas.getElement())+" "+event.getRelativeY(canvas.getElement()));
-		Window.alert(drawableStorage.getDrawableAt(event.getRelativeX(canvas.getElement()),event.getRelativeY(canvas.getElement())).toString());
+	
+	
+	
 	}
 
 
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
-		// TODO Canvas: mouse is pressed (down)
+		
+		isMouseDown =true;
+		currentMouseDownDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
+		
+		if (currentMouseDownDrawable==null) return;
+		
+		mouseDownX = event.getX();
+		mouseDownY = event.getY();
+		mouseDownInitialDrawableX = currentMouseDownDrawable.getX();
+		mouseDownInitialDrawableY = currentMouseDownDrawable.getY();
+		
+		
+	
 		
 	}
 
-
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
-		// TODO Canvas: mouse is moved
 		
+		// Move Objects
+		if (isMouseDown && currentMouseDownDrawable != null)
+		{
+						
+			if (currentMouseDownDrawable==null || !currentMouseDownDrawable.canBeMoved()) return;
+			
+			currentMouseDownDrawable.setX(mouseDownInitialDrawableX+(event.getX()-mouseDownX));
+			currentMouseDownDrawable.setY(mouseDownInitialDrawableY+(event.getY()-mouseDownY));
+			
+			redrawCanvas();
+		}
 	}
 
 
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
-		// TODO Canvas: mouse is released up
+		isMouseDown = false;
+		currentMouseDownDrawable = null;
+		
+	}
 
+
+	@Override
+	public void onMouseOut(MouseOutEvent event) {
+		// If you are out of the canvas while Mouse is still down
+		onMouseUp(null);
+		
+		
+		
 	}
 	
 

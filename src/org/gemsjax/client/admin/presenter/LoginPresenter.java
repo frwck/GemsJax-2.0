@@ -154,7 +154,7 @@ public class LoginPresenter extends Presenter implements LogoutHandler, LoginHan
 			public void run() {
 				eventBus.fireEvent(new LoginEvent(view.getUsername(), LoginEventType.SUCCESSFUL));
 				eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, LoginPresenter.this));
-			}}.schedule(3000);
+			}}.schedule(1000);
 		
 	}
 	
