@@ -55,9 +55,23 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	
 
 	private boolean isMouseDown;
-	private double mouseDownX, mouseDownY, mouseDownInitialDrawableX, mouseDownInitialDrawableY;
+	
+	/**
+	 * 
+	 */
+	private double mouseDownX;
+	private double mouseDownY;
+	private double mouseDownInitialDrawableX;
+	private double mouseDownInitialDrawableY;
+	/**
+	 * Is used to save, which object is now in use while a mouseDown action, for example, to move an Object
+	 */
 	private Drawable currentMouseDownDrawable;
 	
+	/**
+	 * Is used, to say which drawable is now markt as selected
+	 */
+	private Drawable selectedDrawable;	
 	
 
 	
@@ -239,7 +253,14 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	@Override
 	public void onClick(ClickEvent event) {
 	
-	
+		Drawable previous = selectedDrawable;
+		selectedDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
+		
+		if (selectedDrawable != null && previous!=selectedDrawable)
+		{
+			selectedDrawable.setSelected(true);
+			redrawCanvas();
+		}
 	
 	}
 
@@ -279,14 +300,10 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			distanceToTop = event.getY() - currentMouseDownDrawable.getY();
 			distanceToBottom = currentMouseDownDrawable.getY() - event.getY();
 			
-			
-			if (event.getX()>=distanceToLeft )
-				currentMouseDownDrawable.setX(mouseDownInitialDrawableX+(event.getX()-mouseDownX));
-			
-			if (event.getY()>=currentMouseDownDrawable.getHeight() && event.getY()<canvasHeight-currentMouseDownDrawable.getHeight())
-			currentMouseDownDrawable.setY(mouseDownInitialDrawableY+(event.getY()-mouseDownY));
-			
 			*/
+			
+			//if (event.getX()>=distanceToLeft )
+			currentMouseDownDrawable.onMove(mouseDownInitialDrawableX+(event.getX()-mouseDownX), mouseDownInitialDrawableY+(event.getY()-mouseDownY));
 			
 			redrawCanvas();
 		}

@@ -16,6 +16,7 @@ public class DrawTest implements Drawable{
 	private double width = 100, height = 200, minWidth = 30, minHeight = 30;
 	private String color;
 	private boolean canBeMoved;
+	private boolean selected;
 	
 	private List<ResizeArea> resizeAreas;
 	
@@ -26,6 +27,9 @@ public class DrawTest implements Drawable{
 		 this.color = color;
 		 canBeMoved = true;
 		 resizeAreas = new LinkedList<ResizeArea>();
+		 selected = false;
+		 
+		 
 	}
 	
 	@Override
@@ -87,7 +91,12 @@ public class DrawTest implements Drawable{
 
 	@Override
 	public void drawOnSelected(Context2d context) {
-		// TODO Auto-generated method stub
+		
+		draw(context);
+		
+		for (ResizeArea ra : resizeAreas)
+			ra.draw(context);
+		
 		
 	}
 
@@ -140,6 +149,29 @@ public class DrawTest implements Drawable{
 	@Override
 	public double getMinHeight() {
 		return minHeight;
+	}
+
+	@Override
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
+
+	@Override
+	public boolean isSelected() {
+		return selected;
+	}
+
+	@Override
+	public void onResize(double newWidth, double newHeight) {
+		this.setWidth(newWidth);
+		this.setHeight(newHeight);
+		
+	}
+
+	@Override
+	public void onMove(double newX, double newY) {
+		this.setX(newX);
+		this.setY(newY);
 	}
 
 }

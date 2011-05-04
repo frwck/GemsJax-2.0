@@ -103,6 +103,19 @@ public interface Drawable {
 	public void setHeight(double height);
 	
 	
+	/**
+	 * Set this drawable as selected, so the {@link #drawOnSelected(Context2d)} method should be called
+	 * @param selected
+	 */
+	public void setSelected(boolean selected);
+	
+	
+	/**
+	 * If this is marked as selected, draw it in another way by calling the {@link #drawOnSelected(Context2d)} method.
+	 * @return
+	 */
+	public boolean isSelected();
+	
 	
 	/**
 	 * Check if a x and y coordinate is in the area of this drawable.
@@ -131,7 +144,21 @@ public interface Drawable {
 	 * @param context
 	 */
 	public void drawOnSelected(Context2d context);
-
+	
+	
+	/**
+	 * Will be called from the {@link BufferedCanvas}, if the object has been resized and {@link #canBeResized()} == true
+	 * @param newWidth
+	 * @param newHeight
+	 */
+	public void onResize(double newWidth, double newHeight);
+	
+	/**
+	 *  Will be called from the {@link BufferedCanvas}, if the object has been moved and {@link #canBeMoved()} == true
+	 * @param newX
+	 * @param newY
+	 */
+	public void onMove(double newX, double newY);
 	
 
 }

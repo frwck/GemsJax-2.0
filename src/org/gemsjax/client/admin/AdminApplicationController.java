@@ -95,7 +95,7 @@ public class AdminApplicationController {
 	public void start()
 	{
 		
-		new LoadingPresenter(eventBus, new LoadingViewImpl());
+		loadingPresenter = new LoadingPresenter(eventBus, new LoadingViewImpl());
 		
 		// Important: first create the loginPresenter and than the AdminApplicationPresenter: So the LoginPresenter will receive LoginEvents as the first
 		loginPresenter = new LoginPresenter(eventBus, new LoginViewImpl(language), RootPanel.get());
