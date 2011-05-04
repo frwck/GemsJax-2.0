@@ -30,6 +30,9 @@ public class DrawTest implements Drawable{
 		 selected = false;
 		 
 		 
+		 resizeAreas.add(new ResizeArea(x+width-6, y+height-6, 6, 6));
+		 
+		 
 	}
 	
 	@Override
@@ -163,6 +166,7 @@ public class DrawTest implements Drawable{
 
 	@Override
 	public void onResize(double newWidth, double newHeight) {
+		
 		this.setWidth(newWidth);
 		this.setHeight(newHeight);
 		

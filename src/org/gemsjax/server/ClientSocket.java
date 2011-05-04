@@ -60,6 +60,12 @@ import org.eclipse.jetty.websocket.WebSocket;
 		{
 			outbound.sendMessage(msg);
 		}
+
+		@Override
+		public void onFragment(boolean arg0, byte arg1, byte[] arg2, int arg3,int arg4) {
+			// TODO what is onFragment?
+			
+		}
 		
 		
 		
