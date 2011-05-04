@@ -3,22 +3,35 @@ package org.gemsjax.client.canvas;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.tools.ant.taskdefs.Move;
+import org.gemsjax.client.canvas.handler.MouseOverHandler;
+import org.gemsjax.client.canvas.handler.MoveHandler;
+import org.gemsjax.client.canvas.handler.ResizeHandler;
+
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
 /**
  * A little test class 
  * @author Hannes Dorfmann
  *
  */
-public class DrawTest implements Drawable{
+public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOverHandler{
 
 	
 	private double x, y,z;
 	private double width = 100, height = 200, minWidth = 30, minHeight = 30;
 	private String color;
 	private boolean canBeMoved;
+	private boolean canBeResized;
 	private boolean selected;
+	private boolean mouseOver;
 	
 	private List<ResizeArea> resizeAreas;
+	
+	private List<MoveHandler> moveHandlers;
+	private List<ResizeHandler> resizeHandlers;
+	private List<MouseOverHandler> mouseOverHandlers;
 	
 	
 	public DrawTest(double x, double y,  String color) {
@@ -26,11 +39,22 @@ public class DrawTest implements Drawable{
 		 this.y = y;
 		 this.color = color;
 		 canBeMoved = true;
-		 resizeAreas = new LinkedList<ResizeArea>();
 		 selected = false;
+		 mouseOver = false;
+		 
+		 resizeAreas = new LinkedList<ResizeArea>();
+		 
+		 moveHandlers = new LinkedList<MoveHandler>();
+		 resizeHandlers = new LinkedList<ResizeHandler>();
+		 mouseOverHandlers = new LinkedList<MouseOverHandler>();
 		 
 		 
 		 resizeAreas.add(new ResizeArea(x+width-6, y+height-6, 6, 6));
+		 
+		 
+		 this.addMouseOverHandler(this);
+		 this.addMoveHandler(this);
+		 this.addResizeHandler(this);
 		 
 		 
 	}
@@ -104,7 +128,7 @@ public class DrawTest implements Drawable{
 	}
 
 	@Override
-	public boolean canBeMoved() {
+	public boolean isMoveable() {
 		return canBeMoved;
 	}
 
@@ -129,7 +153,7 @@ public class DrawTest implements Drawable{
 	}
 
 	@Override
-	public boolean canBeResized() {
+	public boolean isResizeable() {
 			return true;
 	}
 
@@ -174,8 +198,81 @@ public class DrawTest implements Drawable{
 
 	@Override
 	public void onMove(double newX, double newY) {
+		
+		double oldX = getX();
+		double oldY = getY();
+		
 		this.setX(newX);
 		this.setY(newY);
+		
+		// Set the Position of the ResizeAreas
+		for (ResizeArea ra : resizeAreas)
+		{
+			ra.setX(ra.getX() + (newX-oldX));
+			ra.setY(ra.getY() + (newY-oldY));
+		}
+		
 	}
+
+	@Override
+	public void addResizeHandler(ResizeHandler resizeHandler) {
+		resizeHandlers.add(resizeHandler);
+	}
+
+	@Override
+	public void removeResizeHandler(ResizeHandler resizeHandler) {
+		resizeHandlers.remove(resizeHandler);
+	}
+
+	@Override
+	public void addMoveHandler(MoveHandler moveHandler) {
+		moveHandlers.add(moveHandler);
+	}
+
+	@Override
+	public void removeMoveHandler(MoveHandler moveHandler) {
+		moveHandlers.remove(moveHandler);
+	}
+
+	@Override
+	public List<MoveHandler> getMoveHandlers() {
+		return moveHandlers;
+	}
+
+	@Override
+	public List<ResizeHandler> getResizeHandlers() {
+		return resizeHandlers;
+	}
+
+	@Override
+	public boolean isMouseOver() {
+		return mouseOver;
+	}
+
+	@Override
+	public void setMouseOver(boolean mouseOver) {
+		this.mouseOver = mouseOver;
+	}
+
+	@Override
+	public void addMouseOverHandler(MouseOverHandler mouseOverHandler) {
+		mouseOverHandlers.add(mouseOverHandler);
+	}
+
+	@Override
+	public void removeMouseOverHandler(MouseOverHandler mouseOverHandler) {
+		mouseOverHandlers.remove(mouseOverHandler);
+	}
+
+	@Override
+	public List<MouseOverHandler> getMouseOverHandlers() {
+		return mouseOverHandlers;
+	}
+
+	@Override
+	public void onMouseOver(double x, double y) {
+		// TODO What to do when mouse is over
+	}
+
 
 }

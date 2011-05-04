@@ -20,7 +20,7 @@ public class ResizeArea {
 		this.height = height;
 		backgroundColor = "white";
 		borderColor = "black";
-		borderWeight = 2;
+		borderWeight = 1;
 	}
 	
 	
@@ -30,7 +30,7 @@ public class ResizeArea {
 		context.fillRect(xRelativToParent, yRelativToParent, width, height);
 		
 		context.setFillStyle(backgroundColor);
-		context.fillRect(xRelativToParent+borderWeight, yRelativToParent+borderWeight, width-borderWeight, height-borderWeight);
+		context.fillRect(xRelativToParent+borderWeight, yRelativToParent+borderWeight, width-2*borderWeight, height-2*borderWeight);
 		
 	}
 	
@@ -45,19 +45,19 @@ public class ResizeArea {
 
 	
 	
-	public double getXRelativToParent() {
+	public double getX() {
 		return xRelativToParent;
 	}
 
-	public void setXRelativToParent(double x) {
+	public void setX(double x) {
 		this.xRelativToParent = x;
 	}
 
-	public double getYRelativToParent() {
+	public double getY() {
 		return yRelativToParent;
 	}
 
-	public void setYRelativToParent(double y) {
+	public void setY(double y) {
 		this.yRelativToParent = y;
 	}
 

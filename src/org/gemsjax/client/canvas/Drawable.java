@@ -1,5 +1,11 @@
 package org.gemsjax.client.canvas;
 
+import java.util.List;
+
+import org.gemsjax.client.canvas.handler.MouseOverHandler;
+import org.gemsjax.client.canvas.handler.MoveHandler;
+import org.gemsjax.client.canvas.handler.ResizeHandler;
+
 import com.google.gwt.canvas.dom.client.Context2d;
 
 /**
@@ -49,13 +55,13 @@ public interface Drawable {
 	 * Can the Drawable be moved
 	 * @return
 	 */
-	public boolean canBeMoved();
+	public boolean isMoveable();
 	
 	/**
 	 * Can the Drawable be resized?
 	 * @return
 	 */
-	public boolean canBeResized();
+	public boolean isResizeable();
 	
 	/**
 	 * Set the minimum Width of this Drawable.
@@ -116,6 +122,21 @@ public interface Drawable {
 	 */
 	public boolean isSelected();
 	
+	/**
+	 * Is the Mouse over this drawable?
+	 * @return
+	 */
+	public boolean isMouseOver();
+	
+	
+	/**
+	 * Set if the mouse is Over this object
+	 * @param mouseOver
+	 */
+	public void setMouseOver(boolean mouseOver);
+	
+	
+	
 	
 	/**
 	 * Check if a x and y coordinate is in the area of this drawable.
@@ -145,20 +166,59 @@ public interface Drawable {
 	 */
 	public void drawOnSelected(Context2d context);
 	
+	/**
+	 * Add a {@link ResizeHandler}
+	 * @param resizeHandler
+	 */
+	public void addResizeHandler(ResizeHandler resizeHandler);
 	
 	/**
-	 * Will be called from the {@link BufferedCanvas}, if the object has been resized and {@link #canBeResized()} == true
-	 * @param newWidth
-	 * @param newHeight
+	 * remove a {@link ResizeHandler}
+	 * @param resizeHandler
 	 */
-	public void onResize(double newWidth, double newHeight);
+	public void removeResizeHandler(ResizeHandler resizeHandler);
 	
 	/**
-	 *  Will be called from the {@link BufferedCanvas}, if the object has been moved and {@link #canBeMoved()} == true
-	 * @param newX
-	 * @param newY
+	 * Add a {@link MoveHandler}
+	 * @param moveHandler
 	 */
-	public void onMove(double newX, double newY);
+	public void addMoveHandler(MoveHandler moveHandler);
 	
+	/**
+	 * Remove a {@link MoveHandler}
+	 * @param moveHandler
+	 */
+	public void removeMoveHandler(MoveHandler moveHandler);
+	
+	/**
+	 * Add a {@link MouseOverHandler}
+	 * @param mouseOverHandler
+	 */
+	public void addMouseOverHandler(MouseOverHandler mouseOverHandler);
+	
+	/**
+	 * Remove a {@link MouseOverHandler}
+	 * @param mouseOverHandler
+	 */
+	public void removeMouseOverHandler(MouseOverHandler mouseOverHandler);
+	
+	/**
+	 * Get the list with all {@link MoveHandler}s
+	 */
+	public List<MoveHandler> getMoveHandlers();
 
+	/**
+	 * Get the list with all {@link ResizeHandler}s
+	 */
+	public List<ResizeHandler> getResizeHandlers();
+	
+	
+	/**
+	 * Get a list with all {@link MouseOverHandler}s
+	 * @return
+	 */
+	public List<MouseOverHandler> getMouseOverHandlers();
+	
+	
+	
 }

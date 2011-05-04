@@ -1,6 +1,7 @@
 package org.gemsjax.client.canvas;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
+import org.gemsjax.client.canvas.handler.MoveHandler;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -246,7 +247,13 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	private void drawObjects()
 	{
 		for (Drawable d: drawableStorage.getAllElements())
-			d.draw(backBufferContext);
+			if (d.isSelected())
+				d.drawOnSelected(backBufferContext);
+			else
+				if (d.isMouseOver())
+					d.drawOnMouseOver(backBufferContext);
+				else
+					d.draw(backBufferContext);
 	}
 
 
@@ -254,6 +261,10 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	public void onClick(ClickEvent event) {
 	
 		Drawable previous = selectedDrawable;
+		
+		if (previous != null)
+			previous.setSelected(false);
+		
 		selectedDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
 		
 		if (selectedDrawable != null && previous!=selectedDrawable)
@@ -262,6 +273,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			redrawCanvas();
 		}
 	
+		
 	}
 
 
@@ -283,11 +295,12 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		
-		// Move Drawables
+		
 		if (isMouseDown && currentMouseDownDrawable != null)
 		{
-						
-			if (currentMouseDownDrawable==null || !currentMouseDownDrawable.canBeMoved()) return;
+			
+			// Move Drawables	
+			if (currentMouseDownDrawable==null || !currentMouseDownDrawable.isMoveable()) return;
 			
 			
 			// TODO	Prevent that a Drawable can be moved outside the Canvas
@@ -303,7 +316,8 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			*/
 			
 			//if (event.getX()>=distanceToLeft )
-			currentMouseDownDrawable.onMove(mouseDownInitialDrawableX+(event.getX()-mouseDownX), mouseDownInitialDrawableY+(event.getY()-mouseDownY));
+			for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
+				h.onMove(mouseDownInitialDrawableX+(event.getX()-mouseDownX), mouseDownInitialDrawableY+(event.getY()-mouseDownY));
 			
 			redrawCanvas();
 		}
