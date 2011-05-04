@@ -259,21 +259,27 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 
 	@Override
 	public void onClick(ClickEvent event) {
-	
+		
 		Drawable previous = selectedDrawable;
+		
+		
+		
+		selectedDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
 		
 		if (previous != null)
 			previous.setSelected(false);
 		
-		selectedDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
-		
-		if (selectedDrawable != null && previous!=selectedDrawable)
+	
+		if (selectedDrawable != null)
 		{
 			selectedDrawable.setSelected(true);
-			redrawCanvas();
-		}
-	
+			
+		}else
+			if (previous != null) 
+				previous.setSelected(false);
 		
+	
+		redrawCanvas();
 	}
 
 
