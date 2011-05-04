@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.tools.ant.taskdefs.Move;
+import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
@@ -197,19 +198,19 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 	}
 
 	@Override
-	public void onMove(double newX, double newY) {
+	public void onMove(MoveEvent e) {
 		
 		double oldX = getX();
 		double oldY = getY();
 		
-		this.setX(newX);
-		this.setY(newY);
+		this.setX(getX()+e.getX() - e.getStartX());
+		this.setY(getY()+e.getY() - e.getStartY());
 		
 		// Set the Position of the ResizeAreas
 		for (ResizeArea ra : resizeAreas)
 		{
-			ra.setX(ra.getX() + (newX-oldX));
-			ra.setY(ra.getY() + (newY-oldY));
+			ra.setX(ra.getX() + (getX()-oldX));
+			ra.setY(ra.getY() + (getY()-oldY));
 		}
 		
 	}

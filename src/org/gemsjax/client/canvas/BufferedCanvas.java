@@ -1,6 +1,7 @@
 package org.gemsjax.client.canvas;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
+import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 
 import com.google.gwt.canvas.client.Canvas;
@@ -260,9 +261,9 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	@Override
 	public void onClick(ClickEvent event) {
 		
+		// TODO : Canvas: Wrong Focus (ResizeArea) When you move a Drawable in the canvas and will overlap it with another Drawable with the higher Z index, the Drawable  with the highest Z index will get the Focus instead of the drawable, which has been moved
+		
 		Drawable previous = selectedDrawable;
-		
-		
 		
 		selectedDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
 		
@@ -302,8 +303,26 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	public void onMouseMove(MouseMoveEvent event) {
 		
 		
+		
+		if (currentMouseDownDrawable != null && currentMouseDownDrawable.isMoveable() && isMouseDown)
+		{
+			
+			MoveEvent e = new MoveEvent(mouseDownX, mouseDownY, event.getX(), event.getY(),event.getScreenX(), event.getScreenY(), isMouseDown);
+			
+			for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
+			{
+				h.onMove(e);
+			}
+			
+			redrawCanvas();
+		}
+		
+		
+		/*
 		if (isMouseDown && currentMouseDownDrawable != null)
 		{
+			
+			
 			
 			// Move Drawables	
 			if (currentMouseDownDrawable==null || !currentMouseDownDrawable.isMoveable()) return;
@@ -319,7 +338,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			distanceToTop = event.getY() - currentMouseDownDrawable.getY();
 			distanceToBottom = currentMouseDownDrawable.getY() - event.getY();
 			
-			*/
+			
 			
 			//if (event.getX()>=distanceToLeft )
 			for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
@@ -327,9 +346,12 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			
 			redrawCanvas();
 		}
+		*/
 	}
 
 
+	// REIHENFOLGE: erster kommt MouseUp, dann MouseClick
+	
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
 		isMouseDown = false;
