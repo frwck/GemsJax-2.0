@@ -1,5 +1,8 @@
 package org.gemsjax.client.canvas;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.google.gwt.canvas.dom.client.Context2d;
 /**
  * A little test class 
@@ -10,15 +13,19 @@ public class DrawTest implements Drawable{
 
 	
 	private double x, y,z;
-	private double width = 100, height = 200;
+	private double width = 100, height = 200, minWidth = 30, minHeight = 30;
 	private String color;
 	private boolean canBeMoved;
+	
+	private List<ResizeArea> resizeAreas;
+	
 	
 	public DrawTest(double x, double y,  String color) {
 		 this.x = x;
 		 this.y = y;
 		 this.color = color;
 		 canBeMoved = true;
+		 resizeAreas = new LinkedList<ResizeArea>();
 	}
 	
 	@Override
@@ -87,6 +94,52 @@ public class DrawTest implements Drawable{
 	@Override
 	public boolean canBeMoved() {
 		return canBeMoved;
+	}
+
+	@Override
+	public double getWidth() {
+		return width;
+	}
+
+	@Override
+	public double getHeight() {
+		return height;
+	}
+
+	@Override
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	@Override
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	@Override
+	public boolean canBeResized() {
+			return true;
+	}
+
+	@Override
+	public void setMinWidth(double minWidth) {
+		this.minWidth = minWidth;
+	}
+
+	@Override
+	public double getMinWidth() {
+		
+		return minWidth;
+	}
+
+	@Override
+	public void setMinHeight(double minHeight) {
+		this.minHeight = minHeight;
+	}
+
+	@Override
+	public double getMinHeight() {
+		return minHeight;
 	}
 
 }

@@ -51,7 +51,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	private Context2d backBufferContext;
 	
 	private int canvasWidth;
-	private int Canvasheight;
+	private int canvasHeight;
 	
 
 	private boolean isMouseDown;
@@ -154,10 +154,11 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	private void setCanvasSize(int width, int height)
 	{
 		this.canvasWidth = width;
-		this.Canvasheight = height;
+		this.canvasHeight = height;
 		
 		canvas.setWidth(width+"px");
 		canvas.setHeight(height+"px");
+		
 	}
 	
 	
@@ -218,7 +219,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		// TODO To increase the performance just redraw the part on the canvas, that has been changed
 		// Clear the backBuffer
 		 backBufferContext.setFillStyle(redrawColor);
-		 backBufferContext.fillRect(0, 0, canvasWidth, Canvasheight);
+		 backBufferContext.fillRect(0, 0, canvasWidth, canvasHeight);
 		 
 		 drawObjects();
 		 
@@ -256,22 +257,36 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		mouseDownInitialDrawableX = currentMouseDownDrawable.getX();
 		mouseDownInitialDrawableY = currentMouseDownDrawable.getY();
 		
-		
-	
-		
 	}
 
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		
-		// Move Objects
+		// Move Drawables
 		if (isMouseDown && currentMouseDownDrawable != null)
 		{
 						
 			if (currentMouseDownDrawable==null || !currentMouseDownDrawable.canBeMoved()) return;
 			
-			currentMouseDownDrawable.setX(mouseDownInitialDrawableX+(event.getX()-mouseDownX));
+			
+			// TODO	Prevent that a Drawable can be moved outside the Canvas
+			
+			/*
+			double distanceToLeft, distanceToRight, distanceToTop, distanceToBottom;
+			
+			distanceToLeft =event.getX() - currentMouseDownDrawable.getX();
+			distanceToRight = currentMouseDownDrawable.getX() - event.getX();
+			distanceToTop = event.getY() - currentMouseDownDrawable.getY();
+			distanceToBottom = currentMouseDownDrawable.getY() - event.getY();
+			
+			
+			if (event.getX()>=distanceToLeft )
+				currentMouseDownDrawable.setX(mouseDownInitialDrawableX+(event.getX()-mouseDownX));
+			
+			if (event.getY()>=currentMouseDownDrawable.getHeight() && event.getY()<canvasHeight-currentMouseDownDrawable.getHeight())
 			currentMouseDownDrawable.setY(mouseDownInitialDrawableY+(event.getY()-mouseDownY));
+			
+			*/
 			
 			redrawCanvas();
 		}
@@ -290,10 +305,10 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	public void onMouseOut(MouseOutEvent event) {
 		// If you are out of the canvas while Mouse is still down
 		onMouseUp(null);
-		
-		
-		
+			
 	}
+	
+	
 	
 
 }

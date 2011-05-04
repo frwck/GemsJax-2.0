@@ -9,9 +9,6 @@ import com.google.gwt.canvas.dom.client.Context2d;
  */
 public interface Drawable {
 	
-	//TODO is Z index needed?
-	
-	
 	/**
 	 * Get the x coordinate of the Object of the TOP-LEFT Corner
 	 * @return
@@ -48,8 +45,63 @@ public interface Drawable {
 	 */
 	public void setZ(double z);
 	
-	
+	/**
+	 * Can the Drawable be moved
+	 * @return
+	 */
 	public boolean canBeMoved();
+	
+	/**
+	 * Can the Drawable be resized?
+	 * @return
+	 */
+	public boolean canBeResized();
+	
+	/**
+	 * Set the minimum Width of this Drawable.
+	 * So if you can Resize the Drawable, you never will be able to resize it to a smaller as the minimum Width
+	 * @param minWidth
+	 */
+	public void setMinWidth(double minWidth);
+	
+	/**
+	 * get the minimum Width of this Drawable.
+	 * So if you can Resize the Drawable, you never will be able to resize it to a smaller as the minimum Width
+	 */
+	 
+	public double getMinWidth();
+	
+	
+	/**
+	 * Set the minimum height of this Drawable.
+	 * So if you can Resize the Drawable, you never will be able to resize it to a smaller as the minimum height
+	 * @param minWidth
+	 */
+	public void setMinHeight(double minWidth);
+	
+	/**
+	 * Get the minimum height of this Drawable.
+	 * So if you can Resize the Drawable, you never will be able to resize it to a smaller as the minimum height
+	 */
+	public double getMinHeight();
+	
+	
+	/**
+	 * Get the width
+	 * @return
+	 */
+	public double getWidth();
+	
+	/**
+	 * Get the Height
+	 * @return
+	 */
+	public double getHeight();
+	
+	public void setWidth(double width);
+	
+	public void setHeight(double height);
+	
 	
 	
 	/**
