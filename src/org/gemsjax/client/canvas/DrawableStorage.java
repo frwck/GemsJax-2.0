@@ -43,7 +43,7 @@ public class DrawableStorage {
 		
 		for (Drawable d: elements)
 		{
-			if (d.isCoordinateOfThis(x, y))
+			if (d.hasCoordinate(x, y))
 			{
 				if (getDrawableAtResult== null || d.getZ()>=getDrawableAtResult.getZ())
 					getDrawableAtResult = d;

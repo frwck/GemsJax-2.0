@@ -2,7 +2,9 @@ package org.gemsjax.client.canvas;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.canvas.events.MoveEvent;
+import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.handler.MoveHandler;
+import org.gemsjax.client.canvas.handler.ResizeHandler;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -57,6 +59,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	
 
 	private boolean isMouseDown;
+	
 	
 	/**
 	 * 
@@ -306,9 +309,28 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 		
+		if (currentMouseDownDrawable== null) return;
+		
+		// Resize, if mouse is on a ResizeArea and Resizeable
+		ResizeArea resizeArea = null;
+		if (currentMouseDownDrawable.isResizeable() && (resizeArea = currentMouseDownDrawable.isResizerAreaAt(event.getX(), event.getY()))!=null)
+		{
+			double width = currentMouseDownDrawable.getWidth() +  event.getX() - mouseDownX;
+			double height = currentMouseDownDrawable.getHeight() + event.getY() - mouseDownY;
+			
+			ResizeEvent e = new ResizeEvent(width, height, event.getX(), event.getY(), resizeArea);
+			for (ResizeHandler r : currentMouseDownDrawable.getResizeHandlers())
+				r.onResize(e);
+			
+			redrawCanvas();
+			
+			return; // Break at this point 
+		}
 		
 		
-		if (currentMouseDownDrawable != null && currentMouseDownDrawable.isMoveable() && isMouseDown)
+		
+		// Move a Drawable if it is moveable	
+		if (currentMouseDownDrawable.isMoveable() && isMouseDown)
 		{
 			
 			MoveEvent e = new MoveEvent(mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
@@ -319,7 +341,11 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			}
 			
 			redrawCanvas();
+			return; // Break at this point
 		}
+		
+		
+	
 		
 		
 		/*

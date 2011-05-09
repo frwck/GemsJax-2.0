@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.tools.ant.taskdefs.Move;
 import org.gemsjax.client.canvas.events.MoveEvent;
+import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
@@ -100,7 +101,7 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 	}
 	
 	@Override
-	public boolean isCoordinateOfThis(double x, double y) {
+	public boolean hasCoordinate(double x, double y) {
 		return (isBetween(this.x, this.x+width, x) && isBetween(this.y, this.y+height,y));
 	}
 
@@ -124,6 +125,7 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 		
 		draw(context);
 		
+		if (isSelected())
 		for (ResizeArea ra : resizeAreas)
 			ra.draw(context);
 		
@@ -192,10 +194,23 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 	}
 
 	@Override
-	public void onResize(double newWidth, double newHeight) {
+	public void onResize(ResizeEvent event) {
 		
-		this.setWidth(newWidth);
-		this.setHeight(newHeight);
+		if (isResizeable())
+		{
+			
+			for (ResizeArea r : resizeAreas)
+			{
+				r.setX(r.getX()+ (event.getWidth()-this.getWidth()));
+				r.setY(r.getY()+ (event.getHeight()-this.getHeight()));
+			}
+			
+			this.setWidth(event.getWidth());
+			this.setHeight(event.getHeight());
+			
+			// TODO set Resizers
+		}
+		
 		
 	}
 
@@ -280,6 +295,15 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 	@Override
 	public void onMouseOver(double x, double y) {
 		// TODO What to do when mouse is over
+	}
+
+	@Override
+	public ResizeArea isResizerAreaAt(double x, double y) {
+		for (ResizeArea r :resizeAreas)
+			if (r.hasCoordinate(x, y))
+				return r;
+		
+		return null;
 	}
 
 

@@ -145,7 +145,7 @@ public interface Drawable {
 	 * @param y
 	 * @return
 	 */
-	public boolean isCoordinateOfThis(double x, double y);
+	public boolean hasCoordinate(double x, double y);
 	
 	
 	/**
@@ -219,6 +219,14 @@ public interface Drawable {
 	 */
 	public List<MouseOverHandler> getMouseOverHandlers();
 	
+	
+	/**
+	 * Check if this Drawable has a {@link ResizeArea}, which has the x-y coordinate as part of this {@link ResizeArea}
+	 * @param x
+	 * @param y
+	 * @return The ResizeArea which is at the position or null if there is not a {@link ResizeArea}
+	 */
+	public ResizeArea isResizerAreaAt(double x, double y);
 	
 	
 }

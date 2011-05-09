@@ -4,7 +4,10 @@ import com.google.gwt.canvas.dom.client.Context2d;
 
 public class ResizeArea {
 	
-	private double xRelativToParent, yRelativToParent;
+	// TODO maybe a circle would be nicer
+	
+	
+	private double x, y;
 	private double width, height;
 	private String backgroundColor;
 	private String borderColor;
@@ -12,9 +15,9 @@ public class ResizeArea {
 	
 	
 
-	public ResizeArea(double xRelativeToParent, double yRelativeToParent, double width, double height) {
-		this.xRelativToParent = xRelativeToParent;
-		this.yRelativToParent = yRelativeToParent;
+	public ResizeArea(double x, double y, double width, double height) {
+		this.x = x;
+		this.y = y;
 		
 		this.width = width;
 		this.height = height;
@@ -27,10 +30,10 @@ public class ResizeArea {
 	public void draw(Context2d context)
 	{
 		context.setFillStyle(borderColor);
-		context.fillRect(xRelativToParent, yRelativToParent, width, height);
+		context.fillRect(x, y, width, height);
 		
 		context.setFillStyle(backgroundColor);
-		context.fillRect(xRelativToParent+borderWeight, yRelativToParent+borderWeight, width-2*borderWeight, height-2*borderWeight);
+		context.fillRect(x+borderWeight, y+borderWeight, width-2*borderWeight, height-2*borderWeight);
 		
 	}
 	
@@ -46,19 +49,19 @@ public class ResizeArea {
 	
 	
 	public double getX() {
-		return xRelativToParent;
+		return x;
 	}
 
 	public void setX(double x) {
-		this.xRelativToParent = x;
+		this.x = x;
 	}
 
 	public double getY() {
-		return yRelativToParent;
+		return y;
 	}
 
 	public void setY(double y) {
-		this.yRelativToParent = y;
+		this.y = y;
 	}
 
 	
@@ -79,6 +82,20 @@ public class ResizeArea {
 
 	public void setBorderColor(String borderColor) {
 		this.borderColor = borderColor;
+	}
+	
+	
+	private boolean isBetween(double minValue, double maxValue, double valueToCheck)
+	{
+		return valueToCheck>=minValue && valueToCheck<=maxValue;
+	}
+	
+	public boolean hasCoordinate(double x, double y)
+	{
+		if (isBetween(this.x, this.x+width,x) && isBetween(this.y, this.y+height,y))
+			return true;
+		else
+			return false;
 	}
 
 	
