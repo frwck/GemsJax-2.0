@@ -12,6 +12,7 @@ import org.gemsjax.client.canvas.handler.ResizeHandler;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.smartgwt.client.util.SC;
 /**
  * A little test class 
  * @author Hannes Dorfmann
@@ -42,6 +43,7 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 		 canBeMoved = true;
 		 selected = false;
 		 mouseOver = false;
+		 canBeResized = true;
 		 
 		 resizeAreas = new LinkedList<ResizeArea>();
 		 
@@ -56,8 +58,8 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 		 this.addMouseOverHandler(this);
 		 this.addMoveHandler(this);
 		 this.addResizeHandler(this);
-		 
-		 
+		
+		
 	}
 	
 	@Override
@@ -155,7 +157,7 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 
 	@Override
 	public boolean isResizeable() {
-			return true;
+			return canBeResized;
 	}
 
 	@Override
@@ -203,8 +205,11 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 		double oldX = getX();
 		double oldY = getY();
 		
-		this.setX(getX()+e.getX() - e.getStartX());
-		this.setY(getY()+e.getY() - e.getStartY());
+		this.setX(e.getX()-e.getDistanceToTopLeftX());
+		this.setY(e.getY()-e.getDistanceToTopLeftY());
+		
+		//this.setX(getX()+e.getX() - e.getStartX());
+		//this.setY(getY()+e.getY() - e.getStartY());
 		
 		// Set the Position of the ResizeAreas
 		for (ResizeArea ra : resizeAreas)
@@ -212,6 +217,8 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 			ra.setX(ra.getX() + (getX()-oldX));
 			ra.setY(ra.getY() + (getY()-oldY));
 		}
+		
+		
 		
 	}
 

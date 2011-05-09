@@ -16,10 +16,13 @@ public class MoveEvent {
 	private int screenX;
 	private int screenY;
 	private boolean leftMouseDown;
+	private double distanceToTopLeftX;
+	private double distanceToTopLeftY;
 	
 	
 	
-	public MoveEvent(double startX, double startY, double x, double y, int screenX, int screenY, boolean leftMouse)
+	
+	public MoveEvent(double startX, double startY, double x, double y,  double dTopLeftX, double dTopLeftY, int screenX, int screenY, boolean leftMouse)
 	{
 		this.startX = startX;
 		this.startY = startY;
@@ -28,6 +31,8 @@ public class MoveEvent {
 		this.screenX =screenX;
 		this.screenY = screenY;
 		this.leftMouseDown = leftMouse;
+		this.distanceToTopLeftX = dTopLeftX;
+		this.distanceToTopLeftY = dTopLeftY;
 		
 		
 	}
@@ -64,6 +69,15 @@ public class MoveEvent {
 
 	public double getStartY() {
 		return startY;
+	}
+
+	
+	public double getDistanceToTopLeftX() {
+		return distanceToTopLeftX;
+	}
+
+	public double getDistanceToTopLeftY() {
+		return distanceToTopLeftY;
 	}
 	
 

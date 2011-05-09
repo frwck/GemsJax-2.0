@@ -63,8 +63,8 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	 */
 	private double mouseDownX;
 	private double mouseDownY;
-	private double mouseDownInitialDrawableX;
-	private double mouseDownInitialDrawableY;
+	private double mouseDownInitialXDistance;
+	private double mouseDownInitialYDistance;
 	/**
 	 * Is used to save, which object is now in use while a mouseDown action, for example, to move an Object
 	 */
@@ -74,6 +74,9 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	 * Is used, to say which drawable is now markt as selected
 	 */
 	private Drawable selectedDrawable;	
+	
+	
+	private Drawable drawableWasMoved;
 	
 
 	
@@ -263,6 +266,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		
 		// TODO : Canvas: Wrong Focus (ResizeArea) When you move a Drawable in the canvas and will overlap it with another Drawable with the higher Z index, the Drawable  with the highest Z index will get the Focus instead of the drawable, which has been moved
 		
+		
 		Drawable previous = selectedDrawable;
 		
 		selectedDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
@@ -294,8 +298,8 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		
 		mouseDownX = event.getX();
 		mouseDownY = event.getY();
-		mouseDownInitialDrawableX = currentMouseDownDrawable.getX();
-		mouseDownInitialDrawableY = currentMouseDownDrawable.getY();
+		mouseDownInitialXDistance = event.getX() - currentMouseDownDrawable.getX();
+		mouseDownInitialYDistance = event.getY() - currentMouseDownDrawable.getY();
 		
 	}
 
@@ -307,7 +311,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		if (currentMouseDownDrawable != null && currentMouseDownDrawable.isMoveable() && isMouseDown)
 		{
 			
-			MoveEvent e = new MoveEvent(mouseDownX, mouseDownY, event.getX(), event.getY(),event.getScreenX(), event.getScreenY(), isMouseDown);
+			MoveEvent e = new MoveEvent(mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
 			
 			for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
 			{
@@ -354,8 +358,10 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
-		isMouseDown = false;
-		currentMouseDownDrawable = null;
+		
+			isMouseDown = false;
+			currentMouseDownDrawable = null;
+		
 		
 	}
 
