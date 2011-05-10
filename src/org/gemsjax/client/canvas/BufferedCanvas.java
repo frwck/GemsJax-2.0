@@ -68,6 +68,19 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	private double mouseDownY;
 	private double mouseDownInitialXDistance;
 	private double mouseDownInitialYDistance;
+	
+	/**
+	 * Is used to calculate the new width durring resizing (MouseMoveEvent) a {@link Drawable}
+	 */
+	private double beforeResizeWidth;
+	
+	/**
+	 * Is used to calculate the new height durring resizing (MouseMoveEvent) a {@link Drawable}
+	 */
+	private double beforeResizeHeight;
+	
+	
+	
 	/**
 	 * Is used to save, which object is now in use while a mouseDown action, for example, to move an Object
 	 */
@@ -78,8 +91,11 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	 */
 	private Drawable selectedDrawable;	
 	
-	
-	private Drawable drawableWasMoved;
+	/**
+	 * Is used to say, which {@link ResizeArea} has startet the resizing progress.
+	 * If currentResizeArea is null, than there is currently no resizing on going.
+	 */
+	private ResizeArea currentResizeArea;
 	
 
 	
@@ -95,6 +111,9 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		mouseDownX = -200;
 		mouseDownY = -200;
 		
+		
+		// TODO remove debug
+		SC.showConsole();
 		
 		
 		
@@ -299,6 +318,16 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		
 		if (currentMouseDownDrawable==null) return;
 		
+		
+		// check for Resizing by checking if there is a ResizeArea at the current mouse position
+		this.currentResizeArea = currentMouseDownDrawable.isResizerAreaAt(event.getX(), event.getY());
+		if (currentResizeArea != null)
+		{
+			beforeResizeWidth = currentMouseDownDrawable.getWidth();
+			beforeResizeHeight = currentMouseDownDrawable.getHeight();
+		}
+		
+		
 		mouseDownX = event.getX();
 		mouseDownY = event.getY();
 		mouseDownInitialXDistance = event.getX() - currentMouseDownDrawable.getX();
@@ -312,13 +341,15 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		if (currentMouseDownDrawable== null) return;
 		
 		// Resize, if mouse is on a ResizeArea and Resizeable
-		ResizeArea resizeArea = null;
-		if (currentMouseDownDrawable.isResizeable() && (resizeArea = currentMouseDownDrawable.isResizerAreaAt(event.getX(), event.getY()))!=null)
+		if (currentMouseDownDrawable.isResizeable() && isMouseDown && currentResizeArea != null)
 		{
-			double width = currentMouseDownDrawable.getWidth() +  event.getX() - mouseDownX;
-			double height = currentMouseDownDrawable.getHeight() + event.getY() - mouseDownY;
+			double width = beforeResizeWidth +  event.getX() - mouseDownX;
+			double height = beforeResizeHeight + event.getY() - mouseDownY;
 			
-			ResizeEvent e = new ResizeEvent(width, height, event.getX(), event.getY(), resizeArea);
+			SC.logWarn(" w "+width +" "+(event.getX() - mouseDownX)+ " h "+height);
+			
+			
+			ResizeEvent e = new ResizeEvent(width, height, event.getX(), event.getY(), currentResizeArea);
 			for (ResizeHandler r : currentMouseDownDrawable.getResizeHandlers())
 				r.onResize(e);
 			
@@ -387,6 +418,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		
 			isMouseDown = false;
 			currentMouseDownDrawable = null;
+			currentResizeArea = null;
 		
 		
 	}

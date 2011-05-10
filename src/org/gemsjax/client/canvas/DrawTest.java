@@ -196,7 +196,7 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 	@Override
 	public void onResize(ResizeEvent event) {
 		
-		if (isResizeable())
+		if (isResizeable() && event.getWidth()>getMinWidth() && event.getHeight()>getMinHeight())
 		{
 			
 			for (ResizeArea r : resizeAreas)
@@ -208,7 +208,6 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 			this.setWidth(event.getWidth());
 			this.setHeight(event.getHeight());
 			
-			// TODO set Resizers
 		}
 		
 		
@@ -294,7 +293,7 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 
 	@Override
 	public void onMouseOver(double x, double y) {
-		// TODO What to do when mouse is over
+		// TODO What to do when mouse is over. Let a Menu appear
 	}
 
 	@Override
