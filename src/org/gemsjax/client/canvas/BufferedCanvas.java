@@ -126,10 +126,10 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			/*for (int i =0; i<10000;i++)
 			{
 			*/
-				drawableStorage.add(new DrawTest(100, 200, "red"));
-				drawableStorage.add(new DrawTest(500, 300, "blue"));
-				drawableStorage.add(new DrawTest(400, 150, "green"));
-				drawableStorage.add(new DrawTest(600, 10, "cyan"));
+				drawableStorage.add(new MetaClassDrawable(100, 200, "red"));
+				drawableStorage.add(new MetaClassDrawable(500, 300, "blue"));
+				drawableStorage.add(new MetaClassDrawable(400, 150, "green"));
+				drawableStorage.add(new MetaClassDrawable(600, 10, "cyan"));
 			/*
 			
 			new Timer(){

@@ -1,9 +1,9 @@
 package org.gemsjax.client.canvas;
 
 import java.util.LinkedList;
+
 import java.util.List;
 
-import org.apache.tools.ant.taskdefs.Move;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
@@ -11,24 +11,26 @@ import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.smartgwt.client.util.SC;
+
+
 /**
- * A little test class 
+ * This class is the {@link Drawable} which will draw a MetaClass object on the Canvas
  * @author Hannes Dorfmann
  *
  */
-public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOverHandler{
+public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, MouseOverHandler{
 
 	
 	private double x, y,z;
 	private double width = 100, height = 200, minWidth = 30, minHeight = 30;
-	private String color;
+	private String backgroundColor;
 	private boolean canBeMoved;
 	private boolean canBeResized;
 	private boolean selected;
 	private boolean mouseOver;
+	
+	private String borderColor;
+	private int borderSize;
 	
 	private List<ResizeArea> resizeAreas;
 	
@@ -37,25 +39,35 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 	private List<MouseOverHandler> mouseOverHandlers;
 	
 	
-	public DrawTest(double x, double y,  String color) {
+	private List<String> textAttributes;
+	
+	
+	public MetaClassDrawable(double x, double y,  String color) {
+		 
+		 // Drawbale Settings
 		 this.x = x;
 		 this.y = y;
-		 this.color = color;
+		 this.backgroundColor = color;
+		 this.borderColor = "black";
+		 this.borderSize = 5;
 		 canBeMoved = true;
 		 selected = false;
 		 mouseOver = false;
 		 canBeResized = true;
+		 textAttributes = new LinkedList<String>();
 		 
+		 
+		 // Handlers
 		 resizeAreas = new LinkedList<ResizeArea>();
-		 
 		 moveHandlers = new LinkedList<MoveHandler>();
 		 resizeHandlers = new LinkedList<ResizeHandler>();
 		 mouseOverHandlers = new LinkedList<MouseOverHandler>();
 		 
-		 
+		 // a Resize Area
 		 resizeAreas.add(new ResizeArea(x+width-6, y+height-6, 6, 6));
 		 
 		 
+
 		 this.addMouseOverHandler(this);
 		 this.addMoveHandler(this);
 		 this.addResizeHandler(this);
@@ -109,8 +121,10 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 	public void draw(Context2d context) {
 		
 		
-		context.setFillStyle(color);
+		context.setFillStyle(borderColor);
 		context.fillRect(x, y, width, height);
+		context.setFillStyle(backgroundColor);
+		context.fillRect(x+borderSize, y+borderSize, width-2*borderSize, height-2*borderSize);
 		
 	}
 
@@ -303,6 +317,22 @@ public class DrawTest implements Drawable, ResizeHandler, MoveHandler, MouseOver
 				return r;
 		
 		return null;
+	}
+
+	public String getBorderColor() {
+		return borderColor;
+	}
+
+	public void setBorderColor(String borderColor) {
+		this.borderColor = borderColor;
+	}
+
+	public int getBorderSize() {
+		return borderSize;
+	}
+
+	public void setBorderSize(int borderSize) {
+		this.borderSize = borderSize;
 	}
 
 
