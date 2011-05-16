@@ -21,6 +21,8 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.events.ResizedEvent;
+import com.smartgwt.client.widgets.events.ResizedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -31,7 +33,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Hannes Dorfmann
  *
  */
-public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHandler, MouseDownHandler, MouseUpHandler, MouseOutHandler{
+public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHandler, MouseDownHandler, MouseUpHandler, MouseOutHandler, ResizedHandler{
 	
 	/**
 	 * The {@link Canvas} element which displayes the elements
@@ -162,12 +164,12 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		this.setWidth100();
 		this.setHeight100();
 		
-		int width = this.getWidth();
-		int height = this.getHeight();
-		setCanvasSize(width, height);
+	//	int width = this.getWidth();
+		//int height = this.getHeight();
+		//setCanvasSize(width, height);
 		
 	
-	
+		this.redrawCanvas();
 	}
 	
 	
@@ -205,6 +207,8 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	
 	private void initHandlers() 
 	{
+		this.addResizedHandler(this);
+		
 		canvas.addMouseMoveHandler(this);
 		canvas.addClickHandler(this);
 		canvas.addMouseDownHandler(this);
@@ -431,6 +435,36 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			
 	}
 	
+	
+	/**
+	 * Add a {@link Drawable} to be painted on this canvas
+	 * @param d
+	 * @throws DoubleLimitException
+	 */
+	public void addDrawable(Drawable d) throws DoubleLimitException
+	{
+		drawableStorage.add(d);
+	}
+	
+	/**
+	 * Remove a {@link Drawable} so that {@link Drawable} will not be longer painted on this canvas
+	 * @param d
+	 */
+	public void removeDrawable(Drawable d)
+	{
+		drawableStorage.remove(d);
+	}
+
+
+	@Override
+	public void onResized(ResizedEvent event) {
+		
+		int width = this.getWidth();
+		int height = this.getHeight();
+		setCanvasSize(width, height);
+		SC.logWarn("Resizing "+ width+" "+height);
+		
+	}
 	
 	
 

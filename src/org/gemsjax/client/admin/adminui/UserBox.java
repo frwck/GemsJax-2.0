@@ -138,12 +138,13 @@ public class UserBox extends HStack {
 		borderLeft.setWidth(7);
 		borderLeft.setHeight(37);
 		
-		dashBoardItem = new UserBoxItem("<a href=\"#\">welcome</a>");
+		
 		notificationsItem = new UserBoxItem(language.NotificationsMenuItem());
 		metaModelsItem= new UserBoxItem(language.MetaModelsMenuItem());
 		experimentsItem = new UserBoxItem(language.ExperimentsMenuItem());
 		settingsItem = new UserBoxItem(language.SettingsMenuItem());
 		logoutItem = new UserBoxItem(language.Logout());
+		dashBoardItem = new UserBoxItem("<a href=\"#\">welcome</a>");
 		
 		this.addMember(borderLeft);
 		//TODO display username

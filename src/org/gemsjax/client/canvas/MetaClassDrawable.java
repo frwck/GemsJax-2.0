@@ -23,13 +23,17 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 	
 	private double x, y,z;
 	private double width = 100, height = 200, minWidth = 30, minHeight = 30;
+	
+	private String borderColor;
 	private String backgroundColor;
+	private String textColor;
+	
 	private boolean canBeMoved;
 	private boolean canBeResized;
 	private boolean selected;
 	private boolean mouseOver;
 	
-	private String borderColor;
+	
 	private int borderSize;
 	
 	private List<ResizeArea> resizeAreas;
@@ -49,7 +53,8 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 		 this.y = y;
 		 this.backgroundColor = color;
 		 this.borderColor = "black";
-		 this.borderSize = 5;
+		 textColor = "black";
+		 this.borderSize = 1;
 		 canBeMoved = true;
 		 selected = false;
 		 mouseOver = false;

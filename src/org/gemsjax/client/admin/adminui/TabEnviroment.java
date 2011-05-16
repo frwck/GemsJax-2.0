@@ -4,15 +4,19 @@ import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.presenter.CreateExperimentPresenter;
 import org.gemsjax.client.admin.tabs.LoadingTab;
 import org.gemsjax.client.admin.tabs.MetaModelCanvasTab;
+import org.gemsjax.client.admin.tabs.MetaModelEditorTab;
+import org.gemsjax.client.admin.tabs.MetaModelEditorTab2;
 import org.gemsjax.client.admin.tabs.SearchResultTab;
 import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.view.implementation.CreateExperimentViewImpl;
+import org.gemsjax.client.canvas.CanvasSupportException;
 
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Positioning;
 import com.smartgwt.client.types.Side;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.tab.Tab;
@@ -85,7 +89,15 @@ public class TabEnviroment extends TabSet{
 		instance.addTab(loadingTab);
 		MetaModelCanvasTab mct = new MetaModelCanvasTab("MetaModel Canvas", language);
 		instance.addTab(mct);
-		instance.addTab(new Tab("Tab3"));
+		
+		try {
+			instance.addTab(new MetaModelEditorTab2("Edit MetaModel", language));
+		} catch (CanvasSupportException e) {
+			// TODO say it in the right language
+		SC.say("HTML 5 Canvas is not supported by your browser. The Tab can't be opened");
+		}
+		
+		
 		instance.addTab(new Tab("Tab4"));
 		instance.addTab(new Tab("Tab5"));
 		instance.addTab(new Tab("Tab6"));

@@ -92,7 +92,7 @@ td.userbox-notifications-unread-border-right
 .footer
 {
 	font: normal normal normal 13.34px/normal helvetica, arial, freesans, clean, sans-serif;
-	background: url(images/footer_background.png) repeat-x;
+	background: url(../images/footer_background.png) repeat-x;
 }
 
 .footer a:link, .footer a:visited, .footer a{

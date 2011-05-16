@@ -17,7 +17,7 @@ public class AdminApplicationPresenter extends Presenter implements LoginHandler
 		super(eventBus);
 		eventBus.addHandler(LoginEvent.TYPE, this);
 		this.view = view;
-		bind();
+		//bind();
 	}
 	
 	
@@ -27,7 +27,14 @@ public class AdminApplicationPresenter extends Presenter implements LoginHandler
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				//TODO bind correct
+				/* TODO bugging  Null pointer exception 
+				java.lang.NullPointerException: null
+			    at org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl.getUserMenuExperiments(AdminApplicationViewImpl.java:111)
+			    at org.gemsjax.client.admin.presenter.AdminApplicationPresenter.bind(AdminApplicationPresenter.java:26)
+			    at org.gemsjax.client.admin.presenter.AdminApplicationPresenter.<init>(AdminApplicationPresenter.java:20)
+			    at org.gemsjax.client.admin.AdminApplicationController.start(AdminApplicationController.java:102)
+			    at org.gemsjax.client.admin.GemsJaxClient.onModuleLoad(GemsJaxClient.java:23)
+			    */
 				Window.alert("Experimets");
 			}
 		});
