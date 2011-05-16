@@ -151,6 +151,13 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		canvas.setWidth("100%");
 		canvas.setHeight("100%");
 		
+		
+		/*canvas.setCoordinateSpaceWidth(1000);
+	    canvas.setCoordinateSpaceHeight(500);
+	    backBuffer.setCoordinateSpaceWidth(1000);
+	    backBuffer.setCoordinateSpaceHeight(500);
+	   */
+		
 		redrawColor = CssColor.make("#FFFFFF");
 		
 		canvasContext = canvas.getContext2d();
@@ -164,9 +171,9 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		this.setWidth100();
 		this.setHeight100();
 		
-	//	int width = this.getWidth();
-		//int height = this.getHeight();
-		//setCanvasSize(width, height);
+		int width = this.getWidth();
+		int height = this.getHeight();
+		setCanvasSize(width, height);
 		
 	
 		this.redrawCanvas();
@@ -189,6 +196,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	    canvas.setCoordinateSpaceHeight(height);
 	    backBuffer.setCoordinateSpaceWidth(width);
 	    backBuffer.setCoordinateSpaceHeight(height);
+	    
 	    
 	    redrawCanvas();
 	}

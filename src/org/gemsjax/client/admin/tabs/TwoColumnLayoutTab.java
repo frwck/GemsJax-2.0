@@ -4,6 +4,7 @@ import org.gemsjax.client.admin.UserLanguage;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.Layout;
 import com.smartgwt.client.widgets.tab.Tab;
 
 /**
@@ -108,6 +109,12 @@ public class TwoColumnLayoutTab extends Tab{
 		
 		//TODO maybe remove this animation in here and do this in an own method
 		layout.setAnimateMembers(false);
+	}
+	
+	
+	public Layout getLayout()
+	{
+		return layout;
 	}
 	
 
