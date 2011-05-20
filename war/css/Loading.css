@@ -1,0 +1,15 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.loadingLabel
+{
+	font:Verdana, Geneva, sans-serif 16px bold;
+	color:#FFF;
+}
+
+.loadingViewBackground
+{
+	background-color:#151515;
+	
+}

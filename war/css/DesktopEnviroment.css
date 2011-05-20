@@ -1,0 +1,194 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+
+/** The topBar, set the color for the background*/
+.TopBar {
+background:#006EFF;
+background-image:url(images/topbarbackground.png);
+}
+
+/** The windowContainer, do NOT CHANGE except background */
+.windowContainer {
+
+}
+
+/** The Main menu */
+.dropDownMainMenu
+{
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+	border-bottom: 1px solid #000000;
+	background-color: #09F;
+	position: absolute;
+	background-image:url(images/dropdownmenubackground.png);
+}
+
+.dropDownMainMenu a, .dropDownMainMenu a:visited
+{
+	text-decoration:none;
+	padding-left:3px;
+	color:#FFF;
+	font-size:14px;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+	
+	
+}
+
+
+.dropDownMainMenu a:hover
+{
+	color:#FF3;
+	text-decoration:none;
+	padding-left:3px;
+	font-size:14px;
+	font-weight:bold;
+	font-family:Arial, Helvetica, sans-serif;
+	
+}
+
+
+
+/** The dropDownMenu where you see all open windows */
+.dropDownMenuAllWindows
+{
+	border-left: 1px solid #000000;
+	border-right: 1px solid #000000;
+	border-bottom: 1px solid #000000;
+	background-color: #09C;
+	position: absolute;
+	background-image:url(images/dropdownmenubackground.png);
+}
+
+
+
+
+.windowTaskItem
+{
+	border:#77d5f7;
+	
+}
+
+
+
+
+
+.logoHover
+{
+	background-color:#4992FF;
+}
+
+.homeIconHover
+{
+	background-color:#4992FF;
+}
+
+.allWindowTasksHover
+{
+	background-color:#4992FF;
+}
+
+
+
+.WindowTask
+{
+	/* NOTE: The width of an WindowTask element is been set in the WindowTask class for rendering and calculation position reason 
+	private static int taskWidth = 200;
+	*/
+	background-image:url(images/windows/blue28.png);
+	border:1px #77d5f7 solid;
+	background-color:#0078ae;
+	background-repeat:repeat-x;
+	color:#ffffff;
+	text-align:center;
+	vertical-align:middle;
+	overflow: hidden;
+	height:24px;
+	margin-left:2px;
+	margin-right:2px;
+	margin-top:2px;
+	margin-bottom:2px;
+	font-weight:bold;
+	padding-left:3px;
+	padding-right:3px;
+}
+
+.WindowTaskActive
+{
+	/* NOTE: The width of an WindowTask element is been set in the WindowTask class for rendering and calculation position reason 
+	private static int taskWidth = 200;
+	*/
+	background-image:url(images/windows/green28.png);
+	background-repeat:repeat-x;
+	background-color: #6eac2c;
+	border: 1px #acdd4a solid;
+	color:#f5e175;
+	text-align:center;
+	vertical-align:middle;
+	overflow: hidden;
+	height:24px;
+	margin-left:2px;
+	margin-right:2px;
+	margin-top:2px;
+	margin-bottom:2px;
+
+	font-weight:bold;
+	padding-left:3px;
+	padding-right:3px;
+}
+
+.WindowTaskBlink
+{
+	/* NOTE: The width of an WindowTask element is been set in the WindowTask class for rendering and calculation position reason 
+	private static int taskWidth = 200;
+	*/
+	background-image:url(images/windows/yellow28.png);
+	background-repeat:repeat-x;
+	background-color:#f8da4e;
+	border:##fcd113 1px solid;
+	color:#915608;
+	text-align:center;
+	vertical-align:middle;
+	overflow: hidden;
+	height:24px;
+	margin-left:2px;
+	margin-right:2px;
+	margin-top:2px;
+	margin-bottom:2px;
+	
+	font-weight:bold;
+	
+	/* NOTE: this is also set in the class WindowTask as private static int paddingLaftRight = 3 for rendering reasons. 
+	You musst reset this also in the WindowTask.java */
+	padding-left:3px;
+	padding-right:3px;
+}
+
+
+.WindowTaskHover
+{
+	/* NOTE: The width of an WindowTask element is been set in the WindowTask class for rendering and calculation position reason 
+	private static int taskWidth = 200;
+	*/
+	background-image:url(images/windows/lightblue28.png);
+	background-repeat:repeat-x;
+	background-color:#79c9ec;
+	border:#448dae 1px solid;
+	color:#026890;
+	text-align:center;
+	vertical-align:middle;
+	overflow: hidden;
+	height:24px;
+	margin-left:2px;
+	margin-right:2px;
+	margin-top:2px;
+	margin-bottom:2px;
+	font-weight:bold;
+	
+	padding-left:3px;
+	padding-right:3px;
+	
+}
+
