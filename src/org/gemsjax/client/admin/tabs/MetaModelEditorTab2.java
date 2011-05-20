@@ -3,6 +3,7 @@ package org.gemsjax.client.admin.tabs;
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.canvas.OldBufferedCanvas;
 
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.IButton;
@@ -22,6 +23,8 @@ public class MetaModelEditorTab2 extends TwoColumnLayoutTab{
 		canvas.redrawCanvas();
 		
 		this.getLayout().setOverflow(Overflow.HIDDEN);
+		
+	
 		
 		canvas.setOverflow(Overflow.SCROLL);
 		

@@ -3,6 +3,7 @@ package org.gemsjax.client.admin.tabs;
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.canvas.OldBufferedCanvas;
 
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.tab.Tab;
@@ -14,7 +15,7 @@ public class MetaModelCanvasTab extends Tab {
 	{
 		super(title);
 		try {
-			BufferedCanvas bc = new BufferedCanvas();
+			OldBufferedCanvas bc = new OldBufferedCanvas();
 			this.setPane(bc);
 			bc.initCanvasSize();
 			

@@ -21,8 +21,6 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.events.ResizedEvent;
-import com.smartgwt.client.widgets.events.ResizedHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -33,36 +31,36 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Hannes Dorfmann
  *
  */
-public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHandler, MouseDownHandler, MouseUpHandler, MouseOutHandler, ResizedHandler{
-	
+public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHandler, MouseDownHandler, MouseUpHandler, MouseOutHandler{
+
 	/**
 	 * The {@link Canvas} element which displayes the elements
 	 */
 	private Canvas canvas;
-	
+
 	/**
 	 * The back buffer used to draw on the {@link #canvas}
 	 */
 	private Canvas backBuffer;
-	
+
 	/**
 	 * This color is used to make a small smooth "fade" while drawing the content from the {@link #backBuffer} to the front {@link #canvas}
 	 */
 	private CssColor redrawColor;
-	
-	
+
+
 	private DrawableStorage drawableStorage;
-	
+
 	private Context2d canvasContext;
 	private Context2d backBufferContext;
-	
+
 	private int canvasWidth;
 	private int canvasHeight;
-	
+
 
 	private boolean isMouseDown;
-	
-	
+
+
 	/**
 	 * 
 	 */
@@ -70,58 +68,58 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	private double mouseDownY;
 	private double mouseDownInitialXDistance;
 	private double mouseDownInitialYDistance;
-	
+
 	/**
 	 * Is used to calculate the new width durring resizing (MouseMoveEvent) a {@link Drawable}
 	 */
 	private double beforeResizeWidth;
-	
+
 	/**
 	 * Is used to calculate the new height durring resizing (MouseMoveEvent) a {@link Drawable}
 	 */
 	private double beforeResizeHeight;
-	
-	
-	
+
+
+
 	/**
 	 * Is used to save, which object is now in use while a mouseDown action, for example, to move an Object
 	 */
 	private Drawable currentMouseDownDrawable;
-	
+
 	/**
 	 * Is used, to say which drawable is now markt as selected
 	 */
 	private Drawable selectedDrawable;	
-	
+
 	/**
 	 * Is used to say, which {@link ResizeArea} has startet the resizing progress.
 	 * If currentResizeArea is null, than there is currently no resizing on going.
 	 */
 	private ResizeArea currentResizeArea;
-	
 
-	
+
+
 	public BufferedCanvas() throws CanvasSupportException
 	{
 		canvas = Canvas.createIfSupported();
 		backBuffer=Canvas.createIfSupported();
-		
+
 		if (canvas == null || backBuffer == null)
 			throw new CanvasSupportException("Can not create a HTML5 <canvas> element. <canvas> is not supported by this browser");
-		
+
 		isMouseDown = false;
 		mouseDownX = -200;
 		mouseDownY = -200;
-		
-		
+
+
 		// TODO remove debug
 		SC.showConsole();
-		
-		
-		
-		
+
+
+
+
 		drawableStorage = new DrawableStorage();
-		
+
 		//TODO remove sample data
 		try {
 			// Hardcore performance test
@@ -144,42 +142,35 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		} catch (DoubleLimitException e) {
 			Window.alert(e.getMessage());
 		}
-		
-		
-		
-		
+
+
+
+
 		canvas.setWidth("100%");
 		canvas.setHeight("100%");
-		
-		
-		/*canvas.setCoordinateSpaceWidth(1000);
-	    canvas.setCoordinateSpaceHeight(500);
-	    backBuffer.setCoordinateSpaceWidth(1000);
-	    backBuffer.setCoordinateSpaceHeight(500);
-	   */
-		
+
 		redrawColor = CssColor.make("#FFFFFF");
-		
+
 		canvasContext = canvas.getContext2d();
 	    backBufferContext = backBuffer.getContext2d();
-		
-	    
+
+
 	    initHandlers();
-	    
+
 		this.addMember(canvas);
-		
+
 		this.setWidth100();
 		this.setHeight100();
-		
+
 		int width = this.getWidth();
 		int height = this.getHeight();
 		setCanvasSize(width, height);
-		
-	
-		this.redrawCanvas();
+
+
+
 	}
-	
-	
+
+
 	/**
 	 * <b>Important:</b> This must be called to set the correct size of the html canvas
 	 * @param width
@@ -190,39 +181,36 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		int width = this.getWidth();
 		int height = this.getHeight();
 		setCanvasSize(width, height);
-		
-		
+
+
 		canvas.setCoordinateSpaceWidth(width);
 	    canvas.setCoordinateSpaceHeight(height);
 	    backBuffer.setCoordinateSpaceWidth(width);
 	    backBuffer.setCoordinateSpaceHeight(height);
-	    
-	    
+
 	    redrawCanvas();
 	}
-	
-	
+
+
 	private void setCanvasSize(int width, int height)
 	{
 		this.canvasWidth = width;
 		this.canvasHeight = height;
-		
+
 		canvas.setWidth(width+"px");
 		canvas.setHeight(height+"px");
-		
+
 	}
-	
-	
+
+
 	private void initHandlers() 
 	{
-		this.addResizedHandler(this);
-		
 		canvas.addMouseMoveHandler(this);
 		canvas.addClickHandler(this);
 		canvas.addMouseDownHandler(this);
 		canvas.addMouseUpHandler(this);
 		canvas.addMouseOutHandler(this);
-		
+
 		   // TODO add Support for touchscreen devices
 		    /*
 		    canvas.addMouseOutHandler(new MouseOutHandler() {
@@ -259,10 +247,10 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		    });
 		*/
 	 }
-	 
-	 
-	
-	 
+
+
+
+
 	/**
 	 * This is the method to make a redraw for the html5 canvas element ({@link #canvas}).<br />
 	 * <b>The {@link #redraw()} method is Smart GWT stuff, so don't get confused.</b>
@@ -273,15 +261,15 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		// Clear the backBuffer
 		 backBufferContext.setFillStyle(redrawColor);
 		 backBufferContext.fillRect(0, 0, canvasWidth, canvasHeight);
-		 
+
 		 drawObjects();
-		 
+
 		 // draw from Backbuffer to the Front Canvas
 		 canvasContext.drawImage(backBufferContext.getCanvas(), 0, 0);
-		
+
 	}
-	
-	
+
+
 	private void drawObjects()
 	{
 		for (Drawable d: drawableStorage.getAllElements())
@@ -297,40 +285,40 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 
 	@Override
 	public void onClick(ClickEvent event) {
-		
+
 		// TODO : Canvas: Wrong Focus (ResizeArea) When you move a Drawable in the canvas and will overlap it with another Drawable with the higher Z index, the Drawable  with the highest Z index will get the Focus instead of the drawable, which has been moved
-		
-		
+
+
 		Drawable previous = selectedDrawable;
-		
+
 		selectedDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
-		
+
 		if (previous != null)
 			previous.setSelected(false);
-		
-	
+
+
 		if (selectedDrawable != null)
 		{
 			selectedDrawable.setSelected(true);
-			
+
 		}else
 			if (previous != null) 
 				previous.setSelected(false);
-		
-	
+
+
 		redrawCanvas();
 	}
 
 
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
-		
+
 		isMouseDown =true;
 		currentMouseDownDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
-		
+
 		if (currentMouseDownDrawable==null) return;
-		
-		
+
+
 		// check for Resizing by checking if there is a ResizeArea at the current mouse position
 		this.currentResizeArea = currentMouseDownDrawable.isResizerAreaAt(event.getX(), event.getY());
 		if (currentResizeArea != null)
@@ -338,59 +326,59 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			beforeResizeWidth = currentMouseDownDrawable.getWidth();
 			beforeResizeHeight = currentMouseDownDrawable.getHeight();
 		}
-		
-		
+
+
 		mouseDownX = event.getX();
 		mouseDownY = event.getY();
 		mouseDownInitialXDistance = event.getX() - currentMouseDownDrawable.getX();
 		mouseDownInitialYDistance = event.getY() - currentMouseDownDrawable.getY();
-		
+
 	}
 
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
-		
+
 		if (currentMouseDownDrawable== null) return;
-		
+
 		// Resize, if mouse is on a ResizeArea and Resizeable
 		if (currentMouseDownDrawable.isResizeable() && isMouseDown && currentResizeArea != null)
 		{
 			double width = beforeResizeWidth +  event.getX() - mouseDownX;
 			double height = beforeResizeHeight + event.getY() - mouseDownY;
-			
+
 			SC.logWarn(" w "+width +" "+(event.getX() - mouseDownX)+ " h "+height);
-			
-			
+
+
 			ResizeEvent e = new ResizeEvent(width, height, event.getX(), event.getY(), currentResizeArea);
 			for (ResizeHandler r : currentMouseDownDrawable.getResizeHandlers())
 				r.onResize(e);
-			
+
 			redrawCanvas();
-			
+
 			return; // Break at this point 
 		}
-		
-		
-		
+
+
+
 		// Move a Drawable if it is moveable	
 		if (currentMouseDownDrawable.isMoveable() && isMouseDown)
 		{
-			
+
 			MoveEvent e = new MoveEvent(mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
-			
+
 			for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
 			{
 				h.onMove(e);
 			}
-			
+
 			redrawCanvas();
 			return; // Break at this point
 		}
-		
-		
-	
-		
-		
+
+
+
+
+
 		/*
 		if (isMouseDown && currentMouseDownDrawable != null)
 		{
@@ -424,15 +412,15 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 
 
 	// REIHENFOLGE: erster kommt MouseUp, dann MouseClick
-	
+
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
-		
+
 			isMouseDown = false;
 			currentMouseDownDrawable = null;
 			currentResizeArea = null;
-		
-		
+
+
 	}
 
 
@@ -440,40 +428,10 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	public void onMouseOut(MouseOutEvent event) {
 		// If you are out of the canvas while Mouse is still down
 		onMouseUp(null);
-			
-	}
-	
-	
-	/**
-	 * Add a {@link Drawable} to be painted on this canvas
-	 * @param d
-	 * @throws DoubleLimitException
-	 */
-	public void addDrawable(Drawable d) throws DoubleLimitException
-	{
-		drawableStorage.add(d);
-	}
-	
-	/**
-	 * Remove a {@link Drawable} so that {@link Drawable} will not be longer painted on this canvas
-	 * @param d
-	 */
-	public void removeDrawable(Drawable d)
-	{
-		drawableStorage.remove(d);
+
 	}
 
 
-	@Override
-	public void onResized(ResizedEvent event) {
-		
-		int width = this.getWidth();
-		int height = this.getHeight();
-		setCanvasSize(width, height);
-		SC.logWarn("Resizing "+ width+" "+height);
-		
-	}
-	
-	
+
 
 }

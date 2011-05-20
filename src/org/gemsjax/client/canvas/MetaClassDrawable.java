@@ -54,7 +54,7 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 		 this.backgroundColor = color;
 		 this.borderColor = "black";
 		 textColor = "black";
-		 this.borderSize = 1;
+		 this.borderSize = 3;
 		 canBeMoved = true;
 		 selected = false;
 		 mouseOver = false;
