@@ -3,8 +3,6 @@ package org.gemsjax.client.admin.tabs;
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
-import org.gemsjax.client.canvas.OldBufferedCanvas;
-
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.IButton;
 
