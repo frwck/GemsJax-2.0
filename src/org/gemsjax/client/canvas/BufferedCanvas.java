@@ -120,16 +120,16 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 
 		drawableStorage = new DrawableStorage();
 
+		
 		//TODO remove sample data
 		try {
 			// Hardcore performance test
 			/*for (int i =0; i<10000;i++)
 			{
 			*/
-				drawableStorage.add(new MetaClassDrawable(100, 200, "red"));
-				drawableStorage.add(new MetaClassDrawable(500, 300, "blue"));
-				drawableStorage.add(new MetaClassDrawable(400, 150, "green"));
-				drawableStorage.add(new MetaClassDrawable(600, 10, "cyan"));
+				MetaClassDrawable d = new MetaClassDrawable(100, 200);
+				d.setBackgroundColor("blue");
+				drawableStorage.add(d);
 			/*
 			
 			new Timer(){
@@ -143,7 +143,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			Window.alert(e.getMessage());
 		}
 
-
+	   
 
 
 		canvas.setWidth("100%");

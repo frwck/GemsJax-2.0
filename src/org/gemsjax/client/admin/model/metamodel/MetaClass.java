@@ -2,13 +2,20 @@ package org.gemsjax.client.admin.model.metamodel;
 
 import java.util.List;
 
+import org.gemsjax.client.canvas.MetaClassDrawable;
+
 /**
  * A MetaClass is a representation of a Meta-Model class
  * @author Hannes Dorfmann
  *
  */
-public class MetaClass {
+public class MetaClass extends MetaClassDrawable {
 	
+	public MetaClass(double x, double y) {
+		super(x, y);
+		
+	}
+
 	/**
 	 * The name of this MetaClass
 	 */
@@ -29,6 +36,10 @@ public class MetaClass {
 	
 	private List<InheritanceRelation> inheritanceRelationList;
 
+	
+	
+	
+	
 	public String getName() {
 		return name;
 	}

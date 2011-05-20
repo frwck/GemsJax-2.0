@@ -42,24 +42,21 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 	private List<ResizeHandler> resizeHandlers;
 	private List<MouseOverHandler> mouseOverHandlers;
 	
-	
-	private List<String> textAttributes;
-	
-	
-	public MetaClassDrawable(double x, double y,  String color) {
+		
+	public MetaClassDrawable(double x, double y) {
 		 
 		 // Drawbale Settings
 		 this.x = x;
 		 this.y = y;
-		 this.backgroundColor = color;
+		 this.backgroundColor = "white";
+		 
 		 this.borderColor = "black";
 		 textColor = "black";
-		 this.borderSize = 3;
+		 this.borderSize = 1;
 		 canBeMoved = true;
 		 selected = false;
 		 mouseOver = false;
 		 canBeResized = true;
-		 textAttributes = new LinkedList<String>();
 		 
 		 
 		 // Handlers
@@ -148,6 +145,21 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 		for (ResizeArea ra : resizeAreas)
 			ra.draw(context);
 		
+		
+	}
+	
+	
+	/**
+	 * Draw the Attributes, which should be displayed for this class
+	 */
+	public void drawAttributes(Context2d context){
+		
+	}
+	
+	/**
+	 * Draw the Classname somewhere
+	 */
+	public void drawName(Context2d context){
 		
 	}
 
@@ -340,5 +352,20 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 		this.borderSize = borderSize;
 	}
 
+	public String getBackgroundColor() {
+		return backgroundColor;
+	}
 
+	public void setBackgroundColor(String backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
+
+	public String getTextColor() {
+		return textColor;
+	}
+
+	public void setTextColor(String textColor) {
+		this.textColor = textColor;
+	}
+	
 }

@@ -3,6 +3,8 @@ package org.gemsjax.client.admin.model.metamodel;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.gemsjax.client.canvas.MetaClassDrawable;
+
 public class MetaModel {
 	
 	private String name;
