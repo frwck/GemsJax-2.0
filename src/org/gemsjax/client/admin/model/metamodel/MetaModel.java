@@ -2,8 +2,9 @@ package org.gemsjax.client.admin.model.metamodel;
 
 import java.util.LinkedList;
 import java.util.List;
+import org.gemsjax.client.canvas.Drawable;
 
-import org.gemsjax.client.canvas.MetaClassDrawable;
+import org.gemsjax.client.canvas.Drawable;
 
 public class MetaModel {
 	
@@ -46,5 +47,6 @@ public class MetaModel {
 		if (isMetaClassNameAvailable(m.getName()))
 			metaClassList.add(m);
 	}
+	
 
 }

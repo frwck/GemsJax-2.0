@@ -1,6 +1,7 @@
 package org.gemsjax.client.canvas;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
+import org.gemsjax.client.admin.model.metamodel.MetaClass;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.handler.MoveHandler;
@@ -127,7 +128,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			/*for (int i =0; i<10000;i++)
 			{
 			*/
-				MetaClassDrawable d = new MetaClassDrawable(100, 200);
+				MetaClass d = new MetaClass(100, 200);
 				d.setBackgroundColor("blue");
 				drawableStorage.add(d);
 			/*

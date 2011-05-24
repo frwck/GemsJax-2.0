@@ -68,4 +68,15 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Description")
 	  String ExperimenteDescritption();  
 	  
+	  
+	  //Meta-Model
+	  @DefaultStringValue("New Meta-Class")
+	  String NewMetaClassToolStrip();
+	  
+	  @DefaultStringValue("Inheritance")
+	  String InheritanceToolStrip();
+	  
+	  @DefaultStringValue("Connection")
+	  String ConnectionToolStrip();
+	  
 }
