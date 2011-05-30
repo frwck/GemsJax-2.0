@@ -4,17 +4,23 @@ import org.gemsjax.client.admin.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
 import org.gemsjax.client.admin.presenter.LoginPresenter;
+import org.gemsjax.client.admin.presenter.MetaModelPresenter;
 import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.admin.view.LoadingView;
+import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoginViewImpl;
+import org.gemsjax.client.admin.view.implementation.MetaModelViewImpl;
+import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.editor.MetaModelCanvas.EditingMode;
 import org.gemsjax.client.websocket.WebSocket;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 
 /**
@@ -100,6 +106,13 @@ public class AdminApplicationController {
 		// Important: first create the loginPresenter and than the AdminApplicationPresenter: So the LoginPresenter will receive LoginEvents as the first
 		loginPresenter = new LoginPresenter(eventBus, new LoginViewImpl(language), RootPanel.get());
 		new AdminApplicationPresenter(eventBus, new AdminApplicationViewImpl(language));
+		
+		try {
+			new MetaModelPresenter(eventBus, new MetaModelViewImpl("MetaModel 1", language), null);
+		} catch (CanvasSupportException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	
 		
 	}

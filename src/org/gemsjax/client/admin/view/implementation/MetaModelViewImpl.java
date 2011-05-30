@@ -1,26 +1,38 @@
 package org.gemsjax.client.admin.view.implementation;
 
 import org.gemsjax.client.admin.UserLanguage;
+import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
-import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.editor.MetaModelCanvas;
+import org.gemsjax.client.editor.MetaModelCanvas.EditingMode;
 
+import com.google.gwt.user.client.Window;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.widgets.events.HasClickHandlers;
 
+/**
+ * This is the implementation for the Meta-Model editing Tab.
+ * <b>To add this Tab to the {@link TabEnviroment} call TabEnviroment.getInstance().addTab(); 
+ * outside of the constructor, for example in the corresponding presenter</b>
+ * 
+ * @author Hannes Dorfmann
+ *
+ */
 public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelView{
 
 	private BigMenuButton mouseButton, newClassButton, newRelationButton, newInheritanceButton;
+	private MetaModelCanvas canvas;
 	
 	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException {
 		super(title, language);
 		
 		generateToolStrip(language);
 		
-		BufferedCanvas canvas = new MetaModelCanvas();
+		canvas = new MetaModelCanvas();
 		this.setRightColumn(canvas, true);
 		
 		canvas.initCanvasSize();
@@ -28,9 +40,10 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		
 		this.getLayout().setOverflow(Overflow.HIDDEN);
 		
-	
 		
 		canvas.setOverflow(Overflow.SCROLL);
+	
+		
 		
 		
 		
@@ -40,6 +53,7 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	{
 		
 		VerticalBigMenuButtonBar toolbar = new VerticalBigMenuButtonBar(120,10);
+	
 		//toolbar.setMargin(5);
 		toolbar.setMembersMargin(10);
 		
@@ -72,8 +86,40 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	}
 
 	@Override
-	public com.smartgwt.client.widgets.events.HasClickHandlers getAddMetaClassButton() {
+	public HasClickHandlers getNewMetaClassButton() {
+		return newClassButton;
+	}
+
+	@Override
+	public HasClickHandlers getUseMouseButton() {
 		return mouseButton;
+	}
+
+	@Override
+	public HasClickHandlers getNewRelationshipButton() {
+		return newRelationButton;
+	}
+
+	@Override
+	public HasClickHandlers getNewInheritanceButton() {
+		return newInheritanceButton;
+	}
+
+	@Override
+	public void setCanvasToEditingMode(EditingMode mode) {
+		
+		 canvas.setEditingMode(mode); 
+		 
+		switch (mode) {
+			case NORMAL:  			mouseButton.setActive(true);break;
+			case CREATE_CLASS:		newClassButton.setActive(true); break;
+			case CREATE_RELATION:	newRelationButton.setActive(true); break;
+			case CREATE_INHERITANCE: newInheritanceButton.setActive(true);
+			case READ_ONLY: break;// TODO: what to do when it has been set to READ_ONLY
+			default: Window.alert("Error: the mode is set to "+mode); break;
+		}
+		
+		
 	}
 	
 
