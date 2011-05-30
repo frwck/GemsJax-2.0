@@ -113,12 +113,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		mouseDownY = -200;
 
 
-		// TODO remove debug
-		SC.showConsole();
-
-
-
-
+	
 		drawableStorage = new DrawableStorage();
 
 		

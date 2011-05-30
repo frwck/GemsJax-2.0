@@ -3,23 +3,15 @@ package org.gemsjax.client.admin.view.implementation;
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
 import org.gemsjax.client.admin.view.MetaModelView;
+import org.gemsjax.client.admin.widgets.BigMenuButton;
+import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
-
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.types.SelectionType;
-import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.layout.VStack;
-import com.smartgwt.client.widgets.toolbar.ToolStrip;
-import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 
 public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelView{
 
-	private ToolStripButton newMetaClassButton;
-	private ToolStripButton newConnectionButton;
-	private ToolStripButton newInheritanceButton;
-
+	private BigMenuButton mouseButton, newClassButton, newRelationButton, newInheritanceButton;
 	
 	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException {
 		super(title, language);
@@ -44,34 +36,44 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	
 	private void generateToolStrip(UserLanguage language)
 	{
-		 ToolStrip toolStrip = new ToolStrip();  
-	     toolStrip.setVertical(true);  
 		
-		newMetaClassButton = new ToolStripButton (language.NewMetaClassToolStrip());
-		newMetaClassButton.setActionType(SelectionType.RADIO);  
-		newMetaClassButton.setRadioGroup("toolstripGroup");  
-	    toolStrip.addButton(newMetaClassButton);
+		VerticalBigMenuButtonBar toolbar = new VerticalBigMenuButtonBar(120,10);
+		//toolbar.setMargin(5);
+		toolbar.setMembersMargin(10);
+		
+		mouseButton = new BigMenuButton("Use Mouse","/images/icons/mouse_black.png"); 
+		mouseButton.setActive(true);
+		
+		
+		
+		newClassButton = new BigMenuButton("Meta-Class","/images/icons/class.png"); 
+		newRelationButton = new BigMenuButton("Relation","/images/icons/relation.png"); 
+		newInheritanceButton = new BigMenuButton("Inheritance","/images/icons/inheritance.png"); 	
+		
+		
+		mouseButton.setHeight(100);
+		newClassButton.setHeight(100);
+		newRelationButton.setHeight(100);
+		newInheritanceButton.setHeight(100);
+		
+		
+		
+		toolbar.addMember(mouseButton);
+		toolbar.addMember(newClassButton);
+		toolbar.addMember(newRelationButton);
+		toolbar.addMember(newInheritanceButton);
+		
+		
+	    this.setLeftColumn(toolbar, true);
 	    
-	 
-	    
-	    newInheritanceButton = new ToolStripButton (language.InheritanceToolStrip());
-	    newInheritanceButton.setActionType(SelectionType.RADIO);  
-	    newInheritanceButton.setRadioGroup("toolstripGroup");  
-	    toolStrip.addButton(newInheritanceButton);
-	    
-	    
-	    newConnectionButton = new ToolStripButton(language.ConnectionToolStrip());
-	    newConnectionButton.setActionType(SelectionType.RADIO);  
-	    newConnectionButton.setRadioGroup("toolstripGroup");  
-	    toolStrip.addButton(newConnectionButton);
-	    
-	    this.setLeftColumn(toolStrip, true);
 	    
 	}
 
 	@Override
-	public ToolStripButton getAddMetaClassButton() {
-		return newMetaClassButton;
+	public com.smartgwt.client.widgets.events.HasClickHandlers getAddMetaClassButton() {
+		return mouseButton;
 	}
+	
 
+	
 }

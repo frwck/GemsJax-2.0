@@ -1,11 +1,11 @@
 package org.gemsjax.client.admin.view;
 
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.smartgwt.client.widgets.toolbar.ToolStripButton;
+import com.smartgwt.client.widgets.events.HasClickHandlers;
+
 
 public interface MetaModelView {
 	
 	
-	public ToolStripButton getAddMetaClassButton();
+	public HasClickHandlers getAddMetaClassButton();
 
 }
