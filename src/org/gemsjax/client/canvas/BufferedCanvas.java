@@ -2,26 +2,11 @@ package org.gemsjax.client.canvas;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.model.metamodel.MetaClass;
-import org.gemsjax.client.canvas.events.MoveEvent;
-import org.gemsjax.client.canvas.events.ResizeEvent;
-import org.gemsjax.client.canvas.handler.MoveHandler;
-import org.gemsjax.client.canvas.handler.ResizeHandler;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.Window;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -32,7 +17,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Hannes Dorfmann
  *
  */
-public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHandler, MouseDownHandler, MouseUpHandler, MouseOutHandler{
+public class BufferedCanvas extends VLayout {
 
 	/**
 	 * The {@link Canvas} element which displayes the elements
@@ -59,45 +44,6 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	private int canvasHeight;
 
 
-	private boolean isMouseDown;
-
-
-	/**
-	 * 
-	 */
-	private double mouseDownX;
-	private double mouseDownY;
-	private double mouseDownInitialXDistance;
-	private double mouseDownInitialYDistance;
-
-	/**
-	 * Is used to calculate the new width durring resizing (MouseMoveEvent) a {@link Drawable}
-	 */
-	private double beforeResizeWidth;
-
-	/**
-	 * Is used to calculate the new height durring resizing (MouseMoveEvent) a {@link Drawable}
-	 */
-	private double beforeResizeHeight;
-
-
-
-	/**
-	 * Is used to save, which object is now in use while a mouseDown action, for example, to move an Object
-	 */
-	private Drawable currentMouseDownDrawable;
-
-	/**
-	 * Is used, to say which drawable is now markt as selected
-	 */
-	private Drawable selectedDrawable;	
-
-	/**
-	 * Is used to say, which {@link ResizeArea} has startet the resizing progress.
-	 * If currentResizeArea is null, than there is currently no resizing on going.
-	 */
-	private ResizeArea currentResizeArea;
-
 
 
 	public BufferedCanvas() throws CanvasSupportException
@@ -108,10 +54,11 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		if (canvas == null || backBuffer == null)
 			throw new CanvasSupportException("Can not create a HTML5 <canvas> element. <canvas> is not supported by this browser");
 
+		/*
 		isMouseDown = false;
 		mouseDownX = -200;
 		mouseDownY = -200;
-
+		 */
 
 	
 		drawableStorage = new DrawableStorage();
@@ -201,6 +148,8 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 
 	private void initHandlers() 
 	{
+		
+		/*
 		canvas.addMouseMoveHandler(this);
 		canvas.addClickHandler(this);
 		canvas.addMouseDownHandler(this);
@@ -279,152 +228,46 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	}
 
 
-	@Override
-	public void onClick(ClickEvent event) {
-
-		// TODO : Canvas: Wrong Focus (ResizeArea) When you move a Drawable in the canvas and will overlap it with another Drawable with the higher Z index, the Drawable  with the highest Z index will get the Focus instead of the drawable, which has been moved
-
-
-		Drawable previous = selectedDrawable;
-
-		selectedDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
-
-		if (previous != null)
-			previous.setSelected(false);
-
-
-		if (selectedDrawable != null)
-		{
-			selectedDrawable.setSelected(true);
-
-		}else
-			if (previous != null) 
-				previous.setSelected(false);
-
-
-		redrawCanvas();
+	
+	/**
+	 * Get the {@link DrawableStorage}
+	 * @return
+	 */
+	protected DrawableStorage getDrawableStorage()
+	{
+		return drawableStorage;
 	}
-
-
-	@Override
-	public void onMouseDown(MouseDownEvent event) {
-
-		isMouseDown =true;
-		currentMouseDownDrawable = drawableStorage.getDrawableAt(event.getX(), event.getY());
-
-		if (currentMouseDownDrawable==null) return;
-
-
-		// check for Resizing by checking if there is a ResizeArea at the current mouse position
-		this.currentResizeArea = currentMouseDownDrawable.isResizerAreaAt(event.getX(), event.getY());
-		if (currentResizeArea != null)
-		{
-			beforeResizeWidth = currentMouseDownDrawable.getWidth();
-			beforeResizeHeight = currentMouseDownDrawable.getHeight();
-		}
-
-
-		mouseDownX = event.getX();
-		mouseDownY = event.getY();
-		mouseDownInitialXDistance = event.getX() - currentMouseDownDrawable.getX();
-		mouseDownInitialYDistance = event.getY() - currentMouseDownDrawable.getY();
-
+	
+	
+	/**
+	 * Add a {@link Drawable} to this Canvas (to the {@link DrawableStorage}) to be painted on the canvas whenever {@link #redrawCanvas()} has been called
+	 * @param drawable
+	 * @throws DoubleLimitException
+	 */
+	public void addDrawable(Drawable drawable) throws DoubleLimitException
+	{
+		drawableStorage.add(drawable);
 	}
-
-	@Override
-	public void onMouseMove(MouseMoveEvent event) {
-
-		if (currentMouseDownDrawable== null) return;
-
-		// Resize, if mouse is on a ResizeArea and Resizeable
-		if (currentMouseDownDrawable.isResizeable() && isMouseDown && currentResizeArea != null)
-		{
-			double width = beforeResizeWidth +  event.getX() - mouseDownX;
-			double height = beforeResizeHeight + event.getY() - mouseDownY;
-
-			SC.logWarn(" w "+width +" "+(event.getX() - mouseDownX)+ " h "+height);
-
-
-			ResizeEvent e = new ResizeEvent(width, height, event.getX(), event.getY(), currentResizeArea);
-			for (ResizeHandler r : currentMouseDownDrawable.getResizeHandlers())
-				r.onResize(e);
-
-			redrawCanvas();
-
-			return; // Break at this point 
-		}
-
-
-
-		// Move a Drawable if it is moveable	
-		if (currentMouseDownDrawable.isMoveable() && isMouseDown)
-		{
-
-			MoveEvent e = new MoveEvent(mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
-
-			for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
-			{
-				h.onMove(e);
-			}
-
-			redrawCanvas();
-			return; // Break at this point
-		}
-
-
-
-
-
-		/*
-		if (isMouseDown && currentMouseDownDrawable != null)
-		{
-			
-			
-			
-			// Move Drawables	
-			if (currentMouseDownDrawable==null || !currentMouseDownDrawable.isMoveable()) return;
-			
-			
-			// TODO	Prevent that a Drawable can be moved outside the Canvas
-			
-			/*
-			double distanceToLeft, distanceToRight, distanceToTop, distanceToBottom;
-			
-			distanceToLeft =event.getX() - currentMouseDownDrawable.getX();
-			distanceToRight = currentMouseDownDrawable.getX() - event.getX();
-			distanceToTop = event.getY() - currentMouseDownDrawable.getY();
-			distanceToBottom = currentMouseDownDrawable.getY() - event.getY();
-			
-			
-			
-			//if (event.getX()>=distanceToLeft )
-			for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
-				h.onMove(mouseDownInitialDrawableX+(event.getX()-mouseDownX), mouseDownInitialDrawableY+(event.getY()-mouseDownY));
-			
-			redrawCanvas();
-		}
-		*/
+	
+	/**
+	 * Remove a {@link Drawable}
+	 * @param drawable
+	 * @see #addDrawable(Drawable)
+	 */
+	public void removeDrawable(Drawable drawable)
+	{
+		drawableStorage.remove(drawable);
 	}
-
-
-	// REIHENFOLGE: erster kommt MouseUp, dann MouseClick
-
-	@Override
-	public void onMouseUp(MouseUpEvent event) {
-
-			isMouseDown = false;
-			currentMouseDownDrawable = null;
-			currentResizeArea = null;
-
-
-	}
-
-
-	@Override
-	public void onMouseOut(MouseOutEvent event) {
-		// If you are out of the canvas while Mouse is still down
-		onMouseUp(null);
-
+	
+	/**
+	 * Since this is also a wrapper class for smart gwt integration, this method can be called to get the HTML 5 Canvas element.
+	 * <b> However this method should be used only to add Handlers (ClickHandler, MouseMoveHandler, etc.) to the wrapped canvas and
+	 * not to draw directly elements on the canvas.</b> To draw elements use {@link Drawable} and
+	 * @return
+	 */
+	protected Canvas getWrappedCanvas()
+	{
+		return canvas;
 	}
 
 

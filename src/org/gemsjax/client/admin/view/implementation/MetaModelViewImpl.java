@@ -7,6 +7,8 @@ import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.editor.MetaModelCanvas;
+
 import com.smartgwt.client.types.Overflow;
 
 public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelView{
@@ -18,7 +20,7 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		
 		generateToolStrip(language);
 		
-		BufferedCanvas canvas = new BufferedCanvas();
+		BufferedCanvas canvas = new MetaModelCanvas();
 		this.setRightColumn(canvas, true);
 		
 		canvas.initCanvasSize();
