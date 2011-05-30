@@ -38,6 +38,6 @@ public interface MetaModelView {
 	 * @param mode
 	 * @see EditingMode
 	 */
-	public void setCanvasToEditingMode(MetaModelCanvas.EditingMode mode);
+	public void setCanvasEditingMode(MetaModelCanvas.EditingMode mode);
 	
 }

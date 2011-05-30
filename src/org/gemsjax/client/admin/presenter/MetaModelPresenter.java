@@ -34,7 +34,7 @@ public class MetaModelPresenter extends Presenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				view.setCanvasToEditingMode(EditingMode.CREATE_INHERITANCE);
+				view.setCanvasEditingMode(EditingMode.CREATE_INHERITANCE);
 			}
 		});
 		
@@ -42,7 +42,7 @@ public class MetaModelPresenter extends Presenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				view.setCanvasToEditingMode(EditingMode.CREATE_CLASS);
+				view.setCanvasEditingMode(EditingMode.CREATE_CLASS);
 			}
 		});
 		
@@ -50,7 +50,7 @@ public class MetaModelPresenter extends Presenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				view.setCanvasToEditingMode(EditingMode.CREATE_RELATION);
+				view.setCanvasEditingMode(EditingMode.CREATE_RELATION);
 			}
 		});
 		
@@ -58,7 +58,7 @@ public class MetaModelPresenter extends Presenter {
 			
 			@Override
 			public void onClick(ClickEvent event) {
-				view.setCanvasToEditingMode(EditingMode.NORMAL);
+				view.setCanvasEditingMode(EditingMode.NORMAL);
 			}
 		});
 	}

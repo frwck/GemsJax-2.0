@@ -35,6 +35,9 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		canvas = new MetaModelCanvas();
 		this.setRightColumn(canvas, true);
 		
+		// TODO set it to the corresponding MetaModel settings (check for READ_ONLY)
+		setCanvasEditingMode(EditingMode.NORMAL);
+		
 		canvas.initCanvasSize();
 		canvas.redrawCanvas();
 		
@@ -58,10 +61,6 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		toolbar.setMembersMargin(10);
 		
 		mouseButton = new BigMenuButton("Use Mouse","/images/icons/mouse_black.png"); 
-		mouseButton.setActive(true);
-		
-		
-		
 		newClassButton = new BigMenuButton("Meta-Class","/images/icons/class.png"); 
 		newRelationButton = new BigMenuButton("Relation","/images/icons/relation.png"); 
 		newInheritanceButton = new BigMenuButton("Inheritance","/images/icons/inheritance.png"); 	
@@ -106,7 +105,7 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	}
 
 	@Override
-	public void setCanvasToEditingMode(EditingMode mode) {
+	public void setCanvasEditingMode(EditingMode mode) {
 		
 		 canvas.setEditingMode(mode); 
 		 

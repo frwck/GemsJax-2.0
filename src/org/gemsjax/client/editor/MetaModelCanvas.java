@@ -146,95 +146,121 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	@Override
 	public void onClick(ClickEvent event) {
 
-		// TODO : Canvas: Wrong Focus (ResizeArea) When you move a Drawable in the canvas and will overlap it with another Drawable with the higher Z index, the Drawable  with the highest Z index will get the Focus instead of the drawable, which has been moved
 
-
-		Drawable previous = selectedDrawable;
-
-		selectedDrawable = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
-
-		if (previous != null)
-			previous.setSelected(false);
-
-
-		if (selectedDrawable != null)
+		switch (editingMode)
 		{
-			selectedDrawable.setSelected(true);
-
-		}else
-			if (previous != null) 
-				previous.setSelected(false);
-
-
-		redrawCanvas();
+		
+		
+			case NORMAL:
+				
+				// TODO : Canvas: Wrong Focus (ResizeArea) When you move a Drawable in the canvas and will overlap it with another Drawable with the higher Z index, the Drawable  with the highest Z index will get the Focus instead of the drawable, which has been moved
+				Drawable previous = selectedDrawable;
+		
+				selectedDrawable = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
+		
+				if (previous != null)
+					previous.setSelected(false);
+		
+		
+				if (selectedDrawable != null)
+				{
+					selectedDrawable.setSelected(true);
+		
+				}else
+					if (previous != null) 
+						previous.setSelected(false);
+		
+		
+				redrawCanvas();
+				
+				break; // End case Normal
+			
+			
+			
+		}// End switch
+		
 	}
 
 
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
 
-		isMouseDown =true;
-		currentMouseDownDrawable = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
-
-		if (currentMouseDownDrawable==null) return;
-
-
-		// check for Resizing by checking if there is a ResizeArea at the current mouse position
-		this.currentResizeArea = currentMouseDownDrawable.isResizerAreaAt(event.getX(), event.getY());
-		if (currentResizeArea != null)
+		switch (editingMode)
 		{
-			beforeResizeWidth = currentMouseDownDrawable.getWidth();
-			beforeResizeHeight = currentMouseDownDrawable.getHeight();
+		
+			case NORMAL:
+				isMouseDown =true;
+				currentMouseDownDrawable = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
+		
+				if (currentMouseDownDrawable==null) return;
+		
+		
+				// check for Resizing by checking if there is a ResizeArea at the current mouse position
+				this.currentResizeArea = currentMouseDownDrawable.isResizerAreaAt(event.getX(), event.getY());
+				if (currentResizeArea != null)
+				{
+					beforeResizeWidth = currentMouseDownDrawable.getWidth();
+					beforeResizeHeight = currentMouseDownDrawable.getHeight();
+				}
+		
+		
+				mouseDownX = event.getX();
+				mouseDownY = event.getY();
+				mouseDownInitialXDistance = event.getX() - currentMouseDownDrawable.getX();
+				mouseDownInitialYDistance = event.getY() - currentMouseDownDrawable.getY();
+			
+			break; // End NORMAL
 		}
-
-
-		mouseDownX = event.getX();
-		mouseDownY = event.getY();
-		mouseDownInitialXDistance = event.getX() - currentMouseDownDrawable.getX();
-		mouseDownInitialYDistance = event.getY() - currentMouseDownDrawable.getY();
 
 	}
 
 	@Override
 	public void onMouseMove(MouseMoveEvent event) {
 
-		if (currentMouseDownDrawable== null) return;
-
-		// Resize, if mouse is on a ResizeArea and Resizeable
-		if (currentMouseDownDrawable.isResizeable() && isMouseDown && currentResizeArea != null)
+		switch (editingMode)
 		{
-			double width = beforeResizeWidth +  event.getX() - mouseDownX;
-			double height = beforeResizeHeight + event.getY() - mouseDownY;
-
-			SC.logWarn(" w "+width +" "+(event.getX() - mouseDownX)+ " h "+height);
-
-
-			ResizeEvent e = new ResizeEvent(width, height, event.getX(), event.getY(), currentResizeArea);
-			for (ResizeHandler r : currentMouseDownDrawable.getResizeHandlers())
-				r.onResize(e);
-
-			redrawCanvas();
-
-			return; // Break at this point 
-		}
-
-
-
-		// Move a Drawable if it is moveable	
-		if (currentMouseDownDrawable.isMoveable() && isMouseDown)
-		{
-
-			MoveEvent e = new MoveEvent(mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
-
-			for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
-			{
-				h.onMove(e);
-			}
-
-			redrawCanvas();
-			return; // Break at this point
-		}
-
+		
+			case NORMAL:
+				if (currentMouseDownDrawable== null) return;
+		
+				// Resize, if mouse is on a ResizeArea and Resizeable
+				if (currentMouseDownDrawable.isResizeable() && isMouseDown && currentResizeArea != null)
+				{
+					double width = beforeResizeWidth +  event.getX() - mouseDownX;
+					double height = beforeResizeHeight + event.getY() - mouseDownY;
+		
+					SC.logWarn(" w "+width +" "+(event.getX() - mouseDownX)+ " h "+height);
+		
+		
+					ResizeEvent e = new ResizeEvent(width, height, event.getX(), event.getY(), currentResizeArea);
+					for (ResizeHandler r : currentMouseDownDrawable.getResizeHandlers())
+						r.onResize(e);
+		
+					redrawCanvas();
+		
+					return; // Break at this point 
+				}
+		
+		
+		
+				// Move a Drawable if it is moveable	
+				if (currentMouseDownDrawable.isMoveable() && isMouseDown)
+				{
+		
+					MoveEvent e = new MoveEvent(mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
+		
+					for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
+					{
+						h.onMove(e);
+					}
+		
+					redrawCanvas();
+					return; // Break at this point
+				}
+				
+			break; // END Normal
+				
+		} // END switch
 
 
 
@@ -275,9 +301,18 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
-			isMouseDown = false;
-			currentMouseDownDrawable = null;
-			currentResizeArea = null;
+		
+		switch (editingMode)
+		{
+			case NORMAL:
+				isMouseDown = false;
+				currentMouseDownDrawable = null;
+				currentResizeArea = null;
+			break; // END editing mode
+		
+		} // End NORMAL
+		
+		
 	}
 
 
