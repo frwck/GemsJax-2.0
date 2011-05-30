@@ -2,6 +2,8 @@ package org.gemsjax.client.admin.view.implementation;
 
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
+import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
+import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
@@ -11,6 +13,7 @@ import org.gemsjax.client.editor.MetaModelCanvas;
 import org.gemsjax.client.editor.MetaModelCanvas.EditingMode;
 
 import com.google.gwt.user.client.Window;
+import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
@@ -111,7 +114,10 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		 
 		switch (mode) {
 			case NORMAL:  			mouseButton.setActive(true);break;
-			case CREATE_CLASS:		newClassButton.setActive(true); break;
+			case CREATE_CLASS:		newClassButton.setActive(true); 
+				TipNotification tn = new TipNotification("Test", "Text", 200, 78, 3000, NotificationPosition.BOTTOM_CENTERED);
+				tn.animateShow(AnimationEffect.FADE);
+			break;
 			case CREATE_RELATION:	newRelationButton.setActive(true); break;
 			case CREATE_INHERITANCE: newInheritanceButton.setActive(true);
 			case READ_ONLY: break;// TODO: what to do when it has been set to READ_ONLY

@@ -3,6 +3,7 @@ body
 	margin:0;
 	padding:0;
 	background:#FFF url(/images/background.gif) repeat-x;
+	overflow: hidden;
 }
 
 a, a:link, a:visited{
@@ -200,5 +201,39 @@ This is the CSS style for the class Title
 	width:50px;
 	height:50px;
 	 
+}
+
+
+/** Simple grey Notification */
+
+/** tipNotification is used for Notifications, that will be some kind of "Tooltips", used as style for the class TipNotification */
+.tipNotification
+{
+	opacity: 0.9;
+	position: absolute;
+	background: #3B3C3E;
+	border: 2px solid #585B5C;
+	padding: 5px 5px;
+	color: white;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	font-size: 100%;
+	font-weight: bold;
+}
+
+.tipNotification h1
+{
+	color: white;
+	font-size: 36px;
+	font-weight: bold;
+	font-family: font:Verdana, Geneva, sans-serif;
+}
+
+.tipNotification h2
+{
+	color: white;
+	font-size: 22px;
+	font-family: font:Verdana, Geneva, sans-serif;
 }
 
