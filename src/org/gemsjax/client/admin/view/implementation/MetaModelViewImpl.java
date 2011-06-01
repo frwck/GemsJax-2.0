@@ -27,11 +27,16 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
  */
 public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelView{
 
+	private TipNotification tipNotification;
 	private BigMenuButton mouseButton, newClassButton, newRelationButton, newInheritanceButton;
 	private MetaModelCanvas canvas;
 	
+	private UserLanguage language;
+	
 	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException {
 		super(title, language);
+		
+		this.language = language;
 		
 		generateToolStrip(language);
 		
@@ -48,11 +53,10 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		
 		
 		canvas.setOverflow(Overflow.SCROLL);
-	
 		
 		
-		
-		
+		tipNotification= new TipNotification("Welcome",language.MetaModelEditorWelcomeTip(), 200, 78 , 3000, NotificationPosition.BOTTOM_CENTERED); 
+		tipNotification.animateShow(AnimationEffect.FADE);
 	}
 	
 	private void generateToolStrip(UserLanguage language)
@@ -63,10 +67,10 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		//toolbar.setMargin(5);
 		toolbar.setMembersMargin(10);
 		
-		mouseButton = new BigMenuButton("Use Mouse","/images/icons/mouse_black.png"); 
-		newClassButton = new BigMenuButton("Meta-Class","/images/icons/class.png"); 
-		newRelationButton = new BigMenuButton("Relation","/images/icons/relation.png"); 
-		newInheritanceButton = new BigMenuButton("Inheritance","/images/icons/inheritance.png"); 	
+		mouseButton = new BigMenuButton(language.MetaModelToolbarUseMouse(),"/images/icons/mouse_black.png"); 
+		newClassButton = new BigMenuButton(language.MetaModelToolbarNewMetaClass(),"/images/icons/class.png"); 
+		newRelationButton = new BigMenuButton(language.MetaModelToolbarRelation(),"/images/icons/relation.png"); 
+		newInheritanceButton = new BigMenuButton(language.MetaModelToolbarInheritance(),"/images/icons/inheritance.png"); 	
 		
 		
 		mouseButton.setHeight(100);
@@ -110,13 +114,17 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	@Override
 	public void setCanvasEditingMode(EditingMode mode) {
 		
+		 // Remove the previous displayed TipNotification
 		 canvas.setEditingMode(mode); 
+		 
+		// if (tipNotification.isVisible())
+		//	 tipNotification.hide();
 		 
 		switch (mode) {
 			case NORMAL:  			mouseButton.setActive(true);break;
 			case CREATE_CLASS:		newClassButton.setActive(true); 
-				TipNotification tn = new TipNotification("Test", "Text", 200, 78, 3000, NotificationPosition.BOTTOM_CENTERED);
-				tn.animateShow(AnimationEffect.FADE);
+				tipNotification = new TipNotification(language.MetaModelToolbarNewMetaClassTip(), null ,200,78, 3000, NotificationPosition.BOTTOM_CENTERED);
+				tipNotification.animateShow(AnimationEffect.FADE);
 			break;
 			case CREATE_RELATION:	newRelationButton.setActive(true); break;
 			case CREATE_INHERITANCE: newInheritanceButton.setActive(true);
