@@ -1,9 +1,6 @@
 package org.gemsjax.client.admin.view;
 
-<<<<<<< HEAD
-public interface MetaModelView {
 
-=======
 import org.gemsjax.client.editor.MetaModelCanvas;
 import org.gemsjax.client.editor.MetaModelCanvas.EditingMode;
 
@@ -44,5 +41,5 @@ public interface MetaModelView {
 	 */
 	public void setCanvasEditingMode(MetaModelCanvas.EditingMode mode);
 	
->>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
+
 }

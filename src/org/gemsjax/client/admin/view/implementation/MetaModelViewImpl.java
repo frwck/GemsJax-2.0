@@ -1,26 +1,7 @@
 package org.gemsjax.client.admin.view.implementation;
 
 import org.gemsjax.client.admin.UserLanguage;
-<<<<<<< HEAD
-import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
-import org.gemsjax.client.admin.view.MetaModelView;
-import org.gemsjax.client.canvas.BufferedCanvas;
-import org.gemsjax.client.canvas.CanvasSupportException;
-import com.smartgwt.client.types.Overflow;
-import com.smartgwt.client.widgets.IButton;
 
-public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelView{
-
-	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException {
-		super(title, language);
-		
-		IButton button = new IButton("This is a MenuBar");
-		this.setLeftColumn(button, true);
-		
-		BufferedCanvas canvas = new BufferedCanvas();
-		this.setRightColumn(canvas, true);
-		
-=======
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
 import org.gemsjax.client.admin.notification.TipNotification;
@@ -37,7 +18,7 @@ import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
-/**
+/**>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
  * This is the implementation for the Meta-Model editing Tab.
  * <b>To add this Tab to the {@link TabEnviroment} call TabEnviroment.getInstance().addTab(); 
  * outside of the constructor, for example in the corresponding presenter</b>
@@ -53,7 +34,8 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	
 	private UserLanguage language;
 	
-	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException {
+	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException 
+	{
 		super(title, language);
 		
 		this.language = language;
@@ -66,25 +48,13 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		// TODO set it to the corresponding MetaModel settings (check for READ_ONLY)
 		setCanvasEditingMode(EditingMode.NORMAL);
 		
->>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 		canvas.initCanvasSize();
 		canvas.redrawCanvas();
 		
 		this.getLayout().setOverflow(Overflow.HIDDEN);
-		
-<<<<<<< HEAD
-	
-=======
->>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
-		
-		canvas.setOverflow(Overflow.SCROLL);
-		
-		
-<<<<<<< HEAD
-		
-	}
 
-=======
+		canvas.setOverflow(Overflow.SCROLL);
+
 		tipNotification= new TipNotification("Welcome",language.MetaModelEditorWelcomeTip(), 200, 78 , 3000, NotificationPosition.BOTTOM_CENTERED); 
 		tipNotification.animateShow(AnimationEffect.FADE);
 	}
@@ -166,6 +136,4 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	}
 	
 
-	
->>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 }

@@ -42,10 +42,7 @@ public class VerticalBigMenuButtonBar extends VStack implements BigMenuButtonCha
 		this();
 		this.setMembersMargin(memberMargin);
 	}
-	
-<<<<<<< HEAD
-	
-=======
+
 	public VerticalBigMenuButtonBar(int width, int memberMargin)
 	{
 		this(memberMargin);
@@ -53,7 +50,6 @@ public class VerticalBigMenuButtonBar extends VStack implements BigMenuButtonCha
 		this.setWidth(width);
 		
 	}
->>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 
 	public VerticalBigMenuButtonBar(int width, int memberMargin, int topSpace)
 	{

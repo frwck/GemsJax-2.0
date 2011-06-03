@@ -1,22 +1,5 @@
 package org.gemsjax.client.admin.model.metamodel;
 
-<<<<<<< HEAD
-import java.util.List;
-
-import org.gemsjax.client.canvas.MetaClassDrawable;
-
-/**
- * A MetaClass is a representation of a Meta-Model class
- * @author Hannes Dorfmann
- *
- */
-public class MetaClass extends MetaClassDrawable {
-	
-	public MetaClass(double x, double y) {
-		super(x, y);
-		
-	}
-=======
 import java.util.LinkedList;
 import java.util.List;
 
@@ -66,8 +49,6 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	
 	// MetaClass Data fields
 
->>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
-
 	/**
 	 * The name of this MetaClass
 	 */
@@ -87,11 +68,7 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	private List <Connection> connectionList;
 	
 	private List<InheritanceRelation> inheritanceRelationList;
-<<<<<<< HEAD
 
-	
-	
-=======
 		
 	public MetaClass(double x, double y) {
 		 
@@ -417,8 +394,7 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	public void setTextColor(String textColor) {
 		this.textColor = textColor;
 	}
->>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
-	
+
 	
 	public String getName() {
 		return name;
