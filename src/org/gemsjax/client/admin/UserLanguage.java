@@ -68,4 +68,41 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Description")
 	  String ExperimenteDescritption();  
 	  
+<<<<<<< HEAD
+=======
+	  
+	  //Meta-Model
+	  @DefaultStringValue("User Mouse")
+	  String MetaModelToolbarUseMouse();
+	  
+	  @DefaultStringValue("Click on the canvas to create a there a new Meta-Class")
+	  String MetaModelToolbarNewMetaClassTip();
+	
+	  @DefaultStringValue("Meta-Class")
+	  String MetaModelToolbarNewMetaClass();
+	  
+	  
+	  @DefaultStringValue("Select the class which should derive")
+	  String MetaModelToolbarInheritanceTip1();
+	  
+	  @DefaultStringValue("Select the super class")
+	  String MetaModelToolbarInheritanceTip2();
+	  
+	  @DefaultStringValue("Inheritance")
+	  String MetaModelToolbarInheritance();
+	  
+	  @DefaultStringValue("Select the class, where the relation starts")
+	  String MetaModelToolbarRelationTip1();
+	  
+	  
+	  @DefaultStringValue("Select the class, where the relation ends")
+	  String MetaModelToolbarRelationTip2();
+	  
+	  @DefaultStringValue("Relation")
+	  String MetaModelToolbarRelation();
+	  
+	  @DefaultStringValue("Use the mouse and the toolbar on the left to interact with the canvas")
+	  String MetaModelEditorWelcomeTip();
+	  
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 }

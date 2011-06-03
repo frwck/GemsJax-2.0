@@ -147,6 +147,34 @@ public class BigMenuButton extends Label{
 		this(text);
 		this.addClickHandler(clickHandler);
 	}
+<<<<<<< HEAD
+=======
+	
+	/**
+	 * Creates a BigMenuButton with an icon
+	 * @param text
+	 * @param iconURL
+	 * @param clickHandler
+	 */
+	public BigMenuButton(String text, String iconURL, ClickHandler clickHandler)
+	{
+		this("<img src=\""+iconURL+"\" alt=\""+text+"\" /><br />"+text);
+		this.addClickHandler(clickHandler);
+	}
+	
+	
+	/**
+	 * Creates a BigMenuButton with an icon
+	 * @param text
+	 * @param iconURL
+	 * @param clickHandler
+	 */
+	public BigMenuButton(String text, String iconURL)
+	{
+		this("<img src=\""+iconURL+"\" alt=\""+text+"\" /><br />"+text);
+		
+	}
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 
 	/**
 	 * Sets this Element as the Active one, which means that it will be displayed with the style widget-big-menu-button-active

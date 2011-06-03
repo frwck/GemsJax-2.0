@@ -43,7 +43,17 @@ public class VerticalBigMenuButtonBar extends VStack implements BigMenuButtonCha
 		this.setMembersMargin(memberMargin);
 	}
 	
+<<<<<<< HEAD
 	
+=======
+	public VerticalBigMenuButtonBar(int width, int memberMargin)
+	{
+		this(memberMargin);
+		// TODO smartgwt bug? only sets width correctly when its done in the constructor via setWidth()
+		this.setWidth(width);
+		
+	}
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 
 	public VerticalBigMenuButtonBar(int width, int memberMargin, int topSpace)
 	{

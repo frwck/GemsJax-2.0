@@ -1,14 +1,19 @@
 package org.gemsjax.client.canvas;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
+<<<<<<< HEAD
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
+=======
+import org.gemsjax.client.admin.model.metamodel.MetaClass;
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
+<<<<<<< HEAD
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -21,6 +26,9 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.util.SC;
+=======
+import com.google.gwt.user.client.Window;
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -31,7 +39,11 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Hannes Dorfmann
  *
  */
+<<<<<<< HEAD
 public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHandler, MouseDownHandler, MouseUpHandler, MouseOutHandler{
+=======
+public class BufferedCanvas extends VLayout {
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 
 	/**
 	 * The {@link Canvas} element which displayes the elements
@@ -58,6 +70,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	private int canvasHeight;
 
 
+<<<<<<< HEAD
 	private boolean isMouseDown;
 
 
@@ -97,6 +110,8 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	 */
 	private ResizeArea currentResizeArea;
 
+=======
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 
 
 	public BufferedCanvas() throws CanvasSupportException
@@ -107,6 +122,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		if (canvas == null || backBuffer == null)
 			throw new CanvasSupportException("Can not create a HTML5 <canvas> element. <canvas> is not supported by this browser");
 
+<<<<<<< HEAD
 		isMouseDown = false;
 		mouseDownX = -200;
 		mouseDownY = -200;
@@ -118,6 +134,15 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 
 
 
+=======
+		/*
+		isMouseDown = false;
+		mouseDownX = -200;
+		mouseDownY = -200;
+		 */
+
+	
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 		drawableStorage = new DrawableStorage();
 
 		
@@ -127,7 +152,11 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 			/*for (int i =0; i<10000;i++)
 			{
 			*/
+<<<<<<< HEAD
 				MetaClassDrawable d = new MetaClassDrawable(100, 200);
+=======
+				MetaClass d = new MetaClass(100, 200);
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 				d.setBackgroundColor("blue");
 				drawableStorage.add(d);
 			/*
@@ -205,6 +234,11 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 
 	private void initHandlers() 
 	{
+<<<<<<< HEAD
+=======
+		
+		/*
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 		canvas.addMouseMoveHandler(this);
 		canvas.addClickHandler(this);
 		canvas.addMouseDownHandler(this);
@@ -283,6 +317,7 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 	}
 
 
+<<<<<<< HEAD
 	@Override
 	public void onClick(ClickEvent event) {
 
@@ -429,6 +464,48 @@ public class BufferedCanvas extends VLayout implements ClickHandler, MouseMoveHa
 		// If you are out of the canvas while Mouse is still down
 		onMouseUp(null);
 
+=======
+	
+	/**
+	 * Get the {@link DrawableStorage}
+	 * @return
+	 */
+	protected DrawableStorage getDrawableStorage()
+	{
+		return drawableStorage;
+	}
+	
+	
+	/**
+	 * Add a {@link Drawable} to this Canvas (to the {@link DrawableStorage}) to be painted on the canvas whenever {@link #redrawCanvas()} has been called
+	 * @param drawable
+	 * @throws DoubleLimitException
+	 */
+	public void addDrawable(Drawable drawable) throws DoubleLimitException
+	{
+		drawableStorage.add(drawable);
+	}
+	
+	/**
+	 * Remove a {@link Drawable}
+	 * @param drawable
+	 * @see #addDrawable(Drawable)
+	 */
+	public void removeDrawable(Drawable drawable)
+	{
+		drawableStorage.remove(drawable);
+	}
+	
+	/**
+	 * Since this is also a wrapper class for smart gwt integration, this method can be called to get the HTML 5 Canvas element.
+	 * <b> However this method should be used only to add Handlers (ClickHandler, MouseMoveHandler, etc.) to the wrapped canvas and
+	 * not to draw directly elements on the canvas.</b> To draw elements use {@link Drawable} and
+	 * @return
+	 */
+	protected Canvas getWrappedCanvas()
+	{
+		return canvas;
+>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 	}
 
 
