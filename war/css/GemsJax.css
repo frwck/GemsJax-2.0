@@ -3,10 +3,7 @@ body
 	margin:0;
 	padding:0;
 	background:#FFF url(/images/background.gif) repeat-x;
-<<<<<<< HEAD
-=======
 	overflow: hidden;
->>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
 }
 
 a, a:link, a:visited{
@@ -186,8 +183,6 @@ This is the CSS style for the class Title
 	background-color: #5F5C5C; 
 }
 
-<<<<<<< HEAD
-=======
 /** Toolbar for Editor */
 .toolbarButton
 {
@@ -225,6 +220,11 @@ This is the CSS style for the class Title
 	-webkit-border-radius: 4px;
 	font-size: 100%;
 	font-weight: bold;
+	width: auto;
+	max-width: 90%;
+	height: auto;
+	max-height: 50%;
+	overflow:visible;
 }
 
 .tipNotification h1
@@ -245,5 +245,3 @@ This is the CSS style for the class Title
 	margin: 0px 0px;
 	padding: 0px 0px;
 }
-
->>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248

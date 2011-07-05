@@ -6,6 +6,7 @@ import org.gemsjax.client.admin.adminui.Footer;
 import org.gemsjax.client.admin.adminui.Header;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.adminui.UserBox;
+import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.view.AdminUIView;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -21,9 +22,12 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class AdminApplicationViewImpl implements AdminUIView{
 	
 	/**
-	 * The width of the "visible" content. This is the width of the {@link Header}, {@link Footer} and the {@link TabEnviroment}
+	 * The width of the "visible" content. This is the width of the {@link Header}, {@link Footer} and the {@link TabEnviroment}. <br /><br />
+	 * <b> Also the Notification width will be calculated according this value.
+	 * <u> If you change this value from percent to another unity, like px, you also have to change the implementation of the private method {@link TipNotification} calculateWidthAndPosition()</u></b>
+	 * 
 	 */
-	public static String contentWidth="90%";
+	public static final String contentWidth="90%";
 	
 	
 	

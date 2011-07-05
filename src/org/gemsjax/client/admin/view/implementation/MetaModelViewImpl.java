@@ -18,7 +18,7 @@ import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
-/**>>>>>>> 6e39b6f63e9e5ce0f0ec81e97e49f26d82589248
+/**
  * This is the implementation for the Meta-Model editing Tab.
  * <b>To add this Tab to the {@link TabEnviroment} call TabEnviroment.getInstance().addTab(); 
  * outside of the constructor, for example in the corresponding presenter</b>
@@ -55,8 +55,6 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 
 		canvas.setOverflow(Overflow.SCROLL);
 
-		tipNotification= new TipNotification("Welcome",language.MetaModelEditorWelcomeTip(), 200, 78 , 3000, NotificationPosition.BOTTOM_CENTERED); 
-		tipNotification.animateShow(AnimationEffect.FADE);
 	}
 	
 	private void generateToolStrip(UserLanguage language)
@@ -123,10 +121,13 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		switch (mode) {
 			case NORMAL:  			mouseButton.setActive(true);break;
 			case CREATE_CLASS:		newClassButton.setActive(true); 
-				tipNotification = new TipNotification(language.MetaModelToolbarNewMetaClassTip(), null ,200,78, 3000, NotificationPosition.BOTTOM_CENTERED);
+				tipNotification = new TipNotification("Welcome", "Hello this is a test" , 3000, NotificationPosition.BOTTOM_CENTERED); //language.MetaModelToolbarNewMetaClassTip()
 				tipNotification.animateShow(AnimationEffect.FADE);
 			break;
-			case CREATE_RELATION:	newRelationButton.setActive(true); break;
+			case CREATE_RELATION:	newRelationButton.setActive(true); 
+			tipNotification = new TipNotification("This is a long Text example", "This is a example for very very long text, so bla bla bla bla normaly something usefull should be stay here and not this stupid bla bla bla bla bla text. There can be also a LOT OF UPER CASE CHARECTERS AND LOWER CASE CHARACTERS! This is a example for very very long text, so bla bla bla bla normaly something usefull should be stay here and not this stupid bla bla bla bla bla text. There can be also a LOT OF UPER CASE CHARECTERS AND LOWER CASE CHARACTERS! This is a example for very very long text, so bla bla bla bla normaly something usefull should be stay here and not this stupid bla bla bla bla bla text. There can be also a LOT OF UPER CASE CHARECTERS AND LOWER CASE CHARACTERS!" , 3000, NotificationPosition.BOTTOM_CENTERED); //language.MetaModelToolbarNewMetaClassTip()
+			tipNotification.animateShow(AnimationEffect.FADE);
+			break;
 			case CREATE_INHERITANCE: newInheritanceButton.setActive(true);
 			case READ_ONLY: break;// TODO: what to do when it has been set to READ_ONLY
 			default: Window.alert("Error: the mode is set to "+mode); break;
