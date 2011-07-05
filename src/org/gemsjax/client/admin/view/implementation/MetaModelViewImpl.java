@@ -5,6 +5,7 @@ import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
 import org.gemsjax.client.admin.notification.TipNotification;
+import org.gemsjax.client.admin.notification.TipNotificationManager;
 import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
@@ -119,10 +120,13 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		//	 tipNotification.hide();
 		 
 		switch (mode) {
-			case NORMAL:  			mouseButton.setActive(true);break;
-			case CREATE_CLASS:		newClassButton.setActive(true); 
-				tipNotification = new TipNotification("Welcome", "Hello this is a test" , 3000, NotificationPosition.BOTTOM_CENTERED); //language.MetaModelToolbarNewMetaClassTip()
-				tipNotification.animateShow(AnimationEffect.FADE);
+			case NORMAL:  			
+				mouseButton.setActive(true);break;
+				
+			case CREATE_CLASS:		
+				newClassButton.setActive(true); 
+				TipNotificationManager.getInstance().show(new TipNotification(language.MetaModelToolbarNewMetaClassTip(), null , 3000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE); 
+				
 			break;
 			case CREATE_RELATION:	newRelationButton.setActive(true); 
 			tipNotification = new TipNotification("This is a long Text example", "This is a example for very very long text, so bla bla bla bla normaly something usefull should be stay here and not this stupid bla bla bla bla bla text. There can be also a LOT OF UPER CASE CHARECTERS AND LOWER CASE CHARACTERS! This is a example for very very long text, so bla bla bla bla normaly something usefull should be stay here and not this stupid bla bla bla bla bla text. There can be also a LOT OF UPER CASE CHARECTERS AND LOWER CASE CHARACTERS! This is a example for very very long text, so bla bla bla bla normaly something usefull should be stay here and not this stupid bla bla bla bla bla text. There can be also a LOT OF UPER CASE CHARECTERS AND LOWER CASE CHARACTERS!" , 3000, NotificationPosition.BOTTOM_CENTERED); //language.MetaModelToolbarNewMetaClassTip()
