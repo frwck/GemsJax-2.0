@@ -64,30 +64,6 @@ public class BufferedCanvas extends VLayout {
 		drawableStorage = new DrawableStorage();
 
 
-		//TODO remove sample data
-		try {
-			// Hardcore performance test
-			/*for (int i =0; i<10000;i++)
-			{
-			*/
-				MetaClass d = new MetaClass(100, 200);
-				d.setBackgroundColor("blue");
-				drawableStorage.add(d);
-			/*
-			
-			new Timer(){
-
-				@Override
-				public void run() {
-					redrawCanvas();
-				}}.scheduleRepeating(2000);
-			*/
-		} catch (DoubleLimitException e) {
-			Window.alert(e.getMessage());
-		}
-
-
-
 
 		canvas.setWidth("100%");
 		canvas.setHeight("100%");
@@ -104,11 +80,14 @@ public class BufferedCanvas extends VLayout {
 
 		this.setWidth100();
 		this.setHeight100();
-
-		int width = this.getWidth();
+		
+		// TODO needed?
+/*
+		int width = 100;
+		Window.alert("Width:" + this.getWidth());
 		int height = this.getHeight();
 		setCanvasSize(width, height);
-
+*/
 
 
 	}

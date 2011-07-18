@@ -1,8 +1,12 @@
 package org.gemsjax.client.admin.model.metamodel;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.text.html.parser.AttributeList;
+
+import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.ResizeArea;
 import org.gemsjax.client.canvas.events.MoveEvent;
@@ -12,12 +16,13 @@ import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.user.client.ui.RichTextArea.FontSize;
 
 
 
 
 /**
- * This class is the {@link Drawable} which will draw a MetaClass object on the Canvas
+ * This class represents a MetaClass. A MetaClass must be added to a {@link MetaModel} and sho
  * @author Hannes Dorfmann
  *
  */
@@ -30,7 +35,76 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	
 	private String borderColor;
 	private String backgroundColor;
-	private String textColor;
+	
+	/**
+	 * The font family name. For an easier calculation of the width of a text you should allways use a monospace font.
+	 * <b>If you change the font, you also have to recalculate {@link #nameFontCharWidth} and {@link #attributeFontCharWidth}. <b>
+	 * @see MetaClass#nameFontCharWidth
+	 */
+	private String fontFamily ="Courier";
+	
+	/**
+	 * The font color of the class name
+	 */
+	private String nameFontColor;
+	
+	/**
+	 * The text color for attributes
+	 */
+	private String attributeFontColor;
+	
+	/**
+	 * The size in pixel of the class name
+	 */
+	private int nameFontSize;
+	
+	/**
+	 * The font size of the attributes
+	 */
+	private int attributeFontSize;
+	
+	/**
+	 * This field will store the width of a single character in the given {@link #fontFamily} for the meta class name.
+	 * This field is used to calculate the width of the meta class name.
+	 * @see #fontFamily
+	 */
+	private double nameFontCharWidth;
+	
+	/**
+	 * This field will store the width of a single character in the given {@link #fontFamily} for the attribute text.
+	 * This field is used to calculate the width of a whole attribute text.
+	 * @see #fontFamily
+	 */
+	private double attributeFontCharWidth;
+	
+	
+	
+	
+	/**
+	 * The free space (in pixel) between one attribute to the other attribute (which is displayed in the line below)
+	 */
+	private double attributeToAttributeSpace= 5;
+	
+	/**
+	 * The space(in pixel) between the painted name of this meta class and the list of attributes
+	 */
+	private double nameToAttributeSpace = 10;
+	
+	/**
+	 * The space (in pixel) between the border and the top of the name of this meta class
+	 */
+	private double nameTopSpace=3;
+	
+	/**
+	 * The space (in pixel) between the left border and the (painted) name of this meta class
+	 */
+	private double nameLeftSpace=3;
+	
+	/**
+	 * The space (in pixel) between the left border and the textual (painted) attribute
+	 */
+	private double attributeLeftSpace = 3;
+	
 	
 	private boolean canBeMoved;
 	private boolean canBeResized;
@@ -46,6 +120,7 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	private List<ResizeHandler> resizeHandlers;
 	private List<MouseOverHandler> mouseOverHandlers;
 	
+
 	
 	// MetaClass Data fields
 
@@ -69,22 +144,37 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	
 	private List<InheritanceRelation> inheritanceRelationList;
 
+	public MetaClass(String name, double x, double y)
+	{
+		this(x,y);
+		this.name = name;
+	}
+	
+	
+	public MetaClass(String name)
+	{
+		this(100,100);
+		this.name = name;
+	}
 		
 	public MetaClass(double x, double y) {
 		 
+	
+
 		 // Drawbale Settings
-		 this.x = x;
-		 this.y = y;
-		 this.backgroundColor = "white";
+		 backgroundColor = "white";
+		
+		 borderSize = 1;
+		 borderColor = "black";
+		 nameFontColor ="black";
+		 attributeFontColor="black";
+		 nameFontSize = 18;
+		 attributeFontSize=14;
 		 
-		 this.borderColor = "black";
-		 textColor = "black";
-		 this.borderSize = 1;
 		 canBeMoved = true;
 		 selected = false;
 		 mouseOver = false;
 		 canBeResized = true;
-		 
 		 
 		 // Handlers
 		 resizeAreas = new LinkedList<ResizeArea>();
@@ -95,12 +185,15 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		 // a Resize Area
 		 resizeAreas.add(new ResizeArea(x+width-6, y+height-6, 6, 6));
 		 
+		 // Lists
+		 attributeList = new ArrayList<Attribute>();
+		 inheritanceRelationList = new ArrayList<InheritanceRelation>();
+		 connectionList = new ArrayList<Connection>();
 		 
 
 		 this.addMouseOverHandler(this);
 		 this.addMoveHandler(this);
 		 this.addResizeHandler(this);
-		
 		
 	}
 	
@@ -155,6 +248,9 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		context.setFillStyle(backgroundColor);
 		context.fillRect(x+borderSize, y+borderSize, width-2*borderSize, height-2*borderSize);
 		
+		drawName(context);
+		drawAttributes(context);
+		
 	}
 
 	@Override
@@ -181,12 +277,43 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	 */
 	public void drawAttributes(Context2d context){
 		
+		if (attributeList.size()==0)
+			return;
+		
+		context.setFillStyle(attributeFontColor);
+		context.setFont(""+attributeFontSize+"px "+fontFamily);
+		context.setTextAlign("left");
+		
+		double x = this.x + attributeLeftSpace, y=this.y+nameTopSpace+nameFontSize+nameToAttributeSpace;
+		
+		for (Attribute a: attributeList)
+		{
+			context.fillText(a.getName()+" : "+a.getType(), x, y);
+			y+=attributeFontSize+attributeToAttributeSpace;
+		}
+		
 	}
 	
 	/**
 	 * Draw the Classname somewhere
 	 */
-	public void drawName(Context2d context){
+	private void drawName(Context2d context){
+		
+		context.setFillStyle(nameFontColor);
+		context.setFont("bold "+nameFontSize+"px "+fontFamily);
+		
+		context.setTextAlign("left");
+		context.fillText(name, x+nameLeftSpace, y+nameTopSpace+nameFontSize);
+		
+		
+		// if there is at least one attribute, draw a horizontal line
+		if (attributeList.size()>0)
+		{
+			context.setFillStyle(borderColor);
+			context.fillRect(x, y+nameFontSize+(nameToAttributeSpace/2), width, borderSize);
+		}
+			
+			
 		
 	}
 
@@ -267,6 +394,8 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 			this.setHeight(event.getHeight());
 			
 		}
+		
+		
 		
 		
 	}
@@ -387,14 +516,7 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		this.backgroundColor = backgroundColor;
 	}
 
-	public String getTextColor() {
-		return textColor;
-	}
-
-	public void setTextColor(String textColor) {
-		this.textColor = textColor;
-	}
-
+	
 	
 	public String getName() {
 		return name;
@@ -420,16 +542,47 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		this.isAbstract = isAbstract;
 	}
 
+	/*
 	public List<Attribute> getAttributeList() {
 		return attributeList;
 	}
 
+	
 	public List<Connection> getConnectionList() {
 		return connectionList;
 	}
 
 	public List<InheritanceRelation> getInheritanceRelationList() {
 		return inheritanceRelationList;
+	}
+	*/
+	
+	
+	public void addAttribute(String name, String type) throws AttributeNameException
+	{
+		for(Attribute a : attributeList)
+			if (a.getName().equals(name))
+				throw new AttributeNameException(name,this, "An Attribute with the name "+name+" already exists");
+		
+		attributeList.add(new Attribute(name, type));
+	}
+	
+	/**
+	 * Remove a {@link Attribute} (by searching the attribute according to the attribute name)
+	 * If the Attribute was not found, nothing will be done.
+	 * @param name
+	 */
+	public void removeAttribute(String name)
+	{
+		for (Attribute a: attributeList)
+		{
+			if (a.getName().equals(name))
+			{
+				// TODO check if this will throw a java iterator exception
+				attributeList.remove(a);
+				return;
+			}
+		}
 	}
 	
 	

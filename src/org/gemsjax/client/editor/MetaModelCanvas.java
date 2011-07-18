@@ -1,5 +1,10 @@
 package org.gemsjax.client.editor;
 
+import javax.swing.text.html.CSS;
+
+import org.gemsjax.client.admin.exception.DoubleLimitException;
+import org.gemsjax.client.admin.model.metamodel.MetaClass;
+import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.canvas.Drawable;
@@ -19,6 +24,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.user.client.Window;
 import com.smartgwt.client.util.SC;
 
 /**
@@ -121,6 +127,39 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		getWrappedCanvas().addMouseDownHandler(this);
 		getWrappedCanvas().addMouseUpHandler(this);
 		getWrappedCanvas().addMouseOutHandler(this);
+		
+		
+
+		//TODO remove sample data
+		try {
+			// Hardcore performance test
+			/*for (int i =0; i<10000;i++)
+			{
+			*/
+				MetaClass d = new MetaClass(100, 200);
+				d.setBackgroundColor("white");
+				d.setName("Test MetaClass");
+				
+				d.addAttribute("Attribute1", "Type1");
+				d.addAttribute("Attribute2", "Type1");
+				d.addAttribute("Attribute3", "Type1");
+				
+				this.addDrawable(d);
+			/*
+			
+			new Timer(){
+
+				@Override
+				public void run() {
+					redrawCanvas();
+				}}.scheduleRepeating(2000);
+			*/
+		} catch (DoubleLimitException e) {
+			Window.alert(e.getMessage());
+		} catch (AttributeNameException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	

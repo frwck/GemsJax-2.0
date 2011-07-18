@@ -69,7 +69,7 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  String ExperimenteDescritption();  
 	  
 	  //Meta-Model
-	  @DefaultStringValue("User Mouse")
+	  @DefaultStringValue("Use Mouse")
 	  String MetaModelToolbarUseMouse();
 	  
 	  @DefaultStringValue("Click on the canvas to create there a new Meta-Class")

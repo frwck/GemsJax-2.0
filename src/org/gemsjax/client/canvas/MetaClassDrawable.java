@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 import java.util.List;
 
+import org.gemsjax.client.admin.model.metamodel.MetaClass;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
@@ -42,9 +43,23 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 	private List<ResizeHandler> resizeHandlers;
 	private List<MouseOverHandler> mouseOverHandlers;
 	
-		
-	public MetaClassDrawable(double x, double y) {
+	/**
+	 * The background color for the class name
+	 */
+	private String classNameBackgroundColor;
+	
+	/** The */
+	private String classFontColor;
+	
+	/**
+	 * The MetaClass is displayed with this MetaClassDrawable
+	 */
+	private MetaClass metaClass;
+	
+	public MetaClassDrawable(MetaClass metaClass, double x, double y) {
 		 
+		this.metaClass = metaClass;
+		
 		 // Drawbale Settings
 		 this.x = x;
 		 this.y = y;
@@ -160,6 +175,8 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 	 * Draw the Classname somewhere
 	 */
 	public void drawName(Context2d context){
+		
+		context.fillText(metaClass.getName(), x+1, y+1, width);
 		
 	}
 

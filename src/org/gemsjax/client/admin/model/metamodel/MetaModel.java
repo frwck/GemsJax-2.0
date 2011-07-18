@@ -2,6 +2,8 @@ package org.gemsjax.client.admin.model.metamodel;
 
 import java.util.LinkedList;
 import java.util.List;
+
+import org.gemsjax.client.admin.model.metamodel.exception.MetaClassNameException;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.Drawable;
 
@@ -27,11 +29,11 @@ public class MetaModel {
 	 * @return true otherwise it will throw an {@link NameNotAvailableException}
 	 * @throws NameNotAvailableException if the name is already assigned to another {@link MetaClass}
 	 */
-	public boolean isMetaClassNameAvailable(String desiredName) throws NameNotAvailableException
+	public boolean isMetaClassNameAvailable(String desiredName) throws MetaClassNameException
 	{
 		for (MetaClass m: metaClassList)
 			if (m.getName().equals(desiredName))
-				throw new NameNotAvailableException(desiredName);
+				throw new MetaClassNameException(desiredName);
 		
 		
 		return true;
@@ -39,14 +41,24 @@ public class MetaModel {
 	
 	
 	/**
-	 * Add a given MetaClass to this MetaModel
-	 * @param m
-	 * @throws NameNotAvailableException if the name of the {@link MetaClass} is already assigned to another {@link MetaClass} and so not available
+	 * Creates a MetaClass and add this new MetaClass to this MetaModel
+	 * @param metaClassName
+	 * @throws MetaClassNameException if the name of the {@link MetaClass} is already assigned to another {@link MetaClass} and so not available
+	 * @return The new created {@link MetaClass} object
 	 */
-	public void addMetaClass(MetaClass m) throws NameNotAvailableException{
+	public MetaClass addMetaClass(String metaClassName) throws MetaClassNameException{
 		
-		if (isMetaClassNameAvailable(m.getName()))
-			metaClassList.add(m);
+		if (isMetaClassNameAvailable(metaClassName))
+		{
+			MetaClass mc = new MetaClass(metaClassName);
+			metaClassList.add(mc);
+			return mc;
+		}
+		
+		// Should never be reached, because isMetaClassNameAvailable should throw a MetaClassNameExcption
+		return null;
 	}
+	
+	//TODO remove MetaClass by reference and by name
 
 }

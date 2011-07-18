@@ -1,7 +1,12 @@
 package org.gemsjax.client.admin.model.metamodel;
 
+import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
+
 /**
- * A {@link MetaClass} can have Attributes
+ * A {@link MetaClass} can have Attributes.
+ * The name of an {@link Attribute} is unique in a MetaClass (even if the type is different).
+ * This condition will be checked when you add a {@link Attribute} to a {@link MetaClass} by calling {@link MetaClass#addAttribute(String, String)},
+ * which will throw an {@link AttributeNameException} if the name is not available.
  * @author Hannes Dorfmann
  *
  */
@@ -43,7 +48,6 @@ public class Attribute {
 	public void setType(String type) {
 		this.typeName = type;
 	}
-	
 	
 	
 
