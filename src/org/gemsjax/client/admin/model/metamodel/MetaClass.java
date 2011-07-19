@@ -68,14 +68,14 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	 * This field is used to calculate the width of the meta class name.
 	 * @see #fontFamily
 	 */
-	private double nameFontCharWidth;
+	private double nameFontCharWidth = 12;
 	
 	/**
 	 * This field will store the width of a single character in the given {@link #fontFamily} for the attribute text.
 	 * This field is used to calculate the width of a whole attribute text.
 	 * @see #fontFamily
 	 */
-	private double attributeFontCharWidth;
+	private double attributeFontCharWidth = 9;
 	
 	
 	
@@ -86,25 +86,50 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	private double attributeToAttributeSpace= 5;
 	
 	/**
-	 * The space(in pixel) between the painted name of this meta class and the list of attributes
+	 * The space (in pixel) between the top of the attributes list and the parting line (the line between MetaClass name and attribute list)
 	 */
-	private double nameToAttributeSpace = 10;
+	private double attributeListTopSpace = 20;
+	
+	/**
+	 * The space (in pixel) between the last attribute of the attributes list and the bottom border
+	 */
+	private double attributeListBottomSpace = 5;
 	
 	/**
 	 * The space (in pixel) between the border and the top of the name of this meta class
 	 */
 	private double nameTopSpace=3;
 	
+	/** The space (in pixel) between the bottom - border (or the parting line if there are attributes) 
+	 * and the bottom of the name of this meta class
+	 */
+	private double nameBottomSpace = 5;
+	
 	/**
 	 * The space (in pixel) between the left border and the (painted) name of this meta class
 	 */
-	private double nameLeftSpace=3;
+	private double nameLeftSpace=5;
+	
+	/**
+	 * The space (in pixel) between the right border and the (painted) name of this meta class
+	 */
+	private double nameRightSpace = 5;
+	
+	/**
+	 * The space (in pixel) between the right border and the textual (painted) attribute
+	 */
+	private double attributeRightSpace = 5;
 	
 	/**
 	 * The space (in pixel) between the left border and the textual (painted) attribute
 	 */
-	private double attributeLeftSpace = 3;
+	private double attributeLeftSpace = 5;
 	
+	
+	/**
+	 * Should the attribute list be displayed or not?
+	 */
+	private boolean displayAttributes = true;
 	
 	private boolean canBeMoved;
 	private boolean canBeResized;
@@ -250,7 +275,9 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		context.fillRect(x+borderSize, y+borderSize, width-2*borderSize, height-2*borderSize);
 		
 		drawName(context);
-		drawAttributes(context);
+		
+		if (displayAttributes)
+			drawAttributes(context);
 		
 	}
 
@@ -284,7 +311,7 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		context.setFont(""+attributeFontSize+"px "+fontFamily);
 		context.setTextAlign("left");
 		
-		double x = this.x + attributeLeftSpace, y=this.y+nameTopSpace+nameFontSize+nameToAttributeSpace;
+		double x = this.x + attributeLeftSpace, y=this.y+nameFontSize+nameTopSpace+nameBottomSpace+attributeListTopSpace;
 		
 		for (Attribute a: attributeList)
 		{
@@ -295,7 +322,7 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	}
 	
 	/**
-	 * Draw the Classname somewhere
+	 * Draw the meta-class name
 	 */
 	private void drawName(Context2d context){
 		
@@ -307,16 +334,76 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		
 		
 		// if there is at least one attribute, draw a horizontal line
-		if (attributeList.size()>0)
+		if (displayAttributes && attributeList.size()>0 )
 		{
 			context.setFillStyle(borderColor);
-			context.fillRect(x, y+nameFontSize+(nameToAttributeSpace/2), width, borderSize);
+			context.fillRect(x, y+nameFontSize+nameTopSpace+nameBottomSpace, width, borderSize);
 		}
 			
 			
 		
 	}
 
+	/**
+	 * Calculate the width and height that is needed to paint the whole object completely on the canvas.
+	 * 
+	 */
+	public void autoSize()
+	{
+		// TODO optimization 
+		
+		double nameWidth = nameLeftSpace + name.length()*nameFontCharWidth + nameRightSpace;
+		double nameHeight = nameTopSpace + nameFontSize + nameBottomSpace;
+		
+		double attributesHeight = attributeListTopSpace + attributeList.size()* (attributeFontSize + attributeToAttributeSpace) + attributeListBottomSpace;
+		
+		
+		
+		int longestChar = 0;
+		
+		// Calculate the longest attribute (attribute string)
+		for (Attribute a : attributeList)
+			if ((a.getName().length() + a.getType().length() + 3 )> longestChar)	// + 3 is for the separator String " : " between name and type
+				longestChar = a.getName().length() + a.getType().length() + 3;
+		
+		
+		double attributeWidth = attributeLeftSpace + longestChar *attributeFontCharWidth + attributeRightSpace;
+		
+		if (displayAttributes)
+		{
+			// Set width
+			if (attributeWidth>nameWidth)
+				this.width = attributeWidth;
+			else
+				this.width = nameWidth;
+		}
+		else
+			this.width = nameWidth;
+			
+		// Set height
+		this.height = displayAttributes ? (nameHeight + attributesHeight) : nameHeight; 
+		
+	
+		// Set the ResizeArea at the correct Position
+		autoSetResizeAreaPosition();
+	}
+	
+	
+	/**
+	 * Sets automatically the Position of the ResizeArea.
+	 * This method should be called, whenever the width or height of this MetaClass drawable has been changed (except by a ResizeEvents)<br/>
+	 * <b>Notice</b> {@link #autoSize()} will call this method automatically.
+	 */
+	private void autoSetResizeAreaPosition()
+	{
+		for (ResizeArea r : resizeAreas)
+		{
+			r.setX(x+width-r.getWidht());
+			r.setY(y+height-r.getHeight());
+		}
+	}
+	
+	
 	@Override
 	public boolean isMoveable() {
 		return canBeMoved;
@@ -555,6 +642,8 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	public List<InheritanceRelation> getInheritanceRelationList() {
 		return inheritanceRelationList;
 	}
+
+
 	*/
 	
 	
@@ -583,6 +672,11 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 				return;
 			}
 		}
+	}
+
+
+	public void setDisplayAttributes(boolean show) {
+		this.displayAttributes = show;
 	}
 	
 	

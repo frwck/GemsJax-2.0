@@ -99,6 +99,16 @@ public class ResizeArea {
 	}
 
 	
+	public double getWidht()
+	{
+		return width;
+	}
+	
+	public double getHeight()
+	{
+		return height;
+	}
+	
 	
 
 }

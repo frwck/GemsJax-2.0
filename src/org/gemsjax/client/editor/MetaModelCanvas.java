@@ -144,6 +144,8 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				d.addAttribute("Attribute2", "Type1");
 				d.addAttribute("Attribute3", "Type1");
 				
+				d.autoSize();
+				
 				this.addDrawable(d);
 			/*
 			
