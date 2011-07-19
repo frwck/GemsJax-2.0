@@ -137,7 +137,6 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 			{
 			*/
 				MetaClass d = new MetaClass(100, 200);
-				d.setBackgroundColor("white");
 				d.setName("Test MetaClass");
 				
 				d.addAttribute("Attribute1", "Type1");

@@ -15,6 +15,7 @@ import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 
+import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.user.client.ui.RichTextArea.FontSize;
 
@@ -33,8 +34,13 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	private double x, y,z;
 	private double width = 100, height = 200, minWidth = 30, minHeight = 30;
 	
-	private String borderColor;
-	private String backgroundColor;
+	private String borderColor = "black";
+	
+	private int borderSize = 1;
+	
+	private String gradientStartColor ="#FCCE70";
+	private String gradientEndColor="#FCFBD5";
+	
 	
 	/**
 	 * The font family name. For an easier calculation of the width of a text you should allways use a monospace font.
@@ -46,22 +52,22 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	/**
 	 * The font color of the class name
 	 */
-	private String nameFontColor;
+	private String nameFontColor = "black";
 	
 	/**
 	 * The text color for attributes
 	 */
-	private String attributeFontColor;
+	private String attributeFontColor ="black";
 	
 	/**
 	 * The size in pixel of the class name
 	 */
-	private int nameFontSize;
+	private int nameFontSize = 18;
 	
 	/**
 	 * The font size of the attributes
 	 */
-	private int attributeFontSize;
+	private int attributeFontSize = 14;
 	
 	/**
 	 * This field will store the width of a single character in the given {@link #fontFamily} for the meta class name.
@@ -137,7 +143,7 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	private boolean mouseOver;
 	
 	
-	private int borderSize;
+	
 	
 	private List<ResizeArea> resizeAreas;
 	
@@ -187,15 +193,8 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		this.x = x;
 		this.y = y;
 
-		 // Drawbale Settings
-		 backgroundColor = "white";
-		
-		 borderSize = 1;
-		 borderColor = "black";
-		 nameFontColor ="black";
-		 attributeFontColor="black";
-		 nameFontSize = 18;
-		 attributeFontSize=14;
+		//setMinHeight(nameTopSpace+nameFontSize+nameBottomSpace);
+		 
 		 
 		 canBeMoved = true;
 		 selected = false;
@@ -268,10 +267,19 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	@Override
 	public void draw(Context2d context) {
 		
+		CanvasGradient gradient = context.createLinearGradient(x,y,x+width,y+height);
+		
+		gradient.addColorStop(0,gradientStartColor);
+		gradient.addColorStop(0.7, gradientEndColor);
+		
+		
+		
 		
 		context.setFillStyle(borderColor);
 		context.fillRect(x, y, width, height);
-		context.setFillStyle(backgroundColor);
+		
+		
+		context.setFillStyle(gradient);
 		context.fillRect(x+borderSize, y+borderSize, width-2*borderSize, height-2*borderSize);
 		
 		drawName(context);
@@ -595,15 +603,6 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		this.borderSize = borderSize;
 	}
 
-	public String getBackgroundColor() {
-		return backgroundColor;
-	}
-
-	public void setBackgroundColor(String backgroundColor) {
-		this.backgroundColor = backgroundColor;
-	}
-
-	
 	
 	public String getName() {
 		return name;
@@ -677,6 +676,26 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 
 	public void setDisplayAttributes(boolean show) {
 		this.displayAttributes = show;
+	}
+
+
+	public String getGradientStartColor() {
+		return gradientStartColor;
+	}
+
+
+	public void setGradientStartColor(String gradientStartColor) {
+		this.gradientStartColor = gradientStartColor;
+	}
+
+
+	public String getGradientEndColor() {
+		return gradientEndColor;
+	}
+
+
+	public void setGradientEndColor(String gradientEndColor) {
+		this.gradientEndColor = gradientEndColor;
 	}
 	
 	
