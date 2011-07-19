@@ -159,7 +159,8 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		
 	public MetaClass(double x, double y) {
 		 
-	
+		this.x = x;
+		this.y = y;
 
 		 // Drawbale Settings
 		 backgroundColor = "white";
@@ -263,12 +264,11 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	public void drawOnSelected(Context2d context) {
 		
 		draw(context);
-		
+
 		if (isSelected())
 		for (ResizeArea ra : resizeAreas)
 			ra.draw(context);
-		
-		
+				
 	}
 	
 	
