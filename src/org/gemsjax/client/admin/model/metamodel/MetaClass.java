@@ -321,9 +321,21 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		
 		double x = this.x + attributeLeftSpace, y=this.y+nameFontSize+nameTopSpace+nameBottomSpace+attributeListTopSpace;
 		
-		for (Attribute a: attributeList)
+		String txt;
+		
+		double heightForAttributeList = height -nameTopSpace - nameBottomSpace - attributeListTopSpace - attributeListBottomSpace;
+		
+		int attributeLines = (int) (heightForAttributeList / (attributeFontSize+attributeToAttributeSpace) );
+		
+		if (attributeLines>attributeList.size())
+			attributeLines = attributeList.size();
+		
+		for (int i =0; i<attributeLines; i++)
 		{
-			context.fillText(a.getName()+" : "+a.getType(), x, y);
+			Attribute a = attributeList.get(i);
+		
+			txt = width-attributeLeftSpace-attributeRightSpace > ((a.getName().length()+a.getType().length()+3)*attributeFontCharWidth) ? a.getName()+" : "+a.getType() : (a.getName()+" : "+a.getType()).subSequence(0, (int) ((width-attributeLeftSpace-attributeRightSpace)/attributeFontCharWidth - 3))+"...";
+			context.fillText(txt, x, y);
 			y+=attributeFontSize+attributeToAttributeSpace;
 		}
 		
@@ -332,13 +344,16 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	/**
 	 * Draw the meta-class name
 	 */
-	private void drawName(Context2d context){
+	private void drawName(Context2d context) {
+		
+	
+		String txt = width-nameLeftSpace >(name.length()*nameFontCharWidth) ? name : name.subSequence(0, (int) ((width-nameLeftSpace)/nameFontCharWidth - 3))+"...";
 		
 		context.setFillStyle(nameFontColor);
 		context.setFont("bold "+nameFontSize+"px "+fontFamily);
 		
 		context.setTextAlign("left");
-		context.fillText(name, x+nameLeftSpace, y+nameTopSpace+nameFontSize);
+		context.fillText(txt, x+nameLeftSpace, y+nameTopSpace+nameFontSize);
 		
 		
 		// if there is at least one attribute, draw a horizontal line
