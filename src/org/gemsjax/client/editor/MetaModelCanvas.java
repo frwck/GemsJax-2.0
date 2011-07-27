@@ -8,6 +8,7 @@ import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.canvas.Drawable;
+import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.ResizeArea;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
@@ -143,9 +144,10 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				d.addAttribute("Attribute2", "Type1");
 				d.addAttribute("Attribute3", "Type1");
 				
-				d.autoSize();
+				MetaClassDrawable dr = new MetaClassDrawable(d);
+				dr.autoSize();
 				
-				this.addDrawable(d);
+				this.addDrawable(dr);
 			/*
 			
 			new Timer(){
@@ -261,7 +263,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		{
 		
 			case NORMAL:
-				if (currentMouseDownDrawable== null) return;
+				if (currentMouseDownDrawable == null) return;
 		
 				// Resize, if mouse is on a ResizeArea and Resizeable
 				if (currentMouseDownDrawable.isResizeable() && isMouseDown && currentResizeArea != null)

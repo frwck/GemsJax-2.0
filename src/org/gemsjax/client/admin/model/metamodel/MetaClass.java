@@ -27,7 +27,7 @@ import com.google.gwt.user.client.ui.RichTextArea.FontSize;
  * @author Hannes Dorfmann
  *
  */
-public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOverHandler{
+public class MetaClass {
 
 	// Drawable fields
 	
@@ -140,19 +140,9 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	private boolean canBeMoved;
 	private boolean canBeResized;
 	private boolean selected;
-	private boolean mouseOver;
 	
 	
-	
-	
-	private List<ResizeArea> resizeAreas;
-	
-	private List<MoveHandler> moveHandlers;
-	private List<ResizeHandler> resizeHandlers;
-	private List<MouseOverHandler> mouseOverHandlers;
-	
-
-	
+		
 	// MetaClass Data fields
 
 	/**
@@ -198,410 +188,93 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 		 
 		 canBeMoved = true;
 		 selected = false;
-		 mouseOver = false;
 		 canBeResized = true;
-		 
-		 // Handlers
-		 resizeAreas = new LinkedList<ResizeArea>();
-		 moveHandlers = new LinkedList<MoveHandler>();
-		 resizeHandlers = new LinkedList<ResizeHandler>();
-		 mouseOverHandlers = new LinkedList<MouseOverHandler>();
-		 
-		 // a Resize Area
-		 resizeAreas.add(new ResizeArea(x+width-6, y+height-6, 6, 6));
 		 
 		 // Lists
 		 attributeList = new ArrayList<Attribute>();
 		 inheritanceRelationList = new ArrayList<InheritanceRelation>();
 		 connectionList = new ArrayList<Connection>();
-		 
-
-		 this.addMouseOverHandler(this);
-		 this.addMoveHandler(this);
-		 this.addResizeHandler(this);
+		
 		
 	}
-	
-	@Override
+
 	public double getX() {
 		return x;
 	}
 
-	@Override
 	public double getY() {
 		return y;
 	}
 
-	@Override
 	public double getZ() {
 		return z;
 	}
 
-	@Override
 	public void setX(double x) {
 		this.x = x;
 		
 	}
 
-	@Override
 	public void setY(double y) {
 		this.y=y;
 	}
 
-	@Override
 	public void setZ(double z) {
 		this.z=z;
 	}
 
 	
-	private boolean isBetween(double minValue, double maxValue, double valueToCheck)
-	{
-		return valueToCheck>=minValue && valueToCheck<=maxValue;
-	}
 	
-	@Override
-	public boolean hasCoordinate(double x, double y) {
-		return (isBetween(this.x, this.x+width, x) && isBetween(this.y, this.y+height,y));
-	}
-
-	@Override
-	public void draw(Context2d context) {
-		
-		CanvasGradient gradient = context.createLinearGradient(x,y,x+width,y+height);
-		
-		gradient.addColorStop(0,gradientStartColor);
-		gradient.addColorStop(0.7, gradientEndColor);
-		
-		
-		
-		
-		context.setFillStyle(borderColor);
-		context.fillRect(x, y, width, height);
-		
-		
-		context.setFillStyle(gradient);
-		context.fillRect(x+borderSize, y+borderSize, width-2*borderSize, height-2*borderSize);
-		
-		drawName(context);
-		
-		if (displayAttributes)
-			drawAttributes(context);
-		
-	}
-
-	@Override
-	public void drawOnMouseOver(Context2d context) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void drawOnSelected(Context2d context) {
-		
-		draw(context);
-
-		if (isSelected())
-		for (ResizeArea ra : resizeAreas)
-			ra.draw(context);
-				
-	}
-	
-	
-	/**
-	 * Draw the Attributes, which should be displayed for this class
-	 */
-	public void drawAttributes(Context2d context){
-		
-		if (attributeList.size()==0)
-			return;
-		
-		context.setFillStyle(attributeFontColor);
-		context.setFont(""+attributeFontSize+"px "+fontFamily);
-		context.setTextAlign("left");
-		
-		double x = this.x + attributeLeftSpace, y=this.y+nameFontSize+nameTopSpace+nameBottomSpace+attributeListTopSpace;
-		
-		String txt;
-		
-		double heightForAttributeList = height -nameTopSpace - nameBottomSpace - attributeListTopSpace - attributeListBottomSpace;
-		
-		int attributeLines = (int) (heightForAttributeList / (attributeFontSize+attributeToAttributeSpace) );
-		
-		if (attributeLines>attributeList.size())
-			attributeLines = attributeList.size();
-		
-		for (int i =0; i<attributeLines; i++)
-		{
-			Attribute a = attributeList.get(i);
-		
-			txt = width-attributeLeftSpace-attributeRightSpace > ((a.getName().length()+a.getType().length()+3)*attributeFontCharWidth) ? a.getName()+" : "+a.getType() : (a.getName()+" : "+a.getType()).subSequence(0, (int) ((width-attributeLeftSpace-attributeRightSpace)/attributeFontCharWidth - 3))+"...";
-			context.fillText(txt, x, y);
-			y+=attributeFontSize+attributeToAttributeSpace;
-		}
-		
-	}
-	
-	/**
-	 * Draw the meta-class name
-	 */
-	private void drawName(Context2d context) {
-		
-	
-		String txt = width-nameLeftSpace >(name.length()*nameFontCharWidth) ? name : name.subSequence(0, (int) ((width-nameLeftSpace)/nameFontCharWidth - 3))+"...";
-		
-		context.setFillStyle(nameFontColor);
-		context.setFont("bold "+nameFontSize+"px "+fontFamily);
-		
-		context.setTextAlign("left");
-		context.fillText(txt, x+nameLeftSpace, y+nameTopSpace+nameFontSize);
-		
-		
-		// if there is at least one attribute, draw a horizontal line
-		if (displayAttributes && attributeList.size()>0 )
-		{
-			context.setFillStyle(borderColor);
-			context.fillRect(x, y+nameFontSize+nameTopSpace+nameBottomSpace, width, borderSize);
-		}
-			
-			
-		
-	}
-
-	/**
-	 * Calculate the width and height that is needed to paint the whole object completely on the canvas.
-	 * 
-	 */
-	public void autoSize()
-	{
-		// TODO optimization 
-		
-		double nameWidth = nameLeftSpace + name.length()*nameFontCharWidth + nameRightSpace;
-		double nameHeight = nameTopSpace + nameFontSize + nameBottomSpace;
-		
-		double attributesHeight = attributeListTopSpace + attributeList.size()* (attributeFontSize + attributeToAttributeSpace) + attributeListBottomSpace;
-		
-		
-		
-		int longestChar = 0;
-		
-		// Calculate the longest attribute (attribute string)
-		for (Attribute a : attributeList)
-			if ((a.getName().length() + a.getType().length() + 3 )> longestChar)	// + 3 is for the separator String " : " between name and type
-				longestChar = a.getName().length() + a.getType().length() + 3;
-		
-		
-		double attributeWidth = attributeLeftSpace + longestChar *attributeFontCharWidth + attributeRightSpace;
-		
-		if (displayAttributes)
-		{
-			// Set width
-			if (attributeWidth>nameWidth)
-				this.width = attributeWidth;
-			else
-				this.width = nameWidth;
-		}
-		else
-			this.width = nameWidth;
-			
-		// Set height
-		this.height = displayAttributes ? (nameHeight + attributesHeight) : nameHeight; 
-		
-	
-		// Set the ResizeArea at the correct Position
-		autoSetResizeAreaPosition();
-	}
-	
-	
-	/**
-	 * Sets automatically the Position of the ResizeArea.
-	 * This method should be called, whenever the width or height of this MetaClass drawable has been changed (except by a ResizeEvents)<br/>
-	 * <b>Notice</b> {@link #autoSize()} will call this method automatically.
-	 */
-	private void autoSetResizeAreaPosition()
-	{
-		for (ResizeArea r : resizeAreas)
-		{
-			r.setX(x+width-r.getWidht());
-			r.setY(y+height-r.getHeight());
-		}
-	}
-	
-	
-	@Override
 	public boolean isMoveable() {
 		return canBeMoved;
 	}
 
-	@Override
 	public double getWidth() {
 		return width;
 	}
 
-	@Override
 	public double getHeight() {
 		return height;
 	}
 
-	@Override
 	public void setWidth(double width) {
 		this.width = width;
 	}
 
-	@Override
 	public void setHeight(double height) {
 		this.height = height;
 	}
 
-	@Override
 	public boolean isResizeable() {
 			return canBeResized;
 	}
 
-	@Override
 	public void setMinWidth(double minWidth) {
 		this.minWidth = minWidth;
 	}
 
-	@Override
 	public double getMinWidth() {
 		
 		return minWidth;
 	}
 
-	@Override
 	public void setMinHeight(double minHeight) {
 		this.minHeight = minHeight;
 	}
 
-	@Override
 	public double getMinHeight() {
 		return minHeight;
 	}
 
-	@Override
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
 
-	@Override
 	public boolean isSelected() {
 		return selected;
 	}
 
-	@Override
-	public void onResize(ResizeEvent event) {
-		
-		if (isResizeable() && event.getWidth()>getMinWidth() && event.getHeight()>getMinHeight())
-		{
-			
-			for (ResizeArea r : resizeAreas)
-			{
-				r.setX(r.getX()+ (event.getWidth()-this.getWidth()));
-				r.setY(r.getY()+ (event.getHeight()-this.getHeight()));
-			}
-			
-			this.setWidth(event.getWidth());
-			this.setHeight(event.getHeight());
-			
-		}
-		
-		
-		
-		
-	}
-
-	@Override
-	public void onMove(MoveEvent e) {
-		
-		double oldX = getX();
-		double oldY = getY();
-		
-		this.setX(e.getX()-e.getDistanceToTopLeftX());
-		this.setY(e.getY()-e.getDistanceToTopLeftY());
-		
-		//this.setX(getX()+e.getX() - e.getStartX());
-		//this.setY(getY()+e.getY() - e.getStartY());
-		
-		// Set the Position of the ResizeAreas
-		for (ResizeArea ra : resizeAreas)
-		{
-			ra.setX(ra.getX() + (getX()-oldX));
-			ra.setY(ra.getY() + (getY()-oldY));
-		}
-		
-		
-		
-	}
-
-	@Override
-	public void addResizeHandler(ResizeHandler resizeHandler) {
-		resizeHandlers.add(resizeHandler);
-	}
-
-	@Override
-	public void removeResizeHandler(ResizeHandler resizeHandler) {
-		resizeHandlers.remove(resizeHandler);
-	}
-
-	@Override
-	public void addMoveHandler(MoveHandler moveHandler) {
-		moveHandlers.add(moveHandler);
-	}
-
-	@Override
-	public void removeMoveHandler(MoveHandler moveHandler) {
-		moveHandlers.remove(moveHandler);
-	}
-
-	@Override
-	public List<MoveHandler> getMoveHandlers() {
-		return moveHandlers;
-	}
-
-	@Override
-	public List<ResizeHandler> getResizeHandlers() {
-		return resizeHandlers;
-	}
-
-	@Override
-	public boolean isMouseOver() {
-		return mouseOver;
-	}
-
-	@Override
-	public void setMouseOver(boolean mouseOver) {
-		this.mouseOver = mouseOver;
-	}
-
-	@Override
-	public void addMouseOverHandler(MouseOverHandler mouseOverHandler) {
-		mouseOverHandlers.add(mouseOverHandler);
-	}
-
-	@Override
-	public void removeMouseOverHandler(MouseOverHandler mouseOverHandler) {
-		mouseOverHandlers.remove(mouseOverHandler);
-	}
-
-	@Override
-	public List<MouseOverHandler> getMouseOverHandlers() {
-		return mouseOverHandlers;
-	}
-
-	@Override
-	public void onMouseOver(double x, double y) {
-		// TODO What to do when mouse is over. Let a Menu appear
-	}
-
-	@Override
-	public ResizeArea isResizerAreaAt(double x, double y) {
-		for (ResizeArea r :resizeAreas)
-			if (r.hasCoordinate(x, y))
-				return r;
-		
-		return null;
-	}
-
+	
 	public String getBorderColor() {
 		return borderColor;
 	}
@@ -712,9 +385,210 @@ public class MetaClass implements Drawable, ResizeHandler, MoveHandler, MouseOve
 	public void setGradientEndColor(String gradientEndColor) {
 		this.gradientEndColor = gradientEndColor;
 	}
+
+
+	public String getFontFamily() {
+		return fontFamily;
+	}
+
+
+	public void setFontFamily(String fontFamily) {
+		this.fontFamily = fontFamily;
+	}
+
+
+	public String getNameFontColor() {
+		return nameFontColor;
+	}
+
+
+	public void setNameFontColor(String nameFontColor) {
+		this.nameFontColor = nameFontColor;
+	}
+
+
+	public String getAttributeFontColor() {
+		return attributeFontColor;
+	}
+
+
+	public void setAttributeFontColor(String attributeFontColor) {
+		this.attributeFontColor = attributeFontColor;
+	}
+
+
+	public int getNameFontSize() {
+		return nameFontSize;
+	}
+
+
+	public void setNameFontSize(int nameFontSize) {
+		this.nameFontSize = nameFontSize;
+	}
+
+
+	public int getAttributeFontSize() {
+		return attributeFontSize;
+	}
+
+
+	public void setAttributeFontSize(int attributeFontSize) {
+		this.attributeFontSize = attributeFontSize;
+	}
+
+
+	public double getNameFontCharWidth() {
+		return nameFontCharWidth;
+	}
+
+
+	public void setNameFontCharWidth(double nameFontCharWidth) {
+		this.nameFontCharWidth = nameFontCharWidth;
+	}
+
+
+	public double getAttributeFontCharWidth() {
+		return attributeFontCharWidth;
+	}
+
+
+	public void setAttributeFontCharWidth(double attributeFontCharWidth) {
+		this.attributeFontCharWidth = attributeFontCharWidth;
+	}
+
+
+	public double getAttributeToAttributeSpace() {
+		return attributeToAttributeSpace;
+	}
+
+
+	public void setAttributeToAttributeSpace(double attributeToAttributeSpace) {
+		this.attributeToAttributeSpace = attributeToAttributeSpace;
+	}
+
+
+	public double getAttributeListTopSpace() {
+		return attributeListTopSpace;
+	}
+
+
+	public void setAttributeListTopSpace(double attributeListTopSpace) {
+		this.attributeListTopSpace = attributeListTopSpace;
+	}
+
+
+	public double getAttributeListBottomSpace() {
+		return attributeListBottomSpace;
+	}
+
+
+	public void setAttributeListBottomSpace(double attributeListBottomSpace) {
+		this.attributeListBottomSpace = attributeListBottomSpace;
+	}
+
+
+	public double getNameTopSpace() {
+		return nameTopSpace;
+	}
+
+
+	public void setNameTopSpace(double nameTopSpace) {
+		this.nameTopSpace = nameTopSpace;
+	}
+
+
+	public double getNameBottomSpace() {
+		return nameBottomSpace;
+	}
+
+
+	public void setNameBottomSpace(double nameBottomSpace) {
+		this.nameBottomSpace = nameBottomSpace;
+	}
+
+
+	public double getNameLeftSpace() {
+		return nameLeftSpace;
+	}
+
+
+	public void setNameLeftSpace(double nameLeftSpace) {
+		this.nameLeftSpace = nameLeftSpace;
+	}
+
+
+	public double getNameRightSpace() {
+		return nameRightSpace;
+	}
+
+
+	public void setNameRightSpace(double nameRightSpace) {
+		this.nameRightSpace = nameRightSpace;
+	}
+
+
+	public double getAttributeRightSpace() {
+		return attributeRightSpace;
+	}
+
+
+	public void setAttributeRightSpace(double attributeRightSpace) {
+		this.attributeRightSpace = attributeRightSpace;
+	}
+
+
+	public double getAttributeLeftSpace() {
+		return attributeLeftSpace;
+	}
+
+
+	public void setAttributeLeftSpace(double attributeLeftSpace) {
+		this.attributeLeftSpace = attributeLeftSpace;
+	}
+
+
+	public boolean isCanBeMoved() {
+		return canBeMoved;
+	}
+
+
+	public void setCanBeMoved(boolean canBeMoved) {
+		this.canBeMoved = canBeMoved;
+	}
+
+
+	public boolean isCanBeResized() {
+		return canBeResized;
+	}
+
+
+	public void setCanBeResized(boolean canBeResized) {
+		this.canBeResized = canBeResized;
+	}
+
+
+	public boolean isDisplayAttributes() {
+		return displayAttributes;
+	}
+	
+	/**
+	 * Get the number of attributes
+	 * @return
+	 */
+	public int getAttributeCount()
+	{
+		return attributeList.size();
+	}
 	
 	
-	
-	
+	/**
+	 * Get the Attribute of the attribute list at the index
+	 * @param index
+	 * @return
+	 */
+	public Attribute getAttribute(int index)
+	{
+		return attributeList.get(index);
+	}
 
 }

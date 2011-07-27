@@ -1,41 +1,36 @@
 package org.gemsjax.client.canvas;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
-
 import java.util.List;
 
+import javax.swing.text.html.parser.AttributeList;
+
+import org.gemsjax.client.admin.model.metamodel.Attribute;
 import org.gemsjax.client.admin.model.metamodel.MetaClass;
+import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
+import org.gemsjax.client.canvas.Drawable;
+import org.gemsjax.client.canvas.ResizeArea;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 
+import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.user.client.ui.RichTextArea.FontSize;
+
+
 
 
 /**
- * This class is the {@link Drawable} which will draw a MetaClass object on the Canvas
+ * This class represents a MetaClass. A MetaClass must be added to a {@link MetaModel} and sho
  * @author Hannes Dorfmann
  *
  */
 public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, MouseOverHandler{
 
-	
-	private double x, y,z;
-	private double width = 100, height = 200, minWidth = 30, minHeight = 30;
-	
-	private String borderColor;
-	private String backgroundColor;
-	private String textColor;
-	
-	private boolean canBeMoved;
-	private boolean canBeResized;
-	private boolean selected;
-	private boolean mouseOver;
-	
-	
-	private int borderSize;
 	
 	private List<ResizeArea> resizeAreas;
 	
@@ -43,84 +38,57 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 	private List<ResizeHandler> resizeHandlers;
 	private List<MouseOverHandler> mouseOverHandlers;
 	
-	/**
-	 * The background color for the class name
-	 */
-	private String classNameBackgroundColor;
-	
-	/** The */
-	private String classFontColor;
-	
-	/**
-	 * The MetaClass is displayed with this MetaClassDrawable
-	 */
+
 	private MetaClass metaClass;
-	
-	public MetaClassDrawable(MetaClass metaClass, double x, double y) {
-		 
+	private boolean mouseOver=false;
+
+	public MetaClassDrawable(MetaClass metaClass)
+	{
 		this.metaClass = metaClass;
-		
-		 // Drawbale Settings
-		 this.x = x;
-		 this.y = y;
-		 this.backgroundColor = "white";
-		 
-		 this.borderColor = "black";
-		 textColor = "black";
-		 this.borderSize = 1;
-		 canBeMoved = true;
-		 selected = false;
-		 mouseOver = false;
-		 canBeResized = true;
-		 
-		 
-		 // Handlers
+	
+		// Handlers
 		 resizeAreas = new LinkedList<ResizeArea>();
 		 moveHandlers = new LinkedList<MoveHandler>();
 		 resizeHandlers = new LinkedList<ResizeHandler>();
 		 mouseOverHandlers = new LinkedList<MouseOverHandler>();
-		 
+
 		 // a Resize Area
-		 resizeAreas.add(new ResizeArea(x+width-6, y+height-6, 6, 6));
-		 
-		 
+		 resizeAreas.add(new ResizeArea(metaClass.getX()+metaClass.getWidth()-6, metaClass.getY()+metaClass.getHeight()-6, 6, 6));
 
 		 this.addMouseOverHandler(this);
 		 this.addMoveHandler(this);
 		 this.addResizeHandler(this);
-		
-		
 	}
-	
+		
 	@Override
 	public double getX() {
-		return x;
+		return metaClass.getX();
 	}
 
 	@Override
 	public double getY() {
-		return y;
+		return metaClass.getY();
 	}
 
 	@Override
 	public double getZ() {
-		return z;
+		return metaClass.getZ();
 	}
 
 	@Override
 	public void setX(double x) {
-		this.x = x;
+		metaClass.setX(x);
 		
 	}
 
 	@Override
 	public void setY(double y) {
-		this.y=y;
+		metaClass.setY(y);
 	}
 
 	@Override
 	public void setZ(double z) {
-		this.z=z;
+		metaClass.setZ(z);
 	}
 
 	
@@ -131,23 +99,35 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 	
 	@Override
 	public boolean hasCoordinate(double x, double y) {
-		return (isBetween(this.x, this.x+width, x) && isBetween(this.y, this.y+height,y));
+		return (isBetween(metaClass.getX(), metaClass.getX()+metaClass.getWidth(), x) && isBetween(metaClass.getY(), metaClass.getY()+metaClass.getHeight(),y));
 	}
 
 	@Override
 	public void draw(Context2d context) {
 		
+		CanvasGradient gradient = context.createLinearGradient(metaClass.getX(), metaClass.getY(),metaClass.getX()+metaClass.getWidth(),metaClass.getY()+metaClass.getHeight());
 		
-		context.setFillStyle(borderColor);
-		context.fillRect(x, y, width, height);
-		context.setFillStyle(backgroundColor);
-		context.fillRect(x+borderSize, y+borderSize, width-2*borderSize, height-2*borderSize);
+		gradient.addColorStop(0,metaClass.getGradientStartColor());
+		gradient.addColorStop(0.7, metaClass.getGradientEndColor());
+		
+		
+		context.setFillStyle(metaClass.getBorderColor());
+		context.fillRect(metaClass.getX(), metaClass.getY(), metaClass.getWidth(), metaClass.getHeight());
+		
+		
+		context.setFillStyle(gradient);
+		context.fillRect(metaClass.getX()+metaClass.getBorderSize(), metaClass.getY()+metaClass.getBorderSize(), metaClass.getWidth()-2*metaClass.getBorderSize(), metaClass.getHeight()-2*metaClass.getBorderSize());
+		
+		drawName(context);
+		
+		if (metaClass.isDisplayAttributes())
+			drawAttributes(context);
 		
 	}
 
 	@Override
 	public void drawOnMouseOver(Context2d context) {
-		// TODO Auto-generated method stub
+		// TODO what to do when mouse is over
 		
 	}
 
@@ -155,12 +135,11 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 	public void drawOnSelected(Context2d context) {
 		
 		draw(context);
-		
+
 		if (isSelected())
 		for (ResizeArea ra : resizeAreas)
 			ra.draw(context);
-		
-		
+				
 	}
 	
 	
@@ -169,76 +148,183 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 	 */
 	public void drawAttributes(Context2d context){
 		
+		if (metaClass.getAttributeCount()==0)
+			return;
+		
+		context.setFillStyle(metaClass.getAttributeFontColor());
+		context.setFont(""+metaClass.getAttributeFontSize()+"px "+metaClass.getFontFamily());
+		context.setTextAlign("left");
+		
+		double x = metaClass.getX() + metaClass.getAttributeLeftSpace(), y=metaClass.getY()+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace()+metaClass.getAttributeListTopSpace();
+		
+		String txt;
+		
+		double heightForAttributeList = metaClass.getHeight() -metaClass.getNameTopSpace() - metaClass.getNameBottomSpace() - metaClass.getAttributeListTopSpace() - metaClass.getAttributeListBottomSpace();
+		
+		int attributeLines = (int) (heightForAttributeList / (metaClass.getAttributeFontSize()+metaClass.getAttributeToAttributeSpace()) );
+		
+		if (attributeLines>metaClass.getAttributeCount())
+			attributeLines = metaClass.getAttributeCount();
+		
+		for (int i =0; i<attributeLines; i++)
+		{
+			Attribute a = metaClass.getAttribute(i);
+		
+			txt = metaClass.getWidth()-metaClass.getAttributeLeftSpace()-metaClass.getAttributeRightSpace() > ((a.getName().length()+a.getType().length()+3)*metaClass.getAttributeFontCharWidth())
+				? a.getName()+" : "+a.getType() : (a.getName()+" : "+a.getType()).subSequence(0, (int) ((metaClass.getWidth()-metaClass.getAttributeLeftSpace()-metaClass.getAttributeRightSpace())/metaClass.getAttributeFontCharWidth() - 3))+"...";
+			
+				context.fillText(txt, x, y);
+				
+			y+=metaClass.getAttributeFontSize()+metaClass.getAttributeToAttributeSpace();
+		}
+		
 	}
 	
 	/**
-	 * Draw the Classname somewhere
+	 * Draw the meta-class name
 	 */
-	public void drawName(Context2d context){
+	private void drawName(Context2d context) {
 		
-		context.fillText(metaClass.getName(), x+1, y+1, width);
+	
+		String txt = metaClass.getWidth()-metaClass.getNameLeftSpace() >(metaClass.getName().length()*metaClass.getNameFontCharWidth()) 
+				? metaClass.getName() : metaClass.getName().subSequence(0, (int) ((metaClass.getWidth()-metaClass.getNameLeftSpace())/metaClass.getNameFontCharWidth() - 3))+"...";
+		
+		context.setFillStyle(metaClass.getNameFontColor());
+		context.setFont("bold "+metaClass.getNameFontSize()+"px "+metaClass.getFontFamily());
+		
+		context.setTextAlign("left");
+		context.fillText(txt, metaClass.getX()+metaClass.getNameLeftSpace(), metaClass.getY()+metaClass.getNameTopSpace()+metaClass.getNameFontSize());
+		
+		
+		// if there is at least one attribute, draw a horizontal line
+		if (metaClass.isDisplayAttributes() && metaClass.getAttributeCount()>0 )
+		{
+			context.setFillStyle(metaClass.getBorderColor());
+			context.fillRect(metaClass.getX(), metaClass.getY()+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace(), metaClass.getWidth(), metaClass.getBorderSize());
+		}
 		
 	}
 
+	/**
+	 * Calculate the width and height that is needed to paint the whole object completely on the canvas.
+	 * 
+	 */
+	public void autoSize()
+	{
+		// TODO optimization 
+		
+		double nameWidth = metaClass.getNameLeftSpace() + metaClass.getName().length()*metaClass.getNameFontCharWidth() + metaClass.getNameRightSpace();
+		double nameHeight = metaClass.getNameTopSpace() + metaClass.getNameFontSize() + metaClass.getNameBottomSpace();
+		
+		double attributesHeight = metaClass.getAttributeListTopSpace() + metaClass.getAttributeCount()* (metaClass.getAttributeFontSize() + metaClass.getAttributeToAttributeSpace()) + metaClass.getAttributeListBottomSpace();
+		
+		
+		
+		int longestChar = 0;
+		
+		// Calculate the longest attribute (attribute string)
+		for (int i =0; i<metaClass.getAttributeCount();i++)
+		{
+			Attribute a = metaClass.getAttribute(i);
+			if ((a.getName().length() + a.getType().length() + 3 )> longestChar)	// + 3 is for the separator String " : " between name and type
+				longestChar = a.getName().length() + a.getType().length() + 3;
+		}
+		
+		double attributeWidth = metaClass.getAttributeLeftSpace() + longestChar *metaClass.getAttributeFontCharWidth() + metaClass.getAttributeRightSpace();
+		
+		if (metaClass.isDisplayAttributes())
+		{
+			// Set width
+			if (attributeWidth>nameWidth)
+				metaClass.setWidth( attributeWidth );
+			else
+				metaClass.setWidth( nameWidth );
+		}
+		else
+			metaClass.setWidth(nameWidth);
+			
+		// Set height
+		metaClass.setHeight(metaClass.isDisplayAttributes() ? (nameHeight + attributesHeight) : nameHeight); 
+		
+		// Set the ResizeArea at the correct Position
+		autoSetResizeAreaPosition();
+	}
+	
+	
+	/**
+	 * Sets automatically the Position of the ResizeArea.
+	 * This method should be called, whenever the width or height of this MetaClass drawable has been changed (except by a ResizeEvents)<br/>
+	 * <b>Notice</b> {@link #autoSize()} will call this method automatically.
+	 */
+	private void autoSetResizeAreaPosition()
+	{
+		for (ResizeArea r : resizeAreas)
+		{
+			r.setX(metaClass.getX()+metaClass.getWidth()-r.getWidht());
+			r.setY(metaClass.getY()+metaClass.getHeight()-r.getHeight());
+		}
+	}
+	
+	
 	@Override
 	public boolean isMoveable() {
-		return canBeMoved;
+		return metaClass.isCanBeMoved();
 	}
 
 	@Override
 	public double getWidth() {
-		return width;
+		return metaClass.getWidth();
 	}
 
 	@Override
 	public double getHeight() {
-		return height;
+		return metaClass.getHeight();
 	}
 
 	@Override
 	public void setWidth(double width) {
-		this.width = width;
+		metaClass.setWidth(width);
 	}
 
 	@Override
 	public void setHeight(double height) {
-		this.height = height;
+		metaClass.setHeight(height);
 	}
 
 	@Override
 	public boolean isResizeable() {
-			return canBeResized;
+			return metaClass.isCanBeResized();
 	}
 
 	@Override
 	public void setMinWidth(double minWidth) {
-		this.minWidth = minWidth;
+		metaClass.setMinWidth(minWidth);
 	}
 
 	@Override
 	public double getMinWidth() {
 		
-		return minWidth;
+		return metaClass.getMinWidth();
 	}
 
 	@Override
 	public void setMinHeight(double minHeight) {
-		this.minHeight = minHeight;
+		metaClass.setMinHeight(minHeight);
 	}
 
 	@Override
 	public double getMinHeight() {
-		return minHeight;
+		return metaClass.getMinHeight();
 	}
 
 	@Override
 	public void setSelected(boolean selected) {
-		this.selected = selected;
+		metaClass.setSelected(true);
 	}
 
 	@Override
 	public boolean isSelected() {
-		return selected;
+		return metaClass.isSelected();
 	}
 
 	@Override
@@ -257,6 +343,8 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 			this.setHeight(event.getHeight());
 			
 		}
+		
+		
 		
 		
 	}
@@ -354,35 +442,20 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 	}
 
 	public String getBorderColor() {
-		return borderColor;
+		return metaClass.getBorderColor();
 	}
 
 	public void setBorderColor(String borderColor) {
-		this.borderColor = borderColor;
+		metaClass.setBorderColor(borderColor);
 	}
 
 	public int getBorderSize() {
-		return borderSize;
+		return metaClass.getBorderSize();
 	}
 
 	public void setBorderSize(int borderSize) {
-		this.borderSize = borderSize;
+		metaClass.setBorderSize(borderSize);
 	}
 
-	public String getBackgroundColor() {
-		return backgroundColor;
-	}
 
-	public void setBackgroundColor(String backgroundColor) {
-		this.backgroundColor = backgroundColor;
-	}
-
-	public String getTextColor() {
-		return textColor;
-	}
-
-	public void setTextColor(String textColor) {
-		this.textColor = textColor;
-	}
-	
 }
