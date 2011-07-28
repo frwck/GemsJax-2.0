@@ -13,6 +13,12 @@ public interface Focusable {
 	
 	public void addFocusHandler(FocusHandler handler);
 	public void removeFocusHandler(FocusHandler handler);
-	public void fireFocusEvent(FocusEvent event);
+
+	/**
+	 * Fire a FocusEvent
+	 * @param event
+	 * @return true if at least one Handler is registered and has received this event. Otherwise false (if there is no Handler registered).
+	 */
+	public boolean fireFocusEvent(FocusEvent event);
 
 }

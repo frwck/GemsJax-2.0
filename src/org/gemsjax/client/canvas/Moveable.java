@@ -11,8 +11,14 @@ import org.gemsjax.client.canvas.handler.MoveHandler;
  */
 public interface Moveable {
 	
-	void addMoveHandler(MoveHandler handler);
-	void removeHandler(MoveHandler handler);
-	void fireMoveEvent(MoveEvent event);
+	public void addMoveHandler(MoveHandler handler);
+	public void removeMoveHandler(MoveHandler handler);
+	
+	/**
+	 * Fire a MoveEvent
+	 * @param event
+	 * @return true if at least one MoveHandler is registered and has received this event. Otherwise false (if there is no MoveHandler registered).
+	 */
+	public boolean fireMoveEvent(MoveEvent event);
 
 }

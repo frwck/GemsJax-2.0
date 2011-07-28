@@ -13,7 +13,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public interface Drawable extends Clickable, Focusable{
+public interface Drawable extends Clickable, Focusable, Moveable{
 	
 	/**
 	 * Get the x coordinate of the Object of the TOP-LEFT Corner
@@ -178,19 +178,7 @@ public interface Drawable extends Clickable, Focusable{
 	 */
 	public void removeResizeHandler(ResizeHandler resizeHandler);
 	
-	/**
-	 * Add a {@link MoveHandler}
-	 * @param moveHandler
-	 */
-	public void addMoveHandler(MoveHandler moveHandler);
-	
-	/**
-	 * Remove a {@link MoveHandler}
-	 * @param moveHandler
-	 */
-	public void removeMoveHandler(MoveHandler moveHandler);
-	
-	/**
+		/**
 	 * Add a {@link MouseOverHandler}
 	 * @param mouseOverHandler
 	 */
@@ -202,10 +190,6 @@ public interface Drawable extends Clickable, Focusable{
 	 */
 	public void removeMouseOverHandler(MouseOverHandler mouseOverHandler);
 	
-	/**
-	 * Get the list with all {@link MoveHandler}s
-	 */
-	public List<MoveHandler> getMoveHandlers();
 
 	/**
 	 * Get the list with all {@link ResizeHandler}s

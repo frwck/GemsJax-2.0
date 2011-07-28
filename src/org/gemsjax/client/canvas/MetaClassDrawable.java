@@ -400,10 +400,6 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 		moveHandlers.remove(moveHandler);
 	}
 
-	@Override
-	public List<MoveHandler> getMoveHandlers() {
-		return moveHandlers;
-	}
 
 	@Override
 	public List<ResizeHandler> getResizeHandlers() {
@@ -484,12 +480,14 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 	}
 
 	@Override
-	public void fireClickEvent(ClickEvent event)
+	public boolean fireClickEvent(ClickEvent event)
 	{
 		for (ClickHandler h: clickHandlers)
 		{
 			h.onClick(event);
 		}
+		
+		return clickHandlers.size()>0;
 	}
 
 	@Override
@@ -499,9 +497,11 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 	}
 
 	@Override
-	public void fireFocusEvent(FocusEvent event) {
+	public boolean fireFocusEvent(FocusEvent event) {
 		for (FocusHandler h : focusHandlers)
 			h.onFocusEvent(event);
+		
+		return focusHandlers.size()>0;
 	}
 
 	@Override
@@ -518,5 +518,19 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 		else
 			this.setSelected(false);
 		
+	}
+
+	@Override
+	public boolean fireMoveEvent(MoveEvent event) {
+		
+		boolean delivered = false;
+		
+		for (MoveHandler h : moveHandlers)
+		{
+			h.onMove(event);
+			delivered = true;
+		}
+		
+		return delivered;
 	}
 }

@@ -1,6 +1,5 @@
 package org.gemsjax.client.canvas;
 
-import java.util.List;
 
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.handler.ClickHandler;
@@ -13,7 +12,12 @@ import org.gemsjax.client.canvas.handler.ClickHandler;
  */
 public interface Clickable {
 
-	void addClickHandler(ClickHandler handler);
-	void removeClickHandler(ClickHandler handler);
-	void fireClickEvent(ClickEvent event);
+	public void addClickHandler(ClickHandler handler);
+	public void removeClickHandler(ClickHandler handler);
+	/**
+	 * Fire a ClickEvent
+	 * @param event
+	 * @return true if at least one Handler is registered and has received this event. Otherwise false (if there is no Handler registered).
+	 */
+	public boolean fireClickEvent(ClickEvent event);
 }

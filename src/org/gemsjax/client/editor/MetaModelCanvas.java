@@ -304,11 +304,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		
 					MoveEvent e = new MoveEvent(mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
 		
-					for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
-					{
-						h.onMove(e);
-					}
-		
+					currentMouseDownDrawable.fireMoveEvent(e);
 					redrawCanvas();
 					return; // Break at this point
 				}
