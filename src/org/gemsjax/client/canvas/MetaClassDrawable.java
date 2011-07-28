@@ -13,6 +13,7 @@ import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.ResizeArea;
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.events.FocusEvent;
+import org.gemsjax.client.canvas.events.MouseOverEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
@@ -432,7 +433,7 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 	}
 
 	@Override
-	public void onMouseOver(double x, double y) {
+	public void onMouseOver(MouseOverEvent event) {
 		// TODO What to do when mouse is over. Let a Menu appear
 	}
 

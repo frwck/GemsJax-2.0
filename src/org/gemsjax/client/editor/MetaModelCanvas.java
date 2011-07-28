@@ -326,7 +326,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 			if (currentMouseDownDrawable==null || !currentMouseDownDrawable.isMoveable()) return;
 			
 			
-			// TODO	Prevent that a Drawable can be moved outside the Canvas
+			// TODO	Prevent that a Drawable can be moved outside the Canvasdouble x, double y
 			
 			/*
 			double distanceToLeft, distanceToRight, distanceToTop, distanceToBottom;
