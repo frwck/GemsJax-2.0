@@ -7,9 +7,13 @@ import org.gemsjax.client.admin.model.metamodel.MetaClass;
 import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.canvas.Clickable;
 import org.gemsjax.client.canvas.Drawable;
+import org.gemsjax.client.canvas.Focusable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
+import org.gemsjax.client.canvas.Moveable;
 import org.gemsjax.client.canvas.ResizeArea;
+import org.gemsjax.client.canvas.Resizeable;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
@@ -78,12 +82,26 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 
 
 	/**
-	 * 
+	 * The x coordinate where the mouse down has began
 	 */
 	private double mouseDownX;
+	
+	/**
+	 * The y coordinate where the mouse down has began
+	 */
 	private double mouseDownY;
+	
+	/**
+	 * The initial distance between the Movables x coordinate and the mouse cursor on mouse down event. This  is used to calculate the movement for Moveables
+	 */
 	private double mouseDownInitialXDistance;
+	
+	/**
+	 * The initial distance between the Movables y coordinate and the mouse cursor on mouse down event. This  is used to calculate the movement for Moveables
+	 */
 	private double mouseDownInitialYDistance;
+	
+
 
 	/**
 	 * Is used to calculate the new width durring resizing (MouseMoveEvent) a {@link Drawable}
@@ -103,12 +121,12 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	private Drawable currentMouseDownDrawable;
 
 	/**
-	 * Is used, to say which drawable is now markt as selected
+	 * Is used, to say which drawable is has the focus now
 	 */
-	private Drawable selectedDrawable;	
+	private Drawable currentClicked;	
 
 	/**
-	 * Is used to say, which {@link ResizeArea} has startet the resizing progress.
+	 * Is used to say, which {@link ResizeArea} has started the resizing progress.
 	 * If currentResizeArea is null, than there is currently no resizing on going.
 	 */
 	private ResizeArea currentResizeArea;
@@ -197,35 +215,49 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		
 			case NORMAL:
 				
-				// TODO : Canvas: Wrong Focus (ResizeArea) When you move a Drawable in the canvas and will overlap it with another Drawable with the higher Z index, the Drawable  with the highest Z index will get the Focus instead of the drawable, which has been moved
-				Drawable previous = selectedDrawable;
-		
-				selectedDrawable = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
+				Drawable previous = currentClicked;
 				
-				if (previous != null)
-					previous.fireFocusEvent(new FocusEvent(previous, FocusEventType.LOST_FOCUS));
-		
-		
-				if (selectedDrawable != null)
+				currentClicked = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
+				
+				// ClickEvent
+				if (currentClicked instanceof Clickable)
 				{
 					org.gemsjax.client.canvas.events.ClickEvent.MouseButton button = org.gemsjax.client.canvas.events.ClickEvent.MouseButton.LEFT;
 					
-						if (event.getNativeButton()== com.google.gwt.dom.client.NativeEvent.BUTTON_RIGHT)
-							button = org.gemsjax.client.canvas.events.ClickEvent.MouseButton.RIGHT;
-						else
-							if (event.getNativeButton()== com.google.gwt.dom.client.NativeEvent.BUTTON_MIDDLE)
-								button = org.gemsjax.client.canvas.events.ClickEvent.MouseButton.MIDDLE;
-					
-					selectedDrawable.fireClickEvent(new org.gemsjax.client.canvas.events.ClickEvent(selectedDrawable, event.getX(), event.getY(), event.getScreenX(), event.getScreenY(), button));
-					
-					// Focus event
-					selectedDrawable.fireFocusEvent(new FocusEvent(selectedDrawable, FocusEventType.GOT_FOCUS));
-					
-					
-				}else
-					if (previous != null) 
-						previous.fireFocusEvent(new FocusEvent(previous, FocusEventType.LOST_FOCUS));
+					if (event.getNativeButton()== com.google.gwt.dom.client.NativeEvent.BUTTON_RIGHT)
+						button = org.gemsjax.client.canvas.events.ClickEvent.MouseButton.RIGHT;
+					else
+						if (event.getNativeButton()== com.google.gwt.dom.client.NativeEvent.BUTTON_MIDDLE)
+							button = org.gemsjax.client.canvas.events.ClickEvent.MouseButton.MIDDLE;
+				
+					((Clickable)currentClicked).fireClickEvent(new org.gemsjax.client.canvas.events.ClickEvent((Clickable)currentClicked, event.getX(), event.getY(), event.getScreenX(), event.getScreenY(), button));
+				}
+				
+				// TODO : Canvas: Wrong Focus (ResizeArea) When you move a Drawable in the canvas and will overlap it with another Drawable with the higher Z index, the Drawable  with the highest Z index will get the Focus instead of the drawable, which has been moved
+				
+				
+				
+				
+				// FocusEvent
+				
+				
 		
+				if (previous != null && previous instanceof Focusable)
+					((Focusable)previous).fireFocusEvent(new FocusEvent((Focusable)previous, FocusEventType.LOST_FOCUS));
+		
+		
+				if (currentClicked != null && currentClicked instanceof Focusable)
+				{
+										// Focus event
+					((Focusable)currentClicked).fireFocusEvent(new FocusEvent((Focusable)currentClicked, FocusEventType.GOT_FOCUS));
+					
+					
+				}
+				
+				else	// clicking somewhere in the white (not on a class)
+					if (previous != null && previous instanceof Focusable) 
+						((Focusable)previous).fireFocusEvent(new FocusEvent((Focusable)previous, FocusEventType.LOST_FOCUS));
+				
 				redrawCanvas();
 				
 				break; // End case Normal
@@ -244,26 +276,37 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		{
 		
 			case NORMAL:
+				
 				isMouseDown =true;
-				currentMouseDownDrawable = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
-		
-				if (currentMouseDownDrawable==null) return;
-		
-		
-				// check for Resizing by checking if there is a ResizeArea at the current mouse position
-				this.currentResizeArea = currentMouseDownDrawable.isResizerAreaAt(event.getX(), event.getY());
-				if (currentResizeArea != null)
-				{
-					beforeResizeWidth = currentMouseDownDrawable.getWidth();
-					beforeResizeHeight = currentMouseDownDrawable.getHeight();
-				}
-		
-		
+				
 				mouseDownX = event.getX();
 				mouseDownY = event.getY();
-				mouseDownInitialXDistance = event.getX() - currentMouseDownDrawable.getX();
-				mouseDownInitialYDistance = event.getY() - currentMouseDownDrawable.getY();
+				
+				
+				currentMouseDownDrawable = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
+				
+				// Resizeable
+				if (currentMouseDownDrawable!=null)
+				{
+					// check for Resizing by checking if there is a ResizeArea at the current mouse position
+					this.currentResizeArea = currentMouseDownDrawable.isResizerAreaAt(event.getX(), event.getY());
+				
+					if (currentResizeArea != null && currentMouseDownDrawable instanceof Resizeable)
+					{
+						beforeResizeWidth = ((Resizeable)currentMouseDownDrawable).getWidth();
+						beforeResizeHeight = ((Resizeable)currentMouseDownDrawable).getHeight();
+					}		
 			
+				}
+				
+				
+				//  Moveable				
+				if (currentMouseDownDrawable!=null && currentMouseDownDrawable instanceof Moveable)
+				{
+					mouseDownInitialXDistance = event.getX() - ((Moveable)currentMouseDownDrawable).getX();
+					mouseDownInitialYDistance = event.getY() - ((Moveable)currentMouseDownDrawable).getY();
+				}
+				 
 			break; // End NORMAL
 		}
 
@@ -276,37 +319,40 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		{
 		
 			case NORMAL:
-				if (currentMouseDownDrawable == null) return;
-		
+				
+				
+				
 				// Resize, if mouse is on a ResizeArea and Resizeable
-				if (currentMouseDownDrawable.isResizeable() && isMouseDown && currentResizeArea != null)
+				if (currentMouseDownDrawable != null && currentMouseDownDrawable instanceof Resizeable &&((Resizeable)currentMouseDownDrawable).isResizeable() && isMouseDown && currentResizeArea != null)
 				{
 					double width = beforeResizeWidth +  event.getX() - mouseDownX;
 					double height = beforeResizeHeight + event.getY() - mouseDownY;
-		
-					SC.logWarn(" w "+width +" "+(event.getX() - mouseDownX)+ " h "+height);
-		
-		
-					ResizeEvent e = new ResizeEvent(currentMouseDownDrawable, width, height, event.getX(), event.getY(), currentResizeArea);
-					currentMouseDownDrawable.fireResizeEvent(e);
+					
+					ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, width, height, event.getX(), event.getY(), currentResizeArea);
+			
+					//ResizeEvent e = new ResizeEvent((Resizeable)currentMouseDownDrawable, previousMouseMoveX, previousMouseMoveY, event.getX(), event.getY());
+					
+					((Resizeable)currentMouseDownDrawable).fireResizeEvent(e);
+					
 		
 					redrawCanvas();
 		
 					return; // Break at this point 
 				}
 		
+				
 		
-		
-				// Move a Drawable if it is moveable	
-				if (currentMouseDownDrawable.isMoveable() && isMouseDown)
+				// MoveEvent
+				if (currentMouseDownDrawable instanceof Moveable && ((Moveable) currentMouseDownDrawable).isMoveable() && isMouseDown)
 				{
 		
-					MoveEvent e = new MoveEvent(currentMouseDownDrawable, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
+					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
 		
-					currentMouseDownDrawable.fireMoveEvent(e);
+					((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
 					redrawCanvas();
 					return; // Break at this point
 				}
+				
 				
 			break; // END Normal
 				
@@ -351,6 +397,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
+
 		
 		switch (editingMode)
 		{

@@ -35,7 +35,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler{
+public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOutable, MouseOverable, Moveable, Resizeable, ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler{
 
 	
 	private List<ResizeArea> resizeAreas;
@@ -76,33 +76,41 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 		 this.addMouseOverHandler(this);
 	}
 		
-	@Override
+	/**
+	 * Get the x coordinate of the Object of the TOP-LEFT Corner
+	 * @return
+	 */
 	public double getX() {
 		return metaClass.getX();
 	}
-
-	@Override
+	
+	/**
+	 * Get the y coordinate of the Object of the TOP-LEFT Corner
+	 * @return
+	 */
 	public double getY() {
 		return metaClass.getY();
 	}
 
-	@Override
+	/**
+	 * Get the z coordinate. This will be used for overlapping objects.
+	 * The Z coordinate has the same meaning like the CSS z-index. That means that an object with an higher
+	 * z value will be painted in the foreground, the other object will be painted overlapping in the background.
+	 * @return
+	 */
 	public double getZ() {
 		return metaClass.getZ();
 	}
 
-	@Override
 	public void setX(double x) {
 		metaClass.setX(x);
 		
 	}
 
-	@Override
 	public void setY(double y) {
 		metaClass.setY(y);
 	}
 
-	@Override
 	public void setZ(double z) {
 		metaClass.setZ(z);
 	}
@@ -139,20 +147,21 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 		if (metaClass.isDisplayAttributes())
 			drawAttributes(context);
 		
-	}
-
-	@Override
-	public void drawOnMouseOver(Context2d context) {
-		// TODO what to do when mouse is over
+		
+		if (isSelected())
+			drawOnSelected(context);
 		
 	}
 
-	@Override
+	
+	/**
+	 * Implement how the Drawable should be drawn, when the Drawable has been selected (for example by clicking on it)
+	 * @param context
+	 */
 	public void drawOnSelected(Context2d context) {
 		
-		draw(context);
-
-		if (isSelected())
+		// Draw the ResizeAreas 
+		
 		for (ResizeArea ra : resizeAreas)
 			ra.draw(context);
 				
@@ -287,22 +296,28 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 		return metaClass.isCanBeMoved();
 	}
 
-	@Override
+	/**
+	 * Get the width
+	 * @return
+	 */
 	public double getWidth() {
 		return metaClass.getWidth();
 	}
 
-	@Override
+	/**
+	 * Get the Height
+	 * @return
+	 */
 	public double getHeight() {
 		return metaClass.getHeight();
 	}
 
-	@Override
+	
 	public void setWidth(double width) {
 		metaClass.setWidth(width);
 	}
 
-	@Override
+	
 	public void setHeight(double height) {
 		metaClass.setHeight(height);
 	}
@@ -312,39 +327,61 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 			return metaClass.isCanBeResized();
 	}
 
-	@Override
+	/**
+	 * Set the minimum Width of this Drawable.
+	 * So if you can Resize the Drawable, you never will be able to resize it to a smaller as the minimum Width
+	 * @param minWidth
+	 */
 	public void setMinWidth(double minWidth) {
 		metaClass.setMinWidth(minWidth);
 	}
 
-	@Override
+	/**
+	 * get the minimum Width of this Drawable.
+	 * So if you can Resize the Drawable, you never will be able to resize it to a smaller as the minimum Width
+	 */
 	public double getMinWidth() {
 		
 		return metaClass.getMinWidth();
 	}
 
-	@Override
+	/**
+	 * Set the minimum height of this Drawable.
+	 * So if you can Resize the Drawable, you never will be able to resize it to a smaller as the minimum height
+	 * @param minWidth
+	 */
 	public void setMinHeight(double minHeight) {
 		metaClass.setMinHeight(minHeight);
 	}
 
-	@Override
+
+	/**
+	 * Get the minimum height of this Drawable.
+	 * So if you can Resize the Drawable, you never will be able to resize it to a smaller as the minimum height
+	 */
 	public double getMinHeight() {
 		return metaClass.getMinHeight();
 	}
 
-	@Override
+	/**
+	 * Set this drawable as selected, so the {@link #drawOnSelected(Context2d)} method should be called
+	 * @param selected
+	 */
 	public void setSelected(boolean selected) {
 		metaClass.setSelected(selected);
 	}
 
-	@Override
+	/**
+	 * Set this as selected, so the {@link #drawOnSelected(Context2d)} method should be called
+	 * @param selected
+	 */
 	public boolean isSelected() {
 		return metaClass.isSelected();
 	}
 
 	@Override
 	public void onResize(ResizeEvent event) {
+		
 		
 		if (isResizeable() && event.getWidth()>getMinWidth() && event.getHeight()>getMinHeight())
 		{
@@ -360,8 +397,24 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 			
 		}
 		
+		/*
 		
 		
+		if (isResizeable())
+		{
+			if (event.getStartX()<event.getEndX())
+				this.setWidth( getWidth() + (event.getEndX() - event.getStartX() ) );
+			else
+				this.setWidth( getWidth() - (event.getStartX() - event.getEndX() ) );
+				
+			if (event.getStartY()<event.getEndY())
+				this.setHeight( getHeight()+ ( event.getEndY() - event.getStartY() ) );
+			else
+				this.setHeight( getHeight()- ( event.getStartY() - event.getEndY() ) );
+			
+			autoSetResizeAreaPosition();
+		}
+		*/
 		
 	}
 
@@ -409,17 +462,6 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 	}
 
 
-	
-
-	@Override
-	public boolean isMouseOver() {
-		return mouseOver;
-	}
-
-	@Override
-	public void setMouseOver(boolean mouseOver) {
-		this.mouseOver = mouseOver;
-	}
 
 	@Override
 	public void addMouseOverHandler(MouseOverHandler mouseOverHandler) {
@@ -431,10 +473,6 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 		mouseOverHandlers.remove(mouseOverHandler);
 	}
 
-	@Override
-	public List<MouseOverHandler> getMouseOverHandlers() {
-		return mouseOverHandlers;
-	}
 
 	@Override
 	public void onMouseOver(MouseOverEvent event) {
@@ -601,5 +639,10 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 	public void onMouseOut(MouseOutEvent event) {
 		// TODO What to do when the mouse is moved out? see onMouseOver
 		
+	}
+
+	@Override
+	public double getZIndex() {
+		return metaClass.getZ();
 	}
 }

@@ -10,7 +10,7 @@ import org.gemsjax.client.canvas.handler.ClickHandler;
  * @author Hannes Dorfmann
  *
  */
-public interface Clickable {
+public interface Clickable{
 
 	public void addClickHandler(ClickHandler handler);
 	public void removeClickHandler(ClickHandler handler);

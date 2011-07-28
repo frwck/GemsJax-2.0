@@ -197,13 +197,7 @@ public class BufferedCanvas extends VLayout {
 	private void drawObjects()
 	{
 		for (Drawable d: drawableStorage.getAllElements())
-			if (d.isSelected())
-				d.drawOnSelected(backBufferContext);
-			else
-				if (d.isMouseOver())
-					d.drawOnMouseOver(backBufferContext);
-				else
-					d.draw(backBufferContext);
+				d.draw(backBufferContext);
 	}
 
 

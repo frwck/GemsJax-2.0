@@ -21,4 +21,13 @@ public interface Moveable {
 	 */
 	public boolean fireMoveEvent(MoveEvent event);
 
+	/**
+	 * Can the Drawable be moved at the moment
+	 * @return
+	 */
+	public boolean isMoveable();
+	
+	public double getX();
+	
+	public double getY();
 }

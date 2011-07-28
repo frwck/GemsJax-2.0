@@ -8,7 +8,7 @@ import org.gemsjax.client.canvas.handler.MouseOverHandler;
  * @author Hannes Dorfmann
  *
  */
-public interface MouseOverable {
+public interface MouseOverable{
 	
 	public void addMouseOverHandler(MouseOverHandler handler);
 	public void removeMouseOverHandler(MouseOverHandler handler);

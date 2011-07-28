@@ -43,7 +43,7 @@ public class DrawableStorage {
 		{
 			if (d.hasCoordinate(x, y))
 			{
-				if (result== null || d.getZ()>=result.getZ())
+				if (result== null || d.getZIndex()>=result.getZIndex())
 					result = d;
 			}
 				
@@ -57,13 +57,13 @@ public class DrawableStorage {
 	/**
 	 * Add a {@link Drawable}.
 	 * The internal list will set the list according the z index. So the list is sorted by the z index, from less to great.
-	 * This has the advantage, that the list is in the correct order for tje Canvas to draw the elements.
+	 * This has the advantage, that the list is in the correct order for the Canvas to draw the elements.
 	 * @param d
 	 * @throws DoubleLimitException 
 	 */
 	public void add(Drawable d) throws DoubleLimitException
 	{
-		d.setZ(getNextZIndex());
+		// TODO insert at the correct position, according the z index
 		elements.add(elements.size(), d);
 	}
 	
@@ -80,7 +80,10 @@ public class DrawableStorage {
 	
 	/**
 	 * Get all {@link Drawable}s in the order in wich they should be painted on the Canvas
-	 * @return
+	 * @return@Override
+	public List<MouseOverHandler> getMouseOverHandlers() {
+		return mouseOverHandlers;
+	}
 	 */
 	public Collection<Drawable> getAllElements()
 	{
