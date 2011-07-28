@@ -534,4 +534,20 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 		
 		return delivered;
 	}
+	
+	
+
+	@Override
+	public boolean fireMouseOverEvent(MouseOverEvent event) {
+		
+		boolean delivered = false;
+		
+		for (MouseOverHandler h : mouseOverHandlers)
+		{
+			h.onMouseOver(event);
+			delivered = true;
+		}
+		
+		return delivered;
+	}
 }
