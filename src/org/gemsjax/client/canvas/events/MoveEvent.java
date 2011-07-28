@@ -1,6 +1,7 @@
 package org.gemsjax.client.canvas.events;
 
 import org.gemsjax.client.canvas.BufferedCanvas;
+import org.gemsjax.client.canvas.Moveable;
 
 /**
  * This is an Event, that will be thrown, when a Drawable has been selected an will be moved (position) on the {@link BufferedCanvas}.
@@ -19,10 +20,11 @@ public class MoveEvent {
 	private double distanceToTopLeftX;
 	private double distanceToTopLeftY;
 	
+	private Moveable source;
 	
 	
 	
-	public MoveEvent(double startX, double startY, double x, double y,  double dTopLeftX, double dTopLeftY, int screenX, int screenY, boolean leftMouse)
+	public MoveEvent(Moveable source, double startX, double startY, double x, double y,  double dTopLeftX, double dTopLeftY, int screenX, int screenY, boolean leftMouse)
 	{
 		this.startX = startX;
 		this.startY = startY;
@@ -34,8 +36,15 @@ public class MoveEvent {
 		this.distanceToTopLeftX = dTopLeftX;
 		this.distanceToTopLeftY = dTopLeftY;
 		
+		this.source = source;
 		
 	}
+	
+	public Moveable getSource()
+	{
+		return source;
+	}
+	
 	
 	public double getX() {
 		return x;

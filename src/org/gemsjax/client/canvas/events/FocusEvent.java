@@ -1,6 +1,7 @@
 package org.gemsjax.client.canvas.events;
 
 import org.gemsjax.client.canvas.Drawable;
+import org.gemsjax.client.canvas.Focusable;
 
 /**
  * FocusEvents will be thrown, when the Drawable get the focus or lost the focus:
@@ -20,10 +21,10 @@ public class FocusEvent {
 	}
 	
 	
-	private Drawable source;
+	private Focusable source;
 	private FocusEventType type;
 	
-	public FocusEvent(Drawable source, FocusEventType type)
+	public FocusEvent(Focusable source, FocusEventType type)
 	{
 		this.source = source;
 		this.type = type;
@@ -32,7 +33,7 @@ public class FocusEvent {
 	/**
 	 * @return The {@link Drawable} that has fired this Event
 	 */
-	public Drawable getSource() {
+	public Focusable getSource() {
 		return source;
 	}
 

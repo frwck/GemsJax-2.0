@@ -98,7 +98,7 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 	}
 
 	@Override
-	public void setY(double y) {mouseOverHandler
+	public void setY(double y) {
 		metaClass.setY(y);
 	}
 

@@ -287,7 +287,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 					SC.logWarn(" w "+width +" "+(event.getX() - mouseDownX)+ " h "+height);
 		
 		
-					ResizeEvent e = new ResizeEvent(width, height, event.getX(), event.getY(), currentResizeArea);
+					ResizeEvent e = new ResizeEvent(currentMouseDownDrawable, width, height, event.getX(), event.getY(), currentResizeArea);
 					currentMouseDownDrawable.fireResizeEvent(e);
 		
 					redrawCanvas();
@@ -301,7 +301,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				if (currentMouseDownDrawable.isMoveable() && isMouseDown)
 				{
 		
-					MoveEvent e = new MoveEvent(mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
+					MoveEvent e = new MoveEvent(currentMouseDownDrawable, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
 		
 					currentMouseDownDrawable.fireMoveEvent(e);
 					redrawCanvas();

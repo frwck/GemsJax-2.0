@@ -1,5 +1,6 @@
 package org.gemsjax.client.canvas.events;
 
+import org.gemsjax.client.canvas.Clickable;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 
@@ -17,7 +18,7 @@ public class ClickEvent {
 	}
 	
 	
-	private Drawable clickedDrawable;
+	private Clickable clickedDrawable;
 	private double x;
 	private double y;
 	private int screenX;
@@ -25,7 +26,7 @@ public class ClickEvent {
 	private MouseButton mouseButton;
 	
 	
-	public ClickEvent(Drawable clickedDrawable, double x, double y, int screenX, int screenY, MouseButton mouseButton)
+	public ClickEvent(Clickable clickedDrawable, double x, double y, int screenX, int screenY, MouseButton mouseButton)
 	{
 		this.clickedDrawable  = clickedDrawable;
 		this.x = x;
@@ -36,7 +37,7 @@ public class ClickEvent {
 	}
 
 
-	public Drawable getSource() {
+	public Clickable getSource() {
 		return clickedDrawable;
 	}
 

@@ -1,14 +1,15 @@
 package org.gemsjax.client.canvas.events;
 
 import org.gemsjax.client.canvas.Drawable;
+import org.gemsjax.client.canvas.MouseOverable;
 
 public class MouseOverEvent {
 	
 	private double x;
 	private double y;
-	private Drawable source;
+	private MouseOverable source;
 	
-	public MouseOverEvent(Drawable source, double x, double y)
+	public MouseOverEvent(MouseOverable source, double x, double y)
 	{
 		this.x = x;
 		this.y = y;
@@ -23,7 +24,7 @@ public class MouseOverEvent {
 		return y;
 	}
 
-	public Drawable getSource() {
+	public MouseOverable getSource() {
 		return source;
 	}
 

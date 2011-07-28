@@ -17,13 +17,11 @@ public class DrawableStorage {
 
 	// TODO Maybe a tree structure would increase the performance
 	private List<Drawable> elements;
-	private Drawable getDrawableAtResult;
 	private double nextZIndex;
 	
 	public DrawableStorage()
 	{
 		elements = new LinkedList<Drawable>();
-		getDrawableAtResult = null;
 		nextZIndex = -1000000;
 	}
 	
@@ -39,20 +37,20 @@ public class DrawableStorage {
 	 */
 	public synchronized Drawable getDrawableAt(double x, double y)
 	{
-		getDrawableAtResult = null;
+		Drawable result = null;
 		
 		for (Drawable d: elements)
 		{
 			if (d.hasCoordinate(x, y))
 			{
-				if (getDrawableAtResult== null || d.getZ()>=getDrawableAtResult.getZ())
-					getDrawableAtResult = d;
+				if (result== null || d.getZ()>=result.getZ())
+					result = d;
 			}
 				
 		}
 		
 		
-		return getDrawableAtResult;
+		return result;
 		
 	}
 	

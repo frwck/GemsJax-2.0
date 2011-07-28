@@ -2,6 +2,7 @@ package org.gemsjax.client.canvas.events;
 
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.ResizeArea;
+import org.gemsjax.client.canvas.Resizeable;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 
 /**
@@ -16,15 +17,17 @@ public class ResizeEvent {
 	private double x;
 	private double y;
 	private ResizeArea resizeArea;
+	private Resizeable source;
 	
 	
-	public ResizeEvent(double width, double height, double x, double y, ResizeArea r)
+	public ResizeEvent(Resizeable source, double width, double height, double x, double y, ResizeArea r)
 	{
 		this.width = width;
 		this.height = height;
 		this.x = x;
 		this.y = y;
 		this.resizeArea = r;
+		this.source = source;
 	}
 
 
@@ -50,6 +53,11 @@ public class ResizeEvent {
 
 	public ResizeArea getResizeArea() {
 		return resizeArea;
+	}
+	
+	public Resizeable getSource()
+	{
+		return source;
 	}
 
 }
