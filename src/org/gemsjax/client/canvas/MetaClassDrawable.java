@@ -13,12 +13,14 @@ import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.ResizeArea;
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.events.FocusEvent;
+import org.gemsjax.client.canvas.events.MouseOutEvent;
 import org.gemsjax.client.canvas.events.MouseOverEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
+import org.gemsjax.client.canvas.handler.MouseOutHandler;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
@@ -33,7 +35,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler{
+public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler{
 
 	
 	private List<ResizeArea> resizeAreas;
@@ -43,6 +45,7 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 	private List<MouseOverHandler> mouseOverHandlers;
 	private List <ClickHandler> clickHandlers;
 	private List <FocusHandler> focusHandlers;
+	private List <MouseOutHandler> mouseOutHandlers;
 	
 
 	private MetaClass metaClass;
@@ -52,21 +55,25 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 	{
 		this.metaClass = metaClass;
 	
-		// Handlers
+		// Handler lists
 		 resizeAreas = new LinkedList<ResizeArea>();
 		 moveHandlers = new LinkedList<MoveHandler>();
 		 resizeHandlers = new LinkedList<ResizeHandler>();
 		 mouseOverHandlers = new LinkedList<MouseOverHandler>();
 		 clickHandlers = new LinkedList<ClickHandler>();
 		 focusHandlers = new LinkedList<FocusHandler>();
+		 mouseOutHandlers = new LinkedList<MouseOutHandler>();
 
 		 // a Resize Area
 		 resizeAreas.add(new ResizeArea(metaClass.getX()+metaClass.getWidth()-6, metaClass.getY()+metaClass.getHeight()-6, 6, 6));
 
+		 // Handlers
 		 this.addMouseOverHandler(this);
 		 this.addMoveHandler(this);
 		 this.addResizeHandler(this);
 		 this.addFocusHandler(this);
+		 this.addMouseOutHandler(this);
+		 this.addMouseOverHandler(this);
 	}
 		
 	@Override
@@ -91,7 +98,7 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 	}
 
 	@Override
-	public void setY(double y) {
+	public void setY(double y) {mouseOverHandler
 		metaClass.setY(y);
 	}
 
@@ -402,10 +409,7 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 	}
 
 
-	@Override
-	public List<ResizeHandler> getResizeHandlers() {
-		return resizeHandlers;
-	}
+	
 
 	@Override
 	public boolean isMouseOver() {
@@ -549,5 +553,53 @@ public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, R
 		}
 		
 		return delivered;
+	}
+
+	
+	@Override
+	public boolean fireResizeEvent(ResizeEvent event) {
+		
+		boolean delivered = false;
+		
+		for (ResizeHandler h : resizeHandlers)
+		{
+			h.onResize(event);
+			delivered = true;
+		}
+		
+		return delivered;
+	}
+
+	@Override
+	public void addMouseOutHandler(MouseOutHandler handler) {
+		if (!mouseOutHandlers.contains(handler))
+			mouseOutHandlers.add(handler);
+	}
+
+	@Override
+	public boolean fireMouseOutEvent(MouseOutEvent event) {
+		
+		boolean delivered = false;
+		
+		for (MouseOutHandler h : mouseOutHandlers)
+		{
+			h.onMouseOut(event);
+			delivered = true;
+		}
+		
+		return delivered;
+	}
+
+	@Override
+	public void removeMouseOutHandler(MouseOutHandler handler) {
+		
+		mouseOutHandlers.remove(handler);
+		
+	}
+
+	@Override
+	public void onMouseOut(MouseOutEvent event) {
+		// TODO What to do when the mouse is moved out? see onMouseOver
+		
 	}
 }

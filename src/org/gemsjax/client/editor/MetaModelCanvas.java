@@ -288,8 +288,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		
 		
 					ResizeEvent e = new ResizeEvent(width, height, event.getX(), event.getY(), currentResizeArea);
-					for (ResizeHandler r : currentMouseDownDrawable.getResizeHandlers())
-						r.onResize(e);
+					currentMouseDownDrawable.fireResizeEvent(e);
 		
 					redrawCanvas();
 		
