@@ -13,7 +13,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public interface Drawable {
+public interface Drawable extends Clickable, Focusable{
 	
 	/**
 	 * Get the x coordinate of the Object of the TOP-LEFT Corner

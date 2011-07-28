@@ -10,8 +10,10 @@ import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.ResizeArea;
+import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
+import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 
@@ -199,19 +201,30 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				Drawable previous = selectedDrawable;
 		
 				selectedDrawable = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
-		
+				
 				if (previous != null)
-					previous.setSelected(false);
+					previous.fireFocusEvent(new FocusEvent(previous, FocusEventType.LOST_FOCUS));
 		
 		
 				if (selectedDrawable != null)
 				{
-					selectedDrawable.setSelected(true);
-		
+					org.gemsjax.client.canvas.events.ClickEvent.MouseButton button = org.gemsjax.client.canvas.events.ClickEvent.MouseButton.LEFT;
+					
+						if (event.getNativeButton()== com.google.gwt.dom.client.NativeEvent.BUTTON_RIGHT)
+							button = org.gemsjax.client.canvas.events.ClickEvent.MouseButton.RIGHT;
+						else
+							if (event.getNativeButton()== com.google.gwt.dom.client.NativeEvent.BUTTON_MIDDLE)
+								button = org.gemsjax.client.canvas.events.ClickEvent.MouseButton.MIDDLE;
+					
+					selectedDrawable.fireClickEvent(new org.gemsjax.client.canvas.events.ClickEvent(selectedDrawable, event.getX(), event.getY(), event.getScreenX(), event.getScreenY(), button));
+					
+					// Focus event
+					selectedDrawable.fireFocusEvent(new FocusEvent(selectedDrawable, FocusEventType.GOT_FOCUS));
+					
+					
 				}else
 					if (previous != null) 
-						previous.setSelected(false);
-		
+						previous.fireFocusEvent(new FocusEvent(previous, FocusEventType.LOST_FOCUS));
 		
 				redrawCanvas();
 				

@@ -11,16 +11,19 @@ import org.gemsjax.client.admin.model.metamodel.MetaClass;
 import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.ResizeArea;
+import org.gemsjax.client.canvas.events.ClickEvent;
+import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
+import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
+import org.gemsjax.client.canvas.handler.ClickHandler;
+import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.user.client.ui.RichTextArea.FontSize;
-
 
 
 
@@ -29,7 +32,7 @@ import com.google.gwt.user.client.ui.RichTextArea.FontSize;
  * @author Hannes Dorfmann
  *
  */
-public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, MouseOverHandler{
+public class MetaClassDrawable implements Drawable, ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler{
 
 	
 	private List<ResizeArea> resizeAreas;
@@ -37,6 +40,8 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 	private List<MoveHandler> moveHandlers;
 	private List<ResizeHandler> resizeHandlers;
 	private List<MouseOverHandler> mouseOverHandlers;
+	private List <ClickHandler> clickHandlers;
+	private List <FocusHandler> focusHandlers;
 	
 
 	private MetaClass metaClass;
@@ -51,6 +56,8 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 		 moveHandlers = new LinkedList<MoveHandler>();
 		 resizeHandlers = new LinkedList<ResizeHandler>();
 		 mouseOverHandlers = new LinkedList<MouseOverHandler>();
+		 clickHandlers = new LinkedList<ClickHandler>();
+		 focusHandlers = new LinkedList<FocusHandler>();
 
 		 // a Resize Area
 		 resizeAreas.add(new ResizeArea(metaClass.getX()+metaClass.getWidth()-6, metaClass.getY()+metaClass.getHeight()-6, 6, 6));
@@ -58,6 +65,7 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 		 this.addMouseOverHandler(this);
 		 this.addMoveHandler(this);
 		 this.addResizeHandler(this);
+		 this.addFocusHandler(this);
 	}
 		
 	@Override
@@ -319,7 +327,7 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 
 	@Override
 	public void setSelected(boolean selected) {
-		metaClass.setSelected(true);
+		metaClass.setSelected(selected);
 	}
 
 	@Override
@@ -457,5 +465,58 @@ public class MetaClassDrawable implements Drawable, ResizeHandler, MoveHandler, 
 		metaClass.setBorderSize(borderSize);
 	}
 
+	@Override
+	public void onClick(ClickEvent event) {
+		// TODO what is to do, when the element got a click event? Conflict with FocusEvents?
+	}
+	
+	@Override
+	public void addClickHandler(ClickHandler handler)
+	{
+		if (!clickHandlers.contains(handler))
+			clickHandlers.add(handler);
+	}
+	
+	@Override
+	public void removeClickHandler(ClickHandler handler)
+	{
+		clickHandlers.remove(handler);
+	}
 
+	@Override
+	public void fireClickEvent(ClickEvent event)
+	{
+		for (ClickHandler h: clickHandlers)
+		{
+			h.onClick(event);
+		}
+	}
+
+	@Override
+	public void addFocusHandler(FocusHandler handler) {
+		if (!focusHandlers.contains(handler))
+			focusHandlers.add(handler);
+	}
+
+	@Override
+	public void fireFocusEvent(FocusEvent event) {
+		for (FocusHandler h : focusHandlers)
+			h.onFocusEvent(event);
+	}
+
+	@Override
+	public void removeFocusHandler(FocusHandler handler) {
+	
+		focusHandlers.remove(handler);
+	}
+
+	@Override
+	public void onFocusEvent(FocusEvent event) {
+		
+		if (event.getType()==FocusEventType.GOT_FOCUS)
+			this.setSelected(true);
+		else
+			this.setSelected(false);
+		
+	}
 }
