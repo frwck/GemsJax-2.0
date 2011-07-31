@@ -2,6 +2,9 @@ package org.gemsjax.client.canvas;
 
 import java.util.List;
 
+import org.gemsjax.client.admin.model.metamodel.Connection;
+import org.gemsjax.client.admin.model.metamodel.InheritanceRelation;
+import org.gemsjax.client.admin.model.metamodel.MetaClass;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
@@ -34,14 +37,12 @@ public interface Drawable {
 	 * @param context
 	 */
 	public void draw(Context2d context);
-		
-	/**
-	 * Check if this Drawable has a {@link ResizeArea}, which has the x-y coordinate as part of this {@link ResizeArea}
-	 * @param x
-	 * @param y
-	 * @return The ResizeArea which is at the position or null if there is not a {@link ResizeArea}
-	 */
-	public ResizeArea isResizerAreaAt(double x, double y);
 	
+	/**
+	 * Get the Object that is displayed with this drawable on the canvas.
+	 * This is normaly a {@link MetaClass}, {@link Connection}, {@link InheritanceRelation}, ...
+	 * @return
+	 */
+	public Object getDataObject();
 	
 }

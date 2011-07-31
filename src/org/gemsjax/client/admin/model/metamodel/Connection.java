@@ -17,6 +17,13 @@ public class Connection {
 	private MetaClass target;
 	
 	
+	private double sourceRelativeX;
+	private double sourceRelativeY;
+	private double targetRelativeX;
+	private double targetRelativeY;
+	
+	
+	
 	public Connection(MetaClass source, MetaClass target)
 	{
 		this.source = source;
@@ -42,6 +49,46 @@ public class Connection {
 
 	public void setTarget(MetaClass target) {
 		this.target = target;
+	}
+
+
+	public double getSourceRelativeX() {
+		return sourceRelativeX;
+	}
+
+
+	public void setSourceRelativeX(double sourceRelativeX) {
+		this.sourceRelativeX = sourceRelativeX;
+	}
+
+
+	public double getSourceRelativeY() {
+		return sourceRelativeY;
+	}
+
+
+	public void setSourceRelativeY(double sourceRelativeY) {
+		this.sourceRelativeY = sourceRelativeY;
+	}
+
+
+	public double getTargetRelativeX() {
+		return targetRelativeX;
+	}
+
+
+	public void setTargetRelativeX(double targetRelativeX) {
+		this.targetRelativeX = targetRelativeX;
+	}
+
+
+	public double getTargetRelativeY() {
+		return targetRelativeY;
+	}
+
+
+	public void setTargetRelativeY(double targetRelativeY) {
+		this.targetRelativeY = targetRelativeY;
 	}
 
 }

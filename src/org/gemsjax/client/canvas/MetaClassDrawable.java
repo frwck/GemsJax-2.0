@@ -645,4 +645,9 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	public double getZIndex() {
 		return metaClass.getZ();
 	}
+
+	@Override
+	public Object getDataObject() {
+		return metaClass;
+	}
 }

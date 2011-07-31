@@ -286,12 +286,12 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				currentMouseDownDrawable = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
 				
 				// Resizeable
-				if (currentMouseDownDrawable!=null)
+				if (currentMouseDownDrawable!=null && currentMouseDownDrawable instanceof Resizeable)
 				{
 					// check for Resizing by checking if there is a ResizeArea at the current mouse position
-					this.currentResizeArea = currentMouseDownDrawable.isResizerAreaAt(event.getX(), event.getY());
+					this.currentResizeArea = ((Resizeable)currentMouseDownDrawable).isResizerAreaAt(event.getX(), event.getY());
 				
-					if (currentResizeArea != null && currentMouseDownDrawable instanceof Resizeable)
+					if (currentResizeArea != null )
 					{
 						beforeResizeWidth = ((Resizeable)currentMouseDownDrawable).getWidth();
 						beforeResizeHeight = ((Resizeable)currentMouseDownDrawable).getHeight();
