@@ -1,7 +1,5 @@
 package org.gemsjax.client.canvas;
 
-import org.gemsjax.client.admin.model.metamodel.Connection;
-import org.gemsjax.client.admin.model.metamodel.MetaClass;
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
@@ -10,6 +8,8 @@ import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
+import org.gemsjax.client.model.metamodel.Connection;
+import org.gemsjax.client.model.metamodel.MetaClass;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 

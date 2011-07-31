@@ -1,7 +1,7 @@
 package org.gemsjax.client.admin.event.metamodel;
 
-import org.gemsjax.client.admin.model.metamodel.MetaClass;
-import org.gemsjax.client.admin.model.metamodel.MetaModel;
+import org.gemsjax.client.model.metamodel.MetaClass;
+import org.gemsjax.client.model.metamodel.MetaModel;
 
 public class MetaClassEvent {
 

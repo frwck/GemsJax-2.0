@@ -2,9 +2,10 @@ package org.gemsjax.client.admin.presenter;
 
 
 import org.gemsjax.client.admin.adminui.TabEnviroment;
-import org.gemsjax.client.admin.model.metamodel.MetaModel;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.editor.MetaModelCanvas.EditingMode;
+import org.gemsjax.client.model.metamodel.MetaModel;
+
 import com.google.gwt.event.shared.EventBus;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;

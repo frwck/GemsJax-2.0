@@ -6,8 +6,6 @@ import java.util.List;
 
 import javax.swing.text.html.parser.AttributeList;
 
-import org.gemsjax.client.admin.model.metamodel.Attribute;
-import org.gemsjax.client.admin.model.metamodel.MetaClass;
 import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.ResizeArea;
@@ -24,6 +22,8 @@ import org.gemsjax.client.canvas.handler.MouseOutHandler;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
+import org.gemsjax.client.model.metamodel.Attribute;
+import org.gemsjax.client.model.metamodel.MetaClass;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;

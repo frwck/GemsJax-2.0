@@ -1,7 +1,7 @@
 package org.gemsjax.client.admin.model.metamodel.exception;
 
-import org.gemsjax.client.admin.model.metamodel.Attribute;
-import org.gemsjax.client.admin.model.metamodel.MetaClass;
+import org.gemsjax.client.model.metamodel.Attribute;
+import org.gemsjax.client.model.metamodel.MetaClass;
 
 
 /**

@@ -1,4 +1,4 @@
-package org.gemsjax.client.admin.model.metamodel;
+package org.gemsjax.client.model.metamodel;
 
 import java.util.LinkedList;
 import java.util.List;

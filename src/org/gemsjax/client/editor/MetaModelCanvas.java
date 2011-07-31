@@ -3,7 +3,6 @@ package org.gemsjax.client.editor;
 import javax.swing.text.html.CSS;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
-import org.gemsjax.client.admin.model.metamodel.MetaClass;
 import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
@@ -20,6 +19,7 @@ import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
+import org.gemsjax.client.model.metamodel.MetaClass;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

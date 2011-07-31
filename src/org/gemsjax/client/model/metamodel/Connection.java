@@ -1,4 +1,4 @@
-package org.gemsjax.client.admin.model.metamodel;
+package org.gemsjax.client.model.metamodel;
 
 /**
  * A Connection is used to represent a connection like association between two {@link MetaClass}es

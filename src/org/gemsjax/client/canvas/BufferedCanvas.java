@@ -1,7 +1,7 @@
 package org.gemsjax.client.canvas;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
-import org.gemsjax.client.admin.model.metamodel.MetaClass;
+import org.gemsjax.client.model.metamodel.MetaClass;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
