@@ -194,7 +194,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	/**
 	 * Set the other end of the {@link ConnectionDrawable} (named {@link #metaClassA}).
 	 * This method register this ConnectionDrawable as {@link MoveHandler} and {@link ResizeHandler} for the
-	 * new set metaClassA. It also set directly the {@link Connection}s {@link MetaClass} by calling {@link Connection#setSource(MetaClass)}.
+	 * new set metaClassA. It also set directly the {@link Connection}s {@link MetaClass} by calling {@link Connection#setMetaClassA(MetaClass)}.
 	 * If metaClassA is set previously, this ConnectionDrawable will be unregistered as {@link ResizeHandler} / {@link MoveHandler}.
 	 * @param metaClassA
 	 */
@@ -207,7 +207,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		}
 		
 		this.metaClassA = metaClassA;
-		connection.setSource((MetaClass)metaClassA.getDataObject());
+		connection.setMetaClassA((MetaClass)metaClassA.getDataObject());
 		
 		this.metaClassA.addMoveHandler(this);
 		this.metaClassA.addResizeHandler(this);
@@ -228,7 +228,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	/**
 	 * Set the other end of the {@link ConnectionDrawable} (named {@link #metaClassB} ).
 	 * This method register this ConnectionDrawable as {@link MoveHandler} and {@link ResizeHandler} for the
-	 * new set metaClassB. It also set directly the {@link Connection}s {@link MetaClass} by calling {@link Connection#setTarget(MetaClass)}.
+	 * new set metaClassB. It also set directly the {@link Connection}s {@link MetaClass} by calling {@link Connection#setMetaClassB(MetaClass)}.
 	 * If metaClassB is set previously, this ConnectionDrawable will be unregistered as {@link ResizeHandler} / {@link MoveHandler}.
 	 * @param metaClassB
 	 */
@@ -242,7 +242,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		
 		this.metaClassB = metaClassB;
 		
-		connection.setTarget((MetaClass)metaClassB.getDataObject());
+		connection.setMetaClassB((MetaClass)metaClassB.getDataObject());
 		
 		this.metaClassB.addMoveHandler(this);
 		this.metaClassB.addResizeHandler(this);
