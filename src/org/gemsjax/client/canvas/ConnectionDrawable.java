@@ -1,5 +1,8 @@
 package org.gemsjax.client.canvas;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
@@ -41,6 +44,13 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	private MetaClassDrawable metaClassB;
 	
 	
+
+	// Handlers
+	private List<FocusHandler> focusHandlers;
+	private List<ClickHandler> clickHandlers;
+	private List<MoveHandler> moveHandlers;
+	
+	
 	
 	/**
 	 * Creates {@link Drawable} that displays a {@link Connection}.
@@ -55,11 +65,13 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		this.metaClassA = metaClassA;
 		this.metaClassB = metaClassB;
 		
-		metaClassA.addMoveHandler(this);
-		metaClassA.addResizeHandler(this);
-		metaClassB.addMoveHandler(this);
-		metaClassB.addResizeHandler(this);
+		// Handlers
+		focusHandlers = new ArrayList<FocusHandler>();
+		clickHandlers = new ArrayList<ClickHandler>();
+		moveHandlers = new ArrayList<MoveHandler>();
 		
+		setMetaClassA(metaClassA);
+		setMetaClassB(metaClassB);
 	}
 	
 	
@@ -68,8 +80,15 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	
 	@Override
 	public void draw(Context2d context) {
-		// TODO Auto-generated method stub
 		
+		
+		
+	}
+	
+	@Override
+	public boolean isSelected()
+	{
+		return connection.isSelected();
 	}
 
 	@Override
@@ -88,14 +107,21 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 
 	@Override
 	public void addMoveHandler(MoveHandler handler) {
-		// TODO Auto-generated method stub
-		
+		if (!moveHandlers.contains(handler))
+			moveHandlers.add(handler);
 	}
 
 	@Override
 	public boolean fireMoveEvent(MoveEvent event) {
-		// TODO Auto-generated method stub
-		return false;
+		boolean delivered = false;
+		
+		for (MoveHandler h : moveHandlers)
+		{
+			h.onMove(event);
+			delivered = true;
+		}
+		
+		return delivered;
 	}
 
 	@Override
@@ -124,38 +150,54 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 
 	@Override
 	public void addClickHandler(ClickHandler handler) {
-		// TODO Auto-generated method stub
+		
+		if (!moveHandlers.contains(handler))
+		clickHandlers.add(handler);
 		
 	}
 
 	@Override
 	public boolean fireClickEvent(ClickEvent event) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		boolean delivered = false;
+		
+		for (ClickHandler h : clickHandlers)
+		{
+			h.onClick(event);
+			delivered = true;
+		}
+		
+		return delivered;
 	}
 
 	@Override
 	public void removeClickHandler(ClickHandler handler) {
-		// TODO Auto-generated method stub
-		
+		clickHandlers.remove(handler);
 	}
 
 	@Override
 	public void addFocusHandler(FocusHandler handler) {
-		// TODO Auto-generated method stub
-		
+		if (!focusHandlers.contains(handler))
+			focusHandlers.add(handler);
 	}
 
 	@Override
 	public boolean fireFocusEvent(FocusEvent event) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		boolean delivered = false;
+		
+		for (FocusHandler h : focusHandlers)
+		{
+			h.onFocusEvent(event);
+			delivered = true;
+		}
+		
+		return delivered;
 	}
 
 	@Override
 	public void removeFocusHandler(FocusHandler handler) {
-		// TODO Auto-generated method stub
-		
+		focusHandlers.remove(handler);
 	}
 
 

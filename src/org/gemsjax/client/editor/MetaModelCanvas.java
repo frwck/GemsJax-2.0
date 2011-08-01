@@ -7,6 +7,7 @@ import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.canvas.Clickable;
+import org.gemsjax.client.canvas.ConnectionNameBoxDrawable;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.Focusable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
@@ -19,6 +20,7 @@ import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
+import org.gemsjax.client.model.metamodel.Connection;
 import org.gemsjax.client.model.metamodel.MetaClass;
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -101,6 +103,10 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	 */
 	private double mouseDownInitialYDistance;
 	
+	/**
+	 * Fire ResizeEvents only, if the corresponding Drawable is selected ({@link Drawable#isSelected()})
+	 */
+	private boolean resizeableOnlyOnSelected = true;
 
 
 	/**
@@ -168,6 +174,21 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				dr.autoSize();
 				
 				this.addDrawable(dr);
+				
+				
+				Connection c = new Connection(d, d);
+				
+				c.setName("Connection");
+				c.setNameBoxX(300);
+				c.setNameBoxY(200);
+				c.setNameBoxWidth(100);
+				c.setNameBoxHeight(30);
+				
+				ConnectionNameBoxDrawable nb = new ConnectionNameBoxDrawable(c);
+				
+				this.addDrawable(nb);
+				
+				
 			/*
 			
 			new Timer(){
@@ -325,19 +346,19 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				// Resize, if mouse is on a ResizeArea and Resizeable
 				if (currentMouseDownDrawable != null && currentMouseDownDrawable instanceof Resizeable &&((Resizeable)currentMouseDownDrawable).isResizeable() && isMouseDown && currentResizeArea != null)
 				{
-					double width = beforeResizeWidth +  event.getX() - mouseDownX;
-					double height = beforeResizeHeight + event.getY() - mouseDownY;
-					
-					ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, width, height, event.getX(), event.getY(), currentResizeArea);
+					if (resizeableOnlyOnSelected && currentMouseDownDrawable.isSelected())
+					{
+						double width = beforeResizeWidth +  event.getX() - mouseDownX;
+						double height = beforeResizeHeight + event.getY() - mouseDownY;
+						
+						ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, width, height, event.getX(), event.getY(), currentResizeArea);
+						((Resizeable)currentMouseDownDrawable).fireResizeEvent(e);
+						
 			
-					//ResizeEvent e = new ResizeEvent((Resizeable)currentMouseDownDrawable, previousMouseMoveX, previousMouseMoveY, event.getX(), event.getY());
-					
-					((Resizeable)currentMouseDownDrawable).fireResizeEvent(e);
-					
-		
-					redrawCanvas();
-		
-					return; // Break at this point 
+						redrawCanvas();
+			
+						return; // Break at this point 
+					}
 				}
 		
 				

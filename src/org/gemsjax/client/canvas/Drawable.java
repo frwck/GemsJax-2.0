@@ -39,6 +39,11 @@ public interface Drawable {
 	public void draw(Context2d context);
 	
 	/**
+	 * @return True if this Drawable is selected
+	 */
+	public boolean isSelected();
+	
+	/**
 	 * Get the Object that is displayed with this drawable on the canvas.
 	 * This is normaly a {@link MetaClass}, {@link Connection}, {@link InheritanceRelation}, ...
 	 * @return
