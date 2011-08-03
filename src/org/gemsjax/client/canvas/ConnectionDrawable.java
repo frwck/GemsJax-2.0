@@ -81,8 +81,18 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	@Override
 	public void draw(Context2d context) {
 		
+		context.beginPath();
+		context.setFillStyle(connection.getLineColor());
+		context.setLineWidth(connection.getLineSize());
 		
+		context.moveTo(connection.getMetaClassA().getX() + connection.getMetaClassARelativeX(), connection.getMetaClassA().getY() + connection.getMetaClassARelativeY());
+		context.lineTo(connection.getNameBoxX() + connection.getANameBoxRelativeX(), connection.getNameBoxY() + connection.getANameBoxRelativeY());
 		
+		context.moveTo(connection.getMetaClassB().getX() + connection.getMetaClassBRelativeX(), connection.getMetaClassB().getY() + connection.getMetaClassBRelativeY());
+		context.lineTo(connection.getNameBoxX() + connection.getBNameBoxRelativeX(), connection.getNameBoxY() + connection.getBNameBoxRelativeY());
+	
+		
+		context.stroke();
 	}
 	
 	@Override

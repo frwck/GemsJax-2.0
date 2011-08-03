@@ -314,7 +314,7 @@ public class Connection {
 
 
 
-	public double getaNameBoxRelativeX() {
+	public double getANameBoxRelativeX() {
 		return aNameBoxRelativeX;
 	}
 
@@ -326,7 +326,7 @@ public class Connection {
 
 
 
-	public double getaNameBoxRelativeY() {
+	public double getANameBoxRelativeY() {
 		return aNameBoxRelativeY;
 	}
 
@@ -338,7 +338,7 @@ public class Connection {
 
 
 
-	public double getbNameBoxRelativeX() {
+	public double getBNameBoxRelativeX() {
 		return bNameBoxRelativeX;
 	}
 
@@ -350,7 +350,7 @@ public class Connection {
 
 
 
-	public double getbNameBoxRelativeY() {
+	public double getBNameBoxRelativeY() {
 		return bNameBoxRelativeY;
 	}
 

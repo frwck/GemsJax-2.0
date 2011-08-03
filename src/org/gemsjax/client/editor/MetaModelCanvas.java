@@ -7,6 +7,7 @@ import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException
 import org.gemsjax.client.canvas.BufferedCanvas;
 import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.canvas.Clickable;
+import org.gemsjax.client.canvas.ConnectionDrawable;
 import org.gemsjax.client.canvas.ConnectionNameBoxDrawable;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.Focusable;
@@ -163,6 +164,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 			/*for (int i =0; i<10000;i++)
 			{
 			*/
+			
 				MetaClass d = new MetaClass(100, 200);
 				d.setName("Test MetaClass");
 				
@@ -176,7 +178,21 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				this.addDrawable(dr);
 				
 				
-				Connection c = new Connection(d, d);
+				MetaClass d2 = new MetaClass(500, 400);
+				d2.setName("MetaClass 2");
+				
+				d2.addAttribute("Attribute1", "Type1");
+				d2.addAttribute("Attribute2", "Type1");
+				d2.addAttribute("Attribute3", "Type1");
+				
+				MetaClassDrawable dr2 = new MetaClassDrawable(d2);
+				dr2.autoSize();
+				
+				this.addDrawable(dr2);
+				
+				
+				
+				Connection c = new Connection(d, d2);
 				
 				c.setName("Connection");
 				c.setNameBoxX(300);
@@ -184,9 +200,19 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				c.setNameBoxWidth(100);
 				c.setNameBoxHeight(30);
 				
+				c.setaNameBoxRelativeX(0);
+				c.setaNameBoxRelativeY(10);
+				
+				c.setbNameBoxRelativeX(c.getNameBoxWidth());
+				c.setbNameBoxRelativeY(10);
+				
+				ConnectionDrawable cd = new ConnectionDrawable(c, dr, dr2);
+				
 				ConnectionNameBoxDrawable nb = new ConnectionNameBoxDrawable(c);
 				
+				this.addDrawable(cd);
 				this.addDrawable(nb);
+
 				
 				
 			/*

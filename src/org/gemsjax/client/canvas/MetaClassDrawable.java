@@ -129,6 +129,8 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	@Override
 	public void draw(Context2d context) {
 		
+		context.setLineWidth(1);
+		
 		CanvasGradient gradient = context.createLinearGradient(metaClass.getX(), metaClass.getY(),metaClass.getX()+metaClass.getWidth(),metaClass.getY()+metaClass.getHeight());
 		
 		gradient.addColorStop(0,metaClass.getGradientStartColor());
