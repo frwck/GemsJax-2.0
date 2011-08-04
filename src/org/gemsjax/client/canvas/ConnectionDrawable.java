@@ -15,6 +15,7 @@ import org.gemsjax.client.model.metamodel.Connection;
 import org.gemsjax.client.model.metamodel.MetaClass;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.user.client.Window;
 
 /**
  * This class is a {@link Drawable} that displays a {@link Connection} on the {@link MetaClassCanvas}.
@@ -44,6 +45,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	private MetaClassDrawable metaClassB;
 	
 	
+	private ConnectionNameBoxDrawable nameBoxDrawable;
 
 	// Handlers
 	private List<FocusHandler> focusHandlers;
@@ -65,6 +67,8 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		this.metaClassA = metaClassA;
 		this.metaClassB = metaClassB;
 		
+		this.nameBoxDrawable = new ConnectionNameBoxDrawable(connection);
+		
 		// Handlers
 		focusHandlers = new ArrayList<FocusHandler>();
 		clickHandlers = new ArrayList<ClickHandler>();
@@ -74,6 +78,11 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		setMetaClassB(metaClassB);
 	}
 	
+	
+	public ConnectionNameBoxDrawable getNameBoxDrawable()
+	{
+		return nameBoxDrawable;
+	}
 	
 	
 	
@@ -103,14 +112,50 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 
 	@Override
 	public double getZIndex() {
-		// TODO Auto-generated method stub
-		return 0;
+		return connection.getZIndex();
 	}
 
 	@Override
 	public boolean hasCoordinate(double x, double y) {
-		// TODO Auto-generated method stub
-		return false;
+	
+		// linear function 
+		// y = m*x + b
+		
+		// For the line between MetaClass A and NameBox
+		double y2 = connection.getMetaClassA().getY() + connection.getMetaClassARelativeY() ;
+		double y1 = connection.getNameBoxY() + connection.getANameBoxRelativeY();
+		
+		double x2 = connection.getMetaClassA().getX() + connection.getMetaClassARelativeX();
+		double x1 = connection.getNameBoxX() + connection.getANameBoxRelativeX(); 
+		
+		double m = (y2 -y1)/ (x2 - x1);
+		
+		double b = y1 - m*x1;
+		
+		boolean onAToNameBox = (y == m *x + b);
+		
+		if (onAToNameBox)
+			return true;
+		
+		
+		// For the line between MetaClass B and NameBox
+		y2 = connection.getMetaClassB().getY() + connection.getMetaClassBRelativeY() ;
+		y1 = connection.getNameBoxY() + connection.getBNameBoxRelativeY();
+		
+		x2 = connection.getMetaClassA().getX() + connection.getMetaClassARelativeX();
+		x1 = connection.getNameBoxX() + connection.getANameBoxRelativeX(); 
+		
+		m = (y2 -y1)/ (x2 - x1);
+		
+		b = y1 - m*x1;
+		
+		boolean onBToNameBox = (y == m*x +b);
+		
+		if (onBToNameBox )
+			Window.alert("Connection clicked");
+		
+		return onBToNameBox;
+		
 	}
 
 	

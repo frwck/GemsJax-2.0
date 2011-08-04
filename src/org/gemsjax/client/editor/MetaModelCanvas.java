@@ -200,18 +200,16 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				c.setNameBoxWidth(100);
 				c.setNameBoxHeight(30);
 				
-				c.setaNameBoxRelativeX(0);
-				c.setaNameBoxRelativeY(10);
+				c.setANameBoxRelativeX(0);
+				c.setANameBoxRelativeY(10);
 				
-				c.setbNameBoxRelativeX(c.getNameBoxWidth());
-				c.setbNameBoxRelativeY(10);
+				c.setBNameBoxRelativeX(c.getNameBoxWidth());
+				c.setBNameBoxRelativeY(10);
 				
 				ConnectionDrawable cd = new ConnectionDrawable(c, dr, dr2);
 				
-				ConnectionNameBoxDrawable nb = new ConnectionNameBoxDrawable(c);
-				
 				this.addDrawable(cd);
-				this.addDrawable(nb);
+				this.addDrawable(cd.getNameBoxDrawable());
 
 				
 				

@@ -76,6 +76,14 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 	 * The minimum height. Its not allowed to resize to a height less then this value
 	 */
 	private double minHeight = 30;
+	
+	/**
+	 * If the {@link ConnectionNameBoxDrawable} is resized and this flag is set to true,
+	 * than the {@link Connection#setANameBoxRelativeX(double)}, {@link Connection#setANameBoxRelativeY(double)}, {@link Connection#setBNameBoxRelativeX(double)}
+	 * and {@link Connection#setBNameBoxRelativeY(double)} will be set according to the previous (before the resizing) 
+	 * percental ratio.
+	 */
+	private boolean autoAdjustNameBoxRatio = true;
 	 
 	
 	public ConnectionNameBoxDrawable(Connection connection)
@@ -364,6 +372,36 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 			connection.setNameBoxWidth(event.getWidth());
 			connection.setNameBoxHeight(event.getHeight());
 			
+
+			// Adjust connections coordinate
+			if (connection.getANameBoxRelativeX()>event.getWidth())
+				connection.setANameBoxRelativeX(event.getWidth());
+			
+			if (connection.getANameBoxRelativeY()>event.getHeight())
+				connection.setANameBoxRelativeY(event.getHeight());
+			
+			if (connection.getBNameBoxRelativeX()>event.getWidth())
+				connection.setBNameBoxRelativeX(event.getWidth());
+			
+			if (connection.getBNameBoxRelativeY()>event.getHeight())
+				connection.setBNameBoxRelativeY(event.getHeight());
+		
+			/* TODO needed?
+			if (autoAdjustNameBoxRatio)
+			{
+				if (connection.getANameBoxRelativeX()>event.getWidth())
+					connection.setANameBoxRelativeX(event.getWidth());
+				
+				if (connection.getANameBoxRelativeY()>event.getHeight())
+					connection.setANameBoxRelativeY(event.getHeight());
+				
+				if (connection.getBNameBoxRelativeX()>event.getWidth())
+					connection.setBNameBoxRelativeX(event.getWidth());
+				
+				if (connection.getBNameBoxRelativeY()>event.getHeight())
+					connection.setBNameBoxRelativeY(event.getHeight());
+			}
+		*/
 		}
 		
 	}

@@ -2,11 +2,9 @@ package org.gemsjax.server;
 
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerList;
@@ -37,6 +35,7 @@ public class GemsJaxServlet extends WebSocketServlet {
 	};
 
 	
+
 
 	
 	public static void main(String[] args) {
@@ -85,6 +84,9 @@ public class GemsJaxServlet extends WebSocketServlet {
 				e.printStackTrace();
 			}
 	        
+	
 	}
+	
+	
 	
 }

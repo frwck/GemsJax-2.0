@@ -96,10 +96,10 @@ public class Connection {
 	
 	private String fontColor = "black";
 	
-	private int lineSize = 1;
+	private int lineSize = 2;
 	
-	private String gradientStartColor ="#5c9967";
-	private String gradientEndColor="#ecf2ee";
+	private String gradientStartColor ="#00B000";
+	private String gradientEndColor="#6DF76D";
 	
 	private boolean selected = false;
 	
@@ -266,7 +266,7 @@ public class Connection {
 
 
 
-	public double getaRelativeX() {
+	public double getARelativeX() {
 		return aRelativeX;
 	}
 
@@ -320,7 +320,7 @@ public class Connection {
 
 
 
-	public void setaNameBoxRelativeX(double aNameBoxRelativeX) {
+	public void setANameBoxRelativeX(double aNameBoxRelativeX) {
 		this.aNameBoxRelativeX = aNameBoxRelativeX;
 	}
 
@@ -332,7 +332,7 @@ public class Connection {
 
 
 
-	public void setaNameBoxRelativeY(double aNameBoxRelativeY) {
+	public void setANameBoxRelativeY(double aNameBoxRelativeY) {
 		this.aNameBoxRelativeY = aNameBoxRelativeY;
 	}
 
@@ -344,7 +344,7 @@ public class Connection {
 
 
 
-	public void setbNameBoxRelativeX(double bNameBoxRelativeX) {
+	public void setBNameBoxRelativeX(double bNameBoxRelativeX) {
 		this.bNameBoxRelativeX = bNameBoxRelativeX;
 	}
 
@@ -356,7 +356,7 @@ public class Connection {
 
 
 
-	public void setbNameBoxRelativeY(double bNameBoxRelativeY) {
+	public void setBNameBoxRelativeY(double bNameBoxRelativeY) {
 		this.bNameBoxRelativeY = bNameBoxRelativeY;
 	}
 
