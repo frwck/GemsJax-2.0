@@ -1,52 +1,52 @@
-package org.gemsjax.server.model;
+package org.gemsjax.server.metamodel;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.gemsjax.shared.metamodel.MetaClass;
 /**
  * This class represents a MetaClass in a MetaModel
  * @author Hannes Dorfmann
  *
  */
-public class MetaClass extends MetaBaseType{
+public class MetaClassImpl extends MetaBaseTypeImpl{
 
 	
 	/**
 	 * A flag to indicate, whenever this class is abstract or not
 	 */
-	private boolean Abstract;
+	private boolean _abstract;
 	
 	/**
-	 * The list with all {@link MetaConnection}s that has this class as {@link MetaConnection#getSource()} as start / source element.
+	 * The list with all {@link MetaConnectionImpl}s that has this class as {@link MetaConnectionImpl#getSource()} as start / source element.
 	 */
-	private List<MetaConnection> connections;
+	private List<MetaConnectionImpl> connections;
 	
 	
 	/**
-	 * The list with all {@link MetaAttribute}s to model attributes, which belong to this {@link MetaClass}
+	 * The list with all {@link MetaAttributeImpl}s to model attributes, which belong to this {@link MetaClassImpl}
 	 */
-	private List<MetaAttribute> attributes;
+	private List<MetaAttributeImpl> attributes;
 	
 	
-	public MetaClass(String id, String name) {
+	public MetaClassImpl(String id, String name) {
 		super(id, name);
-		Abstract = false;
-		connections = new ArrayList<MetaConnection>();
-		attributes = new ArrayList<MetaAttribute>();
+		_abstract = false;
+		connections = new ArrayList<MetaConnectionImpl>();
+		attributes = new ArrayList<MetaAttributeImpl>();
 	}
 
 
 	public boolean isAbstract() {
-		return Abstract;
+		return _abstract;
 	}
 
 
 	public void setAbstract(boolean abstract1) {
-		Abstract = abstract1;
+		_abstract = abstract1;
 	}
 
 	
-	public List<MetaConnection> getConnections()
+	public List<MetaConnectionImpl> getConnections()
 	{
 		return connections;
 	}
@@ -55,7 +55,7 @@ public class MetaClass extends MetaBaseType{
 	 *	Its just a short cut for {@link #getConnections()}.add();
 	 * @param c
 	 */
-	public void addConnection(MetaConnection c)
+	public void addConnection(MetaConnectionImpl c)
 	{
 		//TODO is a check for duplicate names needed?
 		
@@ -67,12 +67,12 @@ public class MetaClass extends MetaBaseType{
 	 * If the element, which should be removed is not in the connection list, nothing happens
 	 * @param c
 	 */
-	public void removeConnection(MetaConnection c)
+	public void removeConnection(MetaConnectionImpl c)
 	{
 		connections.remove(c);
 	}
 	
-	public List<MetaAttribute> getAttributes()
+	public List<MetaAttributeImpl> getAttributes()
 	{
 		return attributes;
 	}
@@ -81,7 +81,7 @@ public class MetaClass extends MetaBaseType{
 	 *	Its just a short cut for {@link #getAttributes()}.add();
 	 * @param c
 	 */
-	public void addAttribute(MetaAttribute a)
+	public void addAttribute(MetaAttributeImpl a)
 	{
 		//TODO is a check for duplicate names needed?
 		
@@ -93,7 +93,7 @@ public class MetaClass extends MetaBaseType{
 	 * If the element, which should be removed is not in the attributes list, nothing happens
 	 * @param a
 	 */
-	public void removeConnection(MetaAttribute a)
+	public void removeConnection(MetaAttributeImpl a)
 	{
 		attributes.remove(a);
 	}

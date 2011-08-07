@@ -31,7 +31,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
 
 
 /**
- * This class represents a MetaClass. A MetaClass must be added to a {@link MetaModel} and sho
+ * This class represents a MetaClass. A MetaClass must be added to a {@link MetaModelImpl} and sho
  * @author Hannes Dorfmann
  *
  */

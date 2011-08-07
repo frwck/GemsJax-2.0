@@ -1,4 +1,7 @@
-package org.gemsjax.server.model;
+package org.gemsjax.server.metamodel;
+
+import org.gemsjax.shared.metamodel.MetaBaseType;
+import org.gemsjax.shared.metamodel.MetaModelElement;
 
 /**
  * This class implements base type (or call it classifier).
@@ -6,7 +9,7 @@ package org.gemsjax.server.model;
  * @author Hannes Dorfmann
  *
  */
-public class MetaBaseType implements MetaModelElement{
+public class MetaBaseTypeImpl implements MetaBaseType{
 
 	/**
 	 * The unique ID in this MetaModel
@@ -19,7 +22,7 @@ public class MetaBaseType implements MetaModelElement{
 	
 	
 	
-	public MetaBaseType (String id, String name)
+	public MetaBaseTypeImpl (String id, String name)
 	{
 		this.id = id;
 		this.name  = name;
