@@ -11,8 +11,8 @@ import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.client.canvas.CanvasSupportException;
-import org.gemsjax.client.editor.MetaModelCanvas;
-import org.gemsjax.client.editor.MetaModelCanvas.EditingMode;
+import org.gemsjax.client.canvas.MetaModelCanvas;
+import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.types.AnimationEffect;

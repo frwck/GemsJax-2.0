@@ -2,7 +2,6 @@ package org.gemsjax.client.canvas;
 
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.handler.FocusHandler;
-import org.gemsjax.client.editor.MetaModelCanvas;
 
 /**
  * Make a Drawable focusable. That means that the Drawable can get or lose the focus (of the {@link MetaModelCanvas}).

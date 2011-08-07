@@ -3,7 +3,7 @@ package org.gemsjax.client.admin.presenter;
 
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.view.MetaModelView;
-import org.gemsjax.client.editor.MetaModelCanvas.EditingMode;
+import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 import org.gemsjax.client.metamodel.MetaModel;
 
 import com.google.gwt.event.shared.EventBus;

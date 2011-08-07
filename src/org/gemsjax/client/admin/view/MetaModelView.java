@@ -1,8 +1,8 @@
 package org.gemsjax.client.admin.view;
 
 
-import org.gemsjax.client.editor.MetaModelCanvas;
-import org.gemsjax.client.editor.MetaModelCanvas.EditingMode;
+import org.gemsjax.client.canvas.MetaModelCanvas;
+import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 

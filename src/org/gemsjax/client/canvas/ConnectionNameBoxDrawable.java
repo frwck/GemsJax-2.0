@@ -10,7 +10,6 @@ import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.editor.MetaModelCanvas;
 import org.gemsjax.client.metamodel.Connection;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;

@@ -3,7 +3,7 @@ package org.gemsjax.client.metamodel;
 import org.apache.commons.digester.xmlrules.FromXmlRuleSet;
 import org.gemsjax.client.canvas.ConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
-import org.gemsjax.client.editor.MetaModelCanvas;
+import org.gemsjax.client.canvas.MetaModelCanvas;
 
 /**
  * A Connection is used to represent a connection like association between two {@link MetaClass}es

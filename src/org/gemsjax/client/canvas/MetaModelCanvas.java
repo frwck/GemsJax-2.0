@@ -1,20 +1,9 @@
-package org.gemsjax.client.editor;
+package org.gemsjax.client.canvas;
 
 import javax.swing.text.html.CSS;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
-import org.gemsjax.client.canvas.BufferedCanvas;
-import org.gemsjax.client.canvas.CanvasSupportException;
-import org.gemsjax.client.canvas.Clickable;
-import org.gemsjax.client.canvas.ConnectionDrawable;
-import org.gemsjax.client.canvas.ConnectionNameBoxDrawable;
-import org.gemsjax.client.canvas.Drawable;
-import org.gemsjax.client.canvas.Focusable;
-import org.gemsjax.client.canvas.MetaClassDrawable;
-import org.gemsjax.client.canvas.Moveable;
-import org.gemsjax.client.canvas.ResizeArea;
-import org.gemsjax.client.canvas.Resizeable;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
