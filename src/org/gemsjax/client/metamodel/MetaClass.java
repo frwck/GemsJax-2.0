@@ -1,4 +1,4 @@
-package org.gemsjax.client.model.metamodel;
+package org.gemsjax.client.metamodel;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

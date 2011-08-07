@@ -21,8 +21,8 @@ import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.model.metamodel.Connection;
-import org.gemsjax.client.model.metamodel.MetaClass;
+import org.gemsjax.client.metamodel.Connection;
+import org.gemsjax.client.metamodel.MetaClass;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;

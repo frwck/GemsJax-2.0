@@ -1,4 +1,4 @@
-package org.gemsjax.client.model.metamodel;
+package org.gemsjax.client.metamodel;
 
 import org.apache.commons.digester.xmlrules.FromXmlRuleSet;
 import org.gemsjax.client.canvas.ConnectionDrawable;

@@ -2,7 +2,7 @@ package org.gemsjax.client.canvas;
 
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.handler.MoveHandler;
-import org.gemsjax.client.model.metamodel.Connection;
+import org.gemsjax.client.metamodel.Connection;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 

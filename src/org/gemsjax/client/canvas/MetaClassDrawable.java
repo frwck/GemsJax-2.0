@@ -22,8 +22,8 @@ import org.gemsjax.client.canvas.handler.MouseOutHandler;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.model.metamodel.Attribute;
-import org.gemsjax.client.model.metamodel.MetaClass;
+import org.gemsjax.client.metamodel.Attribute;
+import org.gemsjax.client.metamodel.MetaClass;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;

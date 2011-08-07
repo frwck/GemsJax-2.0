@@ -1,4 +1,4 @@
-package org.gemsjax.client.model.metamodel;
+package org.gemsjax.client.metamodel;
 
 import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
 

@@ -1,4 +1,4 @@
-package org.gemsjax.client.model.metamodel;
+package org.gemsjax.client.metamodel;
 
 /**
  * This is used to realize containment relationsships between {@link MetaClass}es.

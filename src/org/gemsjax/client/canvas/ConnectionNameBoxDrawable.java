@@ -11,7 +11,7 @@ import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.editor.MetaModelCanvas;
-import org.gemsjax.client.model.metamodel.Connection;
+import org.gemsjax.client.metamodel.Connection;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;

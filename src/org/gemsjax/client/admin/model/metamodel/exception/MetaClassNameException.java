@@ -1,7 +1,7 @@
 package org.gemsjax.client.admin.model.metamodel.exception;
 
-import org.gemsjax.client.model.metamodel.MetaClass;
-import org.gemsjax.client.model.metamodel.MetaModel;
+import org.gemsjax.client.metamodel.MetaClass;
+import org.gemsjax.client.metamodel.MetaModel;
 
 /**
  * This exception will be thrown to indivate, that there exists already a {@link MetaClass} with this name. 

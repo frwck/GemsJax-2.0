@@ -1,4 +1,4 @@
-package org.gemsjax.client.model.metamodel;
+package org.gemsjax.client.metamodel;
 
 /**
  * {@link InheritanceRelation} represents an inheritance relation for {@link MetaClass}es. 
