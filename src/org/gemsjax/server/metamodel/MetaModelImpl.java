@@ -10,6 +10,7 @@ import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.metamodel.MetaModelElement;
+import org.gemsjax.shared.metamodel.exception.MetaClassException;
 
 public class MetaModelImpl  implements MetaModel {
 	
@@ -48,11 +49,6 @@ public class MetaModelImpl  implements MetaModel {
 	}
 
 
-	@Override
-	public void addAttribute(MetaAttribute attribute) {
-		attributes.add(attribute);
-		idMap.put(attribute.getID(), attribute);
-	}
 
 
 	@Override
@@ -61,18 +57,7 @@ public class MetaModelImpl  implements MetaModel {
 		idMap.put(baseType.getID(), baseType);
 	}
 
-
-	@Override
-	public void addMetaClass(MetaClass metaClass) {
-		metaClasses.add(metaClass);
-		idMap.put(metaClass.getID(), metaClass);
-	}
-
-
-	@Override
-	public List<MetaAttribute> getAttributes() {
-		return attributes;
-	}
+	
 
 
 	@Override
@@ -106,12 +91,6 @@ public class MetaModelImpl  implements MetaModel {
 	}
 
 
-	@Override
-	public void removeAttribute(MetaAttribute attribute) {
-		attributes.remove(attribute);
-		idMap.remove(attribute.getID());
-	}
-
 
 	@Override
 	public void removeBaseType(MetaBaseType baseType) {
@@ -130,6 +109,19 @@ public class MetaModelImpl  implements MetaModel {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	@Override
+	public MetaClass addMetaClass(String id, String name)
+			throws MetaClassException {
+		
+		MetaClass metaClass = new MetaClassImpl(id, name);
+		
+		metaClasses.add(metaClass);
+		idMap.put(metaClass.getID(), metaClass);
+		
+		return metaClass;
 	}
 
 }

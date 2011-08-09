@@ -11,15 +11,15 @@ import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.metamodel.Connection;
-import org.gemsjax.client.metamodel.MetaClass;
+import org.gemsjax.client.metamodel.MetaConnectionImpl;
+import org.gemsjax.client.metamodel.MetaClassImpl;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.user.client.Window;
 
 /**
- * This class is a {@link Drawable} that displays a {@link Connection} on the {@link MetaClassCanvas}.
- * A {@link Connection} is displayed between two {@link MetaClassDrawable}s.<br /> <br />
+ * This class is a {@link Drawable} that displays a {@link MetaConnectionImpl} on the {@link MetaClassCanvas}.
+ * A {@link MetaConnectionImpl} is displayed between two {@link MetaClassDrawable}s.<br /> <br />
  * This class implements the {@link ResizeHandler} and the {@link MoveHandler} interface and will be registered to the 
  * connected {@link MetaClassDrawable}s. So when a {@link MetaClassDrawable} was moved / resized, this {@link ConnectionDrawable}
  * will automatically adjust itself to the {@link MetaClassDrawable}s.
@@ -30,9 +30,9 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	
 
 	/**
-	 * The {@link Connection} that is displayed with this Drawable
+	 * The {@link MetaConnectionImpl} that is displayed with this Drawable
 	 */
-	private Connection connection;
+	private MetaConnectionImpl connection;
 	
 	/**
 	 * The Connection connects {@link #metaClassA} with {@link #metaClassB}.
@@ -55,13 +55,13 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	
 	
 	/**
-	 * Creates {@link Drawable} that displays a {@link Connection}.
-	 * A {@link Connection} is displayed between two {@link MetaClass}es, 
-	 * @param connection The {@link Connection} that is displayed with this Drawable
+	 * Creates {@link Drawable} that displays a {@link MetaConnectionImpl}.
+	 * A {@link MetaConnectionImpl} is displayed between two {@link MetaClassImpl}es, 
+	 * @param connection The {@link MetaConnectionImpl} that is displayed with this Drawable
 	 * @param metaClassA The {@link MetaClassDrawable} where the connection starts.
 	 * @param metaClassB The {@link MetaClassDrawable} where the connection ends.
 	 */
-	public ConnectionDrawable(Connection connection, MetaClassDrawable metaClassA, MetaClassDrawable metaClassB)
+	public ConnectionDrawable(MetaConnectionImpl connection, MetaClassDrawable metaClassA, MetaClassDrawable metaClassB)
 	{
 		this.connection = connection;
 		this.metaClassA = metaClassA;
@@ -291,7 +291,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	/**
 	 * Set the other end of the {@link ConnectionDrawable} (named {@link #metaClassA}).
 	 * This method register this ConnectionDrawable as {@link MoveHandler} and {@link ResizeHandler} for the
-	 * new set metaClassA. It also set directly the {@link Connection}s {@link MetaClass} by calling {@link Connection#setMetaClassA(MetaClass)}.
+	 * new set metaClassA. It also set directly the {@link MetaConnectionImpl}s {@link MetaClassImpl} by calling {@link MetaConnectionImpl#setMetaClassA(MetaClassImpl)}.
 	 * If metaClassA is set previously, this ConnectionDrawable will be unregistered as {@link ResizeHandler} / {@link MoveHandler}.
 	 * @param metaClassA
 	 */
@@ -304,7 +304,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		}
 		
 		this.metaClassA = metaClassA;
-		connection.setMetaClassA((MetaClass)metaClassA.getDataObject());
+		connection.setMetaClassA((MetaClassImpl)metaClassA.getDataObject());
 		
 		this.metaClassA.addMoveHandler(this);
 		this.metaClassA.addResizeHandler(this);
@@ -325,7 +325,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	/**
 	 * Set the other end of the {@link ConnectionDrawable} (named {@link #metaClassB} ).
 	 * This method register this ConnectionDrawable as {@link MoveHandler} and {@link ResizeHandler} for the
-	 * new set metaClassB. It also set directly the {@link Connection}s {@link MetaClass} by calling {@link Connection#setMetaClassB(MetaClass)}.
+	 * new set metaClassB. It also set directly the {@link MetaConnectionImpl}s {@link MetaClassImpl} by calling {@link MetaConnectionImpl#setMetaClassB(MetaClassImpl)}.
 	 * If metaClassB is set previously, this ConnectionDrawable will be unregistered as {@link ResizeHandler} / {@link MoveHandler}.
 	 * @param metaClassB
 	 */
@@ -339,7 +339,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		
 		this.metaClassB = metaClassB;
 		
-		connection.setMetaClassB((MetaClass)metaClassB.getDataObject());
+		connection.setMetaClassB((MetaClassImpl)metaClassB.getDataObject());
 		
 		this.metaClassB.addMoveHandler(this);
 		this.metaClassB.addResizeHandler(this);

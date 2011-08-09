@@ -1,13 +1,7 @@
 package org.gemsjax.client.canvas;
 
-import java.util.List;
-
-import org.gemsjax.client.canvas.handler.MouseOverHandler;
-import org.gemsjax.client.canvas.handler.MoveHandler;
-import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.metamodel.Connection;
-import org.gemsjax.client.metamodel.InheritanceRelation;
-import org.gemsjax.client.metamodel.MetaClass;
+import org.gemsjax.client.metamodel.MetaConnectionImpl;
+import org.gemsjax.client.metamodel.MetaClassImpl;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 
@@ -45,7 +39,7 @@ public interface Drawable {
 	
 	/**
 	 * Get the Object that is displayed with this drawable on the canvas.
-	 * This is normaly a {@link MetaClass}, {@link Connection}, {@link InheritanceRelation}, ...
+	 * This is normaly a {@link MetaClassImpl}, {@link MetaConnectionImpl}, {@link InheritanceRelation}, ...
 	 * @return
 	 */
 	public Object getDataObject();

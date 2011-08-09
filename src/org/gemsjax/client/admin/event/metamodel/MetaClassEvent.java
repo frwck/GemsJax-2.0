@@ -1,7 +1,7 @@
 package org.gemsjax.client.admin.event.metamodel;
 
-import org.gemsjax.client.metamodel.MetaClass;
-import org.gemsjax.client.metamodel.MetaModel;
+import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.client.metamodel.MetaModelImpl;
 
 public class MetaClassEvent {
 
@@ -13,12 +13,12 @@ public class MetaClassEvent {
 	}
 	
 	
-	private MetaModel metaModel;
+	private MetaModelImpl metaModel;
 	private Type type;
-	private MetaClass metaClass;
+	private MetaClassImpl metaClass;
 	
 	
-	public MetaClassEvent(MetaClass metaClass, MetaModel metaModel, Type type)
+	public MetaClassEvent(MetaClassImpl metaClass, MetaModelImpl metaModel, Type type)
 	{
 		this.type = type;
 		this.metaClass = metaClass;
@@ -26,7 +26,7 @@ public class MetaClassEvent {
 	}
 
 
-	public MetaModel getMetaModel() {
+	public MetaModelImpl getMetaModel() {
 		return metaModel;
 	}
 
@@ -36,7 +36,7 @@ public class MetaClassEvent {
 	}
 
 
-	public MetaClass getMetaClass() {
+	public MetaClassImpl getMetaClass() {
 		return metaClass;
 	}
 	

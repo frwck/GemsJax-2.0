@@ -10,13 +10,13 @@ import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.metamodel.Connection;
+import org.gemsjax.client.metamodel.MetaConnectionImpl;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
 
 /**
- * This Class is used to display a box with the {@link Connection} name on the {@link MetaModelCanvas}
+ * This Class is used to display a box with the {@link MetaConnectionImpl} name on the {@link MetaModelCanvas}
  * @author Hannes Dorfmann
  *
  */
@@ -25,7 +25,7 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 	/**
 	 * The connection, which name will be displayed with this {@link ConnectionNameBoxDrawable}
 	 */
-	private Connection connection;
+	private MetaConnectionImpl connection;
 	
 	/**
 	 * The space between a dot and the next dot
@@ -78,14 +78,14 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 	
 	/**
 	 * If the {@link ConnectionNameBoxDrawable} is resized and this flag is set to true,
-	 * than the {@link Connection#setANameBoxRelativeX(double)}, {@link Connection#setANameBoxRelativeY(double)}, {@link Connection#setBNameBoxRelativeX(double)}
-	 * and {@link Connection#setBNameBoxRelativeY(double)} will be set according to the previous (before the resizing) 
+	 * than the {@link MetaConnectionImpl#setANameBoxRelativeX(double)}, {@link MetaConnectionImpl#setANameBoxRelativeY(double)}, {@link MetaConnectionImpl#setBNameBoxRelativeX(double)}
+	 * and {@link MetaConnectionImpl#setBNameBoxRelativeY(double)} will be set according to the previous (before the resizing) 
 	 * percental ratio.
 	 */
 	private boolean autoAdjustNameBoxRatio = true;
 	 
 	
-	public ConnectionNameBoxDrawable(Connection connection)
+	public ConnectionNameBoxDrawable(MetaConnectionImpl connection)
 	{
 		this.connection = connection;
 		

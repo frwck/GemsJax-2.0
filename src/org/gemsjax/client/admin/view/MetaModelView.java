@@ -1,6 +1,8 @@
 package org.gemsjax.client.admin.view;
 
 
+import org.gemsjax.client.admin.exception.DoubleLimitException;
+import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 
@@ -40,6 +42,20 @@ public interface MetaModelView {
 	 * @see EditingMode
 	 */
 	public void setCanvasEditingMode(MetaModelCanvas.EditingMode mode);
+	
+	
+	/**
+	 * Remove the Drawable that displayes a MetaClass, Connection etc.
+	 * @param drawable
+	 * @throws DoubleLimitException 
+	 */
+	public void addDrawable(Drawable drawable) throws DoubleLimitException;
+	
+	/**
+	 * Remove the Drawable that displayes a MetaClass, Connection etc.
+	 * @param drawable
+	 */
+	public void removeDrawable(Drawable drawable);
 	
 
 }

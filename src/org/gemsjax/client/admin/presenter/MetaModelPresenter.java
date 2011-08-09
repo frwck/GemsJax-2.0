@@ -4,7 +4,7 @@ package org.gemsjax.client.admin.presenter;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
-import org.gemsjax.client.metamodel.MetaModel;
+import org.gemsjax.client.metamodel.MetaModelImpl;
 
 import com.google.gwt.event.shared.EventBus;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -14,10 +14,10 @@ import com.smartgwt.client.widgets.tab.Tab;
 
 public class MetaModelPresenter extends Presenter {
 	
-	private MetaModel metaModel;
+	private MetaModelImpl metaModel;
 	private MetaModelView view;
 
-	public MetaModelPresenter(EventBus eventBus, MetaModelView view, MetaModel metaModel) {
+	public MetaModelPresenter(EventBus eventBus, MetaModelView view, MetaModelImpl metaModel) {
 		super(eventBus);
 		
 		this.metaModel = metaModel;

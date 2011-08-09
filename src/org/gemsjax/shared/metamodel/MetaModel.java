@@ -1,7 +1,11 @@
 package org.gemsjax.shared.metamodel;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import org.gemsjax.shared.metamodel.exception.MetaClassException;
 
 
 /**
@@ -37,10 +41,10 @@ public interface MetaModel {
 	public void setName(String name);
 
 	/**
-	 * Add a {@link MetaClass}
+	 * Create and add a {@link MetaClass}
 	 * @param metaClass
 	 */
-	public void addMetaClass(MetaClass metaClass);
+	public MetaClass addMetaClass(String id, String name) throws MetaClassException;
 	
 	/**
 	 * Remove {@link MetaClass}
@@ -48,20 +52,34 @@ public interface MetaModel {
 	 */
 	public void removeMetaClass(MetaClass metaClass);
 	
-	
+	/**
+	 * Return a list with all {@link MetaClass}es, but the List it self is read only,
+	 * by implementing it via {@link Collections#unmodifiableList(List)}.
+	 * So use {@link #addMetaClass(String, String)} and {@link #removeMetaClass(MetaClass)}
+	 * @return
+	 */
 	public List<MetaClass> getMetaClasses();
 	
-	
+	/**
+	 * Add a {@link MetaBaseType} to this MetaModel
+	 * @param baseType
+	 */
 	public void addBaseType(MetaBaseType baseType);
 	
+	/**
+	 * Remove a {@link MetaBaseType}
+	 * @param baseType
+	 */
 	public void removeBaseType(MetaBaseType baseType);
 	
+	
+	/**
+	 * Get a List with all {@link MetaBaseType}s, but this list is read only.
+	 * So use to {@link #addBaseType(MetaBaseType)} and {@link #removeBaseType(MetaBaseType)} to manipulate this list.
+	 * @return
+	 */
 	public List<MetaBaseType> getBaseTypes();
 	
-	
-	public void addAttribute(MetaAttribute attribute);
-	public void removeAttribute(MetaAttribute attribute);
-	public List<MetaAttribute> getAttributes();
 	
 	/**
 	 * For a quick access to every {@link MetaClass}, {@link MetaAttribute}, {@link MetaContainmentRelation} and {@link MetaConnection}

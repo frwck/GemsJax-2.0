@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.swing.text.html.parser.AttributeList;
 
-import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.ResizeArea;
 import org.gemsjax.client.canvas.events.MoveEvent;
@@ -14,6 +13,12 @@ import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
+import org.gemsjax.shared.metamodel.MetaAttribute;
+import org.gemsjax.shared.metamodel.MetaBaseType;
+import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
+import org.gemsjax.shared.metamodel.MetaContainmentRelation;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -23,12 +28,15 @@ import com.google.gwt.user.client.ui.RichTextArea.FontSize;
 
 
 /**
- * This class represents a MetaClass. A MetaClass must be added to a {@link MetaModel} and sho
+ * This class represents a MetaClass. A MetaClass must be added to a {@link MetaModelImpl} and sho
  * @author Hannes Dorfmann
  *
  */
-public class MetaClass {
+public class MetaClassImpl implements MetaClass {
 
+	/** The unique ID */
+	private String id;
+	
 	// Drawable fields
 	
 	private double x, y,z;
@@ -45,7 +53,7 @@ public class MetaClass {
 	/**
 	 * The font family name. For an easier calculation of the width of a text you should allways use a monospace font.
 	 * <b>If you change the font, you also have to recalculate {@link #nameFontCharWidth} and {@link #attributeFontCharWidth}. <b>
-	 * @see MetaClass#nameFontCharWidth
+	 * @see MetaClassImpl#nameFontCharWidth
 	 */
 	private String fontFamily ="Courier";
 	
@@ -151,35 +159,32 @@ public class MetaClass {
 	private String name;
 	
 	/**
-	 * TODO What is Root?
-	 */
-	private boolean isRoot;
-	/**
 	 * Is this MetaClass abstract?
 	 */
 	private boolean isAbstract;
 	
-	private List <Attribute>attributeList;
+	private List <MetaAttribute>attributeList;
 	
-	private List <Connection> connectionList;
+	private List <MetaConnection> connectionList;
 	
-	private List<InheritanceRelation> inheritanceRelationList;
+	private List<MetaClass> inheritances;
 
-	public MetaClass(String name, double x, double y)
+	public MetaClassImpl(String id, String name, double x, double y)
 	{
-		this(x,y);
+		this(id,x,y);
 		this.name = name;
 	}
 	
 	
-	public MetaClass(String name)
+	public MetaClassImpl(String id, String name)
 	{
-		this(100,100);
+		this(id, 100,100);
 		this.name = name;
 	}
 		
-	public MetaClass(double x, double y) {
+	public MetaClassImpl(String id, double x, double y) {
 		 
+		this.id = id;
 		this.x = x;
 		this.y = y;
 
@@ -191,9 +196,9 @@ public class MetaClass {
 		 canBeResized = true;
 		 
 		 // Lists
-		 attributeList = new ArrayList<Attribute>();
-		 inheritanceRelationList = new ArrayList<InheritanceRelation>();
-		 connectionList = new ArrayList<Connection>();
+		 attributeList = new ArrayList<MetaAttribute>();
+		 inheritances = new ArrayList<MetaClass>();
+		 connectionList = new ArrayList<MetaConnection>();
 		
 		
 	}
@@ -219,15 +224,11 @@ public class MetaClass {
 		this.y=y;
 	}
 
-	public void setZ(double z) {
+	public void setZIndex(double z) {
 		this.z=z;
 	}
 
 	
-	
-	public boolean isMoveable() {
-		return canBeMoved;
-	}
 
 	public double getWidth() {
 		return width;
@@ -245,9 +246,6 @@ public class MetaClass {
 		this.height = height;
 	}
 
-	public boolean isResizeable() {
-			return canBeResized;
-	}
 
 	public void setMinWidth(double minWidth) {
 		this.minWidth = minWidth;
@@ -300,13 +298,7 @@ public class MetaClass {
 		this.name = name;
 	}
 
-	public boolean isRoot() {
-		return isRoot;
-	}
 
-	public void setRoot(boolean isRoot) {
-		this.isRoot = isRoot;
-	}
 
 	public boolean isAbstract() {
 		return isAbstract;
@@ -334,23 +326,23 @@ public class MetaClass {
 	*/
 	
 	
-	public void addAttribute(String name, String type) throws AttributeNameException
+	public void addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException
 	{
-		for(Attribute a : attributeList)
+		for(MetaAttribute a : attributeList)
 			if (a.getName().equals(name))
-				throw new AttributeNameException(name,this, "An Attribute with the name "+name+" already exists");
+				throw new MetaAttributeException(name,this, "An Attribute with the name "+name+" already exists");
 		
-		attributeList.add(new Attribute(name, type));
+		attributeList.add(new MetaAttributeImpl(id, name, type));
 	}
 	
 	/**
-	 * Remove a {@link Attribute} (by searching the attribute according to the attribute name)
+	 * Remove a {@link MetaAttributeImpl} (by searching the attribute according to the attribute name)
 	 * If the Attribute was not found, nothing will be done.
 	 * @param name
 	 */
 	public void removeAttribute(String name)
 	{
-		for (Attribute a: attributeList)
+		for (MetaAttributeImpl a: attributeList)
 		{
 			if (a.getName().equals(name))
 			{
@@ -547,27 +539,7 @@ public class MetaClass {
 	}
 
 
-	public boolean isCanBeMoved() {
-		return canBeMoved;
-	}
-
-
-	public void setCanBeMoved(boolean canBeMoved) {
-		this.canBeMoved = canBeMoved;
-	}
-
-
-	public boolean isCanBeResized() {
-		return canBeResized;
-	}
-
-
-	public void setCanBeResized(boolean canBeResized) {
-		this.canBeResized = canBeResized;
-	}
-
-
-	public boolean isDisplayAttributes() {
+	public boolean isDisplayingAttributes() {
 		return displayAttributes;
 	}
 	
@@ -586,9 +558,99 @@ public class MetaClass {
 	 * @param index
 	 * @return
 	 */
-	public Attribute getAttribute(int index)
+	public MetaAttributeImpl getAttribute(int index)
 	{
 		return attributeList.get(index);
+	}
+
+
+	@Override
+	public void addAttribute(MetaAttribute attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void addConnection(MetaConnection connection) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void addContainmentRelation(MetaContainmentRelation relation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void addInheritance(MetaBaseType type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public List<MetaAttribute> getAttributes() {
+		return attributeList;
+	}
+
+
+	@Override
+	public List<MetaConnection> getConnections() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<MetaContainmentRelation> getContainmentRelations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<MetaBaseType> getInheritances() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void removeAttribute(MetaAttribute attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeConnection(MetaConnection connection) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeContainmentRelation(MetaContainmentRelation relation) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeInheritance(MetaBaseType type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public String getID() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

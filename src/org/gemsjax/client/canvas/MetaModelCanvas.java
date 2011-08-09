@@ -3,15 +3,15 @@ package org.gemsjax.client.canvas;
 import javax.swing.text.html.CSS;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
-import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.metamodel.Connection;
-import org.gemsjax.client.metamodel.MetaClass;
+import org.gemsjax.client.metamodel.MetaConnectionImpl;
+import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -154,7 +154,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 			{
 			*/
 			
-				MetaClass d = new MetaClass(100, 200);
+				MetaClassImpl d = new MetaClassImpl(100, 200);
 				d.setName("Test MetaClass");
 				
 				d.addAttribute("Attribute1", "Type1");
@@ -167,7 +167,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				this.addDrawable(dr);
 				
 				
-				MetaClass d2 = new MetaClass(500, 400);
+				MetaClassImpl d2 = new MetaClassImpl(500, 400);
 				d2.setName("MetaClass 2");
 				
 				d2.addAttribute("Attribute1", "Type1");
@@ -181,7 +181,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 				
 				
-				Connection c = new Connection(d, d2);
+				MetaConnectionImpl c = new MetaConnectionImpl(d, d2);
 				
 				c.setName("Connection");
 				c.setNameBoxX(300);
@@ -213,7 +213,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 			*/
 		} catch (DoubleLimitException e) {
 			Window.alert(e.getMessage());
-		} catch (AttributeNameException e) {
+		} catch (MetaAttributeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

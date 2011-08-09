@@ -16,6 +16,7 @@ public interface MetaAttribute extends MetaModelElement{
 	 * @return
 	 */
 	public MetaBaseType getType();
+	
 	public void setType(MetaBaseType type);
 	
 	

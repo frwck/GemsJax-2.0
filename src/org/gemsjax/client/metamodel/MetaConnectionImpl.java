@@ -1,29 +1,28 @@
 package org.gemsjax.client.metamodel;
 
-import org.apache.commons.digester.xmlrules.FromXmlRuleSet;
 import org.gemsjax.client.canvas.ConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 
 /**
- * A Connection is used to represent a connection like association between two {@link MetaClass}es
+ * A Connection is used to represent a connection like association between two {@link MetaClassImpl}es
  * A Connection connects {@link #metaClassA} with {@link #metaClassB} and vice versa. 
  * So there is not a start/source or end/target. {@link #metaClassA} and {@link #metaClassB} are on a par.
  * @author Hannes Dorfmann
  *
  */
-public class Connection {
+public class MetaConnectionImpl implements MetaConnection{
 	
 	/**
-	 * One end of the {@link Connection}
+	 * One end of the {@link MetaConnectionImpl}
 	 */
-	private MetaClass metaClassA;
+	private MetaClassImpl metaClassA;
 	/**
-	 * The other end of the {@link Connection}
+	 * The other end of the {@link MetaConnectionImpl}
 	 */
-	private MetaClass metaClassB;
+	private MetaClassImpl metaClassB;
 	
-	/** The name of this  connection. The name must be unique in the {@link MetaModel */
+	/** The name of this  connection. The name must be unique in the {@link MetaModelImpl */
 	private String name;
 	
 	
@@ -31,10 +30,10 @@ public class Connection {
 	/**
 	 * The X coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #metaClassA}.
 	 * This coordinate is relative to the {@link #metaClassA} {@link MetaClassDrawable} object on the {@link MetaModelCanvas}.
-	 * That means, that the {@link MetaClass#getX()} is the relative 0 coordinate on the x axis.
+	 * That means, that the {@link MetaClassImpl#getX()} is the relative 0 coordinate on the x axis.
 	 * Example:
-	 * If the {@link MetaClass#getX()} has the absolute coordinate 10 and {@link #aRelativeX} is 5, so the
-	 * absolute coordinate on the {@link MetaModelCanvas} is 15 and can be computed by add {@link MetaClass#getX()} to aRelativeX
+	 * If the {@link MetaClassImpl#getX()} has the absolute coordinate 10 and {@link #aRelativeX} is 5, so the
+	 * absolute coordinate on the {@link MetaModelCanvas} is 15 and can be computed by add {@link MetaClassImpl#getX()} to aRelativeX
 	 *@see #getMetaClassARelativeX()
 	 */
 	private double aRelativeX;
@@ -98,7 +97,7 @@ public class Connection {
 	
 	private int lineSize = 2;
 	
-	private String gradientStartColor ="#00B000";
+	private String gradientStartColor ="#89E093";
 	private String gradientEndColor="#6DF76D";
 	
 	private boolean selected = false;
@@ -144,17 +143,17 @@ public class Connection {
 	/**
 	 * The font family name. For an easier calculation of the width of a text you should allways use a monospace font.
 	 * <b>If you change the font, you also have to recalculate {@link #nameFontCharWidth} and {@link #attributeFontCharWidth}. <b>
-	 * @see MetaClass#nameFontCharWidth
+	 * @see MetaClassImpl#nameFontCharWidth
 	 */
 	private String fontFamily ="Courier";
 	
 	
 	/**
-	 * Creates a new connection between the MetaClass a (stored in the field {@link #metaClassA}) and the {@link MetaClass} b (stored in the field {@link #metaClassB}).
+	 * Creates a new connection between the MetaClass a (stored in the field {@link #metaClassA}) and the {@link MetaClassImpl} b (stored in the field {@link #metaClassB}).
 	 * @param a
 	 * @param b
 	 */
-	public Connection(MetaClass a, MetaClass b)
+	public MetaConnectionImpl(MetaClassImpl a, MetaClassImpl b)
 	{
 		this.metaClassA = a;
 		this.metaClassB = b;
@@ -163,22 +162,22 @@ public class Connection {
 
 
 	
-	public MetaClass getMetaClassA() {
+	public MetaClassImpl getMetaClassA() {
 		return metaClassA;
 	}
 
 
-	public void setMetaClassA(MetaClass metaClassA) {
+	public void setMetaClassA(MetaClassImpl metaClassA) {
 		this.metaClassA = metaClassA;
 	}
 
 
-	public MetaClass getMetaClassB() {
+	public MetaClassImpl getMetaClassB() {
 		return metaClassB;
 	}
 
 
-	public void setMetaClassB(MetaClass metaClassB) {
+	public void setMetaClassB(MetaClassImpl metaClassB) {
 		this.metaClassB = metaClassB;
 	}
 

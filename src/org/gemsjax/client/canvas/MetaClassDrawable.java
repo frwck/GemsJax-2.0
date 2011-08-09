@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.swing.text.html.parser.AttributeList;
 
-import org.gemsjax.client.admin.model.metamodel.exception.AttributeNameException;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.ResizeArea;
 import org.gemsjax.client.canvas.events.ClickEvent;
@@ -22,8 +21,9 @@ import org.gemsjax.client.canvas.handler.MouseOutHandler;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.metamodel.Attribute;
-import org.gemsjax.client.metamodel.MetaClass;
+import org.gemsjax.client.metamodel.MetaAttributeImpl;
+import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -48,10 +48,10 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	private List <MouseOutHandler> mouseOutHandlers;
 	
 
-	private MetaClass metaClass;
+	private MetaClassImpl metaClass;
 	private boolean mouseOver=false;
 
-	public MetaClassDrawable(MetaClass metaClass)
+	public MetaClassDrawable(MetaClassImpl metaClass)
 	{
 		this.metaClass = metaClass;
 	
@@ -112,7 +112,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	}
 
 	public void setZ(double z) {
-		metaClass.setZ(z);
+		metaClass.setZIndex(z);
 	}
 
 	
@@ -146,7 +146,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 		drawName(context);
 		
-		if (metaClass.isDisplayAttributes())
+		if (metaClass.isDisplayingAttributes())
 			drawAttributes(context);
 		
 		
@@ -195,7 +195,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 		for (int i =0; i<attributeLines; i++)
 		{
-			Attribute a = metaClass.getAttribute(i);
+			MetaAttributeImpl a = metaClass.getAttribute(i);
 		
 			txt = metaClass.getWidth()-metaClass.getAttributeLeftSpace()-metaClass.getAttributeRightSpace() > ((a.getName().length()+a.getType().length()+3)*metaClass.getAttributeFontCharWidth())
 				? a.getName()+" : "+a.getType() : (a.getName()+" : "+a.getType()).subSequence(0, (int) ((metaClass.getWidth()-metaClass.getAttributeLeftSpace()-metaClass.getAttributeRightSpace())/metaClass.getAttributeFontCharWidth() - 3))+"...";
@@ -224,7 +224,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 		
 		// if there is at least one attribute, draw a horizontal line
-		if (metaClass.isDisplayAttributes() && metaClass.getAttributeCount()>0 )
+		if (metaClass.isDisplayingAttributes() && metaClass.getAttributeCount()>0 )
 		{
 			context.setFillStyle(metaClass.getBorderColor());
 			context.fillRect(metaClass.getX(), metaClass.getY()+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace(), metaClass.getWidth(), metaClass.getBorderSize());
@@ -252,14 +252,14 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		// Calculate the longest attribute (attribute string)
 		for (int i =0; i<metaClass.getAttributeCount();i++)
 		{
-			Attribute a = metaClass.getAttribute(i);
+			MetaAttributeImpl a = metaClass.getAttribute(i);
 			if ((a.getName().length() + a.getType().length() + 3 )> longestChar)	// + 3 is for the separator String " : " between name and type
 				longestChar = a.getName().length() + a.getType().length() + 3;
 		}
 		
 		double attributeWidth = metaClass.getAttributeLeftSpace() + longestChar *metaClass.getAttributeFontCharWidth() + metaClass.getAttributeRightSpace();
 		
-		if (metaClass.isDisplayAttributes())
+		if (metaClass.isDisplayingAttributes())
 		{
 			// Set width
 			if (attributeWidth>nameWidth)
@@ -271,7 +271,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 			metaClass.setWidth(nameWidth);
 			
 		// Set height
-		metaClass.setHeight(metaClass.isDisplayAttributes() ? (nameHeight + attributesHeight) : nameHeight); 
+		metaClass.setHeight(metaClass.isDisplayingAttributes() ? (nameHeight + attributesHeight) : nameHeight); 
 		
 		// Set the ResizeArea at the correct Position
 		autoSetResizeAreaPosition();

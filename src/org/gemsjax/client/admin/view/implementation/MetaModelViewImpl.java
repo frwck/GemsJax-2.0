@@ -3,6 +3,7 @@ package org.gemsjax.client.admin.view.implementation;
 import org.gemsjax.client.admin.UserLanguage;
 
 import org.gemsjax.client.admin.adminui.TabEnviroment;
+import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
 import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.notification.TipNotificationManager;
@@ -11,6 +12,7 @@ import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 
@@ -138,6 +140,16 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		}
 		
 		
+	}
+
+	@Override
+	public void addDrawable(Drawable drawable) throws DoubleLimitException {
+		canvas.addDrawable(drawable);
+	}
+
+	@Override
+	public void removeDrawable(Drawable drawable) {
+		canvas.removeDrawable(drawable);
 	}
 	
 

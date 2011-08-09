@@ -2,14 +2,32 @@ package org.gemsjax.server.metamodel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.gemsjax.shared.metamodel.MetaAttribute;
+import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
+import org.gemsjax.shared.metamodel.MetaContainmentRelation;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
+import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
+import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion;
 /**
  * This class represents a MetaClass in a MetaModel
  * @author Hannes Dorfmann
  *
  */
-public class MetaClassImpl extends MetaBaseTypeImpl{
+public class MetaClassImpl implements MetaClass{
 
+	/**
+	 * The unique id
+	 */
+	private String id;
+	
+	/**
+	 * The unique name (within the MetaModel)
+	 */
+	private String name;
+	
 	
 	/**
 	 * A flag to indicate, whenever this class is abstract or not
@@ -17,22 +35,31 @@ public class MetaClassImpl extends MetaBaseTypeImpl{
 	private boolean _abstract;
 	
 	/**
-	 * The list with all {@link MetaConnectionImpl}s that has this class as {@link MetaConnectionImpl#getSource()} as start / source element.
+	 * The list with all {@link MetaConnection} that has this class as start / source element.
 	 */
-	private List<MetaConnectionImpl> connections;
+	private List<MetaConnection> connections;
 	
 	
 	/**
-	 * The list with all {@link MetaAttributeImpl}s to model attributes, which belong to this {@link MetaClassImpl}
+	 * The list with all {@link MetaAttribute}s to model attributes, which belong to this {@link MetaClassImpl}
 	 */
-	private List<MetaAttributeImpl> attributes;
+	private List<MetaAttribute> attributes;
+	
+	
+	private List<MetaClass> inheritances;
+	
+	
+	private List<MetaContainmentRelation> containmentRelations;
 	
 	
 	public MetaClassImpl(String id, String name) {
-		super(id, name);
+		this.id = id;
+		this.name = name;
 		_abstract = false;
-		connections = new ArrayList<MetaConnectionImpl>();
-		attributes = new ArrayList<MetaAttributeImpl>();
+		connections = new ArrayList<MetaConnection>();
+		attributes = new ArrayList<MetaAttribute>();
+		inheritances = new ArrayList<MetaClass>();
+		containmentRelations = new ArrayList<MetaContainmentRelation>();
 	}
 
 
@@ -45,34 +72,22 @@ public class MetaClassImpl extends MetaBaseTypeImpl{
 		_abstract = abstract1;
 	}
 
-	
-	public List<MetaConnectionImpl> getConnections()
+	@Override
+	public List<MetaConnection> getConnections()
 	{
 		return connections;
 	}
 	
-	/**
-	 *	Its just a short cut for {@link #getConnections()}.add();
-	 * @param c
-	 */
-	public void addConnection(MetaConnectionImpl c)
-	{
-		//TODO is a check for duplicate names needed?
-		
-		connections.add(c);
-	}
 	
-	/**
-	 * It's just a short cut for {@link #getConnections()}.remove();
-	 * If the element, which should be removed is not in the connection list, nothing happens
-	 * @param c
-	 */
-	public void removeConnection(MetaConnectionImpl c)
+	
+	@Override
+	public void removeConnection(MetaConnection c)
 	{
 		connections.remove(c);
 	}
 	
-	public List<MetaAttributeImpl> getAttributes()
+	@Override
+	public List<MetaAttribute> getAttributes()
 	{
 		return attributes;
 	}
@@ -96,6 +111,90 @@ public class MetaClassImpl extends MetaBaseTypeImpl{
 	public void removeConnection(MetaAttributeImpl a)
 	{
 		attributes.remove(a);
+	}
+
+
+	@Override
+	public MetaAttribute addAttribute(String id, String name, MetaBaseType type)
+			throws MetaAttributeException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public MetaConnection addConnection(String id, String name, int lower,
+			int upper) throws MetaConnectionException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public MetaContainmentRelation addContainmentRelation(String id, int max,
+			int min) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void addInheritance(MetaClass superMetaClass)
+			throws MetaInheritanceExcepetion {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public List<MetaContainmentRelation> getContainmentRelations() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public List<MetaBaseType> getInheritances() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void removeAttribute(MetaAttribute attribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeContainmentRelation(MetaContainmentRelation relation) {
+		containmentRelations.remove(relation);
+	}
+
+
+	@Override
+	public void removeInheritance(MetaClass type) {
+		this.inheritances.remove(type);
+	}
+
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+
+
+	@Override
+	public String getID() {
+		return id;
 	}
 	
 }
