@@ -13,6 +13,8 @@ import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoginViewImpl;
 import org.gemsjax.client.admin.view.implementation.MetaModelViewImpl;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.metamodel.MetaModelImpl;
+import org.gemsjax.shared.metamodel.MetaModel;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -105,7 +107,11 @@ public class AdminApplicationController {
 
 		
 		try {
-			new MetaModelPresenter(eventBus, new MetaModelViewImpl("MetaModel 1", language), null);
+			
+			MetaModel metaModel = new MetaModelImpl("id1", "MetaModel1");
+			
+			
+			new MetaModelPresenter(eventBus, new MetaModelViewImpl("MetaModel 1", language), metaModel);
 		} catch (CanvasSupportException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

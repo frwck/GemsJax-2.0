@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
+import org.gemsjax.shared.metamodel.exception.MetaContainmentRelationException;
 import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion;
 
 /** The common interface for the meta model class implementation on client and server side.
@@ -44,21 +45,23 @@ public interface MetaClass extends MetaModelElement{
 	 * Create and add a new {@link MetaConnection}
 	 * @param id
 	 * @param name
+	 * @param target
 	 * @param lower
 	 * @param upper
 	 * @return The new created and added MetaConnection object
 	 * @throws MetaConnectionException if a MetaConnection with the same name exists.
 	 */
-	public MetaConnection addConnection(String id, String name, int lower, int upper)  throws MetaConnectionException;
+	public MetaConnection addConnection(String id, String name, MetaClass target, int lower, int upper)  throws MetaConnectionException;
 	
 	/**
 	 * Create and add a new {@link MetaContainmentRelation} object
 	 * @param id
+	 * @param classToContain The MetaClass which is contained 
 	 * @param max
 	 * @param min
 	 * @return The new created {@link MetaContainmentRelation} object
 	 */
-	public MetaContainmentRelation addContainmentRelation(String id, int max, int min);
+	public MetaContainmentRelation addContainmentRelation(String id, MetaClass classToContain, int max, int min) throws MetaContainmentRelationException;
 	
 	
 	/**
@@ -69,8 +72,28 @@ public interface MetaClass extends MetaModelElement{
 	 */
 	public void addInheritance(MetaClass superMetaClass) throws MetaInheritanceExcepetion;
 	
+	/**
+	 * <b> Use this just as a read only list!</b> <br />
+	 * Use {@link #addAttribute(String, String, MetaBaseType)} and {@link #removeAttribute(MetaAttribute)} to manipulate this list,
+	 * but never manipulate this list directly
+	 * @return
+	 */
 	public List<MetaAttribute> getAttributes();
+	
+	/**
+	 * <b> Use this just as a read only list!</b> <br />
+	 * Use {@link #addConnection(String, String, MetaClass, int, int)} and {@link #removeConnection(MetaConnection)} to manipulate this list,
+	 * but never manipulate this list directly
+	 * @return
+	 */
 	public List<MetaConnection> getConnections();
+	
+	/**
+	 * <b> Use this just as a read only list!</b> <br />
+	 * Use {@link #addContainmentRelation(String, int, int)} and {@link #removeContainmentRelation(MetaContainmentRelation)} to manipulate this list,
+	 * but never manipulate this list directly
+	 * @return
+	 */
 	public List<MetaContainmentRelation> getContainmentRelations();
 	
 	/**
@@ -78,7 +101,7 @@ public interface MetaClass extends MetaModelElement{
 	 * from which this MetaClass derives.
 	 * @return
 	 */
-	public List<MetaBaseType> getInheritances();
+	public List<MetaClass> getInheritances();
 	
 	public void removeAttribute(MetaAttribute attribute);
 	public void removeConnection(MetaConnection connection);
@@ -253,22 +276,21 @@ public interface MetaClass extends MetaModelElement{
 	public String getIconURL();
 	
 	/**
-	 * Get the max width of the rectangle where the icon is painted in.
-	 * Dont get confused: This value is not the width of the icon (image) itself,
-	 * but it defines, what the maximum width is.
-	 * Example: The icon have a width of 300 px, but this {@link #setIconMaxWidth(int)} value is set to 200,
+	 * Get the width of the rectangle where the icon is painted in.
+	 * Don't get confused: This value is not the width of the icon (image) itself,
+	 * but it defines, the width the icon is scaled to.
+	 * Example: The icon have a width of 300 px, but this {@link #setIconMaxWidth(double)} value is set to 200,
 	 * then the icon itself will be scaled down to a width of 200.
-	 * If the width is less than max width value, the icon will be displayed with the original icon width. 
 	 * @return
 	 */
-	public int getIconMaxWidth();
+	public double getIconWidth();
 	
 	/**
 	 * Get the max height of the rectangle where the icon is painted in
 	 * @see #getIconMaxWidth()
 	 * @return
 	 */
-	public int getIconMaxHeight();
+	public double getIconHeight();
 	
 	
 	
@@ -279,6 +301,11 @@ public interface MetaClass extends MetaModelElement{
 	public boolean isDisplayingAttributes();
 	
 	public boolean isSelected();
+	
+	public boolean isAbstract();
+	
+	public void setAbstract(boolean abstr);
+	
 	/**
 	 * @see #getAttributeFontCharWidth()
 	 * @param attributeFontCharWidth
@@ -301,7 +328,7 @@ public interface MetaClass extends MetaModelElement{
 	 * @see #getAttributeListLeftSpace()
 	 * @param attributeLeftSpace
 	 */
-	public void setAttributeLeftSpace(double attributeLeftSpace);
+	public void setAttributeListLeftSpace(double attributeLeftSpace);
 	/**
 	 * @see #getAttributeLisBottomSpace()
 	 * @param attributeListBottomSpace
@@ -318,7 +345,7 @@ public interface MetaClass extends MetaModelElement{
 	 * @see #getAttributeListRightSpace()
 	 * @param attributeRightSpace
 	 */
-	public void setAttributeRightSpace(double attributeRightSpace) ;
+	public void setAttributeListRightSpace(double attributeRightSpace) ;
 	
 	/**
 	 * @see #getAttributeToAttributeSpace()
@@ -452,13 +479,13 @@ public interface MetaClass extends MetaModelElement{
 	 * @see #getIconMaxWidth()
 	 * @param width
 	 */
-	public void setIconMaxWidth(int width);
+	public void setIconWidth(double width);
 	
 	/**
-	 * @see #getIconMaxHeight()
+	 * @see #getIconHeight()
 	 * @param height
 	 */
-	public void setIconMaxHeight(int height);
+	public void setIconHeight(double height);
 		
 	
 	

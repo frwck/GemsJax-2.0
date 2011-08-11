@@ -144,80 +144,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		getWrappedCanvas().addMouseDownHandler(this);
 		getWrappedCanvas().addMouseUpHandler(this);
 		getWrappedCanvas().addMouseOutHandler(this);
-		
-		
 
-		//TODO remove sample data
-		try {
-			// Hardcore performance test
-			/*for (int i =0; i<10000;i++)
-			{
-			*/
-			
-				MetaClassImpl d = new MetaClassImpl(100, 200);
-				d.setName("Test MetaClass");
-				
-				d.addAttribute("Attribute1", "Type1");
-				d.addAttribute("Attribute2", "Type1");
-				d.addAttribute("Attribute3", "Type1");
-				
-				MetaClassDrawable dr = new MetaClassDrawable(d);
-				dr.autoSize();
-				
-				this.addDrawable(dr);
-				
-				
-				MetaClassImpl d2 = new MetaClassImpl(500, 400);
-				d2.setName("MetaClass 2");
-				
-				d2.addAttribute("Attribute1", "Type1");
-				d2.addAttribute("Attribute2", "Type1");
-				d2.addAttribute("Attribute3", "Type1");
-				
-				MetaClassDrawable dr2 = new MetaClassDrawable(d2);
-				dr2.autoSize();
-				
-				this.addDrawable(dr2);
-				
-				
-				
-				MetaConnectionImpl c = new MetaConnectionImpl(d, d2);
-				
-				c.setName("Connection");
-				c.setNameBoxX(300);
-				c.setNameBoxY(200);
-				c.setNameBoxWidth(100);
-				c.setNameBoxHeight(30);
-				
-				c.setANameBoxRelativeX(0);
-				c.setANameBoxRelativeY(10);
-				
-				c.setBNameBoxRelativeX(c.getNameBoxWidth());
-				c.setBNameBoxRelativeY(10);
-				
-				ConnectionDrawable cd = new ConnectionDrawable(c, dr, dr2);
-				
-				this.addDrawable(cd);
-				this.addDrawable(cd.getNameBoxDrawable());
-
-				
-				
-			/*
-			
-			new Timer(){
-
-				@Override
-				public void run() {
-					redrawCanvas();
-				}}.scheduleRepeating(2000);
-			*/
-		} catch (DoubleLimitException e) {
-			Window.alert(e.getMessage());
-		} catch (MetaAttributeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 	}
 	
 	
@@ -357,7 +284,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 				
 				// Resize, if mouse is on a ResizeArea and Resizeable
-				if (currentMouseDownDrawable != null && currentMouseDownDrawable instanceof Resizeable &&((Resizeable)currentMouseDownDrawable).isResizeable() && isMouseDown && currentResizeArea != null)
+				if (currentMouseDownDrawable != null && currentMouseDownDrawable instanceof Resizeable && isMouseDown && currentResizeArea != null)
 				{
 					if (resizeableOnlyOnSelected && currentMouseDownDrawable.isSelected())
 					{
@@ -377,7 +304,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 		
 				// MoveEvent
-				if (currentMouseDownDrawable instanceof Moveable && ((Moveable) currentMouseDownDrawable).isMoveable() && isMouseDown)
+				if (currentMouseDownDrawable instanceof Moveable && isMouseDown)
 				{
 		
 					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);

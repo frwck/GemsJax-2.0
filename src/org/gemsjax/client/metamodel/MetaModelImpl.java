@@ -1,26 +1,48 @@
 package org.gemsjax.client.metamodel;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.Drawable;
+import org.gemsjax.shared.metamodel.MetaBaseType;
+import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.MetaModelElement;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
+import org.gemsjax.shared.metamodel.exception.MetaClassException.MetaClassExceptionReason;
 
 
-
+/**
+ * The client side implementation
+ * @author Hannes Dorfmann
+ *
+ */
 public class MetaModelImpl implements MetaModel{
 	
 	private String name;
 	
-	private List<MetaClassImpl> metaClassList;
+	private String id;
 	
-	public MetaModelImpl(String name)
+	private List<MetaClass> metaClasses;
+	private List<MetaBaseType> baseTypes;
+	
+	/**
+	 * This map provides a quick access map for getting a element by its id
+	 */
+	private Map<String, MetaModelElement> idMap;
+	
+	public MetaModelImpl(String id, String name)
 	{
 		this.name = name;
-		metaClassList = new LinkedList<MetaClassImpl>();
+		this.id = id;
 		
+		metaClasses = new ArrayList<MetaClass>();
+		baseTypes = new ArrayList<MetaBaseType>();
+		idMap = new HashMap<String, MetaModelElement>();		
 	}
 	
 	/**
@@ -32,9 +54,9 @@ public class MetaModelImpl implements MetaModel{
 	 */
 	public boolean isMetaClassNameAvailable(String desiredName) throws MetaClassException
 	{
-		for (MetaClassImpl m: metaClassList)
+		for (MetaClass m: metaClasses)
 			if (m.getName().equals(desiredName))
-				throw new MetaClassException(desiredName);
+				throw new MetaClassException(MetaClassExceptionReason.NAME_ALREADY_IN_USE, desiredName);
 		
 		
 		return true;
@@ -47,19 +69,64 @@ public class MetaModelImpl implements MetaModel{
 	 * @throws MetaClassException if the name of the {@link MetaClassImpl} is already assigned to another {@link MetaClassImpl} and so not available
 	 * @return The new created {@link MetaClassImpl} object
 	 */
-	public MetaClassImpl addMetaClass(String metaClassName) throws MetaClassException{
+	@Override
+	public MetaClass addMetaClass(String id, String metaClassName) throws MetaClassException{
 		
 		if (isMetaClassNameAvailable(metaClassName))
 		{
-			MetaClassImpl mc = new MetaClassImpl(metaClassName);
-			metaClassList.add(mc);
+			MetaClassImpl mc = new MetaClassImpl(id,metaClassName);
+			metaClasses.add(mc);
 			return mc;
 		}
 		
 		// Should never be reached, because isMetaClassNameAvailable should throw a MetaClassNameExcption
 		return null;
 	}
-	
-	//TODO remove MetaClass by reference and by name
 
+	@Override
+	public void addBaseType(MetaBaseType baseType) {
+		baseTypes.add(baseType);
+	}
+
+
+	@Override
+	public List<MetaBaseType> getBaseTypes() {
+		return baseTypes;
+	}
+
+	@Override
+	public MetaModelElement getElementByID(String id) {
+		return idMap.get(id);
+	}
+
+	@Override
+	public String getID() {
+		return id;
+	}
+
+	@Override
+	public List<MetaClass> getMetaClasses() {
+		return metaClasses;
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void removeBaseType(MetaBaseType baseType) {
+		baseTypes.remove(baseType);
+	}
+
+	@Override
+	public void removeMetaClass(MetaClass metaClass) {
+		metaClasses.remove(metaClass);
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 }

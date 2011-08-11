@@ -20,7 +20,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable, Focusable, ResizeHandler, MoveHandler, FocusHandler{
+public  class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable, Focusable, ResizeHandler, MoveHandler, FocusHandler{
 
 	/**
 	 * The connection, which name will be displayed with this {@link ConnectionNameBoxDrawable}
@@ -78,8 +78,8 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 	
 	/**
 	 * If the {@link ConnectionNameBoxDrawable} is resized and this flag is set to true,
-	 * than the {@link MetaConnectionImpl#setANameBoxRelativeX(double)}, {@link MetaConnectionImpl#setANameBoxRelativeY(double)}, {@link MetaConnectionImpl#setBNameBoxRelativeX(double)}
-	 * and {@link MetaConnectionImpl#setBNameBoxRelativeY(double)} will be set according to the previous (before the resizing) 
+	 * than the {@link MetaConnectionImpl#setSourceConnectionBoxRelativeX(double)}, {@link MetaConnectionImpl#setSourceConnectionBoxRelativeY(double)}, {@link MetaConnectionImpl#setTargetConnectionBoxRelativeX(double)}
+	 * and {@link MetaConnectionImpl#setTargetConnectionBoxRelativeY(double)} will be set according to the previous (before the resizing) 
 	 * percental ratio.
 	 */
 	private boolean autoAdjustNameBoxRatio = true;
@@ -94,7 +94,7 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 		resizeHandlers = new LinkedList<ResizeHandler>();
 		focusHandlers = new LinkedList<FocusHandler>();
 		
-		resizeAreas.add(new ResizeArea(connection.getNameBoxX()+ connection.getNameBoxWidth()-6, connection.getNameBoxY()+ connection.getNameBoxHeight()-6, 6, 6));
+		resizeAreas.add(new ResizeArea(connection.getConnectionBoxX()+ connection.getConnectionBoxWidth()-6, connection.getConnectionBoxY()+ connection.getConnectionBoxHeight()-6, 6, 6));
 
 		this.addMoveHandler(this);
 		this.addResizeHandler(this);
@@ -107,16 +107,16 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 	@Override
 	public void draw(Context2d context) {
 		
-		CanvasGradient gradient = context.createLinearGradient(connection.getNameBoxX(), connection.getNameBoxY(),connection.getNameBoxX()+connection.getNameBoxWidth(), connection.getNameBoxY()+connection.getNameBoxHeight());
+		CanvasGradient gradient = context.createLinearGradient(connection.getConnectionBoxX(), connection.getConnectionBoxY(),connection.getConnectionBoxX()+connection.getConnectionBoxWidth(), connection.getConnectionBoxY()+connection.getConnectionBoxHeight());
 		
 		gradient.addColorStop(0,connection.getGradientStartColor());
 		gradient.addColorStop(0.7, connection.getGradientEndColor());
 		
-		drawDottedRect(context,connection.getNameBoxX(), connection.getNameBoxY(), connection.getNameBoxWidth(), connection.getNameBoxHeight());
+		drawDottedRect(context,connection.getConnectionBoxX(), connection.getConnectionBoxY(), connection.getConnectionBoxWidth(), connection.getConnectionBoxHeight());
 		
 		
 		context.setFillStyle(gradient);
-		context.fillRect(connection.getNameBoxX(), connection.getNameBoxY(), connection.getNameBoxWidth(), connection.getNameBoxHeight());
+		context.fillRect(connection.getConnectionBoxX(), connection.getConnectionBoxY(), connection.getConnectionBoxWidth(), connection.getConnectionBoxHeight());
 		
 		drawName(context);
 		
@@ -142,14 +142,14 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 	
 	private void drawName(Context2d context)
 	{
-		String txt = connection.getNameBoxWidth()-nameLeftSpace > (connection.getName().length()*connection.getFontCharWidth()) 
-		? connection.getName() : connection.getName().subSequence(0, (int) ((connection.getNameBoxWidth()- nameLeftSpace)/connection.getFontCharWidth() - 3))+"...";
+		String txt = connection.getConnectionBoxWidth()-nameLeftSpace > (connection.getName().length()*connection.getNameFontCharWidth()) 
+		? connection.getName() : connection.getName().subSequence(0, (int) ((connection.getConnectionBoxWidth()- nameLeftSpace)/connection.getNameFontCharWidth() - 3))+"...";
 
 		context.setFillStyle(connection.getFontColor());
-		context.setFont(connection.getFontSize()+"px "+connection.getFontFamily());
+		context.setFont(connection.getNameFontSize()+"px "+connection.getFontFamily());
 		
 		context.setTextAlign("left");
-		context.fillText(txt, connection.getNameBoxX()+nameLeftSpace, connection.getNameBoxY()+nameTopSpace+connection.getFontSize());
+		context.fillText(txt, connection.getConnectionBoxX()+nameLeftSpace, connection.getConnectionBoxY()+nameTopSpace+connection.getNameFontSize());
 
 	}
 	
@@ -211,7 +211,7 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 	
 	@Override
 	public boolean hasCoordinate(double x, double y) {
-		return (isBetween(connection.getNameBoxX(), connection.getNameBoxX() + connection.getNameBoxWidth(), x) && isBetween(connection.getNameBoxY(), connection.getNameBoxY() + connection.getNameBoxHeight(),y));
+		return (isBetween(connection.getConnectionBoxX(), connection.getConnectionBoxX() + connection.getConnectionBoxWidth(), x) && isBetween(connection.getConnectionBoxY(), connection.getConnectionBoxY() + connection.getConnectionBoxHeight(),y));
 	}
 
 	
@@ -249,22 +249,15 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 
 	@Override
 	public double getX() {
-		return connection.getNameBoxX();
+		return connection.getConnectionBoxX();
 	}
 
 
 	@Override
 	public double getY() {
-		return connection.getNameBoxY();
+		return connection.getConnectionBoxY();
 	}
 
-
-
-
-	@Override
-	public boolean isMoveable() {
-		return true;
-	}
 
 
 
@@ -304,7 +297,7 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 
 	@Override
 	public double getHeight() {
-		return connection.getNameBoxHeight();
+		return connection.getConnectionBoxHeight();
 	}
 
 
@@ -312,17 +305,8 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 
 	@Override
 	public double getWidth() {
-		return connection.getNameBoxWidth();
+		return connection.getConnectionBoxWidth();
 	}
-
-
-
-
-	@Override
-	public boolean isResizeable() {
-		return true;
-	}
-
 
 
 
@@ -359,7 +343,7 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 	@Override
 	public void onResize(ResizeEvent event) {
 		
-		if (isResizeable() && event.getWidth()>getMinWidth() && event.getHeight()>getMinHeight())
+		if (event.getWidth()>getMinWidth() && event.getHeight()>getMinHeight())
 		{
 			
 			for (ResizeArea r : resizeAreas)
@@ -368,22 +352,22 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 				r.setY(r.getY()+ (event.getHeight()-this.getHeight()));
 			}
 			
-			connection.setNameBoxWidth(event.getWidth());
-			connection.setNameBoxHeight(event.getHeight());
+			connection.setConnectionBoxWidth(event.getWidth());
+			connection.setConnectionBoxHeight(event.getHeight());
 			
 
 			// Adjust connections coordinate
-			if (connection.getANameBoxRelativeX()>event.getWidth())
-				connection.setANameBoxRelativeX(event.getWidth());
+			if (connection.getSourceConnectionBoxRelativeX()>event.getWidth())
+				connection.setSourceConnectionBoxRelativeX(event.getWidth());
 			
-			if (connection.getANameBoxRelativeY()>event.getHeight())
-				connection.setANameBoxRelativeY(event.getHeight());
+			if (connection.getSourceConnectionBoxRelativeY()>event.getHeight())
+				connection.setSourceConnectionBoxRelativeY(event.getHeight());
 			
-			if (connection.getBNameBoxRelativeX()>event.getWidth())
-				connection.setBNameBoxRelativeX(event.getWidth());
+			if (connection.getTargetConnectionBoxRelativeX()>event.getWidth())
+				connection.setTargetConnectionBoxRelativeX(event.getWidth());
 			
-			if (connection.getBNameBoxRelativeY()>event.getHeight())
-				connection.setBNameBoxRelativeY(event.getHeight());
+			if (connection.getTargetConnectionBoxRelativeY()>event.getHeight())
+				connection.setTargetConnectionBoxRelativeY(event.getHeight());
 		
 			/* TODO needed?
 			if (autoAdjustNameBoxRatio)
@@ -413,9 +397,8 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 		double oldX = getX();
 		double oldY = getY();
 		
-		connection.setNameBoxX(e.getX()-e.getDistanceToTopLeftX());
-		connection.setNameBoxY(e.getY()-e.getDistanceToTopLeftY());
-		
+		setX(e.getX()-e.getDistanceToTopLeftX());
+		setY(e.getY()-e.getDistanceToTopLeftY());
 		
 		// Set the Position of the ResizeAreas
 		for (ResizeArea ra : resizeAreas)
@@ -469,6 +452,39 @@ public class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable
 			connection.setSelected(true);
 		else
 			connection.setSelected(false);
+	}
+
+
+
+
+	@Override
+	public void setX(double x) {
+
+		connection.setConnectionBoxX(x);
+	}
+
+
+
+
+	@Override
+	public void setY(double y) {
+		connection.setConnectionBoxY(y);
+	}
+
+
+
+
+	@Override
+	public void setHeight(double height) {
+		connection.setConnectionBoxHeight(height);
+	}
+
+
+
+
+	@Override
+	public void setWidth(double width) {
+		connection.setConnectionBoxWidth(width);
 	}
 	
 	

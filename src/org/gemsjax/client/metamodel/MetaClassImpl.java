@@ -19,11 +19,12 @@ import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaContainmentRelation;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
-
-import com.google.gwt.canvas.dom.client.CanvasGradient;
-import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.user.client.ui.RichTextArea.FontSize;
-
+import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
+import org.gemsjax.shared.metamodel.exception.MetaContainmentRelationException;
+import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException.MetaAttributeExceptionReason;
+import org.gemsjax.shared.metamodel.exception.MetaConnectionException.MetaConnectionExceptionType;
+import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion.InheritanceExceptionReason;
 
 
 
@@ -48,6 +49,10 @@ public class MetaClassImpl implements MetaClass {
 	
 	private String gradientStartColor ="#FCCE70";
 	private String gradientEndColor="#FCFBD5";
+	
+	private String iconURL;
+	private double iconWidth;
+	private double iconHeight;
 	
 	
 	/**
@@ -144,11 +149,8 @@ public class MetaClassImpl implements MetaClass {
 	 * Should the attribute list be displayed or not?
 	 */
 	private boolean displayAttributes = true;
-	
-	private boolean canBeMoved;
-	private boolean canBeResized;
+
 	private boolean selected;
-	
 	
 		
 	// MetaClass Data fields
@@ -163,11 +165,13 @@ public class MetaClassImpl implements MetaClass {
 	 */
 	private boolean isAbstract;
 	
-	private List <MetaAttribute>attributeList;
+	private List <MetaAttribute>attributes;
 	
-	private List <MetaConnection> connectionList;
+	private List <MetaConnection> connections;
 	
 	private List<MetaClass> inheritances;
+	
+	private List<MetaContainmentRelation> containments;
 
 	public MetaClassImpl(String id, String name, double x, double y)
 	{
@@ -187,470 +191,483 @@ public class MetaClassImpl implements MetaClass {
 		this.id = id;
 		this.x = x;
 		this.y = y;
-
-		//setMinHeight(nameTopSpace+nameFontSize+nameBottomSpace);
 		 
-		 
-		 canBeMoved = true;
 		 selected = false;
-		 canBeResized = true;
 		 
 		 // Lists
-		 attributeList = new ArrayList<MetaAttribute>();
+		 attributes = new ArrayList<MetaAttribute>();
 		 inheritances = new ArrayList<MetaClass>();
-		 connectionList = new ArrayList<MetaConnection>();
-		
-		
+		 connections = new ArrayList<MetaConnection>();
+		 containments = new ArrayList<MetaContainmentRelation>();
+		 
 	}
 
+	@Override
 	public double getX() {
 		return x;
 	}
 
+	@Override
 	public double getY() {
 		return y;
 	}
 
-	public double getZ() {
-		return z;
-	}
-
+	@Override
 	public void setX(double x) {
 		this.x = x;
 		
 	}
 
+	@Override
 	public void setY(double y) {
 		this.y=y;
 	}
 
+	@Override
 	public void setZIndex(double z) {
 		this.z=z;
 	}
 
 	
 
+	@Override
 	public double getWidth() {
 		return width;
 	}
 
+	@Override
 	public double getHeight() {
 		return height;
 	}
 
+	@Override
 	public void setWidth(double width) {
 		this.width = width;
 	}
 
+	@Override
 	public void setHeight(double height) {
 		this.height = height;
 	}
 
 
+	@Override
 	public void setMinWidth(double minWidth) {
 		this.minWidth = minWidth;
 	}
 
+	@Override
 	public double getMinWidth() {
 		
 		return minWidth;
 	}
 
+	@Override
 	public void setMinHeight(double minHeight) {
 		this.minHeight = minHeight;
 	}
 
+	
+	@Override
 	public double getMinHeight() {
 		return minHeight;
 	}
 
+	@Override
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
 
+	@Override
 	public boolean isSelected() {
 		return selected;
 	}
 
-	
+	@Override
 	public String getBorderColor() {
 		return borderColor;
 	}
-
+	
+	@Override
 	public void setBorderColor(String borderColor) {
 		this.borderColor = borderColor;
 	}
 
+	@Override
 	public int getBorderSize() {
 		return borderSize;
 	}
 
+	@Override
 	public void setBorderSize(int borderSize) {
 		this.borderSize = borderSize;
 	}
-
 	
+	@Override
 	public String getName() {
 		return name;
 	}
-
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
 
-
+	@Override
 	public boolean isAbstract() {
 		return isAbstract;
 	}
-
+	@Override
 	public void setAbstract(boolean isAbstract) {
 		this.isAbstract = isAbstract;
 	}
 
-	/*
-	public List<Attribute> getAttributeList() {
-		return attributeList;
-	}
-
-	
-	public List<Connection> getConnectionList() {
-		return connectionList;
-	}
-
-	public List<InheritanceRelation> getInheritanceRelationList() {
-		return inheritanceRelationList;
-	}
-
-
-	*/
 	
 	
-	public void addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException
+	@Override
+	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException
 	{
-		for(MetaAttribute a : attributeList)
+		for(MetaAttribute a : attributes)
 			if (a.getName().equals(name))
-				throw new MetaAttributeException(name,this, "An Attribute with the name "+name+" already exists");
+				throw new MetaAttributeException(MetaAttributeExceptionReason.NAME_ALREADY_IN_USE , name, this);
 		
-		attributeList.add(new MetaAttributeImpl(id, name, type));
+		MetaAttribute attribute = new MetaAttributeImpl(id, name, type);
+		attributes.add(attribute);
+		
+		return attribute;
 	}
 	
-	/**
-	 * Remove a {@link MetaAttributeImpl} (by searching the attribute according to the attribute name)
-	 * If the Attribute was not found, nothing will be done.
-	 * @param name
-	 */
-	public void removeAttribute(String name)
+	@Override
+	public void removeAttribute(MetaAttribute attribute)
 	{
-		for (MetaAttributeImpl a: attributeList)
-		{
-			if (a.getName().equals(name))
-			{
-				// TODO check if this will throw a java iterator exception
-				attributeList.remove(a);
-				return;
-			}
-		}
+		attributes.remove(attribute);
 	}
 
-
+	@Override
 	public void setDisplayAttributes(boolean show) {
 		this.displayAttributes = show;
 	}
 
-
+	@Override
 	public String getGradientStartColor() {
 		return gradientStartColor;
 	}
 
-
+	@Override
 	public void setGradientStartColor(String gradientStartColor) {
 		this.gradientStartColor = gradientStartColor;
 	}
 
-
+	@Override
 	public String getGradientEndColor() {
 		return gradientEndColor;
 	}
 
-
+	@Override
 	public void setGradientEndColor(String gradientEndColor) {
 		this.gradientEndColor = gradientEndColor;
 	}
-
-
+	
+	@Override
 	public String getFontFamily() {
 		return fontFamily;
 	}
 
-
+	@Override
 	public void setFontFamily(String fontFamily) {
 		this.fontFamily = fontFamily;
 	}
 
-
+	@Override
 	public String getNameFontColor() {
 		return nameFontColor;
 	}
 
-
+	@Override
 	public void setNameFontColor(String nameFontColor) {
 		this.nameFontColor = nameFontColor;
 	}
 
-
+	@Override
 	public String getAttributeFontColor() {
 		return attributeFontColor;
 	}
 
-
+	@Override
 	public void setAttributeFontColor(String attributeFontColor) {
 		this.attributeFontColor = attributeFontColor;
 	}
 
-
+	@Override
 	public int getNameFontSize() {
 		return nameFontSize;
 	}
 
-
+	@Override
 	public void setNameFontSize(int nameFontSize) {
 		this.nameFontSize = nameFontSize;
 	}
 
-
+	@Override
 	public int getAttributeFontSize() {
 		return attributeFontSize;
 	}
 
-
+	@Override
 	public void setAttributeFontSize(int attributeFontSize) {
 		this.attributeFontSize = attributeFontSize;
 	}
 
-
+	@Override
 	public double getNameFontCharWidth() {
 		return nameFontCharWidth;
 	}
 
-
+	@Override
 	public void setNameFontCharWidth(double nameFontCharWidth) {
 		this.nameFontCharWidth = nameFontCharWidth;
 	}
 
-
+	@Override
 	public double getAttributeFontCharWidth() {
 		return attributeFontCharWidth;
 	}
 
-
+	@Override
 	public void setAttributeFontCharWidth(double attributeFontCharWidth) {
 		this.attributeFontCharWidth = attributeFontCharWidth;
 	}
 
-
+	@Override
 	public double getAttributeToAttributeSpace() {
 		return attributeToAttributeSpace;
 	}
 
-
+	@Override
 	public void setAttributeToAttributeSpace(double attributeToAttributeSpace) {
 		this.attributeToAttributeSpace = attributeToAttributeSpace;
 	}
 
-
+	@Override
 	public double getAttributeListTopSpace() {
 		return attributeListTopSpace;
 	}
 
-
+	@Override
 	public void setAttributeListTopSpace(double attributeListTopSpace) {
 		this.attributeListTopSpace = attributeListTopSpace;
 	}
 
-
+	@Override
 	public double getAttributeListBottomSpace() {
 		return attributeListBottomSpace;
 	}
 
-
+	@Override
 	public void setAttributeListBottomSpace(double attributeListBottomSpace) {
 		this.attributeListBottomSpace = attributeListBottomSpace;
 	}
 
-
+	@Override
 	public double getNameTopSpace() {
 		return nameTopSpace;
 	}
 
-
+	@Override
 	public void setNameTopSpace(double nameTopSpace) {
 		this.nameTopSpace = nameTopSpace;
 	}
 
-
+	@Override
 	public double getNameBottomSpace() {
 		return nameBottomSpace;
 	}
 
-
+	@Override
 	public void setNameBottomSpace(double nameBottomSpace) {
 		this.nameBottomSpace = nameBottomSpace;
 	}
 
-
+	@Override
 	public double getNameLeftSpace() {
 		return nameLeftSpace;
 	}
 
-
+	@Override
 	public void setNameLeftSpace(double nameLeftSpace) {
 		this.nameLeftSpace = nameLeftSpace;
 	}
 
-
+	@Override
 	public double getNameRightSpace() {
 		return nameRightSpace;
 	}
 
-
+	@Override
 	public void setNameRightSpace(double nameRightSpace) {
 		this.nameRightSpace = nameRightSpace;
 	}
 
 
-	public double getAttributeRightSpace() {
+	@Override
+	public double getAttributeListRightSpace() {
 		return attributeRightSpace;
 	}
 
-
-	public void setAttributeRightSpace(double attributeRightSpace) {
+	@Override
+	public void setAttributeListRightSpace(double attributeRightSpace) {
 		this.attributeRightSpace = attributeRightSpace;
 	}
 
-
-	public double getAttributeLeftSpace() {
+	@Override
+	public double getAttributeListLeftSpace() {
 		return attributeLeftSpace;
 	}
 
-
-	public void setAttributeLeftSpace(double attributeLeftSpace) {
+	@Override
+	public void setAttributeListLeftSpace(double attributeLeftSpace) {
 		this.attributeLeftSpace = attributeLeftSpace;
 	}
 
 
+	@Override
 	public boolean isDisplayingAttributes() {
 		return displayAttributes;
 	}
 	
-	/**
-	 * Get the number of attributes
-	 * @return
-	 */
-	public int getAttributeCount()
-	{
-		return attributeList.size();
-	}
 	
-	
-	/**
-	 * Get the Attribute of the attribute list at the index
-	 * @param index
-	 * @return
-	 */
-	public MetaAttributeImpl getAttribute(int index)
-	{
-		return attributeList.get(index);
-	}
-
-
-	@Override
-	public void addAttribute(MetaAttribute attribute) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void addConnection(MetaConnection connection) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void addContainmentRelation(MetaContainmentRelation relation) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void addInheritance(MetaBaseType type) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	@Override
 	public List<MetaAttribute> getAttributes() {
-		return attributeList;
+		return attributes;
 	}
 
 
 	@Override
 	public List<MetaConnection> getConnections() {
-		// TODO Auto-generated method stub
-		return null;
+		return connections;
 	}
 
 
 	@Override
 	public List<MetaContainmentRelation> getContainmentRelations() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public List<MetaBaseType> getInheritances() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public void removeAttribute(MetaAttribute attribute) {
-		// TODO Auto-generated method stub
+		return containments;
 		
 	}
 
 
 	@Override
 	public void removeConnection(MetaConnection connection) {
-		// TODO Auto-generated method stub
-		
+		connections.remove(connection);	
 	}
 
 
 	@Override
 	public void removeContainmentRelation(MetaContainmentRelation relation) {
-		// TODO Auto-generated method stub
-		
+		containments.remove(relation);
 	}
-
-
-	@Override
-	public void removeInheritance(MetaBaseType type) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 	@Override
 	public String getID() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
+
+
+	@Override
+	public MetaConnection addConnection(String id, String name, MetaClass target, int lower, int upper) throws MetaConnectionException {
+		
+		for (MetaConnection c : connections)
+			if (c.getName().equals(name))
+				throw new MetaConnectionException(MetaConnectionExceptionType.NAME_ALREADY_IN_USE,this,name);
+		
+		MetaConnection c = new MetaConnectionImpl(id, name, target, lower, upper);
+		
+		return c;
+		
+	}
+
+
+	@Override
+	public MetaContainmentRelation addContainmentRelation(String id, MetaClass classToContain, int max, int min) throws MetaContainmentRelationException
+	{
+		for (MetaContainmentRelation r : containments)
+			if (r.getMetaClass().getID().equals(classToContain.getID()))
+				throw new MetaContainmentRelationException(this, classToContain);
+		
+		
+		MetaContainmentRelation r = new MetaContainmentRelationImpl(id, this, classToContain, min, max);
+		containments.add(r);
+		
+		return r;
+		
+	}
+
+
+	@Override
+	public void addInheritance(MetaClass superMetaClass) throws MetaInheritanceExcepetion {
+		
+		for (MetaClass c : inheritances)
+			if (c.getID().equals(superMetaClass.getID()))
+				throw new MetaInheritanceExcepetion(InheritanceExceptionReason.ALREADY_EXISTS, this, superMetaClass );
+		
+		inheritances.add(superMetaClass);
+	}
+
+
+
+
+	@Override
+	public double getIconHeight() {
+		return iconHeight;
+	}
+
+
+	@Override
+	public double getIconWidth() {
+		return iconWidth;
+	}
+
+
+	@Override
+	public String getIconURL() {
+		return iconURL;
+	}
+
+
+	@Override
+	public double getZIndex() {
+		return z;
+	}
+
+
+	@Override
+	public void removeInheritance(MetaClass type) {
+		inheritances.remove(type);
+	}
+
+
+	@Override
+	public void setIconHeight(double height) {
+		this.iconHeight = height;
+	}
+
+
+	@Override
+	public void setIconWidth(double width) {
+		this.iconWidth = width;
+	}
+
+
+	@Override
+	public void setIconURL(String url) {
+		iconURL = url;
+	}
+
+
+	@Override
+	public List<MetaClass> getInheritances() {
+		return inheritances;
+	}
+
 
 }

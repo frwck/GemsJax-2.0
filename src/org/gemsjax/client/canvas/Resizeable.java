@@ -38,12 +38,6 @@ public interface Resizeable {
 	
 	
 	/**
-	 * Can the Drawable be resized at the moment
-	 * @return
-	 */
-	public boolean isResizeable();
-	
-	/**
 	 * Get the current width. This makes it easier to work with resize events.
 	 * @return
 	 */
@@ -55,4 +49,7 @@ public interface Resizeable {
 	 */
 	public double getHeight();
 
+	public void setWidth(double width);
+	
+	public void setHeight(double height);
 }

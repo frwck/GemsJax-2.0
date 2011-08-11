@@ -3,93 +3,114 @@ package org.gemsjax.client.metamodel;
 import org.gemsjax.client.canvas.ConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
+import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
+
+import com.google.gwt.i18n.client.AutoDirectionHandler.Target;
 
 /**
- * A Connection is used to represent a connection like association between two {@link MetaClassImpl}es
- * A Connection connects {@link #metaClassA} with {@link #metaClassB} and vice versa. 
- * So there is not a start/source or end/target. {@link #metaClassA} and {@link #metaClassB} are on a par.
+ * A MetaConnectionImpl is used to represent a connection like association between two {@link MetaClass}es
+ * A Connection connects the {@link MetaClass} {@link #source}, which contains this {@link MetaConnection} in {@link MetaClass#getConnections()}, with {@link #target}. 
  * @author Hannes Dorfmann
  *
  */
-public class MetaConnectionImpl implements MetaConnection{
+public class MetaConnectionImpl implements MetaConnection {
 	
 	/**
-	 * One end of the {@link MetaConnectionImpl}
+	 * The target ({@link MetaClass}) of this connection
 	 */
-	private MetaClassImpl metaClassA;
-	/**
-	 * The other end of the {@link MetaConnectionImpl}
-	 */
-	private MetaClassImpl metaClassB;
+	private MetaClass target;
+	
+	private MetaClass source;
+	
 	
 	/** The name of this  connection. The name must be unique in the {@link MetaModelImpl */
 	private String name;
 	
+	/**
+	 * The unique id of this connection
+	 */
+	private String id;
 	
+	
+	private int targetLowerBound;
+	
+	private int targetUpperBound;
+	
+	
+	private String sourceIconUrl;
+	private String targetIconUrl;
+	
+	private double sourceIconWidth;
+	private double sourceIconHeight;
+	
+	private double targetIconWidth;
+	private double targetIconHeight;
 	
 	/**
-	 * The X coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #metaClassA}.
-	 * This coordinate is relative to the {@link #metaClassA} {@link MetaClassDrawable} object on the {@link MetaModelCanvas}.
+	 * The X coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
+	 * The source is the {@link MetaClass} which contains this MetaConnection in {@link MetaClass#getConnections()}.
+	 * This coordinate is relative to the source {@link MetaClassDrawable} object on the {@link MetaModelCanvas}.
 	 * That means, that the {@link MetaClassImpl#getX()} is the relative 0 coordinate on the x axis.
 	 * Example:
-	 * If the {@link MetaClassImpl#getX()} has the absolute coordinate 10 and {@link #aRelativeX} is 5, so the
+	 * If the {@link MetaClassImpl#getX()} has the absolute coordinate 10 and {@link #sourceRelativeX} is 5, so the
 	 * absolute coordinate on the {@link MetaModelCanvas} is 15 and can be computed by add {@link MetaClassImpl#getX()} to aRelativeX
-	 *@see #getMetaClassARelativeX()
+	 *@see #getSourceRelativeX()
 	 */
-	private double aRelativeX;
+	private double sourceRelativeX;
 	
 	/**
-	 * The Y coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #metaClassA}.
-	 * See {@link #aRelativeX} for more information and a concrete example.
-	 * @see #getMetaClassARelativeY()
+	 * The Y coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
+	 * See {@link #sourceRelativeX} for more information and a concrete example.
+	 * @see #getSourceRelativeY()
 	 */
-	private double aRelativeY;
+	private double sourceRelativeY;
 	
 	/**
-	 * The X coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #metaClassB}.
-	 * See {@link #aRelativeX} for more information and a concrete example.
-	 * @see #getMetaClassBRelativeX()
+	 * The X coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
+	 * See {@link #sourceRelativeX} for more information and a concrete example.
+	 * @see #getTargetRelativeX()
 	 */
-	private double bRelativeX;
+	private double targetRelativeX;
 	
 	/**
-	 * The Y coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #metaClassB}.
-	 * See {@link #aRelativeX} for more information and a concrete example.
-	 * @see #getMetaClassBRelativeY()
+	 * The Y coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
+	 * See {@link #sourceRelativeX} for more information and a concrete example.
+	 * @see #getTargetRelativeY()
 	 */
-	private double bRelativeY;
+	private double targetRelativeY;
 	
 	/**
-	 * The relative X coordinate (according to the absolute coordinate {@link #nameBoxX}) 
+	 * The relative X coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
 	 * where the painted connection line
-	 * (starting from {@link #metaClassA}, coordinates {@link #aRelativeX} / {@link #aNameBoxRelativeY}) touches
-	 * the name box (which displayes the {@link #name} of this Connection.
+	 * (starting from the source with the coordinates {@link #sourceRelativeX} / {@link #sourceRelativeY}) touches
+	 * the connection box (which displays the {@link #name} and attributes of this Connection.
 	 */
-	private double aNameBoxRelativeX;
+	private double sourceConnectionBoxRelativeX;
 	
 	/**
-	 * The relative Y coordinate (according to the absolute coordinate {@link #nameBoxY}) 
+	 * The relative Y coordinate (according to the absolute coordinate {@link #connectionBoxY}) 
 	 * where the painted connection line
-	 * (starting from {@link #metaClassA}, coordinates {@link #aRelativeX} / {@link #aNameBoxRelativeY}) touches
-	 * the name box (which displayes the {@link #name} of this Connection.
+	 * (starting from the source, coordinates {@link #sourceRelativeX} / {@link #sourceRelativeY}) touches
+	 * the connection box (which displays the {@link #name} and attributes of this Connection.
 	 */
-	private double aNameBoxRelativeY;
+	private double sourceConnectionBoxRelativeY;
 	
 	/**
-	 * The relative X coordinate (according to the absolute coordinate {@link #nameBoxX}) 
+	 * The relative X coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
 	 * where the painted connection line
-	 * (starting from {@link #metaClassB}, coordinates {@link #bRelativeX} / {@link #bNameBoxRelativeY}) touches
-	 * the name box (which displayes the {@link #name} of this Connection.
+	 * (starting from {@link #target}, coordinates {@link #targetRelativeX} / {@link #targetRelativeY}) touches
+	 * the connection box (which displays the {@link #name} and attributes of this Connection.
 	 */
-	private double bNameBoxRelativeX;
+	private double targetConnectionBoxRelativeX;
 	
 	/**
-	 * The relative Y coordinate (according to the absolute coordinate {@link #nameBoxX}) 
+	 * The relative Y coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
 	 * where the painted connection line
-	 * (starting from {@link #metaClassB}, coordinates {@link #bRelativeX} / {@link #bNameBoxRelativeY}) touches
-	 * the name box (which displayes the {@link #name} of this Connection.
+	 * (starting from {@link #target}, coordinates {@link #targetRelativeX} / {@link #targetRelativeY}) touches
+	 * the name box (which displays the {@link #name} and attributes of this Connection.
 	 */
-	private double bNameBoxRelativeY;
+	private double targetConnectionBoxRelativeY;
 	
 	private String lineColor = "black";
 	
@@ -102,24 +123,26 @@ public class MetaConnectionImpl implements MetaConnection{
 	
 	private boolean selected = false;
 	
-	/**
-	 * The absolute X coordinate, where the box, which displays the connection name, will start at the top-left corner
-	 */
-	private double nameBoxX;
-	/**
-	 * The absolute Y coordinate, which displays the connection name,  where the box will start at the top-left corner
-	 */
-	private double nameBoxY;
+	private boolean displayingAttributes = true;
 	
 	/**
-	 * The width of the name box, which displays the connection name
+	 * The absolute X coordinate, where the box, which displays the connection name and attributes, will start at the top-left corner
 	 */
-	private double nameBoxWidth;
+	private double connectionBoxX;
+	/**
+	 * The absolute Y coordinate, which displays the connection name and attributes,  where the box will start at the top-left corner
+	 */
+	private double connectionBoxY;
 	
 	/**
-	 * The height of the name box,  which displays the connection name
+	 * The width of the connection box, which displays the connection name and attributes
 	 */
-	private double nameBoxHeight;
+	private double connectionBoxWidth;
+	
+	/**
+	 * The height of the name box,  which displays the connection name and attributes
+	 */
+	private double connectionBoxHeight;
 	
 	/**
 	 * The Z index (like known from CSS) for overlapping objects
@@ -128,16 +151,21 @@ public class MetaConnectionImpl implements MetaConnection{
 	
 	
 	/**
-	 * The font size 
+	 * The font size for the name
 	 */
-	private int fontSize = 14;
+	private int nameFontSize = 18;
 	
 	/**
 	 * This field will store the width of a single character in the given {@link #fontFamily}.
 	 * This field is used to calculate the width of the meta class name.
 	 * @see #fontFamily
 	 */
-	private double fontCharWidth = 9;
+	private double nameFontCharWidth = 12;
+	
+	
+	private double attributeFontCharWidht = 9;
+	
+	private double attributeFontSize = 14;
 	
 	
 	/**
@@ -148,383 +176,471 @@ public class MetaConnectionImpl implements MetaConnection{
 	private String fontFamily ="Courier";
 	
 	
-	/**
-	 * Creates a new connection between the MetaClass a (stored in the field {@link #metaClassA}) and the {@link MetaClassImpl} b (stored in the field {@link #metaClassB}).
-	 * @param a
-	 * @param b
-	 */
-	public MetaConnectionImpl(MetaClassImpl a, MetaClassImpl b)
+	
+	public MetaConnectionImpl(String id, String name, MetaClass target, int lower, int upper)
 	{
-		this.metaClassA = a;
-		this.metaClassB = b;
+		this.target = target;
+		this.id = id;
+		this.name = name;
+		this.targetLowerBound = lower;
+		this.targetUpperBound = upper;
 		
+	}
+	
+
+	@Override
+	public void setTarget(MetaClass target) {
+		this.target = target;
+	}
+
+	@Override
+	public MetaClass getTarget() {
+		return target;
 	}
 
 
 	
-	public MetaClassImpl getMetaClassA() {
-		return metaClassA;
+	@Override
+	public double getSourceRelativeX() {
+		return sourceRelativeX;
 	}
 
 
-	public void setMetaClassA(MetaClassImpl metaClassA) {
-		this.metaClassA = metaClassA;
+	@Override
+	public void setSourceRelativeX(double x) {
+		this.sourceRelativeX = x;
 	}
 
 
-	public MetaClassImpl getMetaClassB() {
-		return metaClassB;
+	
+	@Override
+	public double getSourceRelativeY() {
+		return sourceRelativeY;
+	}
+
+	@Override
+	public void setSourceRelativeY(double y) {
+		this.sourceRelativeY = y;
 	}
 
 
-	public void setMetaClassB(MetaClassImpl metaClassB) {
-		this.metaClassB = metaClassB;
+	@Override
+	public double getTargetRelativeX() {
+		return targetRelativeX;
+	}
+
+	@Override
+	public void setTargetRelativeX(double x) {
+		this.targetRelativeX = x;
 	}
 
 
-	/**
-	 * @see #aRelativeX
-	 * @return
-	 */
-	public double getMetaClassARelativeX() {
-		return aRelativeX;
+	@Override
+	public double getTargetRelativeY() {
+		return targetRelativeY;
 	}
 
 
-	/**
-	 * @see #aRelativeX
-	 * @param aRelativeX
-	 */
-	public void setMetaClassARelativeX(double aRelativeX) {
-		this.aRelativeX = aRelativeX;
+	@Override
+	public void setTargetRelativeY(double y) {
+		this.targetRelativeY = y;
 	}
 
 
-	/**
-	 * @see #aRelativeY
-	 * @return
-	 */
-	public double getMetaClassARelativeY() {
-		return aRelativeY;
-	}
-
-	/**
-	 * @see #aRelativeY
-	 * @param aRelativeY
-	 */
-	public void setMetaClassARelativeY(double aRelativeY) {
-		this.aRelativeY = aRelativeY;
-	}
-
-
-	/**
-	 * @see #bRelativeX
-	 * @return
-	 */
-	public double getMetaClassBRelativeX() {
-		return bRelativeX;
-	}
-
-	/**
-	 * @see #bRelativeX
-	 * @param bRelativeX
-	 */
-	public void setMetaClassBelativeX(double bRelativeX) {
-		this.bRelativeX = bRelativeX;
-	}
-
-
-	/**
-	 * @see #bRelativeY
-	 * @return
-	 */
-	public double getMetaClassBRelativeY() {
-		return bRelativeY;
-	}
-
-
-	/**
-	 * @see #bRelativeY
-	 * @param bRelativeY
-	 */
-	public void setMetaClassBRelativeY(double bRelativeY) {
-		this.bRelativeY = bRelativeY;
-	}
-
-
-
+	@Override
 	public String getName() {
 		return name;
 	}
 
 
-
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
 
 
-	public double getARelativeX() {
-		return aRelativeX;
+	@Override
+	public double getSourceConnectionBoxRelativeX() {
+		return sourceConnectionBoxRelativeX;
 	}
 
 
-
-	public void setaRelativeX(double aRelativeX) {
-		this.aRelativeX = aRelativeX;
+	@Override
+	public void setSourceConnectionBoxRelativeX(double x) {
+		this.sourceConnectionBoxRelativeX = x;
 	}
 
 
-
-	public double getaRelativeY() {
-		return aRelativeY;
+	@Override
+	public double getSourceConnectionBoxRelativeY() {
+		return sourceConnectionBoxRelativeY;
 	}
 
 
-
-	public void setaRelativeY(double aRelativeY) {
-		this.aRelativeY = aRelativeY;
+	@Override
+	public void setSourceConnectionBoxRelativeY(double y) {
+		this.sourceConnectionBoxRelativeY = y;
 	}
 
 
-
-	public double getbRelativeX() {
-		return bRelativeX;
+	@Override
+	public double getTargetConnectionBoxRelativeX() {
+		return targetConnectionBoxRelativeX;
 	}
 
 
-
-	public void setbRelativeX(double bRelativeX) {
-		this.bRelativeX = bRelativeX;
+	@Override
+	public void setTargetConnectionBoxRelativeX(double x) {
+		this.targetConnectionBoxRelativeX = x;
 	}
 
 
-
-	public double getbRelativeY() {
-		return bRelativeY;
+	@Override
+	public double getTargetConnectionBoxRelativeY() {
+		return targetConnectionBoxRelativeY;
 	}
 
 
-
-	public void setbRelativeY(double bRelativeY) {
-		this.bRelativeY = bRelativeY;
+	@Override
+	public void setTargetConnectionBoxRelativeY(double bNameBoxRelativeY) {
+		this.targetConnectionBoxRelativeY = bNameBoxRelativeY;
 	}
 
 
-
-	public double getANameBoxRelativeX() {
-		return aNameBoxRelativeX;
-	}
-
-
-
-	public void setANameBoxRelativeX(double aNameBoxRelativeX) {
-		this.aNameBoxRelativeX = aNameBoxRelativeX;
-	}
-
-
-
-	public double getANameBoxRelativeY() {
-		return aNameBoxRelativeY;
-	}
-
-
-
-	public void setANameBoxRelativeY(double aNameBoxRelativeY) {
-		this.aNameBoxRelativeY = aNameBoxRelativeY;
-	}
-
-
-
-	public double getBNameBoxRelativeX() {
-		return bNameBoxRelativeX;
-	}
-
-
-
-	public void setBNameBoxRelativeX(double bNameBoxRelativeX) {
-		this.bNameBoxRelativeX = bNameBoxRelativeX;
-	}
-
-
-
-	public double getBNameBoxRelativeY() {
-		return bNameBoxRelativeY;
-	}
-
-
-
-	public void setBNameBoxRelativeY(double bNameBoxRelativeY) {
-		this.bNameBoxRelativeY = bNameBoxRelativeY;
-	}
-
-
-
+	@Override
 	public String getLineColor() {
 		return lineColor;
 	}
 
 
-
+	@Override
 	public void setLineColor(String lineColor) {
 		this.lineColor = lineColor;
 	}
 
 
-
+	@Override
 	public int getLineSize() {
 		return lineSize;
 	}
 
 
-
+	@Override
 	public void setLineSize(int lineSize) {
 		this.lineSize = lineSize;
 	}
 
 
-
+	@Override
 	public String getGradientStartColor() {
 		return gradientStartColor;
 	}
 
 
-
+	@Override
 	public void setGradientStartColor(String gradientStartColor) {
 		this.gradientStartColor = gradientStartColor;
 	}
 
 
-
+	@Override
 	public String getGradientEndColor() {
 		return gradientEndColor;
 	}
 
 
-
+	@Override
 	public void setGradientEndColor(String gradientEndColor) {
 		this.gradientEndColor = gradientEndColor;
 	}
 
 
-
-	public double getNameBoxX() {
-		return nameBoxX;
+	@Override
+	public double getConnectionBoxX() {
+		return connectionBoxX;
 	}
 
 
-
-	public void setNameBoxX(double nameBoxX) {
-		this.nameBoxX = nameBoxX;
+	@Override
+	public void setConnectionBoxX(double x) {
+		this.connectionBoxX = x;
 	}
 
 
-
-	public double getNameBoxY() {
-		return nameBoxY;
+	@Override
+	public double getConnectionBoxY() {
+		return connectionBoxY;
 	}
 
 
-
-	public void setNameBoxY(double nameBoxY) {
-		this.nameBoxY = nameBoxY;
+	@Override
+	public void setConnectionBoxY(double y) {
+		this.connectionBoxY = y;
 	}
 
 
-
-	public double getNameBoxWidth() {
-		return nameBoxWidth;
+	@Override
+	public double getConnectionBoxWidth() {
+		return connectionBoxWidth;
 	}
 
 
-
-	public void setNameBoxWidth(double nameBoxWidth) {
-		this.nameBoxWidth = nameBoxWidth;
+	@Override
+	public void setConnectionBoxWidth(double width) {
+		this.connectionBoxWidth = width;
 	}
 
 
-
-	public double getNameBoxHeight() {
-		return nameBoxHeight;
+	@Override
+	public double getConnectionBoxHeight() {
+		return connectionBoxHeight;
 	}
 
 
-
-	public void setNameBoxHeight(double nameBoxHeight) {
-		this.nameBoxHeight = nameBoxHeight;
+	@Override
+	public void setConnectionBoxHeight(double height) {
+		this.connectionBoxHeight = height;
 	}
 
 
-
+	@Override
 	public double getZIndex() {
 		return zIndex;
 	}
 
 
-
+	@Override
 	public void setzIndex(double zIndex) {
 		this.zIndex = zIndex;
 	}
 
 
-
-	public int getFontSize() {
-		return fontSize;
+	@Override
+	public int getNameFontSize() {
+		return nameFontSize;
 	}
 
 
-
-	public void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
+	@Override
+	public void setNameFontSize(int fontSize) {
+		this.nameFontSize = fontSize;
 	}
 
 
-
-	public double getFontCharWidth() {
-		return fontCharWidth;
+	@Override
+	public double getNameFontCharWidth() {
+		return nameFontCharWidth;
 	}
 
 
-
-	public void setFontCharWidth(double fontCharWidth) {
-		this.fontCharWidth = fontCharWidth;
+	@Override
+	public void setNameFontCharWidth(double fontCharWidth) {
+		this.nameFontCharWidth = fontCharWidth;
 	}
 
 
-
+	@Override
 	public String getFontFamily() {
 		return fontFamily;
 	}
 
 
-
+	@Override
 	public void setFontFamily(String fontFamily) {
 		this.fontFamily = fontFamily;
 	}
 
 
-
+	@Override
 	public String getFontColor() {
 		return fontColor;
 	}
 
 
-
+	@Override
 	public void setFontColor(String fontColor) {
 		this.fontColor = fontColor;
 	}
 
 
-
+	@Override
 	public boolean isSelected() {
 		return selected;
+	}
+	
+	@Override
+	public boolean isDisplayingAttributes()
+	{
+		return displayingAttributes;
+	}
+	
+	@Override
+	public void setDisplayingAttributes(boolean show)
+	{
+		displayingAttributes = show;
+	}
+
+
+	@Override
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 
 
 
-	public void setSelected(boolean selected) {
-		this.selected = selected;
+	@Override
+	public int getTargetLowerBound() {
+		return targetLowerBound;
+	}
+
+
+
+	@Override
+	public int getTargetUpperBound() {
+		return targetUpperBound;
+	}
+
+
+
+	@Override
+	public void setTargetLowerBound(int lower) {
+		targetLowerBound = lower;
+	}
+
+
+
+	@Override
+	public void setTargetUpperBound(int upper) {
+		targetUpperBound = upper;
+	}
+
+
+
+	@Override
+	public String getID() {
+		return id;
+	}
+
+
+
+	@Override
+	public String getSourceIcon() {
+		return sourceIconUrl;
+	}
+
+
+
+	@Override
+	public double getSourceIconHeight() {
+		return sourceIconHeight;
+	}
+
+
+
+	@Override
+	public double getSourceIconWidth() {
+		return sourceIconWidth;
+	}
+
+
+
+	@Override
+	public String getTargetIcon() {
+		return targetIconUrl;
+	}
+
+
+
+	@Override
+	public double getTargetIconHeight() {
+		return targetIconHeight;
+	}
+
+
+
+	@Override
+	public double getTargetIconWidth() {
+		return targetIconWidth;
+	}
+
+
+
+	@Override
+	public void setSourceIcon(String url) {
+		this.sourceIconUrl = url;
+	}
+
+
+
+	@Override
+	public void setSourceIconHeight(double height) {
+		this.sourceIconHeight = height;
+	}
+
+
+
+	@Override
+	public void setSourceIconWidth(double width) {
+		this.sourceIconWidth = width;
+	}
+
+
+
+	@Override
+	public void setTagetIconHeight(double height) {
+		this.targetIconHeight = height;
+	}
+
+
+
+	@Override
+	public void setTargetIcon(String url) {
+		this.targetIconUrl = url;
+	}
+
+
+
+	@Override
+	public void setTargetIconWidth(double width) {
+		this.targetIconWidth = width;
+		
+	}
+
+
+	@Override
+	public void setAttributeFontCharWidht(double attributeFontCharWidht) {
+		this.attributeFontCharWidht = attributeFontCharWidht;
+	}
+
+
+	@Override
+	public double getAttributeFontCharWidht() {
+		return attributeFontCharWidht;
+	}
+
+
+	@Override
+	public void setAttributeFontSize(double attributeFontSize) {
+		this.attributeFontSize = attributeFontSize;
+	}
+
+
+	@Override
+	public double getAttributeFontSize() {
+		return attributeFontSize;
+	}
+
+
+	@Override
+	public MetaClass getSource() {
+		return source;
+	}
+
+
+	@Override
+	public void setSource(MetaClass source) {
+		this.source = source;
 	}
 
 

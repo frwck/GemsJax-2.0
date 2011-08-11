@@ -34,10 +34,23 @@ public interface MetaContainmentRelation extends MetaModelElement{
 	public void setMin(int min);
 	
 	/**
-	 * Say which {@link MetaClass} can be contained by the owning {@link MetaClass} ({@link MetaClass#addContainmentRelation(MetaContainmentRelation)})
+	 * Say which {@link MetaClass} can be contained by the owning {@link MetaClass} ({@link #getContainedBy()} and {@link MetaClass#addContainmentRelation(MetaContainmentRelation)})
 	 * @param metaClass
 	 */
 	public void setMetaClass(MetaClass metaClass);
 	public MetaClass getMetaClass();
+	
+	/**
+	 * Set who is the "parent" of this {@link MetaContainmentRelation}.
+	 * The parent contains this {@link MetaContainmentRelation} Object in its containment relation list ({@link MetaClass#getContainmentRelations()})
+	 * @param metaClass
+	 */
+	public void setContainedBy(MetaClass metaClass);
+	
+	/**
+	 * @see #setContainedBy(MetaClass)
+	 * @return
+	 */
+	public MetaClass getContainedBy();
 
 }

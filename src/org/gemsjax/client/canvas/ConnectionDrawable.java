@@ -94,11 +94,11 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		context.setFillStyle(connection.getLineColor());
 		context.setLineWidth(connection.getLineSize());
 		
-		context.moveTo(connection.getMetaClassA().getX() + connection.getMetaClassARelativeX(), connection.getMetaClassA().getY() + connection.getMetaClassARelativeY());
-		context.lineTo(connection.getNameBoxX() + connection.getANameBoxRelativeX(), connection.getNameBoxY() + connection.getANameBoxRelativeY());
+		context.moveTo(connection.getMetaClassA().getX() + connection.getSourceRelativeX(), connection.getMetaClassA().getY() + connection.getSourceRelativeY());
+		context.lineTo(connection.getConnectionBoxX() + connection.getSourceConnectionBoxRelativeX(), connection.getConnectionBoxY() + connection.getSourceConnectionBoxRelativeY());
 		
-		context.moveTo(connection.getMetaClassB().getX() + connection.getMetaClassBRelativeX(), connection.getMetaClassB().getY() + connection.getMetaClassBRelativeY());
-		context.lineTo(connection.getNameBoxX() + connection.getBNameBoxRelativeX(), connection.getNameBoxY() + connection.getBNameBoxRelativeY());
+		context.moveTo(connection.getMetaClassB().getX() + connection.getTargetRelativeX(), connection.getMetaClassB().getY() + connection.getTargetRelativeY());
+		context.lineTo(connection.getConnectionBoxX() + connection.getTargetConnectionBoxRelativeX(), connection.getConnectionBoxY() + connection.getTargetConnectionBoxRelativeY());
 	
 		
 		context.stroke();
@@ -122,11 +122,11 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		// y = m*x + b
 		
 		// For the line between MetaClass A and NameBox
-		double y2 = connection.getMetaClassA().getY() + connection.getMetaClassARelativeY() ;
-		double y1 = connection.getNameBoxY() + connection.getANameBoxRelativeY();
+		double y2 = connection.getMetaClassA().getY() + connection.getSourceRelativeY() ;
+		double y1 = connection.getConnectionBoxY() + connection.getSourceConnectionBoxRelativeY();
 		
-		double x2 = connection.getMetaClassA().getX() + connection.getMetaClassARelativeX();
-		double x1 = connection.getNameBoxX() + connection.getANameBoxRelativeX(); 
+		double x2 = connection.getMetaClassA().getX() + connection.getSourceRelativeX();
+		double x1 = connection.getConnectionBoxX() + connection.getSourceConnectionBoxRelativeX(); 
 		
 		double m = (y2 -y1)/ (x2 - x1);
 		
@@ -139,11 +139,11 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		
 		
 		// For the line between MetaClass B and NameBox
-		y2 = connection.getMetaClassB().getY() + connection.getMetaClassBRelativeY() ;
-		y1 = connection.getNameBoxY() + connection.getBNameBoxRelativeY();
+		y2 = connection.getMetaClassB().getY() + connection.getTargetRelativeY() ;
+		y1 = connection.getConnectionBoxY() + connection.getTargetConnectionBoxRelativeY();
 		
-		x2 = connection.getMetaClassA().getX() + connection.getMetaClassARelativeX();
-		x1 = connection.getNameBoxX() + connection.getANameBoxRelativeX(); 
+		x2 = connection.getMetaClassA().getX() + connection.getSourceRelativeX();
+		x1 = connection.getConnectionBoxX() + connection.getSourceConnectionBoxRelativeX(); 
 		
 		m = (y2 -y1)/ (x2 - x1);
 		
@@ -191,11 +191,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		return 0;
 	}
 
-	@Override
-	public boolean isMoveable() {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	
 
 	@Override
 	public void removeMoveHandler(MoveHandler handler) {
@@ -343,6 +339,20 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		
 		this.metaClassB.addMoveHandler(this);
 		this.metaClassB.addResizeHandler(this);
+		
+	}
+
+
+	@Override
+	public void setX(double x) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setY(double y) {
+		// TODO Auto-generated method stub
 		
 	}
 

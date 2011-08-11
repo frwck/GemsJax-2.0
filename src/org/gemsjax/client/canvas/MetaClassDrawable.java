@@ -182,7 +182,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		context.setFont(""+metaClass.getAttributeFontSize()+"px "+metaClass.getFontFamily());
 		context.setTextAlign("left");
 		
-		double x = metaClass.getX() + metaClass.getAttributeLeftSpace(), y=metaClass.getY()+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace()+metaClass.getAttributeListTopSpace();
+		double x = metaClass.getX() + metaClass.getAttributeListLeftSpace(), y=metaClass.getY()+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace()+metaClass.getAttributeListTopSpace();
 		
 		String txt;
 		
@@ -197,8 +197,8 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		{
 			MetaAttributeImpl a = metaClass.getAttribute(i);
 		
-			txt = metaClass.getWidth()-metaClass.getAttributeLeftSpace()-metaClass.getAttributeRightSpace() > ((a.getName().length()+a.getType().length()+3)*metaClass.getAttributeFontCharWidth())
-				? a.getName()+" : "+a.getType() : (a.getName()+" : "+a.getType()).subSequence(0, (int) ((metaClass.getWidth()-metaClass.getAttributeLeftSpace()-metaClass.getAttributeRightSpace())/metaClass.getAttributeFontCharWidth() - 3))+"...";
+			txt = metaClass.getWidth()-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace() > ((a.getName().length()+a.getType().getName().length()+3)*metaClass.getAttributeFontCharWidth())
+				? a.getName()+" : "+a.getType() : (a.getName()+" : "+a.getType()).subSequence(0, (int) ((metaClass.getWidth()-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace())/metaClass.getAttributeFontCharWidth() - 3))+"...";
 			
 				context.fillText(txt, x, y);
 				
@@ -253,11 +253,11 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		for (int i =0; i<metaClass.getAttributeCount();i++)
 		{
 			MetaAttributeImpl a = metaClass.getAttribute(i);
-			if ((a.getName().length() + a.getType().length() + 3 )> longestChar)	// + 3 is for the separator String " : " between name and type
-				longestChar = a.getName().length() + a.getType().length() + 3;
+			if ((a.getName().length() + a.getType().getName().length() + 3 )> longestChar)	// + 3 is for the separator String " : " between name and type
+				longestChar = a.getName().length() + a.getType().getName().length() + 3;
 		}
 		
-		double attributeWidth = metaClass.getAttributeLeftSpace() + longestChar *metaClass.getAttributeFontCharWidth() + metaClass.getAttributeRightSpace();
+		double attributeWidth = metaClass.getAttributeListLeftSpace() + longestChar *metaClass.getAttributeFontCharWidth() + metaClass.getAttributeListRightSpace();
 		
 		if (metaClass.isDisplayingAttributes())
 		{
@@ -292,11 +292,6 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		}
 	}
 	
-	
-	@Override
-	public boolean isMoveable() {
-		return metaClass.isCanBeMoved();
-	}
 
 	/**
 	 * Get the width
@@ -324,10 +319,6 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		metaClass.setHeight(height);
 	}
 
-	@Override
-	public boolean isResizeable() {
-			return metaClass.isCanBeResized();
-	}
 
 	/**
 	 * Set the minimum Width of this Drawable.
@@ -385,7 +376,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	public void onResize(ResizeEvent event) {
 		
 		
-		if (isResizeable() && event.getWidth()>getMinWidth() && event.getHeight()>getMinHeight())
+		if (event.getWidth()>getMinWidth() && event.getHeight()>getMinHeight())
 		{
 			
 			for (ResizeArea r : resizeAreas)
