@@ -23,6 +23,7 @@ import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaAttributeImpl;
 import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
@@ -90,16 +91,6 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	 */
 	public double getY() {
 		return metaClass.getY();
-	}
-
-	/**
-	 * Get the z coordinate. This will be used for overlapping objects.
-	 * The Z coordinate has the same meaning like the CSS z-index. That means that an object with an higher
-	 * z value will be painted in the foreground, the other object will be painted overlapping in the background.
-	 * @return
-	 */
-	public double getZ() {
-		return metaClass.getZ();
 	}
 
 	public void setX(double x) {
@@ -175,7 +166,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	 */
 	public void drawAttributes(Context2d context){
 		
-		if (metaClass.getAttributeCount()==0)
+		if (metaClass.getAttributes().size()==0)
 			return;
 		
 		context.setFillStyle(metaClass.getAttributeFontColor());
@@ -190,12 +181,12 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 		int attributeLines = (int) (heightForAttributeList / (metaClass.getAttributeFontSize()+metaClass.getAttributeToAttributeSpace()) );
 		
-		if (attributeLines>metaClass.getAttributeCount())
-			attributeLines = metaClass.getAttributeCount();
+		if (attributeLines>metaClass.getAttributes().size())
+			attributeLines = metaClass.getAttributes().size();
 		
 		for (int i =0; i<attributeLines; i++)
 		{
-			MetaAttributeImpl a = metaClass.getAttribute(i);
+			MetaAttribute a = metaClass.getAttributes().get(i);
 		
 			txt = metaClass.getWidth()-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace() > ((a.getName().length()+a.getType().getName().length()+3)*metaClass.getAttributeFontCharWidth())
 				? a.getName()+" : "+a.getType() : (a.getName()+" : "+a.getType()).subSequence(0, (int) ((metaClass.getWidth()-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace())/metaClass.getAttributeFontCharWidth() - 3))+"...";
@@ -224,7 +215,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 		
 		// if there is at least one attribute, draw a horizontal line
-		if (metaClass.isDisplayingAttributes() && metaClass.getAttributeCount()>0 )
+		if (metaClass.isDisplayingAttributes() && metaClass.getAttributes().size()>0 )
 		{
 			context.setFillStyle(metaClass.getBorderColor());
 			context.fillRect(metaClass.getX(), metaClass.getY()+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace(), metaClass.getWidth(), metaClass.getBorderSize());
@@ -243,16 +234,16 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		double nameWidth = metaClass.getNameLeftSpace() + metaClass.getName().length()*metaClass.getNameFontCharWidth() + metaClass.getNameRightSpace();
 		double nameHeight = metaClass.getNameTopSpace() + metaClass.getNameFontSize() + metaClass.getNameBottomSpace();
 		
-		double attributesHeight = metaClass.getAttributeListTopSpace() + metaClass.getAttributeCount()* (metaClass.getAttributeFontSize() + metaClass.getAttributeToAttributeSpace()) + metaClass.getAttributeListBottomSpace();
+		double attributesHeight = metaClass.getAttributeListTopSpace() + metaClass.getAttributes().size()* (metaClass.getAttributeFontSize() + metaClass.getAttributeToAttributeSpace()) + metaClass.getAttributeListBottomSpace();
 		
 		
 		
 		int longestChar = 0;
 		
 		// Calculate the longest attribute (attribute string)
-		for (int i =0; i<metaClass.getAttributeCount();i++)
+		for (int i =0; i<metaClass.getAttributes().size();i++)
 		{
-			MetaAttributeImpl a = metaClass.getAttribute(i);
+			MetaAttribute a = metaClass.getAttributes().get(i);
 			if ((a.getName().length() + a.getType().getName().length() + 3 )> longestChar)	// + 3 is for the separator String " : " between name and type
 				longestChar = a.getName().length() + a.getType().getName().length() + 3;
 		}
@@ -636,7 +627,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 
 	@Override
 	public double getZIndex() {
-		return metaClass.getZ();
+		return metaClass.getZIndex();
 	}
 
 	@Override

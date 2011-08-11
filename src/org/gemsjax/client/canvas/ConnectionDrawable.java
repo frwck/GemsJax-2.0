@@ -35,14 +35,14 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	private MetaConnectionImpl connection;
 	
 	/**
-	 * The Connection connects {@link #metaClassA} with {@link #metaClassB}.
+	 * The Connection connects {@link #source} with {@link #target}.
 	 */
-	private MetaClassDrawable metaClassA;
+	private MetaClassDrawable source;
 
 	/**
-	 * The Connection connects {@link #metaClassA} with {@link #metaClassB}.
+	 * The Connection connects {@link #source} with {@link #target}.
 	 */
-	private MetaClassDrawable metaClassB;
+	private MetaClassDrawable target;
 	
 	
 	private ConnectionNameBoxDrawable nameBoxDrawable;
@@ -64,8 +64,8 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	public ConnectionDrawable(MetaConnectionImpl connection, MetaClassDrawable metaClassA, MetaClassDrawable metaClassB)
 	{
 		this.connection = connection;
-		this.metaClassA = metaClassA;
-		this.metaClassB = metaClassB;
+		this.source = metaClassA;
+		this.target = metaClassB;
 		
 		this.nameBoxDrawable = new ConnectionNameBoxDrawable(connection);
 		
@@ -90,18 +90,20 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	@Override
 	public void draw(Context2d context) {
 		
+		context.save();
 		context.beginPath();
 		context.setFillStyle(connection.getLineColor());
 		context.setLineWidth(connection.getLineSize());
 		
-		context.moveTo(connection.getMetaClassA().getX() + connection.getSourceRelativeX(), connection.getMetaClassA().getY() + connection.getSourceRelativeY());
+		context.moveTo(connection.getSource().getX() + connection.getSourceRelativeX(), connection.getSource().getY() + connection.getSourceRelativeY());
 		context.lineTo(connection.getConnectionBoxX() + connection.getSourceConnectionBoxRelativeX(), connection.getConnectionBoxY() + connection.getSourceConnectionBoxRelativeY());
 		
-		context.moveTo(connection.getMetaClassB().getX() + connection.getTargetRelativeX(), connection.getMetaClassB().getY() + connection.getTargetRelativeY());
+		context.moveTo(connection.getTarget().getX() + connection.getTargetRelativeX(), connection.getTarget().getY() + connection.getTargetRelativeY());
 		context.lineTo(connection.getConnectionBoxX() + connection.getTargetConnectionBoxRelativeX(), connection.getConnectionBoxY() + connection.getTargetConnectionBoxRelativeY());
 	
 		
 		context.stroke();
+		context.restore();
 	}
 	
 	@Override
@@ -122,10 +124,10 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		// y = m*x + b
 		
 		// For the line between MetaClass A and NameBox
-		double y2 = connection.getMetaClassA().getY() + connection.getSourceRelativeY() ;
+		double y2 = connection.getSource().getY() + connection.getSourceRelativeY() ;
 		double y1 = connection.getConnectionBoxY() + connection.getSourceConnectionBoxRelativeY();
 		
-		double x2 = connection.getMetaClassA().getX() + connection.getSourceRelativeX();
+		double x2 = connection.getSource().getX() + connection.getSourceRelativeX();
 		double x1 = connection.getConnectionBoxX() + connection.getSourceConnectionBoxRelativeX(); 
 		
 		double m = (y2 -y1)/ (x2 - x1);
@@ -139,10 +141,10 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		
 		
 		// For the line between MetaClass B and NameBox
-		y2 = connection.getMetaClassB().getY() + connection.getTargetRelativeY() ;
+		y2 = connection.getTarget().getY() + connection.getTargetRelativeY() ;
 		y1 = connection.getConnectionBoxY() + connection.getTargetConnectionBoxRelativeY();
 		
-		x2 = connection.getMetaClassA().getX() + connection.getSourceRelativeX();
+		x2 = connection.getTarget().getX() + connection.getSourceRelativeX();
 		x1 = connection.getConnectionBoxX() + connection.getSourceConnectionBoxRelativeX(); 
 		
 		m = (y2 -y1)/ (x2 - x1);
@@ -278,14 +280,14 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 
 
 	public MetaClassDrawable getMetaClassA() {
-		return metaClassA;
+		return source;
 	}
 
 
 
 
 	/**
-	 * Set the other end of the {@link ConnectionDrawable} (named {@link #metaClassA}).
+	 * Set the other end of the {@link ConnectionDrawable} (named {@link #source}).
 	 * This method register this ConnectionDrawable as {@link MoveHandler} and {@link ResizeHandler} for the
 	 * new set metaClassA. It also set directly the {@link MetaConnectionImpl}s {@link MetaClassImpl} by calling {@link MetaConnectionImpl#setMetaClassA(MetaClassImpl)}.
 	 * If metaClassA is set previously, this ConnectionDrawable will be unregistered as {@link ResizeHandler} / {@link MoveHandler}.
@@ -293,17 +295,18 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	 */
 	public void setMetaClassA(MetaClassDrawable metaClassA) {
 		
-		if (this.metaClassA!=null)
+		if (this.source!=null)
 		{
-			this.metaClassA.removeMoveHandler(this);
-			this.metaClassA.removeResizeHandler(this);
+			this.source.removeMoveHandler(this);
+			this.source.removeResizeHandler(this);
 		}
 		
-		this.metaClassA = metaClassA;
-		connection.setMetaClassA((MetaClassImpl)metaClassA.getDataObject());
+		this.source = metaClassA;
+		//TODO this should not be done directly, but by the presenter
+		connection.setSource((MetaClassImpl)metaClassA.getDataObject());
 		
-		this.metaClassA.addMoveHandler(this);
-		this.metaClassA.addResizeHandler(this);
+		this.source.addMoveHandler(this);
+		this.source.addResizeHandler(this);
 	}
 
 
@@ -311,7 +314,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 
 
 	public MetaClassDrawable getMetaClassB() {
-		return metaClassB;
+		return target;
 	}
 
 
@@ -319,7 +322,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 
 
 	/**
-	 * Set the other end of the {@link ConnectionDrawable} (named {@link #metaClassB} ).
+	 * Set the other end of the {@link ConnectionDrawable} (named {@link #target} ).
 	 * This method register this ConnectionDrawable as {@link MoveHandler} and {@link ResizeHandler} for the
 	 * new set metaClassB. It also set directly the {@link MetaConnectionImpl}s {@link MetaClassImpl} by calling {@link MetaConnectionImpl#setMetaClassB(MetaClassImpl)}.
 	 * If metaClassB is set previously, this ConnectionDrawable will be unregistered as {@link ResizeHandler} / {@link MoveHandler}.
@@ -327,18 +330,19 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	 */
 	public void setMetaClassB(MetaClassDrawable metaClassB) {
 		
-		if (this.metaClassB!=null)
+		if (this.target!=null)
 		{
-			this.metaClassB.removeMoveHandler(this);
-			this.metaClassB.removeResizeHandler(this);
+			this.target.removeMoveHandler(this);
+			this.target.removeResizeHandler(this);
 		}
 		
-		this.metaClassB = metaClassB;
+		this.target = metaClassB;
 		
-		connection.setMetaClassB((MetaClassImpl)metaClassB.getDataObject());
+		// TODO this should not be done in the drawable, but in the presenter
+		connection.setTarget((MetaClassImpl)metaClassB.getDataObject());
 		
-		this.metaClassB.addMoveHandler(this);
-		this.metaClassB.addResizeHandler(this);
+		this.target.addMoveHandler(this);
+		this.target.addResizeHandler(this);
 		
 	}
 
