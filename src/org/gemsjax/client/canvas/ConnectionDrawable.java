@@ -45,7 +45,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	private MetaClassDrawable target;
 	
 	
-	private ConnectionNameBoxDrawable nameBoxDrawable;
+	private ConnectionBoxDrawable nameBoxDrawable;
 
 	// Handlers
 	private List<FocusHandler> focusHandlers;
@@ -67,7 +67,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 		this.source = metaClassA;
 		this.target = metaClassB;
 		
-		this.nameBoxDrawable = new ConnectionNameBoxDrawable(connection);
+		this.nameBoxDrawable = new ConnectionBoxDrawable(connection);
 		
 		// Handlers
 		focusHandlers = new ArrayList<FocusHandler>();
@@ -79,7 +79,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	}
 	
 	
-	public ConnectionNameBoxDrawable getNameBoxDrawable()
+	public ConnectionBoxDrawable getNameBoxDrawable()
 	{
 		return nameBoxDrawable;
 	}

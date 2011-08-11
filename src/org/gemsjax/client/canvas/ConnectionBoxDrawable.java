@@ -16,14 +16,14 @@ import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
 
 /**
- * This Class is used to display a box with the {@link MetaConnectionImpl} name on the {@link MetaModelCanvas}
+ * This Class is used to display a box with the {@link MetaConnectionImpl} name and attributes on the {@link MetaModelCanvas}
  * @author Hannes Dorfmann
  *
  */
-public  class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeable, Focusable, ResizeHandler, MoveHandler, FocusHandler{
+public  class ConnectionBoxDrawable implements Drawable, Moveable, Resizeable, Focusable, ResizeHandler, MoveHandler, FocusHandler{
 
 	/**
-	 * The connection, which name will be displayed with this {@link ConnectionNameBoxDrawable}
+	 * The connection, which name will be displayed with this {@link ConnectionBoxDrawable}
 	 */
 	private MetaConnectionImpl connection;
 	
@@ -77,7 +77,7 @@ public  class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeabl
 	private double minHeight = 30;
 	
 	/**
-	 * If the {@link ConnectionNameBoxDrawable} is resized and this flag is set to true,
+	 * If the {@link ConnectionBoxDrawable} is resized and this flag is set to true,
 	 * than the {@link MetaConnectionImpl#setSourceConnectionBoxRelativeX(double)}, {@link MetaConnectionImpl#setSourceConnectionBoxRelativeY(double)}, {@link MetaConnectionImpl#setTargetConnectionBoxRelativeX(double)}
 	 * and {@link MetaConnectionImpl#setTargetConnectionBoxRelativeY(double)} will be set according to the previous (before the resizing) 
 	 * percental ratio.
@@ -85,7 +85,7 @@ public  class ConnectionNameBoxDrawable implements Drawable, Moveable, Resizeabl
 	private boolean autoAdjustNameBoxRatio = true;
 	 
 	
-	public ConnectionNameBoxDrawable(MetaConnectionImpl connection)
+	public ConnectionBoxDrawable(MetaConnectionImpl connection)
 	{
 		this.connection = connection;
 		
