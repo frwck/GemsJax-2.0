@@ -19,5 +19,5 @@ public interface Focusable {
 	 * @return true if at least one Handler is registered and has received this event. Otherwise false (if there is no Handler registered).
 	 */
 	public boolean fireFocusEvent(FocusEvent event);
-
+	
 }

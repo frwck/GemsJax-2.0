@@ -37,7 +37,8 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOutable, MouseOverable, Moveable, Resizeable, ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler{
+public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOutable, MouseOverable, Moveable, Resizeable 
+, ClickHandler, ResizeHandler,  MouseOverHandler, MouseOutHandler{
 
 	
 	private List<ResizeArea> resizeAreas;
@@ -71,11 +72,17 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 
 		 // Handlers
 		 this.addMouseOverHandler(this);
-		 this.addMoveHandler(this);
+		 //this.addMoveHandler(this);
 		 this.addResizeHandler(this);
-		 this.addFocusHandler(this);
+		//this.addFocusHandler(this);
 		 this.addMouseOutHandler(this);
 		 this.addMouseOverHandler(this);
+	}
+	
+	
+	public List<ResizeArea> getResizeAreas()
+	{
+		return resizeAreas;
 	}
 		
 	/**
@@ -403,6 +410,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 	}
 
+	/*
 	@Override
 	public void onMove(MoveEvent e) {
 		
@@ -422,10 +430,9 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 			ra.setY(ra.getY() + (getY()-oldY));
 		}
 		
-		
-		
 	}
 
+*/
 	@Override
 	public void addResizeHandler(ResizeHandler resizeHandler) {
 		resizeHandlers.add(resizeHandler);
@@ -537,7 +544,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	
 		focusHandlers.remove(handler);
 	}
-
+/*
 	@Override
 	public void onFocusEvent(FocusEvent event) {
 		
@@ -547,7 +554,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 			this.setSelected(false);
 		
 	}
-
+*/
 	@Override
 	public boolean fireMoveEvent(MoveEvent event) {
 		
