@@ -24,6 +24,7 @@ import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaAttributeImpl;
 import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.shared.metamodel.MetaAttribute;
+import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
@@ -49,10 +50,10 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	private List <MouseOutHandler> mouseOutHandlers;
 	
 
-	private MetaClassImpl metaClass;
+	private MetaClass metaClass;
 	private boolean mouseOver=false;
 
-	public MetaClassDrawable(MetaClassImpl metaClass)
+	public MetaClassDrawable(MetaClass metaClass)
 	{
 		this.metaClass = metaClass;
 	
@@ -189,7 +190,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 			MetaAttribute a = metaClass.getAttributes().get(i);
 		
 			txt = metaClass.getWidth()-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace() > ((a.getName().length()+a.getType().getName().length()+3)*metaClass.getAttributeFontCharWidth())
-				? a.getName()+" : "+a.getType() : (a.getName()+" : "+a.getType()).subSequence(0, (int) ((metaClass.getWidth()-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace())/metaClass.getAttributeFontCharWidth() - 3))+"...";
+				? a.getName()+" : "+a.getType().getName() : (a.getName()+" : "+a.getType().getName()).subSequence(0, (int) ((metaClass.getWidth()-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace())/metaClass.getAttributeFontCharWidth() - 3))+"...";
 			
 				context.fillText(txt, x, y);
 				

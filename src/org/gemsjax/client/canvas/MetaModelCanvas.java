@@ -1,17 +1,11 @@
 package org.gemsjax.client.canvas;
 
-import javax.swing.text.html.CSS;
-
-import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
-import org.gemsjax.client.canvas.handler.MoveHandler;
-import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.metamodel.MetaConnectionImpl;
-import org.gemsjax.client.metamodel.MetaClassImpl;
-import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
+import org.gemsjax.shared.metamodel.MetaModelElement;
+
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -23,8 +17,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.user.client.Window;
-import com.smartgwt.client.util.SC;
+
 
 /**
  * This is a Canvas, used for editing Meta-Models
@@ -146,7 +139,6 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		getWrappedCanvas().addMouseOutHandler(this);
 
 	}
-	
 	
 	
 	/**

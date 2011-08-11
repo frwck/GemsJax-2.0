@@ -5,6 +5,7 @@ import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
+import org.gemsjax.shared.metamodel.MetaModelElement;
 
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
@@ -57,5 +58,16 @@ public interface MetaModelView {
 	 */
 	public void removeDrawable(Drawable drawable);
 	
+	/**
+	 * Get the corresponding {@link Drawable} to the {@link MetaModelElement} element. 
+	 * @param element
+	 * @return The corresponding {@link Drawable} to the element o or null, if no {@link Drawable}, which displays the element, is currently on the canvas.
+	 */
+	public Drawable getDrawableOf(MetaModelElement element);
+	
+	/**
+	 * Redraw the canvas
+	 */
+	public void redrawMetaModelCanvas();
 
 }

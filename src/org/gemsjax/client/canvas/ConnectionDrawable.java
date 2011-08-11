@@ -13,6 +13,7 @@ import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaConnectionImpl;
 import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.metamodel.MetaConnection;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.user.client.Window;
@@ -32,7 +33,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	/**
 	 * The {@link MetaConnectionImpl} that is displayed with this Drawable
 	 */
-	private MetaConnectionImpl connection;
+	private MetaConnection connection;
 	
 	/**
 	 * The Connection connects {@link #source} with {@link #target}.
@@ -61,7 +62,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	 * @param metaClassA The {@link MetaClassDrawable} where the connection starts.
 	 * @param metaClassB The {@link MetaClassDrawable} where the connection ends.
 	 */
-	public ConnectionDrawable(MetaConnectionImpl connection, MetaClassDrawable metaClassA, MetaClassDrawable metaClassB)
+	public ConnectionDrawable(MetaConnection connection, MetaClassDrawable metaClassA, MetaClassDrawable metaClassB)
 	{
 		this.connection = connection;
 		this.source = metaClassA;

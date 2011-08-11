@@ -567,6 +567,9 @@ public class MetaClassImpl implements MetaClass {
 				throw new MetaConnectionException(this,name);
 		
 		MetaConnection c = new MetaConnectionImpl(id, name, target, lower, upper);
+		c.setSource(this);
+		
+		connections.add(c);
 		
 		return c;
 		

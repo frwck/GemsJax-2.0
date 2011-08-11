@@ -2,9 +2,14 @@ package org.gemsjax.client.admin.presenter;
 
 
 import org.gemsjax.client.admin.adminui.TabEnviroment;
+import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.view.MetaModelView;
+import org.gemsjax.client.canvas.ConnectionDrawable;
+import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 import org.gemsjax.client.metamodel.MetaModelImpl;
+import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModel;
 
 import com.google.gwt.event.shared.EventBus;
@@ -27,6 +32,7 @@ public class MetaModelPresenter extends Presenter {
 		TabEnviroment.getInstance().addTab((Tab)view);
 		
 		bind();
+		generateDrawables();
 	}
 	
 	
@@ -63,6 +69,42 @@ public class MetaModelPresenter extends Presenter {
 				view.setCanvasEditingMode(EditingMode.NORMAL);
 			}
 		});
+	}
+	
+	
+	
+	private void generateDrawables()
+	{
+		
+		try {
+			
+			// First add all MetaClasses
+			for (MetaClass c: metaModel.getMetaClasses())
+			{
+				view.addDrawable(new MetaClassDrawable(c));	
+			}
+			
+			
+			// Add all Connections
+			for (MetaClass c: metaModel.getMetaClasses())
+			{
+				for (MetaConnection con: c.getConnections())
+				{
+					MetaClassDrawable source = (MetaClassDrawable) view.getDrawableOf(con.getSource());
+					MetaClassDrawable target = (MetaClassDrawable) view.getDrawableOf(con.getTarget());
+					
+					view.addDrawable(new ConnectionDrawable(con, source,  target));
+				
+				}
+			}	
+			
+			
+			view.redrawMetaModelCanvas();
+			
+			
+		} catch (DoubleLimitException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	

@@ -191,6 +191,7 @@ public class MetaConnectionImpl implements MetaConnection {
 		this.name = name;
 		this.targetLowerBound = lower;
 		this.targetUpperBound = upper;
+		
 		attributes = new ArrayList<MetaAttribute>();
 		
 	}

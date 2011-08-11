@@ -92,6 +92,18 @@ public class BufferedCanvas extends VLayout {
 
 	}
 
+	/**
+	 * @see DrawableStorage#getDrawableOf(Object)
+	 * @param element
+	 * @return The corresponding {@link Drawable} to the object o or null, if no {@link Drawable}, which displays the object o, is currently on the canvas.
+	 */
+	 
+	public Drawable getDrawableOf(Object element)
+	{
+		return drawableStorage.getDrawableOf(element);
+	}
+	
+	
 
 	/**
 	 * <b>Important:</b> This must be called to set the correct size of the html canvas

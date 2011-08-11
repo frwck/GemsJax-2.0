@@ -1,8 +1,14 @@
 package org.gemsjax.client.canvas;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
+import org.gemsjax.shared.metamodel.MetaModelElement;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 
@@ -16,18 +22,37 @@ public class DrawableStorage {
 	
 
 	// TODO Maybe a tree structure would increase the performance
+	/**
+	 * A list with all Drawables that are displayed on this canvas
+	 */
 	private List<Drawable> elements;
+	
+	/**
+	 * This map stores all {@link MetaModelElement}s and the corresponding {@link Drawable}
+	 */
+	private Map <Object, Drawable> elementsMap;
+	
 	private double nextZIndex;
 	
 	public DrawableStorage()
 	{
 		elements = new LinkedList<Drawable>();
+		elementsMap = new HashMap<Object, Drawable>();
+		
 		nextZIndex = -1000000;
 	}
 	
 	
-	
-	
+	/**
+	 * Get the {@link Drawable} of a {@link MetaModelElement}.
+	 * Normally this  method is used, to get the corresponding {@link Drawable} of a MetaModelElement like {@link MetaClass}, {@link MetaConnection} etc.
+	 * @param o
+	 * @return The corresponding {@link Drawable} to the object o or null, if no {@link Drawable}, which displays the object o, is currently on the canvas.
+	 */
+	public Drawable getDrawableOf(Object o)
+	{
+		return elementsMap.get(o);
+	}
 	
 	/**
 	 * Get the element (with the highest Z index that is displayed at the x-y coordinate of the canvas
@@ -65,17 +90,19 @@ public class DrawableStorage {
 	{
 		// TODO insert at the correct position, according the z index
 		elements.add(elements.size(), d);
+		elementsMap.put(d.getDataObject(), d);
 	}
 	
 	
 	
 	/**
-	 * remove a {@link Drawable}
+	 * Remove a {@link Drawable}
 	 * @param d
 	 */
 	public void remove(Drawable d)
 	{
 		elements.remove(d);
+		elementsMap.remove( d.getDataObject());
 	}
 	
 	/**

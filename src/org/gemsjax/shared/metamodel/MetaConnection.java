@@ -57,7 +57,15 @@ public interface MetaConnection extends MetaModelElement{
 	public MetaClass getTarget();
 	
 	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException;
+	
+	/**
+	 * <b> Use this just as a read only list!</b> <br />
+	 * Use {@link #addAttribute(String, String, MetaBaseType)} and {@link #removeAttribute(MetaAttribute)} to manipulate this list,
+	 * but never manipulate this list directly
+	 * @return
+	 */
 	public List<MetaAttribute> getAttributes();
+	
 	public void removeAttribute(MetaAttribute attribute);
 	
 	

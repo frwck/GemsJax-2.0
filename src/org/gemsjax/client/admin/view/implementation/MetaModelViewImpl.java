@@ -15,6 +15,7 @@ import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
+import org.gemsjax.shared.metamodel.MetaModelElement;
 
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.types.AnimationEffect;
@@ -150,6 +151,16 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	@Override
 	public void removeDrawable(Drawable drawable) {
 		canvas.removeDrawable(drawable);
+	}
+
+	@Override
+	public Drawable getDrawableOf(MetaModelElement element) {
+		return canvas.getDrawableOf(element);
+	}
+
+	@Override
+	public void redrawMetaModelCanvas() {
+		canvas.redrawCanvas();
 	}
 	
 

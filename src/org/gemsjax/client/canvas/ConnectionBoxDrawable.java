@@ -11,6 +11,7 @@ import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaConnectionImpl;
+import org.gemsjax.shared.metamodel.MetaConnection;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -25,7 +26,7 @@ public  class ConnectionBoxDrawable implements Drawable, Moveable, Resizeable, F
 	/**
 	 * The connection, which name will be displayed with this {@link ConnectionBoxDrawable}
 	 */
-	private MetaConnectionImpl connection;
+	private MetaConnection connection;
 	
 	/**
 	 * The space between a dot and the next dot
@@ -85,7 +86,7 @@ public  class ConnectionBoxDrawable implements Drawable, Moveable, Resizeable, F
 	private boolean autoAdjustNameBoxRatio = true;
 	 
 	
-	public ConnectionBoxDrawable(MetaConnectionImpl connection)
+	public ConnectionBoxDrawable(MetaConnection connection)
 	{
 		this.connection = connection;
 		

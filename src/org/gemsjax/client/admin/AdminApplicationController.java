@@ -13,8 +13,17 @@ import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoginViewImpl;
 import org.gemsjax.client.admin.view.implementation.MetaModelViewImpl;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.metamodel.MetaBaseTypeImpl;
+import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.client.metamodel.MetaModelImpl;
+import org.gemsjax.shared.metamodel.MetaBaseType;
+import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
+import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
+import org.gemsjax.shared.metamodel.exception.MetaClassException;
+import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -108,11 +117,72 @@ public class AdminApplicationController {
 		
 		try {
 			
+			
+			MetaBaseType baseType = new MetaBaseTypeImpl("base1", "String BaseType");
+			
 			MetaModel metaModel = new MetaModelImpl("id1", "MetaModel1");
+			metaModel.addBaseType(baseType);
+			
+			MetaClass c1 = metaModel.addMetaClass("mc1", "Class 1");
+			
+			MetaClass c2 =metaModel.addMetaClass("mc2", "Class 2");
+			
+			c1.setX(100);
+			c1.setY(100);
+			c1.setWidth(100);
+			c1.setHeight(130);
+			
+			c2.setX(300);
+			c2.setY(150);
+			c2.setWidth(100);
+			c2.setHeight(130);
+			
+			
+			for (int i =1; i<=10; i++)
+			{
+				c1.addAttribute("a"+i, "Attribute"+i, baseType);
+				c2.addAttribute("aa"+i, "Attribute"+i, baseType);
+			}
+			
+			
+			MetaConnection con = c1.addConnection("con1", "Connection c1 - c2", c2, 0, 10);
+			
+
+			con.setConnectionBoxX(150);
+			con.setConnectionBoxY(150);
+			con.setConnectionBoxHeight(50);
+			con.setConnectionBoxWidth(80);
+			
+			con.setSourceConnectionBoxRelativeX(0);
+			con.setSourceConnectionBoxRelativeY(0);
+			con.setSourceRelativeX(0);
+			con.setSourceRelativeY(0);
+			
+			con.setTargetConnectionBoxRelativeX(con.getConnectionBoxWidth());
+			con.setTargetConnectionBoxRelativeY(20);
+			con.setTargetRelativeX(0);
+			con.setTargetRelativeY(0);
+			
+			
 			
 			
 			new MetaModelPresenter(eventBus, new MetaModelViewImpl("MetaModel 1", language), metaModel);
+			
+			
+			
 		} catch (CanvasSupportException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MetaBaseTypeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MetaAttributeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MetaConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MetaClassException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
