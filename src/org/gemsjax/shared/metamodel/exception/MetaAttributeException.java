@@ -13,30 +13,21 @@ import org.gemsjax.shared.metamodel.MetaClass;
  *
  */
 public class MetaAttributeException extends Exception {
-	
-	public enum MetaAttributeExceptionReason
-	{
-		NAME_ALREADY_IN_USE
-	}
-	
-	
+		
 	private String name;
-	private MetaClassImpl metaClass;
-	private MetaAttributeExceptionReason reason;
+	private MetaClass metaClass;
 	
-	public MetaAttributeException(MetaAttributeExceptionReason reason, String duplicateName, MetaClassImpl metaClass)
+	public MetaAttributeException( String duplicateName, MetaClass metaClass)
 	{
 		this.name = duplicateName;
 		this.metaClass = metaClass;
-		this.reason = reason;
 	}
 	
-	public MetaAttributeException(MetaAttributeExceptionReason type, String duplicateName, MetaClassImpl metaClass, String msg)
+	public MetaAttributeException( String duplicateName, MetaClass metaClass, String msg)
 	{
 		super(msg);
 		this.name = duplicateName;
 		this.metaClass = metaClass;
-		this.reason = type;
 	}
 	
 	/**
@@ -52,15 +43,10 @@ public class MetaAttributeException extends Exception {
 	 * Get the MetaClass which has raised this exception, because there exists already an attribute with the same name
 	 * @return
 	 */
-	public MetaClassImpl getMetaClass()
+	public MetaClass getMetaClass()
 	{
 		return metaClass;
 	}
 	
 	
-	public MetaAttributeExceptionReason getReason()
-	{
-		return reason;
-	}
-
 }

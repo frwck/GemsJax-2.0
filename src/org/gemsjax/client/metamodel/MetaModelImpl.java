@@ -2,18 +2,14 @@ package org.gemsjax.client.metamodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
-import org.gemsjax.client.canvas.MetaClassDrawable;
-import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.metamodel.MetaModelElement;
+import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
-import org.gemsjax.shared.metamodel.exception.MetaClassException.MetaClassExceptionReason;
 
 
 /**
@@ -50,13 +46,13 @@ public class MetaModelImpl implements MetaModel{
 	 * That means, that this name is not used by another {@link MetaClassImpl}
 	 * @param desiredName
 	 * @return true otherwise it will throw an {@link NameNotAvailableException}
-	 * @throws NameNotAvailableException if the name is already assigned to another {@link MetaClassImpl}
+	 * @throws NameNotAvailableException if the name is already assigned to another {@link MetaClass}
 	 */
 	public boolean isMetaClassNameAvailable(String desiredName) throws MetaClassException
 	{
 		for (MetaClass m: metaClasses)
 			if (m.getName().equals(desiredName))
-				throw new MetaClassException(MetaClassExceptionReason.NAME_ALREADY_IN_USE, desiredName);
+				throw new MetaClassException(desiredName, this);
 		
 		
 		return true;
@@ -84,7 +80,12 @@ public class MetaModelImpl implements MetaModel{
 	}
 
 	@Override
-	public void addBaseType(MetaBaseType baseType) {
+	public void addBaseType(MetaBaseType baseType) throws MetaBaseTypeException {
+		
+		for (MetaBaseType t: baseTypes)
+			if (t.getID().equals(baseType.getID()) || t.getName().equals(baseType.getName()))
+				throw new MetaBaseTypeException(this);
+		
 		baseTypes.add(baseType);
 	}
 

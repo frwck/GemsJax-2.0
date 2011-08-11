@@ -1,18 +1,7 @@
 package org.gemsjax.client.metamodel;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.text.html.parser.AttributeList;
-
-import org.gemsjax.client.canvas.Drawable;
-import org.gemsjax.client.canvas.ResizeArea;
-import org.gemsjax.client.canvas.events.MoveEvent;
-import org.gemsjax.client.canvas.events.ResizeEvent;
-import org.gemsjax.client.canvas.handler.MouseOverHandler;
-import org.gemsjax.client.canvas.handler.MoveHandler;
-import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -22,9 +11,6 @@ import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
 import org.gemsjax.shared.metamodel.exception.MetaContainmentRelationException;
 import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion;
-import org.gemsjax.shared.metamodel.exception.MetaAttributeException.MetaAttributeExceptionReason;
-import org.gemsjax.shared.metamodel.exception.MetaConnectionException.MetaConnectionExceptionType;
-import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion.InheritanceExceptionReason;
 
 
 
@@ -329,7 +315,7 @@ public class MetaClassImpl implements MetaClass {
 	{
 		for(MetaAttribute a : attributes)
 			if (a.getName().equals(name))
-				throw new MetaAttributeException(MetaAttributeExceptionReason.NAME_ALREADY_IN_USE , name, this);
+				throw new MetaAttributeException(name, this);
 		
 		MetaAttribute attribute = new MetaAttributeImpl(id, name, type);
 		attributes.add(attribute);
@@ -578,7 +564,7 @@ public class MetaClassImpl implements MetaClass {
 		
 		for (MetaConnection c : connections)
 			if (c.getName().equals(name))
-				throw new MetaConnectionException(MetaConnectionExceptionType.NAME_ALREADY_IN_USE,this,name);
+				throw new MetaConnectionException(this,name);
 		
 		MetaConnection c = new MetaConnectionImpl(id, name, target, lower, upper);
 		
@@ -608,7 +594,7 @@ public class MetaClassImpl implements MetaClass {
 		
 		for (MetaClass c : inheritances)
 			if (c.getID().equals(superMetaClass.getID()))
-				throw new MetaInheritanceExcepetion(InheritanceExceptionReason.ALREADY_EXISTS, this, superMetaClass );
+				throw new MetaInheritanceExcepetion(this, superMetaClass );
 		
 		inheritances.add(superMetaClass);
 	}

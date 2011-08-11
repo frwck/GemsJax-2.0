@@ -1,4 +1,4 @@
-package org.gemsjax.server.metamodel;
+package org.gemsjax.client.metamodel;
 
 import org.gemsjax.shared.metamodel.MetaBaseType;
 

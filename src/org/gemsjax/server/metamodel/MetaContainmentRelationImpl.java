@@ -2,29 +2,56 @@ package org.gemsjax.server.metamodel;
 
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaContainmentRelation;
-import org.gemsjax.shared.metamodel.MetaModelElement;
 
+/**
+ * This is used to realize containment relationsships between {@link MetaClassImpl}es.
+ * So a {@link MetaClassImpl} is able to contain other {@link MetaClassImpl}es.
+ * @author Hannes Dorfmann
+ *
+ */
 public class MetaContainmentRelationImpl implements MetaContainmentRelation {
-
-
+	
+	
 	private String id;
-	private int max;
-	private int min;
+	
+	private MetaClass containedBy;
 	private MetaClass metaClass;
 	
-	public MetaContainmentRelationImpl(String id)
-	{
-		this.id = id;
-	}
+	private int min;
+	private int max;
 	
+	
+	public MetaContainmentRelationImpl(String id, MetaClass containedBy, MetaClass metaClass, int min, int max) {
+		this.id = id;
+		this.containedBy = containedBy;
+		this.metaClass = metaClass;
+		this.max = max;
+		this.min = min;
+	}
+
 	@Override
-	public int getMax() {
-		return max;
+	public MetaClass getContainedBy() {
+		return containedBy;
+	}
+
+	@Override
+	public void setContainedBy(MetaClass containedBy) {
+		this.containedBy = containedBy;
 	}
 
 	@Override
 	public MetaClass getMetaClass() {
 		return metaClass;
+	}
+
+	@Override
+	public void setMetaClass(MetaClass mc) {
+		this.metaClass = mc;
+	}
+
+	@Override
+	public int getMax() {
+		return max;
 	}
 
 	@Override
@@ -38,11 +65,6 @@ public class MetaContainmentRelationImpl implements MetaContainmentRelation {
 	}
 
 	@Override
-	public void setMetaClass(MetaClass metaClass) {
-		this.metaClass = metaClass;
-	}
-
-	@Override
 	public void setMin(int min) {
 		this.min = min;
 	}
@@ -51,8 +73,5 @@ public class MetaContainmentRelationImpl implements MetaContainmentRelation {
 	public String getID() {
 		return id;
 	}
-
 	
-	
-
 }

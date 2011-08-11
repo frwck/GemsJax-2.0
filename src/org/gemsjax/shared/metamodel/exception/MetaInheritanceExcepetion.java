@@ -10,28 +10,17 @@ import org.gemsjax.shared.metamodel.MetaClass;
  */
 public class MetaInheritanceExcepetion extends Exception {
 	
-	public enum InheritanceExceptionReason
-	{
-		ALREADY_EXISTS
-	}
 	
-	
-	private InheritanceExceptionReason reason;
 	private MetaClass superClass;
 	private MetaClass subClass;
 	
 	
-	public MetaInheritanceExcepetion(InheritanceExceptionReason reason, MetaClass subClass, MetaClass superClass)
+	public MetaInheritanceExcepetion(MetaClass subClass, MetaClass superClass)
 	{
-		this.reason = reason;
 		this.subClass = subClass;
 		this.superClass = superClass;
 	}
 
-
-	public InheritanceExceptionReason getReason() {
-		return reason;
-	}
 
 
 	public MetaClass getSuperClass() {

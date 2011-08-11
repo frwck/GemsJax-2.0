@@ -14,41 +14,28 @@ import org.gemsjax.shared.metamodel.MetaModel;
  */
 public class MetaClassException extends Exception{
 	
-	public enum MetaClassExceptionReason
-	{
-		/**
-		 * Indicates that a {@link MetaClass} with the same name already exists
-		 */
-		NAME_ALREADY_IN_USE
-	}
-	
-	
-	private MetaClassExceptionReason reason;
+		
 	private String name;
 	
-	
-	
-	public MetaClassException(MetaClassExceptionReason reason) {
-		this.reason = reason;
-	}
+	private MetaModel metaModel;
 	
 	/**
-	 * 
-	 * @param reason
 	 * @param name
 	 */
-	public MetaClassException(MetaClassExceptionReason reason, String name)
+	public MetaClassException(String name, MetaModel metaModel)
 	{
 		this.name = name;
-		this.reason = reason;
+		this.metaModel = metaModel;
 	}
 
-	public MetaClassExceptionReason getReason() {
-		return reason;
-	}
 
 	public String getName() {
 		return name;
+	}
+	
+	public MetaModel getMetaModel()
+	{
+		return metaModel;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
 
 
@@ -63,8 +64,9 @@ public interface MetaModel {
 	/**
 	 * Add a {@link MetaBaseType} to this MetaModel
 	 * @param baseType
+	 * @throws MetaBaseTypeException If you try to add a {@link MetaBaseType}, which was already added previously
 	 */
-	public void addBaseType(MetaBaseType baseType);
+	public void addBaseType(MetaBaseType baseType) throws MetaBaseTypeException;
 	
 	/**
 	 * Remove a {@link MetaBaseType}

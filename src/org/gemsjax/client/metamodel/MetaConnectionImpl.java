@@ -6,8 +6,6 @@ import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 
-import com.google.gwt.i18n.client.AutoDirectionHandler.Target;
-
 /**
  * A MetaConnectionImpl is used to represent a connection like association between two {@link MetaClass}es
  * A Connection connects the {@link MetaClass} {@link #source}, which contains this {@link MetaConnection} in {@link MetaClass#getConnections()}, with {@link #target}. 

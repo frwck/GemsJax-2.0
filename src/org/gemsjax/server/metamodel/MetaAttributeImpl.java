@@ -2,7 +2,6 @@ package org.gemsjax.server.metamodel;
 
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
-import org.gemsjax.shared.metamodel.MetaModelElement;
 
 /**
  * This class represents Attributes. This attributes are used by the {@link MetaClassImpl} and {@link MetaConnectionImpl} to model attributes.
