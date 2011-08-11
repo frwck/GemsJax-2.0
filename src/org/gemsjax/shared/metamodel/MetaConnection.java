@@ -1,9 +1,12 @@
 package org.gemsjax.shared.metamodel;
 
+import java.util.List;
+
 import org.gemsjax.client.canvas.ConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 
 /**
@@ -52,6 +55,11 @@ public interface MetaConnection extends MetaModelElement{
 	
 	public void setTarget(MetaClass target);
 	public MetaClass getTarget();
+	
+	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException;
+	public List<MetaAttribute> getAttributes();
+	public void removeAttribute(MetaAttribute attribute);
+	
 	
 	/**
 	 * Get the icon, that is painted on the "target" end of this connection

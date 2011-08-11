@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
 
@@ -17,15 +18,8 @@ import org.gemsjax.shared.metamodel.exception.MetaClassException;
  * @author Hannes Dorfmann
  *
  */
-public interface MetaModel {
+public interface MetaModel  extends MetaModelElement{
 
-	
-	/**
-	 * Get the unique {@link MetaModel} ID
-	 * @return
-	 */
-	public String getID();
-	
 	
 	/**
 	 * Get the name of this element
@@ -91,5 +85,10 @@ public interface MetaModel {
 	 * @return
 	 */
 	public MetaModelElement getElementByID(String id);
+	
+	
+	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException;
+	public List<MetaAttribute> getAttributes();
+	public void removeAttribute(MetaAttribute attribute);
 	
 }

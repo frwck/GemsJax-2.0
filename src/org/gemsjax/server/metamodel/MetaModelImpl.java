@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.gemsjax.client.metamodel.MetaAttributeImpl;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.metamodel.MetaModelElement;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
 
 public class MetaModelImpl  implements MetaModel {
@@ -122,6 +124,31 @@ public class MetaModelImpl  implements MetaModel {
 		idMap.put(metaClass.getID(), metaClass);
 		
 		return metaClass;
+	}
+	
+	
+	@Override
+	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException {
+		
+		for (MetaAttribute a: attributes)
+			if (a.getID().equals(id) || a.getName().equals(name))
+				throw new MetaAttributeException(name, this);
+		
+		MetaAttribute a = new MetaAttributeImpl(id, name, type);
+		attributes.add(a);
+		return a;
+	}
+
+
+	@Override
+	public List<MetaAttribute> getAttributes() {
+		return attributes;
+	}
+
+
+	@Override
+	public void removeAttribute(MetaAttribute attribute) {
+		attributes.remove(attribute);
 	}
 
 }

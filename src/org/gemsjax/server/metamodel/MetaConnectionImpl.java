@@ -1,10 +1,17 @@
 package org.gemsjax.server.metamodel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gemsjax.client.canvas.ConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
+import org.gemsjax.client.metamodel.MetaAttributeImpl;
+import org.gemsjax.shared.metamodel.MetaAttribute;
+import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 
 /**
@@ -21,6 +28,8 @@ public class MetaConnectionImpl implements MetaConnection {
 	private MetaClass target;
 	
 	private MetaClass source;
+	
+	private List<MetaAttribute> attributes;
 	
 	
 	/** The name of this  connection. The name must be unique in the {@link MetaModelImpl */
@@ -183,7 +192,7 @@ public class MetaConnectionImpl implements MetaConnection {
 		this.name = name;
 		this.targetLowerBound = lower;
 		this.targetUpperBound = upper;
-		
+		this.attributes = new ArrayList<MetaAttribute>();
 	}
 	
 
@@ -642,6 +651,29 @@ public class MetaConnectionImpl implements MetaConnection {
 		this.source = source;
 	}
 
+	@Override
+	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException {
+		
+		for (MetaAttribute a: attributes)
+			if (a.getID().equals(id) || a.getName().equals(name))
+				throw new MetaAttributeException(name, this);
+		
+		MetaAttribute a = new MetaAttributeImpl(id, name, type);
+		attributes.add(a);
+		return a;
+	}
+
+
+	@Override
+	public List<MetaAttribute> getAttributes() {
+		return attributes;
+	}
+
+
+	@Override
+	public void removeAttribute(MetaAttribute attribute) {
+		attributes.remove(attribute);
+	}
 
 
 }

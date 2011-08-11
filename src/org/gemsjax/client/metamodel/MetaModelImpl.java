@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.metamodel.MetaModelElement;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
 
@@ -25,6 +28,7 @@ public class MetaModelImpl implements MetaModel{
 	
 	private List<MetaClass> metaClasses;
 	private List<MetaBaseType> baseTypes;
+	private List<MetaAttribute> attributes;
 	
 	/**
 	 * This map provides a quick access map for getting a element by its id
@@ -38,7 +42,8 @@ public class MetaModelImpl implements MetaModel{
 		
 		metaClasses = new ArrayList<MetaClass>();
 		baseTypes = new ArrayList<MetaBaseType>();
-		idMap = new HashMap<String, MetaModelElement>();		
+		idMap = new HashMap<String, MetaModelElement>();	
+		attributes = new ArrayList<MetaAttribute>();
 	}
 	
 	/**
@@ -128,6 +133,31 @@ public class MetaModelImpl implements MetaModel{
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	
+	@Override
+	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException {
+		
+		for (MetaAttribute a: attributes)
+			if (a.getID().equals(id) || a.getName().equals(name))
+				throw new MetaAttributeException(name, this);
+		
+		MetaAttribute a = new MetaAttributeImpl(id, name, type);
+		attributes.add(a);
+		return a;
+	}
+
+
+	@Override
+	public List<MetaAttribute> getAttributes() {
+		return attributes;
+	}
+
+
+	@Override
+	public void removeAttribute(MetaAttribute attribute) {
+		attributes.remove(attribute);
 	}
 	
 }
