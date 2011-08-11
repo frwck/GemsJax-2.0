@@ -22,12 +22,12 @@ import com.google.gwt.user.client.Window;
  * This class is a {@link Drawable} that displays a {@link MetaConnectionImpl} on the {@link MetaClassCanvas}.
  * A {@link MetaConnectionImpl} is displayed between two {@link MetaClassDrawable}s.<br /> <br />
  * This class implements the {@link ResizeHandler} and the {@link MoveHandler} interface and will be registered to the 
- * connected {@link MetaClassDrawable}s. So when a {@link MetaClassDrawable} was moved / resized, this {@link ConnectionDrawable}
+ * connected {@link MetaClassDrawable}s. So when a {@link MetaClassDrawable} was moved / resized, this {@link MetaConnectionDrawable}
  * will automatically adjust itself to the {@link MetaClassDrawable}s.
  * @author Hannes Dorfmann
  *
  */
-public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusable, ResizeHandler, MoveHandler {
+public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Focusable, ResizeHandler, MoveHandler {
 	
 
 	/**
@@ -46,7 +46,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	private MetaClassDrawable target;
 	
 	
-	private ConnectionBoxDrawable nameBoxDrawable;
+	private MetaConnectionBoxDrawable nameBoxDrawable;
 
 	// Handlers
 	private List<FocusHandler> focusHandlers;
@@ -62,13 +62,13 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	 * @param metaClassA The {@link MetaClassDrawable} where the connection starts.
 	 * @param metaClassB The {@link MetaClassDrawable} where the connection ends.
 	 */
-	public ConnectionDrawable(MetaConnection connection, MetaClassDrawable metaClassA, MetaClassDrawable metaClassB)
+	public MetaConnectionDrawable(MetaConnection connection, MetaClassDrawable metaClassA, MetaClassDrawable metaClassB)
 	{
 		this.connection = connection;
 		this.source = metaClassA;
 		this.target = metaClassB;
 		
-		this.nameBoxDrawable = new ConnectionBoxDrawable(connection);
+		this.nameBoxDrawable = new MetaConnectionBoxDrawable(connection);
 		
 		// Handlers
 		focusHandlers = new ArrayList<FocusHandler>();
@@ -80,7 +80,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 	}
 	
 	
-	public ConnectionBoxDrawable getNameBoxDrawable()
+	public MetaConnectionBoxDrawable getConnectionBoxDrawable()
 	{
 		return nameBoxDrawable;
 	}
@@ -288,7 +288,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 
 
 	/**
-	 * Set the other end of the {@link ConnectionDrawable} (named {@link #source}).
+	 * Set the other end of the {@link MetaConnectionDrawable} (named {@link #source}).
 	 * This method register this ConnectionDrawable as {@link MoveHandler} and {@link ResizeHandler} for the
 	 * new set metaClassA. It also set directly the {@link MetaConnectionImpl}s {@link MetaClassImpl} by calling {@link MetaConnectionImpl#setMetaClassA(MetaClassImpl)}.
 	 * If metaClassA is set previously, this ConnectionDrawable will be unregistered as {@link ResizeHandler} / {@link MoveHandler}.
@@ -323,7 +323,7 @@ public class ConnectionDrawable implements Drawable, Moveable, Clickable, Focusa
 
 
 	/**
-	 * Set the other end of the {@link ConnectionDrawable} (named {@link #target} ).
+	 * Set the other end of the {@link MetaConnectionDrawable} (named {@link #target} ).
 	 * This method register this ConnectionDrawable as {@link MoveHandler} and {@link ResizeHandler} for the
 	 * new set metaClassB. It also set directly the {@link MetaConnectionImpl}s {@link MetaClassImpl} by calling {@link MetaConnectionImpl#setMetaClassB(MetaClassImpl)}.
 	 * If metaClassB is set previously, this ConnectionDrawable will be unregistered as {@link ResizeHandler} / {@link MoveHandler}.

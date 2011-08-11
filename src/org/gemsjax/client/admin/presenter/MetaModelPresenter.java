@@ -4,10 +4,9 @@ package org.gemsjax.client.admin.presenter;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.view.MetaModelView;
-import org.gemsjax.client.canvas.ConnectionDrawable;
+import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
-import org.gemsjax.client.metamodel.MetaModelImpl;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModel;
@@ -93,7 +92,7 @@ public class MetaModelPresenter extends Presenter {
 					MetaClassDrawable source = (MetaClassDrawable) view.getDrawableOf(con.getSource());
 					MetaClassDrawable target = (MetaClassDrawable) view.getDrawableOf(con.getTarget());
 					
-					view.addDrawable(new ConnectionDrawable(con, source,  target));
+					view.addDrawable(new MetaConnectionDrawable(con, source,  target));
 				
 				}
 			}	

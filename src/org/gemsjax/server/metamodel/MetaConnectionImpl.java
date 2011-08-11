@@ -3,7 +3,7 @@ package org.gemsjax.server.metamodel;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gemsjax.client.canvas.ConnectionDrawable;
+import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.metamodel.MetaAttributeImpl;
@@ -56,7 +56,7 @@ public class MetaConnectionImpl implements MetaConnection {
 	private double targetIconHeight;
 	
 	/**
-	 * The X coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
+	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
 	 * The source is the {@link MetaClass} which contains this MetaConnection in {@link MetaClass#getConnections()}.
 	 * This coordinate is relative to the source {@link MetaClassDrawable} object on the {@link MetaModelCanvas}.
 	 * That means, that the {@link MetaClassImpl#getX()} is the relative 0 coordinate on the x axis.
@@ -68,21 +68,21 @@ public class MetaConnectionImpl implements MetaConnection {
 	private double sourceRelativeX;
 	
 	/**
-	 * The Y coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
+	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
 	 * See {@link #sourceRelativeX} for more information and a concrete example.
 	 * @see #getSourceRelativeY()
 	 */
 	private double sourceRelativeY;
 	
 	/**
-	 * The X coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
+	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
 	 * See {@link #sourceRelativeX} for more information and a concrete example.
 	 * @see #getTargetRelativeX()
 	 */
 	private double targetRelativeX;
 	
 	/**
-	 * The Y coordinate where the {@link ConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
+	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
 	 * See {@link #sourceRelativeX} for more information and a concrete example.
 	 * @see #getTargetRelativeY()
 	 */

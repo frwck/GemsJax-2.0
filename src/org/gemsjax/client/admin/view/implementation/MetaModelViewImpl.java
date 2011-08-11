@@ -12,6 +12,7 @@ import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
@@ -146,6 +147,9 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	@Override
 	public void addDrawable(Drawable drawable) throws DoubleLimitException {
 		canvas.addDrawable(drawable);
+		
+		if (drawable instanceof MetaConnectionDrawable)
+			canvas.addDrawable(((MetaConnectionDrawable) drawable).getConnectionBoxDrawable());
 	}
 
 	@Override

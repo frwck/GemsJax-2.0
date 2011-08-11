@@ -21,10 +21,10 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public  class ConnectionBoxDrawable implements Drawable, Moveable, Resizeable, Focusable, ResizeHandler, MoveHandler, FocusHandler{
+public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeable, Focusable, ResizeHandler, MoveHandler, FocusHandler{
 
 	/**
-	 * The connection, which name will be displayed with this {@link ConnectionBoxDrawable}
+	 * The connection, which name will be displayed with this {@link MetaConnectionBoxDrawable}
 	 */
 	private MetaConnection connection;
 	
@@ -78,7 +78,7 @@ public  class ConnectionBoxDrawable implements Drawable, Moveable, Resizeable, F
 	private double minHeight = 30;
 	
 	/**
-	 * If the {@link ConnectionBoxDrawable} is resized and this flag is set to true,
+	 * If the {@link MetaConnectionBoxDrawable} is resized and this flag is set to true,
 	 * than the {@link MetaConnectionImpl#setSourceConnectionBoxRelativeX(double)}, {@link MetaConnectionImpl#setSourceConnectionBoxRelativeY(double)}, {@link MetaConnectionImpl#setTargetConnectionBoxRelativeX(double)}
 	 * and {@link MetaConnectionImpl#setTargetConnectionBoxRelativeY(double)} will be set according to the previous (before the resizing) 
 	 * percental ratio.
@@ -86,7 +86,7 @@ public  class ConnectionBoxDrawable implements Drawable, Moveable, Resizeable, F
 	private boolean autoAdjustNameBoxRatio = true;
 	 
 	
-	public ConnectionBoxDrawable(MetaConnection connection)
+	public MetaConnectionBoxDrawable(MetaConnection connection)
 	{
 		this.connection = connection;
 		
