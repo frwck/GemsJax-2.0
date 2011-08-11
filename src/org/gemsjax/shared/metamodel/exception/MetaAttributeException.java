@@ -1,9 +1,7 @@
 package org.gemsjax.shared.metamodel.exception;
 
-import org.gemsjax.client.metamodel.MetaAttributeImpl;
-import org.gemsjax.client.metamodel.MetaClassImpl;
-import org.gemsjax.shared.metamodel.MetaAttribute;
-import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaModelElement;
+
 
 
 /**
@@ -15,20 +13,14 @@ import org.gemsjax.shared.metamodel.MetaClass;
 public class MetaAttributeException extends Exception {
 		
 	private String name;
-	private MetaClass metaClass;
+	private MetaModelElement metaElement;
 	
-	public MetaAttributeException( String duplicateName, MetaClass metaClass)
+	public MetaAttributeException( String duplicateName, MetaModelElement metaElement)
 	{
 		this.name = duplicateName;
-		this.metaClass = metaClass;
+		this.metaElement = metaElement;
 	}
 	
-	public MetaAttributeException( String duplicateName, MetaClass metaClass, String msg)
-	{
-		super(msg);
-		this.name = duplicateName;
-		this.metaClass = metaClass;
-	}
 	
 	/**
 	 * Get the name which is already used as {@link MetaAttributeImpl} name in this {@link MetaClassImpl}
@@ -43,9 +35,9 @@ public class MetaAttributeException extends Exception {
 	 * Get the MetaClass which has raised this exception, because there exists already an attribute with the same name
 	 * @return
 	 */
-	public MetaClass getMetaClass()
+	public MetaModelElement getMetaModelElement()
 	{
-		return metaClass;
+		return metaElement;
 	}
 	
 	
