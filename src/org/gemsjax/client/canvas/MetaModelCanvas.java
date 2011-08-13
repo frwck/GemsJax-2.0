@@ -211,7 +211,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 					if (previous != null && previous instanceof Focusable) 
 						((Focusable)previous).fireFocusEvent(new FocusEvent((Focusable)previous, FocusEventType.LOST_FOCUS));
 				
-				redrawCanvas();
+				
 				
 				break; // End case Normal
 			
@@ -287,7 +287,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 						((Resizeable)currentMouseDownDrawable).fireResizeEvent(e);
 						
 			
-						redrawCanvas();
+						
 			
 						return; // Break at this point 
 					}
@@ -302,7 +302,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
 		
 					((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
-					redrawCanvas();
+					
 					return; // Break at this point
 				}
 				
@@ -340,7 +340,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 			for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
 				h.onMove(mouseDownInitialDrawableX+(event.getX()-mouseDownX), mouseDownInitialDrawableY+(event.getY()-mouseDownY));
 			
-			redrawCanvas();
+			
 		}
 		*/
 	}

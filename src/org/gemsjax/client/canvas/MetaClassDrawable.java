@@ -10,6 +10,7 @@ import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.ResizeArea;
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.events.FocusEvent;
+import org.gemsjax.client.canvas.events.IconLoadEvent;
 import org.gemsjax.client.canvas.events.MouseOutEvent;
 import org.gemsjax.client.canvas.events.MouseOverEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
@@ -17,6 +18,7 @@ import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
+import org.gemsjax.client.canvas.handler.IconLoadHandler;
 import org.gemsjax.client.canvas.handler.MouseOutHandler;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
@@ -29,6 +31,12 @@ import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.RootPanel;
 
 
 
@@ -37,8 +45,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOutable, MouseOverable, Moveable, Resizeable 
-, ClickHandler, ResizeHandler,  MouseOverHandler, MouseOutHandler{
+public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOutable, MouseOverable, Moveable, Resizeable, IconLoadable {
 
 	
 	private List<ResizeArea> resizeAreas;
@@ -49,15 +56,37 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	private List <ClickHandler> clickHandlers;
 	private List <FocusHandler> focusHandlers;
 	private List <MouseOutHandler> mouseOutHandlers;
+	private List <IconLoadHandler> iconLoadableHandlers;
 	
 
 	private MetaClass metaClass;
-	private boolean mouseOver=false;
+	
+	
+	private boolean iconLoaded = false;
+	private Image iconImage;
 
 	public MetaClassDrawable(MetaClass metaClass)
 	{
 		this.metaClass = metaClass;
+		
+		iconImage = new Image();
+			
+		iconImage.addLoadHandler(new LoadHandler() {
+				
+				@Override
+				public void onLoad(LoadEvent event) {
+					iconLoaded = true;
+					fireIconLoadEvent(new IconLoadEvent(MetaClassDrawable.this, iconImage.getUrl()));
+				}
+			});
+				
 	
+		iconImage.setVisible(false);
+		RootPanel.get().add(iconImage); // image must be on page to fire load events
+		
+		if (metaClass.getIconURL()!=null && !metaClass.getIconURL().equals(""))
+			loadIcon(metaClass.getIconURL());
+		
 		// Handler lists
 		 resizeAreas = new LinkedList<ResizeArea>();
 		 moveHandlers = new LinkedList<MoveHandler>();
@@ -66,19 +95,30 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		 clickHandlers = new LinkedList<ClickHandler>();
 		 focusHandlers = new LinkedList<FocusHandler>();
 		 mouseOutHandlers = new LinkedList<MouseOutHandler>();
+		 iconLoadableHandlers = new LinkedList<IconLoadHandler>();
 
 		 // a Resize Area
 		 resizeAreas.add(new ResizeArea(metaClass.getX()+metaClass.getWidth()-6, metaClass.getY()+metaClass.getHeight()-6, 6, 6));
 
-		 // Handlers
-		 this.addMouseOverHandler(this);
-		 //this.addMoveHandler(this);
-		 this.addResizeHandler(this);
-		//this.addFocusHandler(this);
-		 this.addMouseOutHandler(this);
-		 this.addMouseOverHandler(this);
 	}
 	
+	
+	private void loadIcon(String url)
+	{	
+		iconLoaded = false;
+		iconImage.setUrl(url);
+	}
+	
+	
+	public boolean isIconLoaded()
+	{
+		return iconLoaded;
+	}
+	
+	public ImageElement getIcon()
+	{
+		return (ImageElement) iconImage.getElement().cast();
+	}
 	
 	public List<ResizeArea> getResizeAreas()
 	{
@@ -128,29 +168,105 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	@Override
 	public void draw(Context2d context) {
 		
+		context.save();
+		
+		double x = metaClass.getX();
+		double y = metaClass.getY();
+		
+		y = drawIcon(x, y, context) + y;
+		
+		drawBox(x,y, context);
+		
+		
+		
+		drawName(x,y, context);
+		
+		if (metaClass.isDisplayingAttributes())
+			drawAttributes(x,y,context);
+		
+		
+		if (isSelected())
+			drawOnSelected(context);
+		
+		
+		context.restore();
+		
+	}
+	
+	
+	private void drawBox(double x, double y, Context2d context)
+	{
 		context.setLineWidth(1);
 		
-		CanvasGradient gradient = context.createLinearGradient(metaClass.getX(), metaClass.getY(),metaClass.getX()+metaClass.getWidth(),metaClass.getY()+metaClass.getHeight());
+		CanvasGradient gradient = context.createLinearGradient(x, y, x+metaClass.getWidth(),y+metaClass.getHeight());
 		
 		gradient.addColorStop(0,metaClass.getGradientStartColor());
 		gradient.addColorStop(0.7, metaClass.getGradientEndColor());
 		
 		
+		context.setShadowBlur(10);
+		context.setShadowColor("black");
 		context.setFillStyle(metaClass.getBorderColor());
-		context.fillRect(metaClass.getX(), metaClass.getY(), metaClass.getWidth(), metaClass.getHeight());
+		context.fillRect(x,y, metaClass.getWidth(), metaClass.getHeight());
+		context.setShadowBlur(0);
 		
 		
 		context.setFillStyle(gradient);
-		context.fillRect(metaClass.getX()+metaClass.getBorderSize(), metaClass.getY()+metaClass.getBorderSize(), metaClass.getWidth()-2*metaClass.getBorderSize(), metaClass.getHeight()-2*metaClass.getBorderSize());
+		context.fillRect(x+metaClass.getBorderSize(), y+metaClass.getBorderSize(), metaClass.getWidth()-2*metaClass.getBorderSize(), metaClass.getHeight()-2*metaClass.getBorderSize());
 		
-		drawName(context);
+	}
+	
+	private double drawIcon(double x, double y, Context2d context)
+	{
+		double height = 10;
+		double width = 10;
 		
-		if (metaClass.isDisplayingAttributes())
-			drawAttributes(context);
+		double spaceLeft = 0;
+		
+		if (metaClass.getIconWidth()<metaClass.getWidth())
+		{
+			height = metaClass.getIconHeight();
+			width = metaClass.getIconWidth();
+			spaceLeft = (metaClass.getWidth() - metaClass.getIconWidth() )/ 2;
+		}
+		else
+		{
+			width = metaClass.getWidth();		//
+			height = width/metaClass.getIconWidth() * metaClass.getHeight();
+		}
 		
 		
-		if (isSelected())
-			drawOnSelected(context);
+		if (isIconLoaded())
+		{
+			context.drawImage(getIcon(), x+spaceLeft, y, width, height);
+		}
+		else
+		{	
+
+			String loadingTxt = "Loading";
+			
+			context.setFont(""+metaClass.getAttributeFontSize()+"px "+metaClass.getFontFamily());
+			double textWidth = loadingTxt.length() * metaClass.getAttributeFontCharWidth();
+			
+			context.setFillStyle("black");
+			context.setTextAlign("left");
+			
+			if (textWidth<width)
+				context.fillText(loadingTxt, x+((width-textWidth)/2), y+metaClass.getAttributeFontSize(), width);
+			else
+			{
+				int chars = (int)(textWidth / metaClass.getAttributeFontCharWidth()) - 3;
+				
+				if (chars<=0)
+					context.fillText("...", x, y+metaClass.getAttributeFontSize(), width);
+				else
+					context.fillText(loadingTxt.substring(0, chars)+"...", x, y+metaClass.getAttributeFontSize(), width);
+			}
+		}
+		
+		
+		
+		return height;	
 		
 	}
 
@@ -159,7 +275,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	 * Implement how the Drawable should be drawn, when the Drawable has been selected (for example by clicking on it)
 	 * @param context
 	 */
-	public void drawOnSelected(Context2d context) {
+	private void drawOnSelected(Context2d context) {
 		
 		// Draw the ResizeAreas 
 		
@@ -172,7 +288,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	/**
 	 * Draw the Attributes, which should be displayed for this class
 	 */
-	public void drawAttributes(Context2d context){
+	private void drawAttributes(double originalX, double originalY, Context2d context){
 		
 		if (metaClass.getAttributes().size()==0)
 			return;
@@ -181,7 +297,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		context.setFont(""+metaClass.getAttributeFontSize()+"px "+metaClass.getFontFamily());
 		context.setTextAlign("left");
 		
-		double x = metaClass.getX() + metaClass.getAttributeListLeftSpace(), y=metaClass.getY()+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace()+metaClass.getAttributeListTopSpace();
+		double x =originalX + metaClass.getAttributeListLeftSpace(), y=originalY+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace()+metaClass.getAttributeListTopSpace();
 		
 		String txt;
 		
@@ -209,7 +325,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	/**
 	 * Draw the meta-class name
 	 */
-	private void drawName(Context2d context) {
+	private void drawName(double x, double y, Context2d context) {
 		
 	
 		String txt = metaClass.getWidth()-metaClass.getNameLeftSpace() >(metaClass.getName().length()*metaClass.getNameFontCharWidth()) 
@@ -219,14 +335,14 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		context.setFont("bold "+metaClass.getNameFontSize()+"px "+metaClass.getFontFamily());
 		
 		context.setTextAlign("left");
-		context.fillText(txt, metaClass.getX()+metaClass.getNameLeftSpace(), metaClass.getY()+metaClass.getNameTopSpace()+metaClass.getNameFontSize());
+		context.fillText(txt, x+metaClass.getNameLeftSpace(), y+metaClass.getNameTopSpace()+metaClass.getNameFontSize());
 		
 		
 		// if there is at least one attribute, draw a horizontal line
 		if (metaClass.isDisplayingAttributes() && metaClass.getAttributes().size()>0 )
 		{
 			context.setFillStyle(metaClass.getBorderColor());
-			context.fillRect(metaClass.getX(), metaClass.getY()+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace(), metaClass.getWidth(), metaClass.getBorderSize());
+			context.fillRect(x, y+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace(), metaClass.getWidth(), metaClass.getBorderSize());
 		}
 		
 	}
@@ -371,6 +487,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		return metaClass.isSelected();
 	}
 
+	/*
 	@Override
 	public void onResize(ResizeEvent event) {
 		
@@ -389,26 +506,9 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 			
 		}
 		
-		/*
-		
-		
-		if (isResizeable())
-		{
-			if (event.getStartX()<event.getEndX())
-				this.setWidth( getWidth() + (event.getEndX() - event.getStartX() ) );
-			else
-				this.setWidth( getWidth() - (event.getStartX() - event.getEndX() ) );
-				
-			if (event.getStartY()<event.getEndY())
-				this.setHeight( getHeight()+ ( event.getEndY() - event.getStartY() ) );
-			else
-				this.setHeight( getHeight()- ( event.getStartY() - event.getEndY() ) );
-			
-			autoSetResizeAreaPosition();
-		}
-		*/
-		
+	
 	}
+	*/
 
 	/*
 	@Override
@@ -466,10 +566,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	}
 
 
-	@Override
-	public void onMouseOver(MouseOverEvent event) {
-		// TODO What to do when mouse is over. Let a Menu appear
-	}
+	
 
 	@Override
 	public ResizeArea isResizerAreaAt(double x, double y) {
@@ -496,10 +593,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		metaClass.setBorderSize(borderSize);
 	}
 
-	@Override
-	public void onClick(ClickEvent event) {
-		// TODO what is to do, when the element got a click event? Conflict with FocusEvents?
-	}
+	
 	
 	@Override
 	public void addClickHandler(ClickHandler handler)
@@ -627,12 +721,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 	}
 
-	@Override
-	public void onMouseOut(MouseOutEvent event) {
-		// TODO What to do when the mouse is moved out? see onMouseOver
-		
-	}
-
+	
 	@Override
 	public double getZIndex() {
 		return metaClass.getZIndex();
@@ -641,5 +730,34 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	@Override
 	public Object getDataObject() {
 		return metaClass;
+	}
+
+
+	@Override
+	public void addIconLoadHandler(IconLoadHandler h) {
+		if (!iconLoadableHandlers.contains(h))
+			iconLoadableHandlers.add(h);
+	}
+
+
+	@Override
+	public boolean fireIconLoadEvent(IconLoadEvent e) {
+		boolean delivered = false;
+		
+		for (IconLoadHandler h: iconLoadableHandlers)
+		{
+			h.onIconLoaded(e);
+			delivered = true;
+		}
+		
+		return delivered;
+			
+	}
+
+
+	@Override
+	public void removeIconLoadHanlder(IconLoadHandler h) {
+		// TODO Auto-generated method stub
+		
 	}
 }

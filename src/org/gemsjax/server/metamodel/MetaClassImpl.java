@@ -82,8 +82,10 @@ public class MetaClassImpl implements MetaClass {
 	 */
 	private double attributeFontCharWidth = 9;
 	
-	
-	
+	/**
+	 * The horizontal space, between the box, and the icon
+	 */
+	private double iconToClassBoxSpace = 10;
 	
 	/**
 	 * The free space (in pixel) between one attribute to the other attribute (which is displayed in the line below)
@@ -567,6 +569,9 @@ public class MetaClassImpl implements MetaClass {
 				throw new MetaConnectionException(this,name);
 		
 		MetaConnection c = new MetaConnectionImpl(id, name, target, lower, upper);
+		c.setSource(this);
+		
+		connections.add(c);
 		
 		return c;
 		
@@ -653,6 +658,12 @@ public class MetaClassImpl implements MetaClass {
 	@Override
 	public List<MetaClass> getInheritances() {
 		return inheritances;
+	}
+
+
+	@Override
+	public double getIconToClassBoxSpace() {
+		return iconToClassBoxSpace;
 	}
 
 

@@ -36,9 +36,9 @@ public class MetaClassImpl implements MetaClass {
 	private String gradientStartColor ="#FCCE70";
 	private String gradientEndColor="#FCFBD5";
 	
-	private String iconURL;
-	private double iconWidth;
-	private double iconHeight;
+	private String iconURL = "/metamodel/icons/book.jpg";
+	private double iconWidth = 40;
+	private double iconHeight = 40;
 	
 	
 	/**
@@ -82,8 +82,10 @@ public class MetaClassImpl implements MetaClass {
 	 */
 	private double attributeFontCharWidth = 9;
 	
-	
-	
+	/**
+	 * The horizontal space, between the box, and the icon
+	 */
+	private double iconToClassBoxSpace = 10;
 	
 	/**
 	 * The free space (in pixel) between one attribute to the other attribute (which is displayed in the line below)
@@ -656,6 +658,12 @@ public class MetaClassImpl implements MetaClass {
 	@Override
 	public List<MetaClass> getInheritances() {
 		return inheritances;
+	}
+
+
+	@Override
+	public double getIconToClassBoxSpace() {
+		return iconToClassBoxSpace;
 	}
 
 

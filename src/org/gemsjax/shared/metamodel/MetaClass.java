@@ -441,6 +441,13 @@ public interface MetaClass extends MetaModelElement{
 	public void setNameTopSpace(double nameTopSpace);
 	
 	/**
+	 * The horizontal space between the painted icon and the class
+	 * @return
+	 */
+	public double getIconToClassBoxSpace();
+	
+	
+	/**
 	 * @see #isSelected()
 	 * @param selected
 	 */

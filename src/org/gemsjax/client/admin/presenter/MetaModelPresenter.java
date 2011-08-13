@@ -11,6 +11,7 @@ import org.gemsjax.client.canvas.ResizeArea;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.events.FocusEvent;
+import org.gemsjax.client.canvas.events.IconLoadEvent;
 import org.gemsjax.client.canvas.events.MouseOutEvent;
 import org.gemsjax.client.canvas.events.MouseOverEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
@@ -18,6 +19,7 @@ import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
+import org.gemsjax.client.canvas.handler.IconLoadHandler;
 import org.gemsjax.client.canvas.handler.MouseOutHandler;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
@@ -34,7 +36,7 @@ import com.smartgwt.client.widgets.tab.Tab;
  * @author Hannes Dorfmann
  *
  */
-public class MetaModelPresenter extends Presenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler{
+public class MetaModelPresenter extends Presenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler{
 	
 	private MetaModel metaModel;
 	private MetaModelView view;
@@ -100,6 +102,11 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 				MetaClassDrawable d = new MetaClassDrawable(c);
 				d.addFocusHandler(this);
 				d.addMoveHandler(this);
+				d.addResizeHandler(this);
+				d.addMouseOutHandler(this);
+				d.addMouseOverHandler(this);
+				d.addClickHandler(this);
+				d.addIconLoadHandler(this);
 				view.addDrawable(d);	
 			}
 			
@@ -144,8 +151,9 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 
 	@Override
 	public void onResize(ResizeEvent event) {
-		// TODO Auto-generated method stub
 		
+		if (event.getSource() instanceof MetaClassDrawable)
+			onMetaClassResizeEvent((MetaClass) ((Drawable)event.getSource()).getDataObject(), event);
 	}
 
 
@@ -196,6 +204,38 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			ra.setX(ra.getX() + (metaClass.getX()-oldX));
 			ra.setY(ra.getY() + (metaClass.getY()-oldY));
 		}
+		
+		view.redrawMetaModelCanvas();
+	}
+	
+	
+	private void onMetaClassResizeEvent(MetaClass metaClass, ResizeEvent event)
+	{
+
+		if (event.getWidth()>metaClass.getMinWidth() && event.getHeight()>metaClass.getMinHeight())
+		{
+		
+			MetaClassDrawable d =(MetaClassDrawable) event.getSource();
+			
+			for (ResizeArea r : d.getResizeAreas())
+			{
+				r.setX(r.getX()+ (event.getWidth()-metaClass.getWidth()));
+				r.setY(r.getY()+ (event.getHeight()-metaClass.getHeight()));
+			}
+			
+			metaClass.setWidth(event.getWidth());
+			metaClass.setHeight(event.getHeight());
+			
+			view.redrawMetaModelCanvas();
+			
+		}
+	}
+
+
+	@Override
+	public void onIconLoaded(IconLoadEvent e) {
+		
+		view.redrawMetaModelCanvas();
 	}
 	
 
