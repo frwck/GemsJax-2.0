@@ -122,13 +122,26 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	 */
 	private ResizeArea currentResizeArea;
 
-
+	/**
+	 * Is set to true or false, whenever the user is doing any resizing on a {@link Resizeable} {@link Drawable}.
+	 * Is used to detremine, which event ( {@link ResizeEvent}, {@link MoveEvent}, etc.) should be fired {@link #onMouseUp(MouseUpEvent)}
+	 */
+	private boolean resizing;
+	
+	/**
+	 * Is set to true or false, whenever the user is doing any movement of a {@link Moveable} {@link Drawable}.
+	 * Is used to detremine, which event ( {@link ResizeEvent}, {@link MoveEvent}, etc.) should be fired {@link #onMouseUp(MouseUpEvent)}
+	 */
+	private boolean moving;
 	
 	private EditingMode editingMode;
 	
 	
 	public MetaModelCanvas() throws CanvasSupportException {
 		super();
+		
+		resizing = false;
+		moving = false;
 		
 		isMouseDown = false;
 		mouseDownX = -200;
@@ -285,6 +298,8 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 						double width = beforeResizeWidth +  event.getX() - mouseDownX;
 						double height = beforeResizeHeight + event.getY() - mouseDownY;
 						
+						resizing = true;
+						
 						ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.TEMP_RESIZE, width, height, event.getX(), event.getY(), currentResizeArea);
 						((Resizeable)currentMouseDownDrawable).fireResizeEvent(e);
 			
@@ -297,7 +312,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				// MoveEvent
 				if (currentMouseDownDrawable instanceof Moveable && isMouseDown)
 				{
-		
+					moving = true;
 					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.TEMP_MOVE, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
 		
 					((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
@@ -355,7 +370,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		{
 			case NORMAL:
 				
-				if (currentMouseDownDrawable instanceof Moveable && isMouseDown)
+				if (moving && currentMouseDownDrawable instanceof Moveable && isMouseDown)
 				{
 		
 					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.MOVE_FINISHED, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
@@ -365,7 +380,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				}
 				
 				
-				if (currentMouseDownDrawable != null && currentMouseDownDrawable instanceof Resizeable && isMouseDown && currentResizeArea != null)
+				if (resizing && currentMouseDownDrawable != null && currentMouseDownDrawable instanceof Resizeable && isMouseDown && currentResizeArea != null)
 				{
 					if (resizeableOnlyOnSelected && currentMouseDownDrawable.isSelected())
 					{
@@ -383,6 +398,8 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 
 
 		isMouseDown = false;
+		moving = false;
+		resizing = false;
 		currentMouseDownDrawable = null;
 		currentResizeArea = null;
 		

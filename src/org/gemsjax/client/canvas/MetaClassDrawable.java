@@ -313,7 +313,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		{
 			height = metaClass.getIconHeight();
 			width = metaClass.getIconWidth();
-			spaceLeft = (width - metaClass.getIconWidth() )/ 2;
+			spaceLeft = (getWidth() - metaClass.getIconWidth() )/ 2;
 		}
 		else
 		{
