@@ -96,10 +96,10 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 		context.setFillStyle(connection.getLineColor());
 		context.setLineWidth(connection.getLineSize());
 		
-		context.moveTo(connection.getSource().getX() + connection.getSourceRelativeX(), connection.getSource().getY() + connection.getSourceRelativeY());
+		context.moveTo(source.getX() + connection.getSourceRelativeX(), source.getY() + connection.getSourceRelativeY());
 		context.lineTo(connection.getConnectionBoxX() + connection.getSourceConnectionBoxRelativeX(), connection.getConnectionBoxY() + connection.getSourceConnectionBoxRelativeY());
 		
-		context.moveTo(connection.getTarget().getX() + connection.getTargetRelativeX(), connection.getTarget().getY() + connection.getTargetRelativeY());
+		context.moveTo(target.getX() + connection.getTargetRelativeX(), target.getY() + connection.getTargetRelativeY());
 		context.lineTo(connection.getConnectionBoxX() + connection.getTargetConnectionBoxRelativeX(), connection.getConnectionBoxY() + connection.getTargetConnectionBoxRelativeY());
 	
 		

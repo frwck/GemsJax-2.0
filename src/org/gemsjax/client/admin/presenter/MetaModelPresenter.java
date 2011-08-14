@@ -17,6 +17,8 @@ import org.gemsjax.client.canvas.events.MouseOverEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
+import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
+import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.IconLoadHandler;
@@ -29,6 +31,8 @@ import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModel;
 
 import com.google.gwt.event.shared.EventBus;
+import com.smartgwt.client.docs.Debugging;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.tab.Tab;
 
 /**
@@ -189,21 +193,27 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	
 	private void onMetaClassMoveEvent(MetaClass metaClass, MoveEvent e)
 	{
-		double oldX = metaClass.getX();
-		double oldY = metaClass.getY();
 		
-		metaClass.setX(e.getX()-e.getDistanceToTopLeftX());
-		metaClass.setY(e.getY()-e.getDistanceToTopLeftY());
-
-
+		
+		// Resize the MetaClass
 		MetaClassDrawable d =(MetaClassDrawable) e.getSource();
+		d.setX(e.getX()-e.getDistanceToTopLeftX());
+		d.setY(e.getY()-e.getDistanceToTopLeftY());
+
+		SC.logWarn("Move Temp "+d.getX()+" "+d.getY()+"     "+metaClass.getX()+" "+metaClass.getY());
 		
-		// Set the Position of the ResizeAreas
-		for (ResizeArea ra : d.getResizeAreas())
-		{
-			ra.setX(ra.getX() + (metaClass.getX()-oldX));
-			ra.setY(ra.getY() + (metaClass.getY()-oldY));
+		
+		if (e.getType()==MoveEventType.MOVE_FINISHED){
+			metaClass.setX(e.getX()-e.getDistanceToTopLeftX());
+			metaClass.setY(e.getY()-e.getDistanceToTopLeftY());
+			
+			
+			// TODO collabrative info websocket
+			SC.logWarn("Move FINISHED "+d.getX()+" "+d.getY()+"     "+metaClass.getX()+" "+metaClass.getY());
+			
 		}
+		
+	
 		
 		view.redrawMetaModelCanvas();
 	}
@@ -215,16 +225,23 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		if (event.getWidth()>metaClass.getMinWidth() && event.getHeight()>metaClass.getMinHeight())
 		{
 		
+			// Its done, when ResizeEventType.TEMP_RESIZE  and  RESIZE_FINISHED
 			MetaClassDrawable d =(MetaClassDrawable) event.getSource();
+			d.setWidth( event.getWidth());
+			d.setHeight(event.getHeight());
 			
-			for (ResizeArea r : d.getResizeAreas())
+			SC.logWarn("Resize Temp "+d.getWidth()+" "+d.getHeight()+"     "+metaClass.getWidth()+" "+metaClass.getHeight());
+			
+			if (event.getType()==ResizeEventType.RESIZE_FINISHED)
 			{
-				r.setX(r.getX()+ (event.getWidth()-metaClass.getWidth()));
-				r.setY(r.getY()+ (event.getHeight()-metaClass.getHeight()));
+				metaClass.setWidth(event.getWidth());
+				metaClass.setHeight(event.getHeight());
+				
+				SC.logWarn("Resize Finished "+d.getWidth()+" "+d.getHeight()+"     "+metaClass.getWidth()+" "+metaClass.getHeight());
+				// TODO collabrative info websocket
 			}
 			
-			metaClass.setWidth(event.getWidth());
-			metaClass.setHeight(event.getHeight());
+			
 			
 			view.redrawMetaModelCanvas();
 			

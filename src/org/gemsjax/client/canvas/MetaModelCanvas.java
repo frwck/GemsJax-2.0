@@ -4,6 +4,8 @@ import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
+import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
+import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.shared.metamodel.MetaModelElement;
 
 
@@ -283,11 +285,8 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 						double width = beforeResizeWidth +  event.getX() - mouseDownX;
 						double height = beforeResizeHeight + event.getY() - mouseDownY;
 						
-						ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, width, height, event.getX(), event.getY(), currentResizeArea);
+						ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.TEMP_RESIZE, width, height, event.getX(), event.getY(), currentResizeArea);
 						((Resizeable)currentMouseDownDrawable).fireResizeEvent(e);
-						
-			
-						
 			
 						return; // Break at this point 
 					}
@@ -299,7 +298,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				if (currentMouseDownDrawable instanceof Moveable && isMouseDown)
 				{
 		
-					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
+					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.TEMP_MOVE, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
 		
 					((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
 					
@@ -355,13 +354,37 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		switch (editingMode)
 		{
 			case NORMAL:
-				isMouseDown = false;
-				currentMouseDownDrawable = null;
-				currentResizeArea = null;
+				
+				if (currentMouseDownDrawable instanceof Moveable && isMouseDown)
+				{
+		
+					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.MOVE_FINISHED, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
+		
+					((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
+					
+				}
+				
+				
+				if (currentMouseDownDrawable != null && currentMouseDownDrawable instanceof Resizeable && isMouseDown && currentResizeArea != null)
+				{
+					if (resizeableOnlyOnSelected && currentMouseDownDrawable.isSelected())
+					{
+						double width = beforeResizeWidth +  event.getX() - mouseDownX;
+						double height = beforeResizeHeight + event.getY() - mouseDownY;
+						
+						ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.RESIZE_FINISHED, width, height, event.getX(), event.getY(), currentResizeArea);
+						((Resizeable)currentMouseDownDrawable).fireResizeEvent(e);
+					}
+				}
+				
 			break; // END editing mode
 		
 		} // End NORMAL
-		
+
+
+		isMouseDown = false;
+		currentMouseDownDrawable = null;
+		currentResizeArea = null;
 		
 	}
 

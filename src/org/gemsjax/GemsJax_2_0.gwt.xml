@@ -19,7 +19,7 @@
 
 	<!-- Development tool -->
 	<inherits name="com.smartgwt.tools.SmartGwtTools" />
-
+	
 	<!-- Smart GWT Design -->
 	<!--  <inherits name="com.smartclient.theme.silverwave.SilverWave"/> -->
 

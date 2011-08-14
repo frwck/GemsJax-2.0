@@ -61,6 +61,45 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 
 	private MetaClass metaClass;
 	
+	/**
+	 * The current x coordinate of this {@link MetaClassDrawable}.
+	 * This could be another value as the {@link MetaClass#getX()},
+	 * because this value is used to draw Move events / animations.
+	 * So while a animation this x value is set and changed permanently, but the original x value of the 
+	 * {@link MetaClass#setX(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this x value is the same as the original {@link MetaClass#getX()} value, or vice versa.
+	 */
+	private double x;
+	
+	/**
+	 * The current y coordinate of this {@link MetaClassDrawable}.
+	 * This could be another value as the {@link MetaClass#getY()},
+	 * because this value is used to draw Move events / animations.
+	 * So while a animation this y value is set and changed permanently, but the original y value of the 
+	 * {@link MetaClass#setY(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this y value is the same as the original {@link MetaClass#getY()} value, or vice versa.
+	 */
+	private double y;
+	
+	/**
+	 * The current width of this {@link MetaClassDrawable}.
+	 * This could be another value as the {@link MetaClass#getWidth()},
+	 * because this value is used to draw resize events / animations.
+	 * So while a animation this width value is set and changed permanently, but the original width value of the 
+	 * {@link MetaClass#setWidth(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this value is the same as the original {@link MetaClass#getWidth()} value, or vice versa.
+	 */
+	private double width;
+	/**
+	 * The current height of this {@link MetaClassDrawable}.
+	 * This could be another value as the {@link MetaClass#getHeight()},
+	 * because this value is used to draw resize events / animations.
+	 * So while a animation this width value is set and changed permanently, but the original height value of the 
+	 * {@link MetaClass#setHeight(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this value is the same as the original {@link MetaClass#getHeight()} value, or vice versa.
+	 */
+	private double height;
+	
 	
 	private boolean iconLoaded = false;
 	private Image iconImage;
@@ -96,9 +135,16 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		 focusHandlers = new LinkedList<FocusHandler>();
 		 mouseOutHandlers = new LinkedList<MouseOutHandler>();
 		 iconLoadableHandlers = new LinkedList<IconLoadHandler>();
+		 
+		 
+		 this.x = metaClass.getX();
+		 this.y = metaClass.getY();
+		 this.width = metaClass.getWidth();
+		 this.height = metaClass.getHeight();
+		 
 
 		 // a Resize Area
-		 resizeAreas.add(new ResizeArea(metaClass.getX()+metaClass.getWidth()-6, metaClass.getY()+metaClass.getHeight()-6, 6, 6));
+		 resizeAreas.add(new ResizeArea(x+width-6, y+height-6, 6, 6));
 
 	}
 	
@@ -126,28 +172,64 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	}
 		
 	/**
-	 * Get the x coordinate of the Object of the TOP-LEFT Corner
+	 * Get the x coordinate of the MetaClassDrawable of the TOP-LEFT corner
+	 * 
+	 * The current x coordinate of this {@link MetaClassDrawable}.
+	 * This could be another value as the {@link MetaClass#getX()},
+	 * because this value is used to draw Move events / animations.
+	 * So while a animation this x value is set and changed permanently, but the original x value of the 
+	 * {@link MetaClass#setX(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this x value is the same as the original {@link MetaClass#getX()} value, or vice versa.
+	 
 	 * @return
 	 */
 	public double getX() {
-		return metaClass.getX();
+		return x;
 	}
 	
 	/**
 	 * Get the y coordinate of the Object of the TOP-LEFT Corner
+	 *
+	 * The current y coordinate of this {@link MetaClassDrawable}.
+	 * This could be another value as the {@link MetaClass#getY()},
+	 * because this value is used to draw Move events / animations.
+	 * So while a animation this y value is set and changed permanently, but the original y value of the 
+	 * {@link MetaClass#setY(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this y value is the same as the original {@link MetaClass#getY()} value, or vice versa.
 	 * @return
 	 */
 	public double getY() {
-		return metaClass.getY();
+		return y;
 	}
 
+	/**
+	 * Set the current x coordinate of this {@link MetaClassDrawable}.
+	 * <b>This method will not set the value of the underlying MetaClass object ({@link MetaClass#setX(double)}).</b>
+	 * This could be another value as the {@link MetaClass#getX()},
+	 * because this value is used to draw Move events / animations.
+	 * So while a animation this x value is set and changed permanently, but the original x value of the 
+	 * {@link MetaClass#setX(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this x value is the same as the original {@link MetaClass#getX()} value, or vice versa.
+	 *  
+	 */
 	public void setX(double x) {
-		metaClass.setX(x);
+		this.x = x;
+		autoSetResizeAreaPosition();
 		
 	}
 
+	/**
+	 * Set the current y coordinate of this {@link MetaClassDrawable}.
+	 * <b>This method will not set the value of the underlying MetaClass object ({@link MetaClass#setX(double)}).</b>
+	 * This could be another value as the {@link MetaClass#getY()},
+	 * because this value is used to draw Move events / animations.
+	 * So while a animation this y value is set and changed permanently, but the original y value of the 
+	 * {@link MetaClass#setY(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this y value is the same as the original {@link MetaClass#getY()} value, or vice versa.
+	 */
 	public void setY(double y) {
-		metaClass.setY(y);
+		this.y = y;
+		autoSetResizeAreaPosition();
 	}
 
 	public void setZ(double z) {
@@ -162,7 +244,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	
 	@Override
 	public boolean hasCoordinate(double x, double y) {
-		return (isBetween(metaClass.getX(), metaClass.getX()+metaClass.getWidth(), x) && isBetween(metaClass.getY(), metaClass.getY()+metaClass.getHeight(),y));
+		return (isBetween(getX(), getX()+getWidth(), x) && isBetween(getY(), getY()+getHeight(),y));
 	}
 
 	@Override
@@ -170,19 +252,21 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 		context.save();
 		
-		double x = metaClass.getX();
-		double y = metaClass.getY();
+		double x = this.x;
+		double y = this.y;
 		
-		y = drawIcon(x, y, context) + y;
+		double iconHeight = drawIcon(x, y, context);
 		
-		drawBox(x,y, context);
+		y = y+iconHeight;
+		
+		drawBox(x,y, iconHeight, context);
 		
 		
 		
 		drawName(x,y, context);
 		
 		if (metaClass.isDisplayingAttributes())
-			drawAttributes(x,y,context);
+			drawAttributes(x,y,iconHeight,context);
 		
 		
 		if (isSelected())
@@ -194,11 +278,13 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	}
 	
 	
-	private void drawBox(double x, double y, Context2d context)
+	private void drawBox(double x, double y, double iconHeight, Context2d context)
 	{
+		double height = this.height - iconHeight;
+		
 		context.setLineWidth(1);
 		
-		CanvasGradient gradient = context.createLinearGradient(x, y, x+metaClass.getWidth(),y+metaClass.getHeight());
+		CanvasGradient gradient = context.createLinearGradient(x, y, x+width, y+height);
 		
 		gradient.addColorStop(0,metaClass.getGradientStartColor());
 		gradient.addColorStop(0.7, metaClass.getGradientEndColor());
@@ -207,12 +293,12 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		context.setShadowBlur(10);
 		context.setShadowColor("black");
 		context.setFillStyle(metaClass.getBorderColor());
-		context.fillRect(x,y, metaClass.getWidth(), metaClass.getHeight());
+		context.fillRect(x,y, this.width, height);
 		context.setShadowBlur(0);
 		
 		
 		context.setFillStyle(gradient);
-		context.fillRect(x+metaClass.getBorderSize(), y+metaClass.getBorderSize(), metaClass.getWidth()-2*metaClass.getBorderSize(), metaClass.getHeight()-2*metaClass.getBorderSize());
+		context.fillRect(x+metaClass.getBorderSize(), y+metaClass.getBorderSize(), width-2*metaClass.getBorderSize(), height-2*metaClass.getBorderSize());
 		
 	}
 	
@@ -223,16 +309,16 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 		double spaceLeft = 0;
 		
-		if (metaClass.getIconWidth()<metaClass.getWidth())
+		if (metaClass.getIconWidth()<getWidth())
 		{
 			height = metaClass.getIconHeight();
 			width = metaClass.getIconWidth();
-			spaceLeft = (metaClass.getWidth() - metaClass.getIconWidth() )/ 2;
+			spaceLeft = (width - metaClass.getIconWidth() )/ 2;
 		}
 		else
 		{
-			width = metaClass.getWidth();		//
-			height = width/metaClass.getIconWidth() * metaClass.getHeight();
+			width = getWidth();	
+			height = width/metaClass.getIconWidth() * getHeight();
 		}
 		
 		
@@ -277,8 +363,10 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	 */
 	private void drawOnSelected(Context2d context) {
 		
-		// Draw the ResizeAreas 
+		// Set correct Position
+		autoSetResizeAreaPosition();
 		
+		// Draw the ResizeAreas 
 		for (ResizeArea ra : resizeAreas)
 			ra.draw(context);
 				
@@ -288,7 +376,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	/**
 	 * Draw the Attributes, which should be displayed for this class
 	 */
-	private void drawAttributes(double originalX, double originalY, Context2d context){
+	private void drawAttributes(double originalX, double originalY, double iconHeight, Context2d context){
 		
 		if (metaClass.getAttributes().size()==0)
 			return;
@@ -301,7 +389,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 		String txt;
 		
-		double heightForAttributeList = metaClass.getHeight() -metaClass.getNameTopSpace() - metaClass.getNameBottomSpace() - metaClass.getAttributeListTopSpace() - metaClass.getAttributeListBottomSpace();
+		double heightForAttributeList = this.height -iconHeight -metaClass.getNameTopSpace() - metaClass.getNameBottomSpace() - metaClass.getAttributeListTopSpace() - metaClass.getAttributeListBottomSpace();
 		
 		int attributeLines = (int) (heightForAttributeList / (metaClass.getAttributeFontSize()+metaClass.getAttributeToAttributeSpace()) );
 		
@@ -312,8 +400,8 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		{
 			MetaAttribute a = metaClass.getAttributes().get(i);
 		
-			txt = metaClass.getWidth()-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace() > ((a.getName().length()+a.getType().getName().length()+3)*metaClass.getAttributeFontCharWidth())
-				? a.getName()+" : "+a.getType().getName() : (a.getName()+" : "+a.getType().getName()).subSequence(0, (int) ((metaClass.getWidth()-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace())/metaClass.getAttributeFontCharWidth() - 3))+"...";
+			txt = width-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace() > ((a.getName().length()+a.getType().getName().length()+3)*metaClass.getAttributeFontCharWidth())
+				? a.getName()+" : "+a.getType().getName() : (a.getName()+" : "+a.getType().getName()).subSequence(0, (int) ((getWidth()-metaClass.getAttributeListLeftSpace()-metaClass.getAttributeListRightSpace())/metaClass.getAttributeFontCharWidth() - 3))+"...";
 			
 				context.fillText(txt, x, y);
 				
@@ -328,8 +416,8 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	private void drawName(double x, double y, Context2d context) {
 		
 	
-		String txt = metaClass.getWidth()-metaClass.getNameLeftSpace() >(metaClass.getName().length()*metaClass.getNameFontCharWidth()) 
-				? metaClass.getName() : metaClass.getName().subSequence(0, (int) ((metaClass.getWidth()-metaClass.getNameLeftSpace())/metaClass.getNameFontCharWidth() - 3))+"...";
+		String txt = this.width - metaClass.getNameLeftSpace() >(metaClass.getName().length()*metaClass.getNameFontCharWidth()) 
+				? metaClass.getName() : metaClass.getName().subSequence(0, (int) ((this.width-metaClass.getNameLeftSpace())/metaClass.getNameFontCharWidth() - 3))+"...";
 		
 		context.setFillStyle(metaClass.getNameFontColor());
 		context.setFont("bold "+metaClass.getNameFontSize()+"px "+metaClass.getFontFamily());
@@ -339,10 +427,10 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 		
 		
 		// if there is at least one attribute, draw a horizontal line
-		if (metaClass.isDisplayingAttributes() && metaClass.getAttributes().size()>0 )
+		if (metaClass.isDisplayingAttributes() && metaClass.getAttributes().size()>0 && height > y+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace())
 		{
 			context.setFillStyle(metaClass.getBorderColor());
-			context.fillRect(x, y+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace(), metaClass.getWidth(), metaClass.getBorderSize());
+			context.fillRect(x, y+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace(), width, metaClass.getBorderSize());
 		}
 		
 	}
@@ -402,36 +490,55 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 	{
 		for (ResizeArea r : resizeAreas)
 		{
-			r.setX(metaClass.getX()+metaClass.getWidth()-r.getWidht());
-			r.setY(metaClass.getY()+metaClass.getHeight()-r.getHeight());
+			r.setX(x+width-r.getWidht());
+			r.setY(y+height-r.getHeight());
 		}
 	}
 	
 
 	/**
-	 * Get the width
-	 * @return
+	 * Get the current width of this {@link MetaClassDrawable}.
+	 * This could be another value as the {@link MetaClass#getWidth()},
+	 * because this value is used to draw resize events / animations.
+	 * So while a animation this width value is set and changed permanently, but the original width value of the 
+	 * {@link MetaClass#setWidth(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this value is the same as the original {@link MetaClass#getWidth()} value, or vice versa.
+	 * @return The current width of this {@link MetaClassDrawable} (which is not necessarily the same as {@link MetaClass#getWidth()})
 	 */
 	public double getWidth() {
-		return metaClass.getWidth();
+		return width;
 	}
 
 	/**
-	 * Get the Height
-	 * @return
+	 * The current height of this {@link MetaClassDrawable}.
+	 * This could be another value as the {@link MetaClass#getHeight()},
+	 * because this value is used to draw resize events / animations.
+	 * So while a animation this width value is set and changed permanently, but the original height value of the 
+	 * {@link MetaClass#setHeight(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this value is the same as the original {@link MetaClass#getHeight()} value, or vice versa.
+	 * @return The current height of this {@link MetaClassDrawable} (which is not necessarily the same as {@link MetaClass#getHeight()})
+	 
 	 */
 	public double getHeight() {
-		return metaClass.getHeight();
+		return height;
 	}
 
-	
+	/**
+	 * <b>This method will not set the value of the underlying MetaClass object ({@link MetaClass#setWidth(double)}).</b>
+	 * @see #getWidth()
+	 */
 	public void setWidth(double width) {
-		metaClass.setWidth(width);
+		this.width = width;
+		autoSetResizeAreaPosition();
 	}
 
-	
+	/**
+	 * <b>This method will not set the value of the underlying MetaClass object ({@link MetaClass#setHeight(double)}).</b>
+	 * @see #getHeight()
+	 */
 	public void setHeight(double height) {
-		metaClass.setHeight(height);
+		this.height = height;
+		autoSetResizeAreaPosition();
 	}
 
 
