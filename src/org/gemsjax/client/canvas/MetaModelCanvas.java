@@ -208,21 +208,16 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 				// FocusEvent
 				
-				
-		
 				if (previous != null && previous instanceof Focusable)
 					((Focusable)previous).fireFocusEvent(new FocusEvent((Focusable)previous, FocusEventType.LOST_FOCUS));
 		
 		
 				if (currentClicked != null && currentClicked instanceof Focusable)
 				{
-										// Focus event
 					((Focusable)currentClicked).fireFocusEvent(new FocusEvent((Focusable)currentClicked, FocusEventType.GOT_FOCUS));
-					
-					
 				}
 				
-				else	// clicking somewhere in the white (not on a class)
+				else	// clicking somewhere in the white (not on a drawable focusable)
 					if (previous != null && previous instanceof Focusable) 
 						((Focusable)previous).fireFocusEvent(new FocusEvent((Focusable)previous, FocusEventType.LOST_FOCUS));
 				

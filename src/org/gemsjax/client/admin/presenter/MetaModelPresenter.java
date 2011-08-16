@@ -189,6 +189,8 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			metaClass.setSelected(true);
 		else
 			metaClass.setSelected(false);
+		
+		view.redrawMetaModelCanvas();
 	}
 	
 	private void onMetaClassMoveEvent(MetaClass metaClass, MoveEvent e)
