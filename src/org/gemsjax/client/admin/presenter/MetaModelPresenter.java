@@ -5,6 +5,7 @@ import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.canvas.Drawable;
+import org.gemsjax.client.canvas.MetaConnectionBoxDrawable;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.ResizeArea;
@@ -123,7 +124,12 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					MetaClassDrawable source = (MetaClassDrawable) view.getDrawableOf(con.getSource());
 					MetaClassDrawable target = (MetaClassDrawable) view.getDrawableOf(con.getTarget());
 					
-					view.addDrawable(new MetaConnectionDrawable(con, source,  target));
+					
+					MetaConnectionDrawable d = new MetaConnectionDrawable(con, source,  target);
+					d.getConnectionBoxDrawable().addMoveHandler(this);
+					d.getConnectionBoxDrawable().addResizeHandler(this);
+					d.getConnectionBoxDrawable().addFocusHandler(this);
+					view.addDrawable(d);
 				
 				}
 			}	
@@ -150,6 +156,9 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		
 		if (event.getSource() instanceof MetaClassDrawable)
 			onMetaClassFocusEvent((MetaClass) ((Drawable)event.getSource()).getDataObject(), event);
+		else
+		if (event.getSource() instanceof MetaConnectionBoxDrawable)
+			onMetaConnectionBoxNameFocusEvent((MetaConnection) ((Drawable)event.getSource()).getDataObject(), event);
 	}
 
 
@@ -158,13 +167,21 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		
 		if (event.getSource() instanceof MetaClassDrawable)
 			onMetaClassResizeEvent((MetaClass) ((Drawable)event.getSource()).getDataObject(), event);
+		else
+		if (event.getSource() instanceof MetaConnectionBoxDrawable)
+			onMetaConnectionBoxResizeEvent((MetaConnection) ((Drawable)event.getSource()).getDataObject(), event);
 	}
 
 
 	@Override
 	public void onMove(MoveEvent e) {
+		
 		if (e.getSource() instanceof MetaClassDrawable)
 			onMetaClassMoveEvent((MetaClass) ((Drawable)e.getSource()).getDataObject(), e);
+		else
+		if (e.getSource() instanceof MetaConnectionBoxDrawable)
+			onMetaConnectionBoxMoveEvent((MetaConnection) ((Drawable)e.getSource()).getDataObject(), e);
+		
 	}
 
 
@@ -195,28 +212,19 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	
 	private void onMetaClassMoveEvent(MetaClass metaClass, MoveEvent e)
 	{
-		
-		
 		// Resize the MetaClass
 		MetaClassDrawable d =(MetaClassDrawable) e.getSource();
 		d.setX(e.getX()-e.getDistanceToTopLeftX());
 		d.setY(e.getY()-e.getDistanceToTopLeftY());
 
-		SC.logWarn("Move Temp "+d.getX()+" "+d.getY()+"     "+metaClass.getX()+" "+metaClass.getY());
-		
 		
 		if (e.getType()==MoveEventType.MOVE_FINISHED){
 			metaClass.setX(e.getX()-e.getDistanceToTopLeftX());
 			metaClass.setY(e.getY()-e.getDistanceToTopLeftY());
 			
-			
 			// TODO collabrative info websocket
-			SC.logWarn("Move FINISHED "+d.getX()+" "+d.getY()+"     "+metaClass.getX()+" "+metaClass.getY());
-			
 		}
-		
-	
-		
+			
 		view.redrawMetaModelCanvas();
 	}
 	
@@ -231,15 +239,12 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			MetaClassDrawable d =(MetaClassDrawable) event.getSource();
 			d.setWidth( event.getWidth());
 			d.setHeight(event.getHeight());
-			
-			SC.logWarn("Resize Temp "+d.getWidth()+" "+d.getHeight()+"     "+metaClass.getWidth()+" "+metaClass.getHeight());
-			
+				
 			if (event.getType()==ResizeEventType.RESIZE_FINISHED)
 			{
 				metaClass.setWidth(event.getWidth());
 				metaClass.setHeight(event.getHeight());
 				
-				SC.logWarn("Resize Finished "+d.getWidth()+" "+d.getHeight()+"     "+metaClass.getWidth()+" "+metaClass.getHeight());
 				// TODO collabrative info websocket
 			}
 			
@@ -250,6 +255,83 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		}
 	}
 
+	
+	private void onMetaConnectionBoxMoveEvent(MetaConnection connection, MoveEvent e)
+	{
+		MetaConnectionBoxDrawable d =(MetaConnectionBoxDrawable) e.getSource();
+		d.setX(e.getX()-e.getDistanceToTopLeftX());
+		d.setY(e.getY()-e.getDistanceToTopLeftY());
+
+		SC.logWarn("Move Temp "+d.getX()+" "+d.getY()+"     "+connection.getConnectionBoxX()+" "+connection.getConnectionBoxY());
+		
+		if (e.getType()==MoveEventType.MOVE_FINISHED){
+			connection.setConnectionBoxX(e.getX()-e.getDistanceToTopLeftX());
+			connection.setConnectionBoxY(e.getY()-e.getDistanceToTopLeftY());
+			
+			// TODO collabrative info websocket
+			SC.logWarn("Move FINISHED "+d.getX()+" "+d.getY()+"     "+connection.getConnectionBoxX()+" "+connection.getConnectionBoxY());
+		}
+		
+		view.redrawMetaModelCanvas();
+	}
+	
+	
+	private void onMetaConnectionBoxResizeEvent(MetaConnection connection, ResizeEvent event)
+	{
+		MetaConnectionBoxDrawable d =(MetaConnectionBoxDrawable) event.getSource();
+		
+		if (event.getWidth()>d.getMinWidth() && event.getHeight()>d.getMinHeight())
+		{
+
+			if (event.getType() == ResizeEventType.RESIZE_FINISHED)
+			{
+				connection.setConnectionBoxWidth(event.getWidth());
+				connection.setConnectionBoxHeight(event.getHeight());
+				
+	
+				// Adjust connections coordinate
+				if (connection.getSourceConnectionBoxRelativeX()>event.getWidth())
+					connection.setSourceConnectionBoxRelativeX(event.getWidth());
+				
+				if (connection.getSourceConnectionBoxRelativeY()>event.getHeight())
+					connection.setSourceConnectionBoxRelativeY(event.getHeight());
+				
+				if (connection.getTargetConnectionBoxRelativeX()>event.getWidth())
+					connection.setTargetConnectionBoxRelativeX(event.getWidth());
+				
+				if (connection.getTargetConnectionBoxRelativeY()>event.getHeight())
+					connection.setTargetConnectionBoxRelativeY(event.getHeight());
+			}
+			
+			/* TODO needed?
+			if (autoAdjustNameBoxRatio)
+			{
+				if (connection.getANameBoxRelativeX()>event.getWidth())
+					connection.setANameBoxRelativeX(event.getWidth());
+				
+				if (connection.getANameBoxRelativeY()>event.getHeight())
+					connection.setANameBoxRelativeY(event.getHeight());
+				
+				if (connection.getBNameBoxRelativeX()>event.getWidth())
+					connection.setBNameBoxRelativeX(event.getWidth());
+				
+				if (connection.getBNameBoxRelativeY()>event.getHeight())
+					connection.setBNameBoxRelativeY(event.getHeight());
+			}
+			 */
+			
+			view.redrawMetaModelCanvas();
+		}
+	}
+	
+	
+	private void onMetaConnectionBoxNameFocusEvent(MetaConnection connection, FocusEvent event)
+	{
+		if (event.getType()==FocusEventType.GOT_FOCUS)
+			connection.setSelected(true);
+		else
+			connection.setSelected(false);
+	}
 
 	@Override
 	public void onIconLoaded(IconLoadEvent e) {

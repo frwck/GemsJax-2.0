@@ -7,21 +7,25 @@ import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
+import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
+import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaConnectionImpl;
+import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.sun.corba.se.pept.transport.Connection;
 
 /**
  * This Class is used to display a box with the {@link MetaConnectionImpl} name and attributes on the {@link MetaModelCanvas}
  * @author Hannes Dorfmann
  *
  */
-public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeable, Focusable, ResizeHandler, MoveHandler, FocusHandler{
+public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeable, Focusable {
 
 	/**
 	 * The connection, which name will be displayed with this {@link MetaConnectionBoxDrawable}
@@ -84,22 +88,83 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	 * percental ratio.
 	 */
 	private boolean autoAdjustNameBoxRatio = true;
+	
+	/**
+	 * The current x coordinate of this {@link MetaConnectionBoxDrawable}.
+	 * This could be another value as the {@link MetaConnection#getConnectionBoxX()},
+	 * because this value is used to draw Move events / animations.
+	 * So while a animation this x value is set and changed permanently, but the original x value of the 
+	 * is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this x value is the same as the original {@link MetaConnection#getConnectionBoxX()()} value, or vice versa.
+	 * @see MoveEvent
+	 * @see MoveEventType
+	 * @see MoveEventType#MOVE_FINISHED
+	 * @see MoveEventType#TEMP_MOVE
+	 */
+	private double x;
+	/**
+	 * The current y coordinate of this {@link MetaConnectionBoxDrawable}.
+	 * This could be another value as the {@link MetaConnection#getConnectionBoxY()},
+	 * because this value is used to draw Move events / animations.
+	 * So during an animation this y value is set and changed permanently, but the original y value of the {@link MetaConnection} object
+	 * is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this y value is the same as the original {@link MetaConnection#getConnectionBoxY()} value and vice versa.
+	 * @see MoveEvent
+	 * @see MoveEventType
+	 * @see MoveEventType#MOVE_FINISHED
+	 * @see MoveEventType#TEMP_MOVE
+	 */
+	private double y;
+	
+	
+	/**
+	 * The current width of this {@link MetaConnectionBoxDrawable}.
+	 * This could be another value as the {@link MetaConnection#getConnectionBoxWidth()},
+	 * because this value is used to draw resize events / animations.
+	 * So during an animation this width value is set and changed permanently, but the original width value of the {@link MetaConnection} object
+	 * is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this width value is the same as the original {@link MetaConnection#getConnectionBoxWidth()} value and vice versa.
+	 * @see ResizeEvent
+	 * @see ResizeEventType
+	 * @see ResizeEventType#TEMP_RESIZE
+	 * @see ResizeEventType#RESIZE_FINISHED
+	 */
+	private double width;
+	
+	/**
+	 * The current height of this {@link MetaConnectionBoxDrawable}.
+	 * This could be another value as the {@link MetaConnection#getConnectionBoxHeight()},
+	 * because this value is used to draw resize events / animations.
+	 * So during an animation this height value is set and changed permanently, but the original width value of the {@link MetaConnection} object
+	 * is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this width value is the same as the original {@link MetaConnection#getConnectionBoxHeight()} value and vice versa.
+	 * @see ResizeEvent
+	 * @see ResizeEventType
+	 * @see ResizeEventType#TEMP_RESIZE
+	 * @see ResizeEventType#RESIZE_FINISHED
+	 */
+	private double height;
+	
+	
+	
 	 
 	
 	public MetaConnectionBoxDrawable(MetaConnection connection)
 	{
 		this.connection = connection;
 		
+		this.x = connection.getConnectionBoxX();
+		this.y = connection.getConnectionBoxY();
+		this.width = connection.getConnectionBoxWidth();
+		this.height = connection.getConnectionBoxHeight();
+		
 		resizeAreas = new LinkedList<ResizeArea>();
 		moveHandlers = new LinkedList<MoveHandler>();
 		resizeHandlers = new LinkedList<ResizeHandler>();
 		focusHandlers = new LinkedList<FocusHandler>();
 		
-		resizeAreas.add(new ResizeArea(connection.getConnectionBoxX()+ connection.getConnectionBoxWidth()-6, connection.getConnectionBoxY()+ connection.getConnectionBoxHeight()-6, 6, 6));
-
-		this.addMoveHandler(this);
-		this.addResizeHandler(this);
-		this.addFocusHandler(this);
+		resizeAreas.add(new ResizeArea(getX()+ getWidth()-6, getY()+ getHeight()-6, 6, 6));
+		
 	}
 	
 	
@@ -108,16 +173,16 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	@Override
 	public void draw(Context2d context) {
 		
-		CanvasGradient gradient = context.createLinearGradient(connection.getConnectionBoxX(), connection.getConnectionBoxY(),connection.getConnectionBoxX()+connection.getConnectionBoxWidth(), connection.getConnectionBoxY()+connection.getConnectionBoxHeight());
+		CanvasGradient gradient = context.createLinearGradient(getX(), getY(),getX()+getWidth(), getY()+getHeight());
 		
 		gradient.addColorStop(0,connection.getGradientStartColor());
 		gradient.addColorStop(0.7, connection.getGradientEndColor());
 		
-		drawDottedRect(context,connection.getConnectionBoxX(), connection.getConnectionBoxY(), connection.getConnectionBoxWidth(), connection.getConnectionBoxHeight());
+		drawDottedRect(context,getX(), getY(), getWidth(), getHeight());
 		
 		
 		context.setFillStyle(gradient);
-		context.fillRect(connection.getConnectionBoxX(), connection.getConnectionBoxY(), connection.getConnectionBoxWidth(), connection.getConnectionBoxHeight());
+		context.fillRect(getX(), getY(), getWidth(), getHeight());
 		
 		drawName(context);
 		
@@ -143,14 +208,14 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	
 	private void drawName(Context2d context)
 	{
-		String txt = connection.getConnectionBoxWidth()-nameLeftSpace > (connection.getName().length()*connection.getNameFontCharWidth()) 
-		? connection.getName() : connection.getName().subSequence(0, (int) ((connection.getConnectionBoxWidth()- nameLeftSpace)/connection.getNameFontCharWidth() - 3))+"...";
+		String txt = getWidth()-nameLeftSpace > (connection.getName().length()*connection.getNameFontCharWidth()) 
+		? connection.getName() : connection.getName().subSequence(0, (int) ((getWidth()- nameLeftSpace)/connection.getNameFontCharWidth() - 3))+"...";
 
 		context.setFillStyle(connection.getFontColor());
 		context.setFont(connection.getNameFontSize()+"px "+connection.getFontFamily());
 		
 		context.setTextAlign("left");
-		context.fillText(txt, connection.getConnectionBoxX()+nameLeftSpace, connection.getConnectionBoxY()+nameTopSpace+connection.getNameFontSize());
+		context.fillText(txt, getX()+nameLeftSpace, getY()+nameTopSpace+connection.getNameFontSize());
 
 	}
 	
@@ -212,7 +277,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	
 	@Override
 	public boolean hasCoordinate(double x, double y) {
-		return (isBetween(connection.getConnectionBoxX(), connection.getConnectionBoxX() + connection.getConnectionBoxWidth(), x) && isBetween(connection.getConnectionBoxY(), connection.getConnectionBoxY() + connection.getConnectionBoxHeight(),y));
+		return (isBetween(getX(), getX() +getWidth(), x) && isBetween(getY(), getY() + getHeight(),y));
 	}
 
 	
@@ -248,15 +313,41 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	}
 
 
+
+	/**
+	 * The current x coordinate of this {@link MetaConnectionBoxDrawable}.
+	 * This could be another value as the {@link MetaConnection#getConnectionBoxX()},
+	 * because this value is used to draw Move events / animations.
+	 * So while a animation this x value is set and changed permanently, but the original x value of the 
+	 * {@link MetaClass#setX(double)} is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this x value is the same as the original {@link MetaConnection#getConnectionBoxX()()} value, or vice versa.
+	 * @see MoveEvent
+	 * @see MoveEventType
+	 * @see MoveEventType#MOVE_FINISHED
+	 * @see MoveEventType#TEMP_MOVE
+	 * @return
+	 */
 	@Override
 	public double getX() {
-		return connection.getConnectionBoxX();
+		return x;
 	}
 
-
+	/**
+	 * The current y coordinate of this {@link MetaConnectionBoxDrawable}.
+	 * This could be another value as the {@link MetaConnection#getConnectionBoxY()},
+	 * because this value is used to draw Move events / animations.
+	 * So during an animation this y value is set and changed permanently, but the original y value of the 
+	 * is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this y value is the same as the original {@link MetaConnection#getConnectionBoxY()()} value and vice versa.
+	 * @see MoveEvent
+	 * @see MoveEventType
+	 * @see MoveEventType#MOVE_FINISHED
+	 * @see MoveEventType#TEMP_MOVE
+	 * @return
+	 */
 	@Override
 	public double getY() {
-		return connection.getConnectionBoxY();
+		return y;
 	}
 
 
@@ -295,18 +386,42 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 
 
 
-
+	/**
+	 * The current height of this {@link MetaConnectionBoxDrawable}.
+	 * This could be another value as the {@link MetaConnection#getConnectionBoxHeight()},
+	 * because this value is used to draw resize events / animations.
+	 * So during an animation this height value is set and changed permanently, but the original width value of the {@link MetaConnection} object
+	 * is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this width value is the same as the original {@link MetaConnection#getConnectionBoxHeight()} value and vice versa.
+	 * @see ResizeEvent
+	 * @see ResizeEventType
+	 * @see ResizeEventType#TEMP_RESIZE
+	 * @see ResizeEventType#RESIZE_FINISHED
+	 * @return
+	 */
 	@Override
 	public double getHeight() {
-		return connection.getConnectionBoxHeight();
+		return this.height;
 	}
 
 
 
-
+	/**
+	 * The current width of this {@link MetaConnectionBoxDrawable}.
+	 * This could be another value as the {@link MetaConnection#getConnectionBoxWidth()},
+	 * because this value is used to draw resize events / animations.
+	 * So during an animation this width value is set and changed permanently, but the original width value of the {@link MetaConnection} object
+	 * is set only when the animation is finished (for example when the mouse is released).
+	 * However after the animation this width value is the same as the original {@link MetaConnection#getConnectionBoxWidth()} value and vice versa.
+	 * @see ResizeEvent
+	 * @see ResizeEventType
+	 * @see ResizeEventType#TEMP_RESIZE
+	 * @see ResizeEventType#RESIZE_FINISHED
+	 * @return
+	 */
 	@Override
 	public double getWidth() {
-		return connection.getConnectionBoxWidth();
+		return this.width;
 	}
 
 
@@ -339,77 +454,21 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 		return minHeight;
 	}
 
-
-
-	@Override
-	public void onResize(ResizeEvent event) {
-		
-		if (event.getWidth()>getMinWidth() && event.getHeight()>getMinHeight())
+	
+	
+	/**
+	 * Sets automatically the Position of the ResizeArea.
+	 * This method should be called, whenever the width or height of this MetaClass drawable has been changed (except by a ResizeEvents)<br/>
+	 * <b>Notice</b> {@link #autoSize()} will call this method automatically.
+	 */
+	private void autoSetResizeAreaPosition()
+	{
+		for (ResizeArea r : resizeAreas)
 		{
-			
-			for (ResizeArea r : resizeAreas)
-			{
-				r.setX(r.getX()+ (event.getWidth()-this.getWidth()));
-				r.setY(r.getY()+ (event.getHeight()-this.getHeight()));
-			}
-			
-			connection.setConnectionBoxWidth(event.getWidth());
-			connection.setConnectionBoxHeight(event.getHeight());
-			
-
-			// Adjust connections coordinate
-			if (connection.getSourceConnectionBoxRelativeX()>event.getWidth())
-				connection.setSourceConnectionBoxRelativeX(event.getWidth());
-			
-			if (connection.getSourceConnectionBoxRelativeY()>event.getHeight())
-				connection.setSourceConnectionBoxRelativeY(event.getHeight());
-			
-			if (connection.getTargetConnectionBoxRelativeX()>event.getWidth())
-				connection.setTargetConnectionBoxRelativeX(event.getWidth());
-			
-			if (connection.getTargetConnectionBoxRelativeY()>event.getHeight())
-				connection.setTargetConnectionBoxRelativeY(event.getHeight());
-		
-			/* TODO needed?
-			if (autoAdjustNameBoxRatio)
-			{
-				if (connection.getANameBoxRelativeX()>event.getWidth())
-					connection.setANameBoxRelativeX(event.getWidth());
-				
-				if (connection.getANameBoxRelativeY()>event.getHeight())
-					connection.setANameBoxRelativeY(event.getHeight());
-				
-				if (connection.getBNameBoxRelativeX()>event.getWidth())
-					connection.setBNameBoxRelativeX(event.getWidth());
-				
-				if (connection.getBNameBoxRelativeY()>event.getHeight())
-					connection.setBNameBoxRelativeY(event.getHeight());
-			}
-		*/
+			r.setX(getX()+getWidth()-r.getWidht());
+			r.setY(getY()+getHeight()-r.getHeight());
 		}
-		
 	}
-
-
-
-
-	@Override
-	public void onMove(MoveEvent e) {
-		double oldX = getX();
-		double oldY = getY();
-		
-		setX(e.getX()-e.getDistanceToTopLeftX());
-		setY(e.getY()-e.getDistanceToTopLeftY());
-		
-		// Set the Position of the ResizeAreas
-		for (ResizeArea ra : resizeAreas)
-		{
-			ra.setX(ra.getX() + (getX()-oldX));
-			ra.setY(ra.getY() + (getY()-oldY));
-		}
-		
-	}
-
 
 
 
@@ -445,47 +504,47 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	}
 
 
-
-
-	@Override
-	public void onFocusEvent(FocusEvent event) {
-		if (event.getType()==FocusEventType.GOT_FOCUS)
-			connection.setSelected(true);
-		else
-			connection.setSelected(false);
-	}
-
-
-
-
+	/**
+	 * @see #getX()
+	 */
 	@Override
 	public void setX(double x) {
 
-		connection.setConnectionBoxX(x);
+		this.x = x;
+		autoSetResizeAreaPosition();
 	}
 
 
 
-
+	/**
+	 * @see #getY()
+	 */
 	@Override
 	public void setY(double y) {
-		connection.setConnectionBoxY(y);
+		this.y = y;
+		autoSetResizeAreaPosition();
 	}
 
 
 
-
+	/**
+	 * @see #getHeight()
+	 */
 	@Override
 	public void setHeight(double height) {
-		connection.setConnectionBoxHeight(height);
+		this.height = height;
+		autoSetResizeAreaPosition();
 	}
 
 
 
-
+	/**
+	 * @see #getWidth()
+	 */
 	@Override
 	public void setWidth(double width) {
-		connection.setConnectionBoxWidth(width);
+		this.width = width;
+		autoSetResizeAreaPosition();
 	}
 	
 	
