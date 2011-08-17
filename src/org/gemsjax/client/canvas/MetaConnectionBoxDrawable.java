@@ -6,7 +6,6 @@ import java.util.List;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
-import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.client.canvas.handler.FocusHandler;
@@ -18,10 +17,10 @@ import org.gemsjax.shared.metamodel.MetaConnection;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.sun.corba.se.pept.transport.Connection;
 
 /**
- * This Class is used to display a box with the {@link MetaConnectionImpl} name and attributes on the {@link MetaModelCanvas}
+ * This class is used to display a box with the {@link MetaConnection} name and attributes on the {@link MetaModelCanvas}.
+ * The class {@link MetaConnectionDrawable} draws the connection lines and icons for the {@link MetaConnection}.
  * @author Hannes Dorfmann
  *
  */
@@ -147,9 +146,10 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	
 	
 	
+	private  MetaConnectionDrawable connectionDrawable;
 	 
 	
-	public MetaConnectionBoxDrawable(MetaConnection connection)
+	public MetaConnectionBoxDrawable(MetaConnection connection, MetaConnectionDrawable connectionDrawable)
 	{
 		this.connection = connection;
 		
@@ -157,6 +157,8 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 		this.y = connection.getConnectionBoxY();
 		this.width = connection.getConnectionBoxWidth();
 		this.height = connection.getConnectionBoxHeight();
+		
+		this.connectionDrawable = connectionDrawable;
 		
 		resizeAreas = new LinkedList<ResizeArea>();
 		moveHandlers = new LinkedList<MoveHandler>();
@@ -263,6 +265,15 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	@Override
 	public Object getDataObject() {
 		return connection;
+	}
+	
+	/**
+	 * Get the Drawable which draws the connection lines
+	 * @return
+	 */
+	public MetaConnectionDrawable getMetaConnectionDrawable()
+	{
+		return connectionDrawable;
 	}
 
 	@Override

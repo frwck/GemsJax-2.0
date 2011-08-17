@@ -13,6 +13,7 @@ import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaConnectionImpl;
 import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -24,10 +25,81 @@ import com.google.gwt.user.client.Window;
  * This class implements the {@link ResizeHandler} and the {@link MoveHandler} interface and will be registered to the 
  * connected {@link MetaClassDrawable}s. So when a {@link MetaClassDrawable} was moved / resized, this {@link MetaConnectionDrawable}
  * will automatically adjust itself to the {@link MetaClassDrawable}s.
+ * 
+ * This class paints the lines and icons for a connection, while the {@link MetaConnectionBoxDrawable} draws a box with the name 
+ * and Attributes.
  * @author Hannes Dorfmann
  *
  */
 public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Focusable, ResizeHandler, MoveHandler {
+	
+	
+	
+	/**
+	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
+	 * The source is the {@link MetaClass} which contains this MetaConnection in {@link MetaClass#getConnections()}.
+	 * This coordinate is relative to the source {@link MetaClassDrawable} object on the {@link MetaModelCanvas}.
+	 * That means, that the {@link MetaClassImpl#getX()} is the relative 0 coordinate on the x axis.
+	 * Example:
+	 * If the {@link MetaClassImpl#getX()} has the absolute coordinate 10 and {@link #sourceRelativeX} is 5, so the
+	 * absolute coordinate on the {@link MetaModelCanvas} is 15 and can be computed by add {@link MetaClassImpl#getX()} to aRelativeX
+	 *@see #getSourceRelativeX()
+	 */
+	private double sourceRelativeX;
+	
+	/**
+	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
+	 * See {@link #sourceRelativeX} for more information and a concrete example.
+	 * @see #getSourceRelativeY()
+	 */
+	private double sourceRelativeY;
+	
+	/**
+	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
+	 * See {@link #sourceRelativeX} for more information and a concrete example.
+	 * @see #getTargetRelativeX()
+	 */
+	private double targetRelativeX;
+	
+	/**
+	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
+	 * See {@link #sourceRelativeX} for more information and a concrete example.
+	 * @see #getTargetRelativeY()
+	 */
+	private double targetRelativeY;
+	
+	/**
+	 * The relative X coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
+	 * where the painted connection line
+	 * (starting from the source with the coordinates {@link #sourceRelativeX} / {@link #sourceRelativeY}) touches
+	 * the connection box (which displays the {@link #name} and attributes of this Connection.
+	 */
+	private double sourceConnectionBoxRelativeX;
+	
+	/**
+	 * The relative Y coordinate (according to the absolute coordinate {@link #connectionBoxY}) 
+	 * where the painted connection line
+	 * (starting from the source, coordinates {@link #sourceRelativeX} / {@link #sourceRelativeY}) touches
+	 * the connection box (which displays the {@link #name} and attributes of this Connection.
+	 */
+	private double sourceConnectionBoxRelativeY;
+	
+	/**
+	 * The relative X coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
+	 * where the painted connection line
+	 * (starting from {@link #target}, coordinates {@link #targetRelativeX} / {@link #targetRelativeY}) touches
+	 * the connection box (which displays the {@link #name} and attributes of this Connection.
+	 */
+	private double targetConnectionBoxRelativeX;
+	
+	/**
+	 * The relative Y coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
+	 * where the painted connection line
+	 * (starting from {@link #target}, coordinates {@link #targetRelativeX} / {@link #targetRelativeY}) touches
+	 * the name box (which displays the {@link #name} and attributes of this Connection.
+	 */
+	private double targetConnectionBoxRelativeY;
+	
 	
 
 	/**
@@ -68,12 +140,22 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 		this.source = metaClassA;
 		this.target = metaClassB;
 		
-		this.nameBoxDrawable = new MetaConnectionBoxDrawable(connection);
+		this.nameBoxDrawable = new MetaConnectionBoxDrawable(connection, this);
 		
 		// Handlers
 		focusHandlers = new ArrayList<FocusHandler>();
 		clickHandlers = new ArrayList<ClickHandler>();
 		moveHandlers = new ArrayList<MoveHandler>();
+		
+		sourceConnectionBoxRelativeX = connection.getSourceConnectionBoxRelativeX();
+		sourceConnectionBoxRelativeY = connection.getSourceConnectionBoxRelativeY();
+		sourceRelativeX = connection.getSourceRelativeX();
+		sourceRelativeY = connection.getSourceConnectionBoxRelativeY();
+		
+		targetConnectionBoxRelativeX = connection.getTargetConnectionBoxRelativeX();
+		targetConnectionBoxRelativeY = connection.getTargetConnectionBoxRelativeY();
+		targetRelativeX = connection.getTargetRelativeX();
+		targetRelativeY = connection.getTargetRelativeY();
 		
 		setMetaClassA(metaClassA);
 		setMetaClassB(metaClassB);
@@ -359,6 +441,86 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 	public void setY(double y) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public double getSourceRelativeX() {
+		return sourceRelativeX;
+	}
+
+
+	public void setSourceRelativeX(double sourceRelativeX) {
+		this.sourceRelativeX = sourceRelativeX;
+	}
+
+
+	public double getSourceRelativeY() {
+		return sourceRelativeY;
+	}
+
+
+	public void setSourceRelativeY(double sourceRelativeY) {
+		this.sourceRelativeY = sourceRelativeY;
+	}
+
+
+	public double getTargetRelativeX() {
+		return targetRelativeX;
+	}
+
+
+	public void setTargetRelativeX(double targetRelativeX) {
+		this.targetRelativeX = targetRelativeX;
+	}
+
+
+	public double getTargetRelativeY() {
+		return targetRelativeY;
+	}
+
+
+	public void setTargetRelativeY(double targetRelativeY) {
+		this.targetRelativeY = targetRelativeY;
+	}
+
+
+	public double getSourceConnectionBoxRelativeX() {
+		return sourceConnectionBoxRelativeX;
+	}
+
+
+	public void setSourceConnectionBoxRelativeX(double sourceConnectionBoxRelativeX) {
+		this.sourceConnectionBoxRelativeX = sourceConnectionBoxRelativeX;
+	}
+
+
+	public double getSourceConnectionBoxRelativeY() {
+		return sourceConnectionBoxRelativeY;
+	}
+
+
+	public void setSourceConnectionBoxRelativeY(double sourceConnectionBoxRelativeY) {
+		this.sourceConnectionBoxRelativeY = sourceConnectionBoxRelativeY;
+	}
+
+
+	public double getTargetConnectionBoxRelativeX() {
+		return targetConnectionBoxRelativeX;
+	}
+
+
+	public void setTargetConnectionBoxRelativeX(double targetConnectionBoxRelativeX) {
+		this.targetConnectionBoxRelativeX = targetConnectionBoxRelativeX;
+	}
+
+
+	public double getTargetConnectionBoxRelativeY() {
+		return targetConnectionBoxRelativeY;
+	}
+
+
+	public void setTargetConnectionBoxRelativeY(double targetConnectionBoxRelativeY) {
+		this.targetConnectionBoxRelativeY = targetConnectionBoxRelativeY;
 	}
 
 }
