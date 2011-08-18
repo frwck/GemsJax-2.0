@@ -118,7 +118,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 	private MetaClassDrawable target;
 	
 	
-	private MetaConnectionBoxDrawable nameBoxDrawable;
+	private MetaConnectionBoxDrawable connectionBoxDrawable;
 
 	// Handlers
 	private List<FocusHandler> focusHandlers;
@@ -140,7 +140,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 		this.source = metaClassA;
 		this.target = metaClassB;
 		
-		this.nameBoxDrawable = new MetaConnectionBoxDrawable(connection, this);
+		this.connectionBoxDrawable = new MetaConnectionBoxDrawable(connection, this);
 		
 		// Handlers
 		focusHandlers = new ArrayList<FocusHandler>();
@@ -164,7 +164,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 	
 	public MetaConnectionBoxDrawable getConnectionBoxDrawable()
 	{
-		return nameBoxDrawable;
+		return connectionBoxDrawable;
 	}
 	
 	
@@ -178,11 +178,11 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 		context.setFillStyle(connection.getLineColor());
 		context.setLineWidth(connection.getLineSize());
 		
-		context.moveTo(source.getX() + connection.getSourceRelativeX(), source.getY() + connection.getSourceRelativeY());
-		context.lineTo(connection.getConnectionBoxX() + connection.getSourceConnectionBoxRelativeX(), connection.getConnectionBoxY() + connection.getSourceConnectionBoxRelativeY());
+		context.moveTo(source.getX() + getSourceRelativeX(), source.getY() + getSourceRelativeY());
+		context.lineTo( connectionBoxDrawable.getX()+ getSourceConnectionBoxRelativeX(), connectionBoxDrawable.getY()+ getSourceConnectionBoxRelativeY());
 		
-		context.moveTo(target.getX() + connection.getTargetRelativeX(), target.getY() + connection.getTargetRelativeY());
-		context.lineTo(connection.getConnectionBoxX() + connection.getTargetConnectionBoxRelativeX(), connection.getConnectionBoxY() + connection.getTargetConnectionBoxRelativeY());
+		context.moveTo(target.getX() + getTargetRelativeX(), target.getY() + getTargetRelativeY());
+		context.lineTo(connectionBoxDrawable.getX() + getTargetConnectionBoxRelativeX(), connectionBoxDrawable.getY() + getTargetConnectionBoxRelativeY());
 	
 		
 		context.stroke();

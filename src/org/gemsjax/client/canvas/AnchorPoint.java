@@ -1,11 +1,14 @@
 package org.gemsjax.client.canvas;
 
-import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.handler.MoveHandler;
-import org.gemsjax.client.metamodel.MetaConnectionImpl;
-
 import com.google.gwt.canvas.dom.client.Context2d;
 
+
+/**
+ * 
+ * @author Hannes Dorfmann
+ *
+ */
 public class AnchorPoint {
 	
 	private double x;
@@ -16,10 +19,13 @@ public class AnchorPoint {
 	private String backgroundColor = "white";
 	private double borderWeight = 1; 
 	
-	public AnchorPoint(double x, double y)
+	private HasAnchor destination;
+	
+	public AnchorPoint(double x, double y, HasAnchor destination)
 	{
 		this.x = x;
 		this.y = y;
+		this.destination = destination;
 	}
 
 	public void draw(Context2d context) {
