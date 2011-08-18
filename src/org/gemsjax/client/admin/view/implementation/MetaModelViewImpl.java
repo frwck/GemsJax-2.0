@@ -148,8 +148,6 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	public void addDrawable(Drawable drawable) throws DoubleLimitException {
 		canvas.addDrawable(drawable);
 		
-		if (drawable instanceof MetaConnectionDrawable)
-			canvas.addDrawable(((MetaConnectionDrawable) drawable).getConnectionBoxDrawable());
 	}
 
 	@Override

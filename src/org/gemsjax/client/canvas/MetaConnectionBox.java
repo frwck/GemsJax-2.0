@@ -20,14 +20,15 @@ import com.google.gwt.canvas.dom.client.Context2d;
 
 /**
  * This class is used to display a box with the {@link MetaConnection} name and attributes on the {@link MetaModelCanvas}.
- * The class {@link MetaConnectionDrawable} draws the connection lines and icons for the {@link MetaConnection}.
+ * The class {@link MetaConnectionDrawable} draws the connection lines and icons for the {@link MetaConnection} and calls the
+ * {@link #draw(Context2d)} method of this class, since it's not wise to let this class also implement the {@link Drawable} interface.
  * @author Hannes Dorfmann
  *
  */
-public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeable, Focusable, AnchorPointDestination {
+public  class MetaConnectionBox implements AnchorPointDestination {
 
 	/**
-	 * The connection, which name will be displayed with this {@link MetaConnectionBoxDrawable}
+	 * The connection, which name will be displayed with this {@link MetaConnectionBox}
 	 */
 	private MetaConnection connection;
 	
@@ -81,7 +82,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	private double minHeight = 30;
 	
 	/**
-	 * If the {@link MetaConnectionBoxDrawable} is resized and this flag is set to true,
+	 * If the {@link MetaConnectionBox} is resized and this flag is set to true,
 	 * than the {@link MetaConnectionImpl#setSourceConnectionBoxRelativeX(double)}, {@link MetaConnectionImpl#setSourceConnectionBoxRelativeY(double)}, {@link MetaConnectionImpl#setTargetConnectionBoxRelativeX(double)}
 	 * and {@link MetaConnectionImpl#setTargetConnectionBoxRelativeY(double)} will be set according to the previous (before the resizing) 
 	 * percental ratio.
@@ -89,7 +90,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	private boolean autoAdjustNameBoxRatio = true;
 	
 	/**
-	 * The current x coordinate of this {@link MetaConnectionBoxDrawable}.
+	 * The current x coordinate of this {@link MetaConnectionBox}.
 	 * This could be another value as the {@link MetaConnection#getConnectionBoxX()},
 	 * because this value is used to draw Move events / animations.
 	 * So while a animation this x value is set and changed permanently, but the original x value of the 
@@ -102,7 +103,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	 */
 	private double x;
 	/**
-	 * The current y coordinate of this {@link MetaConnectionBoxDrawable}.
+	 * The current y coordinate of this {@link MetaConnectionBox}.
 	 * This could be another value as the {@link MetaConnection#getConnectionBoxY()},
 	 * because this value is used to draw Move events / animations.
 	 * So during an animation this y value is set and changed permanently, but the original y value of the {@link MetaConnection} object
@@ -117,7 +118,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	
 	
 	/**
-	 * The current width of this {@link MetaConnectionBoxDrawable}.
+	 * The current width of this {@link MetaConnectionBox}.
 	 * This could be another value as the {@link MetaConnection#getConnectionBoxWidth()},
 	 * because this value is used to draw resize events / animations.
 	 * So during an animation this width value is set and changed permanently, but the original width value of the {@link MetaConnection} object
@@ -131,7 +132,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	private double width;
 	
 	/**
-	 * The current height of this {@link MetaConnectionBoxDrawable}.
+	 * The current height of this {@link MetaConnectionBox}.
 	 * This could be another value as the {@link MetaConnection#getConnectionBoxHeight()},
 	 * because this value is used to draw resize events / animations.
 	 * So during an animation this height value is set and changed permanently, but the original width value of the {@link MetaConnection} object
@@ -148,7 +149,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	private  MetaConnectionDrawable connectionDrawable;
 	 
 	
-	public MetaConnectionBoxDrawable(MetaConnection connection, MetaConnectionDrawable connectionDrawable)
+	public MetaConnectionBox(MetaConnection connection, MetaConnectionDrawable connectionDrawable)
 	{
 		this.connection = connection;
 		
@@ -171,7 +172,6 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	
 	
 	
-	@Override
 	public void draw(Context2d context) {
 		
 		CanvasGradient gradient = context.createLinearGradient(getX(), getY(),getX()+getWidth(), getY()+getHeight());
@@ -260,10 +260,6 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 		
 	}
 
-	@Override
-	public Object getDataObject() {
-		return connection;
-	}
 	
 	/**
 	 * Get the Drawable which draws the connection lines
@@ -274,57 +270,16 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 		return connectionDrawable;
 	}
 
-	@Override
-	public double getZIndex() {
-		return connection.getZIndex();
-	}
-
-	private boolean isBetween(double minValue, double maxValue, double valueToCheck)
+	
+	public boolean isBetween(double minValue, double maxValue, double valueToCheck)
 	{
 		return valueToCheck>=minValue && valueToCheck<=maxValue;
 	}
 	
-	@Override
-	public boolean hasCoordinate(double x, double y) {
-		return (isBetween(getX(), getX() +getWidth(), x) && isBetween(getY(), getY() + getHeight(),y));
-	}
-
-	
-	@Override
-	public boolean isSelected()
-	{
-		return connection.isSelected();
-	}
-
-	@Override
-	public void addMoveHandler(MoveHandler handler) {
-		if (!moveHandlers.contains(handler))
-			moveHandlers.add(handler);
-	}
-
-
-
-
-	@Override
-	public boolean fireMoveEvent(MoveEvent event) {
-		
-		boolean delivered = false;
-		
-		for (MoveHandler h: moveHandlers)
-		{
-			h.onMove(event);
-			delivered = true;
-		}
-		
-		
-		return delivered;
-		
-	}
-
 
 
 	/**
-	 * The current x coordinate of this {@link MetaConnectionBoxDrawable}.
+	 * The current x coordinate of this {@link MetaConnectionBox}.
 	 * This could be another value as the {@link MetaConnection#getConnectionBoxX()},
 	 * because this value is used to draw Move events / animations.
 	 * So while a animation this x value is set and changed permanently, but the original x value of the 
@@ -342,7 +297,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	}
 
 	/**
-	 * The current y coordinate of this {@link MetaConnectionBoxDrawable}.
+	 * The current y coordinate of this {@link MetaConnectionBox}.
 	 * This could be another value as the {@link MetaConnection#getConnectionBoxY()},
 	 * because this value is used to draw Move events / animations.
 	 * So during an animation this y value is set and changed permanently, but the original y value of the 
@@ -363,40 +318,10 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 
 
 
-	@Override
-	public void removeMoveHandler(MoveHandler handler) {
-		moveHandlers.remove(handler);
-	}
-
-
-
-
-	@Override
-	public void addResizeHandler(ResizeHandler resizeHandler) {
-		if (!resizeHandlers.contains(resizeHandler))
-			resizeHandlers.add(resizeHandler);
-	}
-
-
-
-
-	@Override
-	public boolean fireResizeEvent(ResizeEvent event) {
-		boolean delivered = false;
-		
-		for (ResizeHandler h: resizeHandlers)
-		{
-			h.onResize(event);
-			delivered = true;
-		}
-		
-		return delivered;
-	}
-
 
 
 	/**
-	 * The current height of this {@link MetaConnectionBoxDrawable}.
+	 * The current height of this {@link MetaConnectionBox}.
 	 * This could be another value as the {@link MetaConnection#getConnectionBoxHeight()},
 	 * because this value is used to draw resize events / animations.
 	 * So during an animation this height value is set and changed permanently, but the original width value of the {@link MetaConnection} object
@@ -408,7 +333,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	 * @see ResizeEventType#RESIZE_FINISHED
 	 * @return
 	 */
-	@Override
+
 	public double getHeight() {
 		return this.height;
 	}
@@ -416,7 +341,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 
 
 	/**
-	 * The current width of this {@link MetaConnectionBoxDrawable}.
+	 * The current width of this {@link MetaConnectionBox}.
 	 * This could be another value as the {@link MetaConnection#getConnectionBoxWidth()},
 	 * because this value is used to draw resize events / animations.
 	 * So during an animation this width value is set and changed permanently, but the original width value of the {@link MetaConnection} object
@@ -428,14 +353,12 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	 * @see ResizeEventType#RESIZE_FINISHED
 	 * @return
 	 */
-	@Override
 	public double getWidth() {
 		return this.width;
 	}
 
 
 
-	@Override
 	public ResizeArea isResizerAreaAt(double x, double y) {
 		for (ResizeArea r :resizeAreas)
 			if (r.hasCoordinate(x, y))
@@ -446,11 +369,6 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 
 
 
-
-	@Override
-	public void removeResizeHandler(ResizeHandler resizeHandler) {
-		resizeHandlers.remove(resizeHandler);
-	}
 
 	
 	public double getMinWidth()
@@ -481,42 +399,12 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 
 
 
-	@Override
-	public void addFocusHandler(FocusHandler handler) {
-		if (!focusHandlers.contains(handler))
-			focusHandlers.add(handler);
-	}
-
-
-
-
-	@Override
-	public boolean fireFocusEvent(FocusEvent event) {
-		
-		boolean delivered = false;
-		
-		for (FocusHandler h: focusHandlers)
-		{
-			h.onFocusEvent(event);
-			delivered = true;
-		}
-		
-		return delivered;
-	}
-
-
-
-
-	@Override
-	public void removeFocusHandler(FocusHandler handler) {
-		focusHandlers.remove(handler);
-	}
 
 
 	/**
 	 * @see #getX()
 	 */
-	@Override
+	
 	public void setX(double x) {
 
 		this.x = x;
@@ -528,7 +416,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	/**
 	 * @see #getY()
 	 */
-	@Override
+	
 	public void setY(double y) {
 		this.y = y;
 		autoSetResizeAreaPosition();
@@ -539,7 +427,7 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	/**
 	 * @see #getHeight()
 	 */
-	@Override
+
 	public void setHeight(double height) {
 		this.height = height;
 		autoSetResizeAreaPosition();
@@ -550,12 +438,16 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	/**
 	 * @see #getWidth()
 	 */
-	@Override
+
 	public void setWidth(double width) {
 		this.width = width;
 		autoSetResizeAreaPosition();
 	}
 
+	
+	public boolean hasCoordinate(double x, double y) {
+		return (isBetween(getX(), getX() +getWidth(), x) && isBetween(getY(), getY() + getHeight(),y));
+	}
 
 
 

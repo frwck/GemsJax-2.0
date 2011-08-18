@@ -20,18 +20,24 @@ import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.user.client.Window;
 
 /**
- * This class is a {@link Drawable} that displays a {@link MetaConnectionImpl} on the {@link MetaClassCanvas}.
- * A {@link MetaConnectionImpl} is displayed between two {@link MetaClassDrawable}s.<br /> <br />
+ * This class is a {@link Drawable} that displays a {@link MetaConnection} on the {@link MetaClassCanvas}.
+ * A {@link MetaConnection} is displayed between two {@link MetaClassDrawable}s.<br /> <br />
  * This class implements the {@link ResizeHandler} and the {@link MoveHandler} interface and will be registered to the 
  * connected {@link MetaClassDrawable}s. So when a {@link MetaClassDrawable} was moved / resized, this {@link MetaConnectionDrawable}
  * will automatically adjust itself to the {@link MetaClassDrawable}s.
  * 
- * This class paints the lines and icons for a connection, while the {@link MetaConnectionBoxDrawable} draws a box with the name 
- * and Attributes.
+ * 
+ * This class paints the lines and icons for a connection, while the {@link MetaConnectionBox} draws a box with the name 
+ * and Attributes. But the {@link MetaConnectionBox} itself is not a real Drawable, its only part of this MetaConnectionDrawable.
+ * So this {@link MetaConnectionDrawable} implements the {@link Moveable} and {@link Resizeable} interface. This corresponding functionality is wrapped
+ * by this MetaConnectionDrawable, but will be delegated to the {@link MetaConnectionBox}.
+ * So the functionality is splitted in two classes ( {@link MetaConnectionDrawable} and {@link MetaConnectionBox}) but on the {@link MetaModelCanvas}
+ * appears only this {@link MetaConnectionDrawable}
+ * 
  * @author Hannes Dorfmann
  *
  */
-public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Focusable, ResizeHandler, MoveHandler {
+public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, ResizeHandler, MoveHandler {
 	
 	
 	
@@ -118,13 +124,13 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 	private MetaClassDrawable target;
 	
 	
-	private MetaConnectionBoxDrawable connectionBoxDrawable;
+	private MetaConnectionBox connectionBox;
 
 	// Handlers
 	private List<FocusHandler> focusHandlers;
 	private List<ClickHandler> clickHandlers;
 	private List<MoveHandler> moveHandlers;
-	
+	private List<ResizeHandler> resizeHandlers;
 	
 	private List<AnchorPoint> sourceToBoxAnchorPoints;
 	private List<AnchorPoint> boxToTargetAnchorPoints;
@@ -152,12 +158,13 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 		this.source = metaClassA;
 		this.target = metaClassB;
 		
-		this.connectionBoxDrawable = new MetaConnectionBoxDrawable(connection, this);
+		this.connectionBox = new MetaConnectionBox(connection, this);
 		
 		// Handlers
 		focusHandlers = new ArrayList<FocusHandler>();
 		clickHandlers = new ArrayList<ClickHandler>();
 		moveHandlers = new ArrayList<MoveHandler>();
+		resizeHandlers = new ArrayList<ResizeHandler>();
 		
 		sourceConnectionBoxRelativeX = connection.getSourceConnectionBoxRelativePoint().x;
 		sourceConnectionBoxRelativeY = connection.getSourceConnectionBoxRelativePoint().y;
@@ -173,19 +180,14 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 		setMetaClassB(metaClassB);
 		
 		sourceAnchorPoint = new AnchorPoint(connection.getSourceRelativePoint(), source);
-		sourceConnectionBoxAnchorPoint = new AnchorPoint(connection.getSourceConnectionBoxRelativePoint(), connectionBoxDrawable);
-		targetConnectionBoxAnchorPoint = new AnchorPoint(connection.getTargetConnectionBoxRelativePoint(), connectionBoxDrawable);
+		sourceConnectionBoxAnchorPoint = new AnchorPoint(connection.getSourceConnectionBoxRelativePoint(), connectionBox);
+		targetConnectionBoxAnchorPoint = new AnchorPoint(connection.getTargetConnectionBoxRelativePoint(), connectionBox);
 		targetAnchorPoint = new AnchorPoint(connection.getTargetRelativePoint(), target);
 		
 		sourceToBoxAnchorPoints = new ArrayList<AnchorPoint>();
 		boxToTargetAnchorPoints = new ArrayList<AnchorPoint>();
 	}
 	
-	
-	public MetaConnectionBoxDrawable getConnectionBoxDrawable()
-	{
-		return connectionBoxDrawable;
-	}
 	
 	
 	
@@ -199,14 +201,16 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 		context.setLineWidth(connection.getLineSize());
 		
 		context.moveTo(source.getX() + getSourceRelativeX(), source.getY() + getSourceRelativeY());
-		context.lineTo( connectionBoxDrawable.getX()+ getSourceConnectionBoxRelativeX(), connectionBoxDrawable.getY()+ getSourceConnectionBoxRelativeY());
+		context.lineTo( connectionBox.getX()+ getSourceConnectionBoxRelativeX(), connectionBox.getY()+ getSourceConnectionBoxRelativeY());
 		
 		context.moveTo(target.getX() + getTargetRelativeX(), target.getY() + getTargetRelativeY());
-		context.lineTo(connectionBoxDrawable.getX() + getTargetConnectionBoxRelativeX(), connectionBoxDrawable.getY() + getTargetConnectionBoxRelativeY());
+		context.lineTo(connectionBox.getX() + getTargetConnectionBoxRelativeX(), connectionBox.getY() + getTargetConnectionBoxRelativeY());
 	
 		
 		context.stroke();
 		context.restore();
+		
+		connectionBox.draw(context);
 		
 		if (connection.isSelected())
 			drawOnSelect(context);
@@ -242,6 +246,10 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 
 	@Override
 	public boolean hasCoordinate(double x, double y) {
+		
+		boolean box = connectionBox.hasCoordinate(x, y);
+		
+		if (box ) return true;
 	
 		// linear function 
 		// y = m*x + b
@@ -307,22 +315,20 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 
 	@Override
 	public double getX() {
-		// TODO Auto-generated method stub
-		return 0;
+		// Used by the Moveable
+		return connectionBox.getX();
 	}
 
 	@Override
 	public double getY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return connectionBox.getY();
 	}
 
 	
 
 	@Override
 	public void removeMoveHandler(MoveHandler handler) {
-		// TODO Auto-generated method stub
-		
+		moveHandlers.remove(handler);
 	}
 
 	@Override
@@ -473,15 +479,13 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 
 	@Override
 	public void setX(double x) {
-		// TODO Auto-generated method stub
-		
+		connectionBox.setX(x);
 	}
 
 
 	@Override
 	public void setY(double y) {
-		// TODO Auto-generated method stub
-		
+		connectionBox.setY(y);
 	}
 
 
@@ -562,6 +566,83 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 
 	public void setTargetConnectionBoxRelativeY(double targetConnectionBoxRelativeY) {
 		this.targetConnectionBoxRelativeY = targetConnectionBoxRelativeY;
+	}
+
+
+	@Override
+	public void addResizeHandler(ResizeHandler resizeHandler) {
+		if (!resizeHandlers.contains(resizeHandler))
+			resizeHandlers.add(resizeHandler);
+		
+	}
+
+
+	@Override
+	public boolean fireResizeEvent(ResizeEvent event) {
+
+		boolean delivered = false;
+		
+		for (ResizeHandler h : resizeHandlers)
+		{
+			h.onResize(event);
+			delivered = true;
+		}
+		
+		return delivered;
+	}
+
+
+	@Override
+	public double getHeight() {
+		return connectionBox.getHeight();
+	}
+
+
+	@Override
+	public double getWidth() {
+		return connectionBox.getWidth();
+	}
+
+
+	@Override
+	public ResizeArea isResizerAreaAt(double x, double y) {
+		return connectionBox.isResizerAreaAt(x, y);
+	}
+
+
+	@Override
+	public void removeResizeHandler(ResizeHandler resizeHandler) {
+		resizeHandlers.remove(resizeHandler);
+	}
+
+
+	@Override
+	public void setHeight(double height) {
+		connectionBox.setHeight(height);
+	}
+
+
+	@Override
+	public void setWidth(double width) {
+		connectionBox.setWidth(width);
+	}
+
+
+
+
+
+	@Override
+	public double getMinHeight() {
+		return connectionBox.getMinHeight();
+	}
+
+
+
+
+
+	@Override
+	public double getMinWidth() {
+		return connectionBox.getMinWidth();
 	}
 
 }

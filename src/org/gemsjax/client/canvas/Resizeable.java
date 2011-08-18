@@ -52,4 +52,8 @@ public interface Resizeable {
 	public void setWidth(double width);
 	
 	public void setHeight(double height);
+	
+	
+	public double getMinWidth();
+	public double getMinHeight();
 }

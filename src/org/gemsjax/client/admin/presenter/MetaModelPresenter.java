@@ -5,10 +5,12 @@ import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.canvas.Drawable;
-import org.gemsjax.client.canvas.MetaConnectionBoxDrawable;
+import org.gemsjax.client.canvas.MetaConnectionBox;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
+import org.gemsjax.client.canvas.Moveable;
 import org.gemsjax.client.canvas.ResizeArea;
+import org.gemsjax.client.canvas.Resizeable;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.events.FocusEvent;
@@ -126,9 +128,9 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					
 					
 					MetaConnectionDrawable d = new MetaConnectionDrawable(con, source,  target);
-					d.getConnectionBoxDrawable().addMoveHandler(this);
-					d.getConnectionBoxDrawable().addResizeHandler(this);
-					d.getConnectionBoxDrawable().addFocusHandler(this);
+					d.addMoveHandler(this);
+					d.addResizeHandler(this);
+					d.addFocusHandler(this);
 					
 					view.addDrawable(d);
 				
@@ -158,8 +160,8 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		if (event.getSource() instanceof MetaClassDrawable)
 			onMetaClassFocusEvent((MetaClass) ((Drawable)event.getSource()).getDataObject(), event);
 		else
-		if (event.getSource() instanceof MetaConnectionBoxDrawable)
-			onMetaConnectionBoxNameFocusEvent((MetaConnection) ((Drawable)event.getSource()).getDataObject(), event);
+		if (event.getSource() instanceof MetaConnectionDrawable)
+			onMetaConnectionFocusEvent((MetaConnection) ((Drawable)event.getSource()).getDataObject(), event);
 	}
 
 
@@ -169,8 +171,8 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		if (event.getSource() instanceof MetaClassDrawable)
 			onMetaClassResizeEvent((MetaClass) ((Drawable)event.getSource()).getDataObject(), event);
 		else
-		if (event.getSource() instanceof MetaConnectionBoxDrawable)
-			onMetaConnectionBoxResizeEvent((MetaConnection) ((Drawable)event.getSource()).getDataObject(), event);
+		if (event.getSource() instanceof MetaConnectionBox)
+			onMetaConnectionResizeEvent((MetaConnection) ((Drawable)event.getSource()).getDataObject(), event);
 	}
 
 
@@ -180,8 +182,8 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		if (e.getSource() instanceof MetaClassDrawable)
 			onMetaClassMoveEvent((MetaClass) ((Drawable)e.getSource()).getDataObject(), e);
 		else
-		if (e.getSource() instanceof MetaConnectionBoxDrawable)
-			onMetaConnectionBoxMoveEvent((MetaConnection) ((Drawable)e.getSource()).getDataObject(), e);
+		if (e.getSource() instanceof MetaConnectionBox)
+			onMetaConnectionMoveEvent((MetaConnection) ((Drawable)e.getSource()).getDataObject(), e);
 		
 	}
 
@@ -257,9 +259,9 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	}
 
 	
-	private void onMetaConnectionBoxMoveEvent(MetaConnection connection, MoveEvent e)
+	private void onMetaConnectionMoveEvent(MetaConnection connection, MoveEvent e)
 	{
-		MetaConnectionBoxDrawable d =(MetaConnectionBoxDrawable) e.getSource();
+		Moveable d = e.getSource();
 		d.setX(e.getX()-e.getDistanceToTopLeftX());
 		d.setY(e.getY()-e.getDistanceToTopLeftY());
 
@@ -277,9 +279,9 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	}
 	
 	
-	private void onMetaConnectionBoxResizeEvent(MetaConnection connection, ResizeEvent event)
+	private void onMetaConnectionResizeEvent(MetaConnection connection, ResizeEvent event)
 	{
-		MetaConnectionBoxDrawable d =(MetaConnectionBoxDrawable) event.getSource();
+		Resizeable d = event.getSource();
 		
 		if (event.getWidth()>d.getMinWidth() && event.getHeight()>d.getMinHeight())
 		{
@@ -295,6 +297,8 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			{
 				connection.setConnectionBoxWidth(event.getWidth());
 				connection.setConnectionBoxHeight(event.getHeight());
+				
+				// TODO collaborative websocket info
 				
 	/*
 				// Adjust connections coordinate
@@ -335,7 +339,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	}
 	
 	
-	private void onMetaConnectionBoxNameFocusEvent(MetaConnection connection, FocusEvent event)
+	private void onMetaConnectionFocusEvent(MetaConnection connection, FocusEvent event)
 	{
 		if (event.getType()==FocusEventType.GOT_FOCUS)
 			connection.setSelected(true);
