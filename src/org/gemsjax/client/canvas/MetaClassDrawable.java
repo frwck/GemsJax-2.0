@@ -45,7 +45,8 @@ import com.google.gwt.user.client.ui.RootPanel;
  * @author Hannes Dorfmann
  *
  */
-public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOutable, MouseOverable, Moveable, Resizeable, IconLoadable {
+public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseOutable, MouseOverable, Moveable,
+											Resizeable, IconLoadable, AnchorPointDestination  {
 
 	
 	private List<ResizeArea> resizeAreas;
@@ -864,6 +865,20 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable,MouseOu
 
 	@Override
 	public void removeIconLoadHanlder(IconLoadHandler h) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public boolean canAnchorPointBePlacedAt(double x, double y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public void highlightDestinationArea(Context2d context) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -160,7 +160,7 @@ public class AdminApplicationController {
 			
 			con.getTargetConnectionBoxRelativePoint().x=(con.getConnectionBoxWidth());
 			con.getTargetConnectionBoxRelativePoint().y = 20;
-			con.getTargetRelativePoint().x =0;;
+			con.getTargetRelativePoint().x =0;
 			con.getTargetRelativePoint().y=0;
 			
 			

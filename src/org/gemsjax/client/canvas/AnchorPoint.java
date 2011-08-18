@@ -20,7 +20,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public class AnchorPoint implements Drawable, Placeable, Focusable{
+public class AnchorPoint implements Placeable, Focusable{
 	
 	/**
 	 * The current x coordinate.
@@ -38,7 +38,7 @@ public class AnchorPoint implements Drawable, Placeable, Focusable{
 	private double y;
 	private double width = 6;
 	private double height = 6;
-	private String borderColor = "black";
+	private String borderColor = "2A4596";
 	private String backgroundColor = "white";
 	private double borderWeight = 1; 
 	
@@ -82,12 +82,12 @@ public class AnchorPoint implements Drawable, Placeable, Focusable{
 	}
 
 	public void draw(Context2d context) {
-		double x = this.x , y= this.y;
+		double x = this.x -3 , y= this.y-3; // minus 3 to draw the AnchorPoint in the middle
 		
 		if (destination != null) // than the current x
 		{
-			x = destination.getX() + this.x;
-			y = destination.getY() + this.y;
+			x = destination.getX() + this.x - 3;
+			y = destination.getY() + this.y -3;
 		}
 		
 		
@@ -126,12 +126,10 @@ public class AnchorPoint implements Drawable, Placeable, Focusable{
 		return y;
 	}
 
-	@Override
 	public void setX(double x) {
 		this.x = x;
 	}
 
-	@Override
 	public void setY(double y) {
 		this.y = y;
 	}
@@ -156,18 +154,11 @@ public class AnchorPoint implements Drawable, Placeable, Focusable{
 		this.nextAnchorPoint = nextAnchorPoint;
 	}
 
-	@Override
 	public Object getDataObject() {
 		return point;
 	}
 
-	@Override
-	public double getZIndex() {
-		//used?
-		return 0;
-	}
 
-	@Override
 	public boolean isSelected() {
 		return selected;
 	}

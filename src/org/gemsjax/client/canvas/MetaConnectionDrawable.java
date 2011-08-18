@@ -129,6 +129,12 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 	private List<AnchorPoint> sourceToBoxAnchorPoints;
 	private List<AnchorPoint> boxToTargetAnchorPoints;
 	
+	private AnchorPoint sourceAnchorPoint;
+	private AnchorPoint sourceConnectionBoxAnchorPoint;
+	private AnchorPoint targetAnchorPoint;
+	private AnchorPoint targetConnectionBoxAnchorPoint;
+	
+	
 	
 	
 	
@@ -165,6 +171,14 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 		
 		setMetaClassA(metaClassA);
 		setMetaClassB(metaClassB);
+		
+		sourceAnchorPoint = new AnchorPoint(connection.getSourceRelativePoint(), source);
+		sourceConnectionBoxAnchorPoint = new AnchorPoint(connection.getSourceConnectionBoxRelativePoint(), connectionBoxDrawable);
+		targetConnectionBoxAnchorPoint = new AnchorPoint(connection.getTargetConnectionBoxRelativePoint(), connectionBoxDrawable);
+		targetAnchorPoint = new AnchorPoint(connection.getTargetRelativePoint(), target);
+		
+		sourceToBoxAnchorPoints = new ArrayList<AnchorPoint>();
+		boxToTargetAnchorPoints = new ArrayList<AnchorPoint>();
 	}
 	
 	
@@ -193,7 +207,27 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 		
 		context.stroke();
 		context.restore();
+		
+		if (connection.isSelected())
+			drawOnSelect(context);
+		
 	}
+	
+	
+	private void drawOnSelect(Context2d context)
+	{
+		sourceAnchorPoint.draw(context);
+		sourceConnectionBoxAnchorPoint.draw(context);
+		targetAnchorPoint.draw(context);
+		targetConnectionBoxAnchorPoint.draw(context);
+		
+		for (AnchorPoint a: sourceToBoxAnchorPoints)
+			a.draw(context);
+		
+		for (AnchorPoint a: boxToTargetAnchorPoints)
+			a.draw(context);
+	}
+	
 	
 	@Override
 	public boolean isSelected()

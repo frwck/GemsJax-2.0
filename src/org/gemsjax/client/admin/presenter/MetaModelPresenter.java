@@ -129,6 +129,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					d.getConnectionBoxDrawable().addMoveHandler(this);
 					d.getConnectionBoxDrawable().addResizeHandler(this);
 					d.getConnectionBoxDrawable().addFocusHandler(this);
+					
 					view.addDrawable(d);
 				
 				}
@@ -283,6 +284,13 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		if (event.getWidth()>d.getMinWidth() && event.getHeight()>d.getMinHeight())
 		{
 
+			d.setWidth(event.getWidth());
+			d.setHeight(event.getHeight());
+			
+			
+			
+			
+			
 			if (event.getType() == ResizeEventType.RESIZE_FINISHED)
 			{
 				connection.setConnectionBoxWidth(event.getWidth());
@@ -333,6 +341,8 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			connection.setSelected(true);
 		else
 			connection.setSelected(false);
+		
+		view.redrawMetaModelCanvas();
 	}
 
 	@Override

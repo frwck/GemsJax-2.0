@@ -24,7 +24,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeable, Focusable {
+public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeable, Focusable, AnchorPointDestination {
 
 	/**
 	 * The connection, which name will be displayed with this {@link MetaConnectionBoxDrawable}
@@ -145,7 +145,6 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	private double height;
 	
 	
-	
 	private  MetaConnectionDrawable connectionDrawable;
 	 
 	
@@ -197,10 +196,9 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	 * Implement how the Drawable should be drawn, when the Drawable has been selected (for example when this drawable has the focus)
 	 * @param context
 	 */
-	public void drawOnSelected(Context2d context) {
+	private void drawOnSelected(Context2d context) {
 		
 		// Draw the ResizeAreas 
-		
 		for (ResizeArea ra : resizeAreas)
 			ra.draw(context);
 				
@@ -556,6 +554,24 @@ public  class MetaConnectionBoxDrawable implements Drawable, Moveable, Resizeabl
 	public void setWidth(double width) {
 		this.width = width;
 		autoSetResizeAreaPosition();
+	}
+
+
+
+
+	@Override
+	public boolean canAnchorPointBePlacedAt(double x, double y) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+
+
+	@Override
+	public void highlightDestinationArea(Context2d context) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
