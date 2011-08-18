@@ -2,10 +2,12 @@ package org.gemsjax.shared.metamodel;
 
 import java.util.List;
 
+import org.gemsjax.client.canvas.AnchorPoint;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 
@@ -453,6 +455,23 @@ public interface MetaConnection extends MetaModelElement{
 	 * @return
 	 */
 	public MetaClass getSource();
+	
+	/**
+	 * Get a List of {@link Point}s  where the connection line goes along this points from the source start point to the connection box end point
+	 * by passing this points. On client side this Points are displayed on the canvas as {@link AnchorPoint}.
+	 * @return
+	 */
+	public List<Point> getSourceToBoxAnchorPoints();
+	
+
+	/**
+	 * Get a List of {@link Point}s  where the connection line goes along this points from the connection box start point to the target end point
+	 * by passing this points. On client side this Points are displayed on the canvas as {@link AnchorPoint}.
+	 * @return
+	 */
+	public List<Point> getBoxToTargetAnchorPoints();
+	
+	
 }
 
 

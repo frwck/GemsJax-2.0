@@ -160,6 +160,7 @@ public class MetaClassImpl implements MetaClass {
 	private List<MetaClass> inheritances;
 	
 	private List<MetaContainmentRelation> containments;
+	
 
 	public MetaClassImpl(String id, String name, double x, double y)
 	{

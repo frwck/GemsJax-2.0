@@ -6,6 +6,7 @@ import java.util.List;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
+import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -182,6 +183,8 @@ public class MetaConnectionImpl implements MetaConnection {
 	private List<MetaAttribute> attributes;
 	
 	
+	private List<Point> sourceToBoxPoints;
+	private List<Point> boxToTargetPoints;
 	
 	
 	public MetaConnectionImpl(String id, String name, MetaClass target, int lower, int upper)
@@ -191,9 +194,9 @@ public class MetaConnectionImpl implements MetaConnection {
 		this.name = name;
 		this.targetLowerBound = lower;
 		this.targetUpperBound = upper;
-		
-		attributes = new ArrayList<MetaAttribute>();
-		
+		this.attributes = new ArrayList<MetaAttribute>();
+		this.sourceToBoxPoints = new ArrayList<Point>();
+		this.boxToTargetPoints = new ArrayList<Point>();
 	}
 	
 
@@ -675,6 +678,18 @@ public class MetaConnectionImpl implements MetaConnection {
 	@Override
 	public void removeAttribute(MetaAttribute attribute) {
 		attributes.remove(attribute);
+	}
+
+
+	@Override
+	public List<Point> getBoxToTargetAnchorPoints() {
+		return boxToTargetPoints;
+	}
+
+
+	@Override
+	public List<Point> getSourceToBoxAnchorPoints() {
+		return sourceToBoxPoints;
 	}
 
 

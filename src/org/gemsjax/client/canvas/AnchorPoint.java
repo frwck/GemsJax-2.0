@@ -9,7 +9,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public class AnchorPoint {
+public class AnchorPoint implements Drawable{
 	
 	private double x;
 	private double y;
@@ -19,13 +19,15 @@ public class AnchorPoint {
 	private String backgroundColor = "white";
 	private double borderWeight = 1; 
 	
-	private HasAnchor destination;
+	private AnchorPointDestination destination;
 	
-	public AnchorPoint(double x, double y, HasAnchor destination)
+	private AnchorPoint nextAnchorPoint;
+	
+	public AnchorPoint(double x, double y, AnchorPointDestination destination)
 	{
 		this.x = x;
 		this.y = y;
-		this.destination = destination;
+		this.setDestination(destination);
 	}
 
 	public void draw(Context2d context) {
@@ -68,6 +70,44 @@ public class AnchorPoint {
 
 	public void setY(double y) {
 		this.y = y;
+	}
+
+	/**
+	 * Set the destination
+	 * @param destination
+	 */
+	public void setDestination(AnchorPointDestination destination) {
+		this.destination = destination;
+	}
+
+	public AnchorPointDestination getDestination() {
+		return destination;
+	}
+
+	public AnchorPoint getNextAnchorPoint() {
+		return nextAnchorPoint;
+	}
+
+	public void setNextAnchorPoint(AnchorPoint nextAnchorPoint) {
+		this.nextAnchorPoint = nextAnchorPoint;
+	}
+
+	@Override
+	public Object getDataObject() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double getZIndex() {
+		//used?
+		return 0;
+	}
+
+	@Override
+	public boolean isSelected() {
+		// TODO used?
+		return false;
 	}
 	
 	
