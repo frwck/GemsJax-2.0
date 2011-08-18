@@ -23,4 +23,7 @@ public interface Placeable {
 	 */
 	boolean firePlaceEvent(PlaceEvent event);
 	
+	public void setX(double x);
+	public void setY(double y);
+	
 }

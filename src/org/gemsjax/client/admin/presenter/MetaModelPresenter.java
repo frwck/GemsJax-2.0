@@ -288,7 +288,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 				connection.setConnectionBoxWidth(event.getWidth());
 				connection.setConnectionBoxHeight(event.getHeight());
 				
-	
+	/*
 				// Adjust connections coordinate
 				if (connection.getSourceConnectionBoxRelativeX()>event.getWidth())
 					connection.setSourceConnectionBoxRelativeX(event.getWidth());
@@ -301,6 +301,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 				
 				if (connection.getTargetConnectionBoxRelativeY()>event.getHeight())
 					connection.setTargetConnectionBoxRelativeY(event.getHeight());
+					*/
 			}
 			
 			/* TODO needed?
@@ -318,10 +319,11 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 				if (connection.getBNameBoxRelativeY()>event.getHeight())
 					connection.setBNameBoxRelativeY(event.getHeight());
 			}
-			 */
+			*/ 
 			
 			view.redrawMetaModelCanvas();
 		}
+		
 	}
 	
 	

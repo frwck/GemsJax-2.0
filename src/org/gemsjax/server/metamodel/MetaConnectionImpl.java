@@ -6,14 +6,12 @@ import java.util.List;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
-import org.gemsjax.client.metamodel.MetaAttributeImpl;
 import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
-
 
 /**
  * A MetaConnectionImpl is used to represent a connection like association between two {@link MetaClass}es
@@ -29,8 +27,6 @@ public class MetaConnectionImpl implements MetaConnection {
 	private MetaClass target;
 	
 	private MetaClass source;
-	
-	private List<MetaAttribute> attributes;
 	
 	
 	/** The name of this  connection. The name must be unique in the {@link MetaModelImpl */
@@ -57,69 +53,69 @@ public class MetaConnectionImpl implements MetaConnection {
 	private double targetIconHeight;
 	
 	/**
-	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
+	 * The {@link Point} where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
 	 * The source is the {@link MetaClass} which contains this MetaConnection in {@link MetaClass#getConnections()}.
 	 * This coordinate is relative to the source {@link MetaClassDrawable} object on the {@link MetaModelCanvas}.
 	 * That means, that the {@link MetaClassImpl#getX()} is the relative 0 coordinate on the x axis.
 	 * Example:
-	 * If the {@link MetaClassImpl#getX()} has the absolute coordinate 10 and {@link #sourceRelativeX} is 5, so the
-	 * absolute coordinate on the {@link MetaModelCanvas} is 15 and can be computed by add {@link MetaClassImpl#getX()} to aRelativeX
-	 *@see #getSourceRelativeX()
+	 * If the {@link MetaClassImpl#getX()} has the absolute coordinate 10 and {@link #sourceRelativePoint} with {@link Point#x} is 5, so the
+	 * absolute coordinate on the {@link MetaModelCanvas} is 15 and can be computed by add {@link MetaClassImpl#getX()} to {@link Point#x}
+	 *@see #getSourceRelativePoint()
 	 */
-	private double sourceRelativeX;
+	private Point sourceRelativePoint;
 	
-	/**
+	/*
 	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
 	 * See {@link #sourceRelativeX} for more information and a concrete example.
 	 * @see #getSourceRelativeY()
 	 */
-	private double sourceRelativeY;
+	//private double sourceRelativeY;
 	
 	/**
-	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
-	 * See {@link #sourceRelativeX} for more information and a concrete example.
-	 * @see #getTargetRelativeX()
+	 * The {@link Point} where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
+	 * See {@link #sourceRelativePoint} for more information and a concrete example.
+	 * @see #getTargetRelativePoint()
 	 */
-	private double targetRelativeX;
+	private Point targetRelativePoint;
 	
-	/**
+	/*
 	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
 	 * See {@link #sourceRelativeX} for more information and a concrete example.
 	 * @see #getTargetRelativeY()
 	 */
-	private double targetRelativeY;
+	//private double targetRelativeY;
 	
 	/**
-	 * The relative X coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
+	 * The relative Point coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
 	 * where the painted connection line
-	 * (starting from the source with the coordinates {@link #sourceRelativeX} / {@link #sourceRelativeY}) touches
+	 * (starting from the source with the coordinates {@link #sourceRelativePoint}) touches
 	 * the connection box (which displays the {@link #name} and attributes of this Connection.
 	 */
-	private double sourceConnectionBoxRelativeX;
+	private Point sourceConnectionBoxRelativePoint;
 	
-	/**
+	/*
 	 * The relative Y coordinate (according to the absolute coordinate {@link #connectionBoxY}) 
 	 * where the painted connection line
 	 * (starting from the source, coordinates {@link #sourceRelativeX} / {@link #sourceRelativeY}) touches
 	 * the connection box (which displays the {@link #name} and attributes of this Connection.
 	 */
-	private double sourceConnectionBoxRelativeY;
+	//private double sourceConnectionBoxRelativeY;
 	
 	/**
-	 * The relative X coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
+	 * The relative Point  (according to the absolute coordinate {@link #connectionBoxX}) 
 	 * where the painted connection line
 	 * (starting from {@link #target}, coordinates {@link #targetRelativeX} / {@link #targetRelativeY}) touches
 	 * the connection box (which displays the {@link #name} and attributes of this Connection.
 	 */
-	private double targetConnectionBoxRelativeX;
+	private Point targetConnectionBoxRelativePoint;
 	
-	/**
+	/*
 	 * The relative Y coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
 	 * where the painted connection line
 	 * (starting from {@link #target}, coordinates {@link #targetRelativeX} / {@link #targetRelativeY}) touches
 	 * the name box (which displays the {@link #name} and attributes of this Connection.
 	 */
-	private double targetConnectionBoxRelativeY;
+	//private double targetConnectionBoxRelativeY;
 	
 	private String lineColor = "black";
 	
@@ -184,6 +180,7 @@ public class MetaConnectionImpl implements MetaConnection {
 	 */
 	private String fontFamily ="Courier";
 	
+	private List<MetaAttribute> attributes;
 	
 	
 	private List<Point> sourceToBoxPoints;
@@ -200,6 +197,14 @@ public class MetaConnectionImpl implements MetaConnection {
 		this.attributes = new ArrayList<MetaAttribute>();
 		this.sourceToBoxPoints = new ArrayList<Point>();
 		this.boxToTargetPoints = new ArrayList<Point>();
+		
+		//TODO correct id
+		sourceConnectionBoxRelativePoint = new Point("anchorID1",0,10);
+		sourceRelativePoint = new Point("anchorID2", 30, 40);
+		targetConnectionBoxRelativePoint = new Point("anchorID3", 20,80);
+		targetRelativePoint = new Point("anchorID4", 0, 10);
+		
+		
 	}
 	
 
@@ -215,51 +220,6 @@ public class MetaConnectionImpl implements MetaConnection {
 
 
 	
-	@Override
-	public double getSourceRelativeX() {
-		return sourceRelativeX;
-	}
-
-
-	@Override
-	public void setSourceRelativeX(double x) {
-		this.sourceRelativeX = x;
-	}
-
-
-	
-	@Override
-	public double getSourceRelativeY() {
-		return sourceRelativeY;
-	}
-
-	@Override
-	public void setSourceRelativeY(double y) {
-		this.sourceRelativeY = y;
-	}
-
-
-	@Override
-	public double getTargetRelativeX() {
-		return targetRelativeX;
-	}
-
-	@Override
-	public void setTargetRelativeX(double x) {
-		this.targetRelativeX = x;
-	}
-
-
-	@Override
-	public double getTargetRelativeY() {
-		return targetRelativeY;
-	}
-
-
-	@Override
-	public void setTargetRelativeY(double y) {
-		this.targetRelativeY = y;
-	}
 
 
 	@Override
@@ -274,53 +234,6 @@ public class MetaConnectionImpl implements MetaConnection {
 	}
 
 
-
-	@Override
-	public double getSourceConnectionBoxRelativeX() {
-		return sourceConnectionBoxRelativeX;
-	}
-
-
-	@Override
-	public void setSourceConnectionBoxRelativeX(double x) {
-		this.sourceConnectionBoxRelativeX = x;
-	}
-
-
-	@Override
-	public double getSourceConnectionBoxRelativeY() {
-		return sourceConnectionBoxRelativeY;
-	}
-
-
-	@Override
-	public void setSourceConnectionBoxRelativeY(double y) {
-		this.sourceConnectionBoxRelativeY = y;
-	}
-
-
-	@Override
-	public double getTargetConnectionBoxRelativeX() {
-		return targetConnectionBoxRelativeX;
-	}
-
-
-	@Override
-	public void setTargetConnectionBoxRelativeX(double x) {
-		this.targetConnectionBoxRelativeX = x;
-	}
-
-
-	@Override
-	public double getTargetConnectionBoxRelativeY() {
-		return targetConnectionBoxRelativeY;
-	}
-
-
-	@Override
-	public void setTargetConnectionBoxRelativeY(double bNameBoxRelativeY) {
-		this.targetConnectionBoxRelativeY = bNameBoxRelativeY;
-	}
 
 
 	@Override
@@ -658,6 +571,7 @@ public class MetaConnectionImpl implements MetaConnection {
 		this.source = source;
 	}
 
+
 	@Override
 	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException {
 		
@@ -693,6 +607,31 @@ public class MetaConnectionImpl implements MetaConnection {
 	public List<Point> getSourceToBoxAnchorPoints() {
 		return sourceToBoxPoints;
 	}
+
+
+	@Override
+	public Point getSourceConnectionBoxRelativePoint() {
+		return sourceConnectionBoxRelativePoint;
+	}
+
+
+	@Override
+	public Point getSourceRelativePoint() {
+		return sourceRelativePoint;
+	}
+
+
+	@Override
+	public Point getTargetConnectionBoxRelativePoint() {
+		return targetConnectionBoxRelativePoint;
+	}
+
+
+	@Override
+	public Point getTargetRelativePoint() {
+		return targetRelativePoint;
+	}
+
 
 
 }

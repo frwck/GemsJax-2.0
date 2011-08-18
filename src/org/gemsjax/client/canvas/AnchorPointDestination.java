@@ -1,13 +1,16 @@
 package org.gemsjax.client.canvas;
 
+import com.google.gwt.canvas.dom.client.Context2d;
+
 public interface AnchorPointDestination {
 	
 	
 
 	/**
 	 *  Highlight the destination where the AnchorPoint can be moved to in a graphical way on the canvas
+	 *  @param context
 	 */
-	public void highlightDestinationArea();
+	public void highlightDestinationArea(Context2d context);
 	
 	/**
 	 * Checks and Determine, wherever the {@link AnchorPoint} can be moved to

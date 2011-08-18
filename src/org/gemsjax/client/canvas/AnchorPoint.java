@@ -9,7 +9,7 @@ import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.PlaceHandler;
 import org.gemsjax.shared.Point;
-
+import org.gemsjax.client.canvas.events.PlaceEvent;
 import com.google.gwt.canvas.dom.client.Context2d;
 
 
@@ -99,7 +99,7 @@ public class AnchorPoint implements Drawable, Placeable, Focusable{
 		
 		
 		if (selected && destination!= null)
-			destination.highlightDestinationArea();
+			destination.highlightDestinationArea(context);
 	}
 	
 	
@@ -126,11 +126,12 @@ public class AnchorPoint implements Drawable, Placeable, Focusable{
 		return y;
 	}
 
-
+	@Override
 	public void setX(double x) {
 		this.x = x;
 	}
 
+	@Override
 	public void setY(double y) {
 		this.y = y;
 	}

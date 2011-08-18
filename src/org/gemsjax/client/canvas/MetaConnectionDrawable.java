@@ -153,15 +153,15 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 		clickHandlers = new ArrayList<ClickHandler>();
 		moveHandlers = new ArrayList<MoveHandler>();
 		
-		sourceConnectionBoxRelativeX = connection.getSourceConnectionBoxRelativeX();
-		sourceConnectionBoxRelativeY = connection.getSourceConnectionBoxRelativeY();
-		sourceRelativeX = connection.getSourceRelativeX();
-		sourceRelativeY = connection.getSourceConnectionBoxRelativeY();
+		sourceConnectionBoxRelativeX = connection.getSourceConnectionBoxRelativePoint().x;
+		sourceConnectionBoxRelativeY = connection.getSourceConnectionBoxRelativePoint().y;
+		sourceRelativeX = connection.getSourceRelativePoint().x;
+		sourceRelativeY = connection.getSourceConnectionBoxRelativePoint().y;
 		
-		targetConnectionBoxRelativeX = connection.getTargetConnectionBoxRelativeX();
-		targetConnectionBoxRelativeY = connection.getTargetConnectionBoxRelativeY();
-		targetRelativeX = connection.getTargetRelativeX();
-		targetRelativeY = connection.getTargetRelativeY();
+		targetConnectionBoxRelativeX = connection.getTargetConnectionBoxRelativePoint().x;
+		targetConnectionBoxRelativeY = connection.getTargetConnectionBoxRelativePoint().y;
+		targetRelativeX = connection.getTargetRelativePoint().x;
+		targetRelativeY = connection.getTargetRelativePoint().y;
 		
 		setMetaClassA(metaClassA);
 		setMetaClassB(metaClassB);
@@ -211,7 +211,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 	
 		// linear function 
 		// y = m*x + b
-		
+		/*
 		// For the line between MetaClass A and NameBox
 		double y2 = connection.getSource().getY() + connection.getSourceRelativeY() ;
 		double y1 = connection.getConnectionBoxY() + connection.getSourceConnectionBoxRelativeY();
@@ -246,7 +246,8 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 			Window.alert("Connection clicked");
 		
 		return onBToNameBox;
-		
+		*/
+		return false;
 	}
 
 	

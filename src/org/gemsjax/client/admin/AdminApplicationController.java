@@ -153,15 +153,15 @@ public class AdminApplicationController {
 			con.setConnectionBoxHeight(50);
 			con.setConnectionBoxWidth(80);
 			
-			con.setSourceConnectionBoxRelativeX(0);
-			con.setSourceConnectionBoxRelativeY(0);
-			con.setSourceRelativeX(0);
-			con.setSourceRelativeY(0);
+			con.getSourceConnectionBoxRelativePoint().x = 0;
+			con.getSourceConnectionBoxRelativePoint().y = 10;
+			con.getSourceRelativePoint().x = 0;
+			con.getSourceRelativePoint().y = 0;
 			
-			con.setTargetConnectionBoxRelativeX(con.getConnectionBoxWidth());
-			con.setTargetConnectionBoxRelativeY(20);
-			con.setTargetRelativeX(0);
-			con.setTargetRelativeY(0);
+			con.getTargetConnectionBoxRelativePoint().x=(con.getConnectionBoxWidth());
+			con.getTargetConnectionBoxRelativePoint().y = 20;
+			con.getTargetRelativePoint().x =0;;
+			con.getTargetRelativePoint().y=0;
 			
 			
 			

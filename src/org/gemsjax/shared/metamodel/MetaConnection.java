@@ -149,7 +149,7 @@ public interface MetaConnection extends MetaModelElement{
 	public void setSourceIconHeight(double height);
 	
 	/**
-	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
+	 * The {@link Point} coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
 	 * The source is the {@link MetaClass} which contains this MetaConnection in {@link MetaClass#getConnections()}.
 	 * This coordinate is relative to the source {@link MetaClassDrawable} object on the {@link MetaModelCanvas}.
 	 * That means, that the {@link MetaClassImpl#getX()} is the relative 0 coordinate on the x axis.
@@ -158,7 +158,7 @@ public interface MetaConnection extends MetaModelElement{
 	 * absolute coordinate on the {@link MetaModelCanvas} is 15 and can be computed by add {@link MetaClassImpl#getX()} to aRelativeX
 	 * @return
 	 */
-	public double getSourceRelativeX();
+	public Point getSourceRelativePoint();
 	
 	/**
 	 * Get the width of a single char for attributes.
@@ -193,30 +193,30 @@ public interface MetaConnection extends MetaModelElement{
 	public int getNameFontSize();
 	
 	/**
-	 * The relative X coordinate (according to the absolute coordinate {@link #nameBoxX}) 
+	 * The relative Point coordinate (according to the absolute coordinate {@link #nameBoxX}) 
 	 * where the painted connection line
 	 * (starting from the source with the coordinates {@link #getSourceRelativeX()} / {@link #getsourceRelativeY()}) touches
 	 * the connection box (which displays the {@link #getName()} and attributes of this Connection.
 	 * @return
 	 */
-	public double getSourceConnectionBoxRelativeX();
+	public Point getSourceConnectionBoxRelativePoint();
 	
-	/**
+	/*
 	 * The relative X coordinate (according to the absolute coordinate {@link #nameBoxX}) 
 	 * where the painted connection line
 	 * (starting from the source with the coordinates {@link #getSourceRelativeX()} / {@link #getSourceRelativeY()}) touches
 	 * the connection box (which displays the {@link #getName()} and attributes of this Connection.
 	 * @return
 	 */
-	public double getSourceConnectionBoxRelativeY();
+	//public double getSourceConnectionBoxRelativeY();
 	
 	
-	/**
+	/*
 	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
 	 * See {@link #getSourceRelativeX()} for more information and a concrete example.
 	 * @see #getSourceRelativeY()
 	 */
-	public double getSourceRelativeY();
+	//public double getSourceRelativeY();
 	
 	/**
 	 * The background color gradient end color
@@ -263,35 +263,35 @@ public interface MetaConnection extends MetaModelElement{
 	public double getConnectionBoxY() ;
 	
 	/**
-	 * The relative X coordinate (according to the absolute coordinate {@link #getConnectionBoxX()}) 
+	 * The relative {@link Point} coordinate (according to the absolute coordinate {@link #getConnectionBoxX()}) 
 	 * where the painted connection line
-	 * (starting from {@link #getTarget()}, coordinates {@link #getTargetRelativeX()} / {@link #getTargetRelativeY()}) touches
+	 * (starting from {@link #getTarget()}, coordinates {@link #getTargetRelativePoint()} / {@link #getTargetRelativeY()}) touches
 	 * the connection box (which displays the name and attributes of this Connection.
 	 */
-	public double getTargetConnectionBoxRelativeX();
+	public Point getTargetConnectionBoxRelativePoint();
 	
-	/**
+	/*
 	 * The relative Y coordinate (according to the absolute coordinate {@link #getConnectionBoxX()}) 
 	 * where the painted connection line
-	 * (starting from {@link #getTarget()}, coordinates {@link #getTargetRelativeX()} / {@link #getTargetRelativeY()}) touches
+	 * (starting from {@link #getTarget()}, coordinates {@link #getTargetRelativePoint()} ) touches
 	 * the connection box (which displays the name and attributes of this Connection.
 	 */
-	public double getTargetConnectionBoxRelativeY();
+	//public double getTargetConnectionBoxRelativeY();
 	
 	
 	/**
 	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the target.
 	 * See {@link #getSourceRelativeX()} for more information and a concrete example.
-	 * @see #getTargetRelativeX()
+	 * @see #getTargetRelativePoint()
 	 */
-	public double getTargetRelativeX();
+	public Point getTargetRelativePoint();
 	
-	/**
+	/*
 	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the target.
 	 * See {@link #getSourceRelativeX()} for more information and a concrete example.
-	 * @see #getTargetRelativeX()
+	 * @see #getTargetRelativePoint()
 	 */
-	public double getTargetRelativeY();
+	//public double getTargetRelativeY();
 	
 	/**
 	 * For overlapping, same functionality as CSS z index
@@ -365,53 +365,53 @@ public interface MetaConnection extends MetaModelElement{
 	
 	public void setSelected(boolean selected);
 	
-	/**
+	/*
 	 * @see #getSourceConnectionBoxRelativeX()
 	 * @param x
 	 */
-	public void setSourceConnectionBoxRelativeX(double x);
+	//public void setSourceConnectionBoxRelativeX(double x);
 	
-	/**
+	/*
 	 * @see #getSourceConnectionBoxRelativeY()
 	 * @param y
 	 */
-	public void setSourceConnectionBoxRelativeY(double y);
+	//public void setSourceConnectionBoxRelativeY(double y);
 	
-	/**
+	/*
 	 * @see #getSourceRelativeX()
 	 * @param x
 	 */
-	public void setSourceRelativeX(double x);
+	//public void setSourceRelativeX(double x);
 	
-	/**
+	/*
 	 * @see #getSourceRelativeY()
 	 * @param y
 	 */
-	public void setSourceRelativeY(double y);
+	//public void setSourceRelativeY(double y);
 	
-	/**
+	/*
 	 * @see #getTargetConnectionBoxRelativeX()
 	 * @param x
 	 */
-	public void setTargetConnectionBoxRelativeX(double x);
+	//public void setTargetConnectionBoxRelativeX(double x);
 	
-	/**
+	/*
 	 * @see #getTargetConnectionBoxRelativeY()
 	 * @param bNameBoxRelativeY
 	 */
-	public void setTargetConnectionBoxRelativeY(double bNameBoxRelativeY) ;
+	//public void setTargetConnectionBoxRelativeY(double bNameBoxRelativeY) ;
 	
-	/**
-	 * @see #getTargetRelativeX()
+	/*
+	 * @see #getTargetRelativePoint()
 	 * @param x
 	 */
-	public void setTargetRelativeX(double x);
+	//public void setTargetRelativeX(double x);
 	
-	/**
+	/*
 	 * @see #getTargetRelativeY()
 	 * @param y
 	 */
-	public void setTargetRelativeY(double y);
+	//public void setTargetRelativeY(double y);
 	
 	/**
 	 * @see #getZIndex()
