@@ -1,17 +1,40 @@
 package org.gemsjax.client.canvas;
 
-import org.gemsjax.client.canvas.handler.MoveHandler;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.gemsjax.client.canvas.events.FocusEvent;
+import org.gemsjax.client.canvas.events.MoveEvent;
+import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
+import org.gemsjax.client.canvas.handler.FocusHandler;
+import org.gemsjax.client.canvas.handler.PlaceHandler;
+import org.gemsjax.shared.Point;
+
 import com.google.gwt.canvas.dom.client.Context2d;
 
 
 /**
- * 
+ * {@link AnchorPoint} represents a Point that is displayed on the {@link MetaModelCanvas} and {@link ModelCanvas}.
+ * A AnchorPoint is used to draw "agile" Connection between {@link Drawable} objects like {@link MetaClassDrawable}.
+ * "Agile" connection means, that the user can set with the mouse the points (with {@link AnchorPoint}s) where the line of the connection goes by.
  * @author Hannes Dorfmann
  *
  */
-public class AnchorPoint implements Drawable{
+public class AnchorPoint implements Drawable, Placeable, Focusable{
 	
+	/**
+	 * The current x coordinate.
+	 * <b>Notice:</b> If {@link AnchorPointDestination} is not null, than this coordinate is a relative coordinate.
+	 * The absolute coordinate can be computed by {@link #x} + {@link AnchorPointDestination#getX()}
+	 * @see #point
+	 */
 	private double x;
+	/**
+	 * The current y coordinate.
+	 *  <b>Notice:</b> If {@link AnchorPointDestination} is not null, than this coordinate is a relative coordinate.
+	 * The absolute coordinate can be computed by {@link #y} + {@link AnchorPointDestination#getY()}
+	 * @see #point
+	 */
 	private double y;
 	private double width = 6;
 	private double height = 6;
@@ -23,20 +46,60 @@ public class AnchorPoint implements Drawable{
 	
 	private AnchorPoint nextAnchorPoint;
 	
-	public AnchorPoint(double x, double y, AnchorPointDestination destination)
+	private List<PlaceHandler> placeHandlers;
+	private List<FocusHandler> focusHandlers;
+	
+	
+	/**
+	 * The Point, that is displayed with this {@link AnchorPoint}.
+	 * <b>Note</b> The Point's coordinates itself are only set, when the Mouse was released via the corresponding presenter.
+	 * {@link #x} and {@link #y} are the current coordinate, which are used to display the object and animations (for example move the AnchorPoint with the mouse),
+	 * so {@link #x} and {@link #y} are set permanently, but the {@link #point} itself is only set when the 
+	 * {@link MoveEvent} with the {@link MoveEventType#MOVE_FINISHED} is received (in the Presenter)
+	 */
+	private Point point;
+	
+	private boolean selected;
+	
+	/**
+	 * 
+	 * @param point
+	 * @param destination If destination == null than this AnchorPoint can be placed freely on the canvas, otherwise it can be only placed where {@link AnchorPointDestination#canAnchorPointBePlacedAt(double, double)} == true.
+	 * That is the case, if you want to create an {@link AnchorPoint} for the source (or target) Drawable.
+	 * That also indicates, that the {@link #x} and {@link #y} coordinates are relative coordinates according to the source (or targets) current coordinates which can be computed to 
+	 * absolute coordinates via {@link AnchorPointDestination#getX()} + #x and {@link AnchorPointDestination#getY()} + {@link #y}
+	 */
+	public AnchorPoint(Point point, AnchorPointDestination destination)
 	{
-		this.x = x;
-		this.y = y;
+
+		placeHandlers = new ArrayList<PlaceHandler>();
+		
+		this.point = point;
+		this.x = point.x;
+		this.y = point.y;
 		this.setDestination(destination);
+		this.selected = false;
 	}
 
 	public void draw(Context2d context) {
+		double x = this.x , y= this.y;
+		
+		if (destination != null) // than the current x
+		{
+			x = destination.getX() + this.x;
+			y = destination.getY() + this.y;
+		}
+		
 		
 		context.setFillStyle(borderColor);
 		context.fillRect(x, y, width, height);
 		
 		context.setFillStyle(backgroundColor);
 		context.fillRect(x+borderWeight, y+borderWeight, width-2*borderWeight, height-2*borderWeight);
+		
+		
+		if (selected && destination!= null)
+			destination.highlightDestinationArea();
 	}
 	
 	
@@ -94,8 +157,7 @@ public class AnchorPoint implements Drawable{
 
 	@Override
 	public Object getDataObject() {
-		// TODO Auto-generated method stub
-		return null;
+		return point;
 	}
 
 	@Override
@@ -106,8 +168,61 @@ public class AnchorPoint implements Drawable{
 
 	@Override
 	public boolean isSelected() {
-		// TODO used?
-		return false;
+		return selected;
+	}
+	
+	public void setSelected(boolean selected)
+	{
+		this.selected = selected;
+	}
+
+	@Override
+	public void addPlaceHandler(PlaceHandler handler) {
+		if (!placeHandlers.contains(handler))
+			placeHandlers.add(handler);
+	}
+
+	@Override
+	public boolean firePlaceEvent(PlaceEvent event) {
+		boolean delivered = false;
+		
+		for (PlaceHandler h : placeHandlers)
+		{
+			h.onPlaceEvent(event);
+			delivered = true;
+		}
+		
+		return delivered;
+	}
+
+	@Override
+	public void removePlaceHandler(PlaceHandler handler) {
+		placeHandlers.remove(handler);
+	}
+
+	@Override
+	public void addFocusHandler(FocusHandler handler) {
+		if (!focusHandlers.contains(handler))
+			focusHandlers.add(handler);
+	}
+
+	@Override
+	public boolean fireFocusEvent(FocusEvent event) {
+		boolean delivered = false;
+		
+		for (FocusHandler h : focusHandlers)	
+		{
+			h.onFocusEvent(event);
+			delivered = true;
+		}
+		
+		return delivered;
+	}
+
+	@Override
+	public void removeFocusHandler(FocusHandler handler) {
+		
+		focusHandlers.remove(handler);
 	}
 	
 	

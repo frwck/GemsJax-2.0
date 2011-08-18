@@ -126,6 +126,12 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Fo
 	private List<MoveHandler> moveHandlers;
 	
 	
+	private List<AnchorPoint> sourceToBoxAnchorPoints;
+	private List<AnchorPoint> boxToTargetAnchorPoints;
+	
+	
+	
+	
 	
 	/**
 	 * Creates {@link Drawable} that displays a {@link MetaConnectionImpl}.
