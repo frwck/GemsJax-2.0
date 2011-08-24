@@ -171,7 +171,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		if (event.getSource() instanceof MetaClassDrawable)
 			onMetaClassResizeEvent((MetaClass) ((Drawable)event.getSource()).getDataObject(), event);
 		else
-		if (event.getSource() instanceof MetaConnectionBox)
+		if (event.getSource() instanceof MetaConnectionDrawable)
 			onMetaConnectionResizeEvent((MetaConnection) ((Drawable)event.getSource()).getDataObject(), event);
 	}
 
@@ -182,7 +182,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		if (e.getSource() instanceof MetaClassDrawable)
 			onMetaClassMoveEvent((MetaClass) ((Drawable)e.getSource()).getDataObject(), e);
 		else
-		if (e.getSource() instanceof MetaConnectionBox)
+		if (e.getSource() instanceof MetaConnectionDrawable)
 			onMetaConnectionMoveEvent((MetaConnection) ((Drawable)e.getSource()).getDataObject(), e);
 		
 	}
@@ -281,7 +281,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	
 	private void onMetaConnectionResizeEvent(MetaConnection connection, ResizeEvent event)
 	{
-		Resizeable d = event.getSource();
+		MetaConnectionDrawable d = (MetaConnectionDrawable)event.getSource();
 		
 		if (event.getWidth()>d.getMinWidth() && event.getHeight()>d.getMinHeight())
 		{
@@ -290,6 +290,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			d.setHeight(event.getHeight());
 			
 			
+			d.adjustConnectionBoxAnchors();
 			
 			
 			
@@ -298,22 +299,10 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 				connection.setConnectionBoxWidth(event.getWidth());
 				connection.setConnectionBoxHeight(event.getHeight());
 				
+				
 				// TODO collaborative websocket info
 				
-	/*
-				// Adjust connections coordinate
-				if (connection.getSourceConnectionBoxRelativeX()>event.getWidth())
-					connection.setSourceConnectionBoxRelativeX(event.getWidth());
-				
-				if (connection.getSourceConnectionBoxRelativeY()>event.getHeight())
-					connection.setSourceConnectionBoxRelativeY(event.getHeight());
-				
-				if (connection.getTargetConnectionBoxRelativeX()>event.getWidth())
-					connection.setTargetConnectionBoxRelativeX(event.getWidth());
-				
-				if (connection.getTargetConnectionBoxRelativeY()>event.getHeight())
-					connection.setTargetConnectionBoxRelativeY(event.getHeight());
-					*/
+
 			}
 			
 			/* TODO needed?

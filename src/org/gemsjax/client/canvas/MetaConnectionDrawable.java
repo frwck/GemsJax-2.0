@@ -40,71 +40,7 @@ import com.google.gwt.user.client.Window;
 public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, ResizeHandler, MoveHandler {
 	
 	
-	
-	/**
-	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
-	 * The source is the {@link MetaClass} which contains this MetaConnection in {@link MetaClass#getConnections()}.
-	 * This coordinate is relative to the source {@link MetaClassDrawable} object on the {@link MetaModelCanvas}.
-	 * That means, that the {@link MetaClassImpl#getX()} is the relative 0 coordinate on the x axis.
-	 * Example:
-	 * If the {@link MetaClassImpl#getX()} has the absolute coordinate 10 and {@link #sourceRelativeX} is 5, so the
-	 * absolute coordinate on the {@link MetaModelCanvas} is 15 and can be computed by add {@link MetaClassImpl#getX()} to aRelativeX
-	 *@see #getSourceRelativeX()
-	 */
-	private double sourceRelativeX;
-	
-	/**
-	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
-	 * See {@link #sourceRelativeX} for more information and a concrete example.
-	 * @see #getSourceRelativeY()
-	 */
-	private double sourceRelativeY;
-	
-	/**
-	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
-	 * See {@link #sourceRelativeX} for more information and a concrete example.
-	 * @see #getTargetRelativeX()
-	 */
-	private double targetRelativeX;
-	
-	/**
-	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
-	 * See {@link #sourceRelativeX} for more information and a concrete example.
-	 * @see #getTargetRelativeY()
-	 */
-	private double targetRelativeY;
-	
-	/**
-	 * The relative X coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
-	 * where the painted connection line
-	 * (starting from the source with the coordinates {@link #sourceRelativeX} / {@link #sourceRelativeY}) touches
-	 * the connection box (which displays the {@link #name} and attributes of this Connection.
-	 */
-	private double sourceConnectionBoxRelativeX;
-	
-	/**
-	 * The relative Y coordinate (according to the absolute coordinate {@link #connectionBoxY}) 
-	 * where the painted connection line
-	 * (starting from the source, coordinates {@link #sourceRelativeX} / {@link #sourceRelativeY}) touches
-	 * the connection box (which displays the {@link #name} and attributes of this Connection.
-	 */
-	private double sourceConnectionBoxRelativeY;
-	
-	/**
-	 * The relative X coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
-	 * where the painted connection line
-	 * (starting from {@link #target}, coordinates {@link #targetRelativeX} / {@link #targetRelativeY}) touches
-	 * the connection box (which displays the {@link #name} and attributes of this Connection.
-	 */
-	private double targetConnectionBoxRelativeX;
-	
-	/**
-	 * The relative Y coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
-	 * where the painted connection line
-	 * (starting from {@link #target}, coordinates {@link #targetRelativeX} / {@link #targetRelativeY}) touches
-	 * the name box (which displays the {@link #name} and attributes of this Connection.
-	 */
-	private double targetConnectionBoxRelativeY;
+
 	
 	
 
@@ -165,16 +101,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		clickHandlers = new ArrayList<ClickHandler>();
 		moveHandlers = new ArrayList<MoveHandler>();
 		resizeHandlers = new ArrayList<ResizeHandler>();
-		
-		sourceConnectionBoxRelativeX = connection.getSourceConnectionBoxRelativePoint().x;
-		sourceConnectionBoxRelativeY = connection.getSourceConnectionBoxRelativePoint().y;
-		sourceRelativeX = connection.getSourceRelativePoint().x;
-		sourceRelativeY = connection.getSourceConnectionBoxRelativePoint().y;
-		
-		targetConnectionBoxRelativeX = connection.getTargetConnectionBoxRelativePoint().x;
-		targetConnectionBoxRelativeY = connection.getTargetConnectionBoxRelativePoint().y;
-		targetRelativeX = connection.getTargetRelativePoint().x;
-		targetRelativeY = connection.getTargetRelativePoint().y;
+
 		
 		setMetaClassA(metaClassA);
 		setMetaClassB(metaClassB);
@@ -200,11 +127,11 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		context.setFillStyle(connection.getLineColor());
 		context.setLineWidth(connection.getLineSize());
 		
-		context.moveTo(source.getX() + getSourceRelativeX(), source.getY() + getSourceRelativeY());
-		context.lineTo( connectionBox.getX()+ getSourceConnectionBoxRelativeX(), connectionBox.getY()+ getSourceConnectionBoxRelativeY());
+		context.moveTo(source.getX() + sourceAnchorPoint.getX(), source.getY() + sourceAnchorPoint.getY());
+		context.lineTo( connectionBox.getX()+ sourceConnectionBoxAnchorPoint.getX(), connectionBox.getY()+ sourceConnectionBoxAnchorPoint.getY());
 		
-		context.moveTo(target.getX() + getTargetRelativeX(), target.getY() + getTargetRelativeY());
-		context.lineTo(connectionBox.getX() + getTargetConnectionBoxRelativeX(), connectionBox.getY() + getTargetConnectionBoxRelativeY());
+		context.moveTo(target.getX() + targetAnchorPoint.getX(), target.getY() + targetAnchorPoint.getY());
+		context.lineTo(connectionBox.getX() + targetConnectionBoxAnchorPoint.getX(), connectionBox.getY() + targetConnectionBoxAnchorPoint.getY());
 	
 		
 		context.stroke();
@@ -489,84 +416,6 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	}
 
 
-	public double getSourceRelativeX() {
-		return sourceRelativeX;
-	}
-
-
-	public void setSourceRelativeX(double sourceRelativeX) {
-		this.sourceRelativeX = sourceRelativeX;
-	}
-
-
-	public double getSourceRelativeY() {
-		return sourceRelativeY;
-	}
-
-
-	public void setSourceRelativeY(double sourceRelativeY) {
-		this.sourceRelativeY = sourceRelativeY;
-	}
-
-
-	public double getTargetRelativeX() {
-		return targetRelativeX;
-	}
-
-
-	public void setTargetRelativeX(double targetRelativeX) {
-		this.targetRelativeX = targetRelativeX;
-	}
-
-
-	public double getTargetRelativeY() {
-		return targetRelativeY;
-	}
-
-
-	public void setTargetRelativeY(double targetRelativeY) {
-		this.targetRelativeY = targetRelativeY;
-	}
-
-
-	public double getSourceConnectionBoxRelativeX() {
-		return sourceConnectionBoxRelativeX;
-	}
-
-
-	public void setSourceConnectionBoxRelativeX(double sourceConnectionBoxRelativeX) {
-		this.sourceConnectionBoxRelativeX = sourceConnectionBoxRelativeX;
-	}
-
-
-	public double getSourceConnectionBoxRelativeY() {
-		return sourceConnectionBoxRelativeY;
-	}
-
-
-	public void setSourceConnectionBoxRelativeY(double sourceConnectionBoxRelativeY) {
-		this.sourceConnectionBoxRelativeY = sourceConnectionBoxRelativeY;
-	}
-
-
-	public double getTargetConnectionBoxRelativeX() {
-		return targetConnectionBoxRelativeX;
-	}
-
-
-	public void setTargetConnectionBoxRelativeX(double targetConnectionBoxRelativeX) {
-		this.targetConnectionBoxRelativeX = targetConnectionBoxRelativeX;
-	}
-
-
-	public double getTargetConnectionBoxRelativeY() {
-		return targetConnectionBoxRelativeY;
-	}
-
-
-	public void setTargetConnectionBoxRelativeY(double targetConnectionBoxRelativeY) {
-		this.targetConnectionBoxRelativeY = targetConnectionBoxRelativeY;
-	}
 
 
 	@Override
@@ -643,6 +492,98 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	@Override
 	public double getMinWidth() {
 		return connectionBox.getMinWidth();
+	}
+	
+	
+	/**
+	 * Automatically adjust the coordinates of the {@link #sourceConnectionBoxAnchorPoint} and {@link #targetConnectionBoxAnchorPoint}.
+	 * This must always be called, when the width or the height has been changed.
+	 */
+	public void adjustConnectionBoxAnchors()
+	{
+		
+		if (sourceConnectionBoxAnchorPoint.getY() > getHeight())
+			sourceConnectionBoxAnchorPoint.setY(getHeight());
+		
+		if (sourceConnectionBoxAnchorPoint.getX()> getWidth())
+			sourceConnectionBoxAnchorPoint.setX(getWidth());
+		
+		
+		if (sourceConnectionBoxAnchorPoint.getY()<getHeight() && sourceConnectionBoxAnchorPoint.getY() > 0)
+			if (sourceConnectionBoxAnchorPoint.getX()>0 && sourceConnectionBoxAnchorPoint.getX()<getWidth())
+				sourceConnectionBoxAnchorPoint.setX(getWidth());
+
+
+		if (sourceConnectionBoxAnchorPoint.getX()<getWidth() && sourceConnectionBoxAnchorPoint.getX()>0)
+			if (sourceConnectionBoxAnchorPoint.getY()>0 && sourceConnectionBoxAnchorPoint.getY()<getHeight())
+				sourceConnectionBoxAnchorPoint.setY(getHeight());
+		
+		
+		
+		
+		if (targetConnectionBoxAnchorPoint.getY() > getHeight())
+			targetConnectionBoxAnchorPoint.setY(getHeight());
+		
+		if (targetConnectionBoxAnchorPoint.getX()> getWidth())
+			targetConnectionBoxAnchorPoint.setX(getWidth());
+		
+		
+		if (targetConnectionBoxAnchorPoint.getY()<getHeight() && targetConnectionBoxAnchorPoint.getY()>0)
+			if (targetConnectionBoxAnchorPoint.getX()>0 && targetConnectionBoxAnchorPoint.getX()<getWidth())
+				targetConnectionBoxAnchorPoint.setX(getWidth());
+		
+
+		if (targetConnectionBoxAnchorPoint.getX()<getWidth() && targetConnectionBoxAnchorPoint.getX()>0)
+			if (targetConnectionBoxAnchorPoint.getY()>0 && targetConnectionBoxAnchorPoint.getY()<getHeight())
+				targetConnectionBoxAnchorPoint.setY(getHeight());
+	}
+
+
+
+
+
+	public List<AnchorPoint> getSourceToBoxAnchorPoints() {
+		return sourceToBoxAnchorPoints;
+	}
+
+
+
+
+
+	public List<AnchorPoint> getBoxToTargetAnchorPoints() {
+		return boxToTargetAnchorPoints;
+	}
+
+
+
+
+
+	public AnchorPoint getSourceAnchorPoint() {
+		return sourceAnchorPoint;
+	}
+
+
+
+
+
+	public AnchorPoint getSourceConnectionBoxAnchorPoint() {
+		return sourceConnectionBoxAnchorPoint;
+	}
+
+
+
+
+
+	public AnchorPoint getTargetAnchorPoint() {
+		return targetAnchorPoint;
+	}
+
+
+
+
+
+	public AnchorPoint getTargetConnectionBoxAnchorPoint() {
+		return targetConnectionBoxAnchorPoint;
 	}
 
 }
