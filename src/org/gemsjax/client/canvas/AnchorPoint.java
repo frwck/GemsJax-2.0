@@ -110,13 +110,22 @@ public class AnchorPoint implements Placeable, Focusable{
 	
 	public boolean hasCoordinate(double x, double y)
 	{
-		if (isBetween(this.x, this.x+width,x) && isBetween(this.y, this.y+height,y))
+		if (isBetween(this.x-(width/2), this.x+(width/2),x) && isBetween(this.y-(height/2), this.y+(height/2),y))
 			return true;
 		else
 			return false;
 	}
 
 
+	public double getWidth()
+	{
+		return width;
+	}
+	
+	public double getHeight()
+	{
+		return height;
+	}
 
 	public double getX() {
 		return x;
@@ -146,6 +155,10 @@ public class AnchorPoint implements Placeable, Focusable{
 		return destination;
 	}
 
+	/**
+	 * Get the next {@link AnchorPoint}
+	 * @return The next {@link AnchorPoint} or null if we are at the end
+	 */
 	public AnchorPoint getNextAnchorPoint() {
 		return nextAnchorPoint;
 	}

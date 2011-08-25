@@ -2,9 +2,11 @@ package org.gemsjax.client.canvas;
 
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
+import org.gemsjax.client.canvas.events.PlaceEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
+import org.gemsjax.client.canvas.events.PlaceEvent.PlaceEventType;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.shared.metamodel.MetaModelElement;
 
@@ -19,6 +21,7 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.smartgwt.client.util.SC;
 
 
 /**
@@ -137,7 +140,11 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	
 	private boolean placing;
 	
-	private AnchorPoint currentAnchorPoint;
+	/**
+	 * Is used to dertermine, which {@link Placeable} is already in use by the mouse cursor.
+	 * Normally this is a AnchorPoint
+	 */
+	private AnchorPoint currentPlaceable;
 	
 	private EditingMode editingMode;
 	
@@ -270,10 +277,18 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 				
 				//  Moveable				
-				if (currentMouseDownDrawable!=null && currentMouseDownDrawable instanceof Moveable)
+				if (currentMouseDownDrawable!=null && currentMouseDownDrawable instanceof Moveable )
 				{
 					mouseDownInitialXDistance = event.getX() - ((Moveable)currentMouseDownDrawable).getX();
 					mouseDownInitialYDistance = event.getY() - ((Moveable)currentMouseDownDrawable).getY();
+				}
+				
+				
+				// Has Placeable (normaly used for the AnchorPoints)
+				if (currentMouseDownDrawable!=null && currentMouseDownDrawable instanceof HasPlaceable)
+				{
+					this.currentPlaceable = ((HasPlaceable)currentMouseDownDrawable).hasPlaceableAt(event.getX(), event.getY());
+					SC.logWarn("Anchor Point "+currentPlaceable);
 				}
 				 
 			break; // End NORMAL
@@ -310,15 +325,29 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		
 				
 		
+				
+				
+				
+				if (currentMouseDownDrawable != null &&  currentMouseDownDrawable instanceof HasPlaceable && currentPlaceable instanceof Placeable && currentPlaceable != null)
+				{
+					placing = true;
+					PlaceEvent e = new PlaceEvent(currentPlaceable, PlaceEventType.TEMP_PLACING, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
+					
+					currentPlaceable.firePlaceEvent(e);
+					return;
+				}
+				
+				
+				
 				// MoveEvent
 				if (currentMouseDownDrawable instanceof Moveable && isMouseDown)
 				{
 					moving = true;
 					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.TEMP_MOVE, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
-		
+			
 					((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
 					
-					return; // Break at this point
+					return;
 				}
 				
 				
@@ -326,38 +355,6 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 		} // END switch
 
-
-
-
-		/*
-		if (isMouseDown && currentMouseDownDrawable != null)
-		{
-			
-			
-			
-			// Move Drawables	
-			if (currentMouseDownDrawable==null || !currentMouseDownDrawable.isMoveable()) return;
-			
-			
-			// TODO	Prevent that a Drawable can be moved outside the Canvasdouble x, double y
-			
-			/*
-			double distanceToLeft, distanceToRight, distanceToTop, distanceToBottom;
-			
-			distanceToLeft =event.getX() - currentMouseDownDrawable.getX();
-			distanceToRight = currentMouseDownDrawable.getX() - event.getX();
-			distanceToTop = event.getY() - currentMouseDownDrawable.getY();
-			distanceToBottom = currentMouseDownDrawable.getY() - event.getY();
-			
-			
-			
-			//if (event.getX()>=distanceToLeft )
-			for (MoveHandler h : currentMouseDownDrawable.getMoveHandlers())
-				h.onMove(mouseDownInitialDrawableX+(event.getX()-mouseDownX), mouseDownInitialDrawableY+(event.getY()-mouseDownY));
-			
-			
-		}
-		*/
 	}
 
 
@@ -393,6 +390,8 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 					}
 				}
 				
+				
+				
 			break; // END editing mode
 		
 		} // End NORMAL
@@ -404,7 +403,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		placing = false;
 		currentMouseDownDrawable = null;
 		currentResizeArea = null;
-		currentAnchorPoint = null;
+		currentPlaceable = null;
 		
 	}
 

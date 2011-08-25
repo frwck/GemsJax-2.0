@@ -4,6 +4,7 @@ package org.gemsjax.client.admin.presenter;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.view.MetaModelView;
+import org.gemsjax.client.canvas.AnchorPoint;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaConnectionBox;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
@@ -18,6 +19,7 @@ import org.gemsjax.client.canvas.events.IconLoadEvent;
 import org.gemsjax.client.canvas.events.MouseOutEvent;
 import org.gemsjax.client.canvas.events.MouseOverEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
+import org.gemsjax.client.canvas.events.PlaceEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
@@ -28,6 +30,7 @@ import org.gemsjax.client.canvas.handler.IconLoadHandler;
 import org.gemsjax.client.canvas.handler.MouseOutHandler;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
+import org.gemsjax.client.canvas.handler.PlaceHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
@@ -43,7 +46,7 @@ import com.smartgwt.client.widgets.tab.Tab;
  * @author Hannes Dorfmann
  *
  */
-public class MetaModelPresenter extends Presenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler{
+public class MetaModelPresenter extends Presenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler, PlaceHandler{
 	
 	private MetaModel metaModel;
 	private MetaModelView view;
@@ -131,6 +134,29 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					d.addMoveHandler(this);
 					d.addResizeHandler(this);
 					d.addFocusHandler(this);
+					
+					// Add PlaceHandler to the AnchorPoints between source and Connection box
+					AnchorPoint p = d.getSourceAnchorPoint();
+					
+					while (p!=d.getSourceConnectionBoxAnchorPoint())
+					{
+						p.addPlaceHandler(this);
+						p = p.getNextAnchorPoint();
+					}
+					
+					d.getSourceConnectionBoxAnchorPoint().addPlaceHandler(this);
+					
+					
+					// Add PlaceHandler to the AnchorPoints between connection box and target
+					p = d.getTargetConnectionBoxAnchorPoint();
+					
+					while (p!=d.getTargetAnchorPoint())
+					{
+						p.addPlaceHandler(this);
+						p = p.getNextAnchorPoint();
+					}
+					
+					d.getTargetAnchorPoint().addPlaceHandler(this);
 					
 					view.addDrawable(d);
 				
@@ -323,6 +349,24 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 
 	@Override
 	public void onIconLoaded(IconLoadEvent e) {
+		
+		view.redrawMetaModelCanvas();
+	}
+
+
+	@Override
+	public void onPlaceEvent(PlaceEvent event) {
+	
+		if (event.getSource() instanceof AnchorPoint && event.getParent() instanceof MetaConnectionDrawable)
+			onMetaConnectionAnchorPoint((AnchorPoint) event.getSource() , event);
+	}
+	
+	
+	
+	private void onMetaConnectionAnchorPoint(AnchorPoint p, PlaceEvent e)
+	{
+		p.setX(e.getX());
+		p.setY(e.getY());
 		
 		view.redrawMetaModelCanvas();
 	}

@@ -1,5 +1,6 @@
 package org.gemsjax.client.canvas.events;
 
+import org.gemsjax.client.canvas.HasPlaceable;
 import org.gemsjax.client.canvas.Placeable;
 import org.gemsjax.client.canvas.handler.PlaceHandler;
 
@@ -33,19 +34,23 @@ public class PlaceEvent {
 	private double x;
 	private double y;
 	
+	private HasPlaceable parent;
+	
 	/**
 	 * 
 	 * @param source
 	 * @param type
 	 * @param x The absolute x coordinate on the canvas
 	 * @param y  The absolute y coordinate on the canvas
+	 * @param The parent ( {@link HasPlaceable}) which contains the source {@link Placeable}
 	 */
-	public PlaceEvent(Placeable source, PlaceEventType type, double x, double y)
+	public PlaceEvent(Placeable source, PlaceEventType type, double x, double y, HasPlaceable parent)
 	{
 		this.source = source;
 		this.type = type;
 		this.x = x;
 		this.y = y;
+		this.parent = parent;
 	}
 
 	public PlaceEventType getType() {
@@ -62,6 +67,10 @@ public class PlaceEvent {
 
 	public double getY() {
 		return y;
+	}
+
+	public HasPlaceable getParent() {
+		return parent;
 	}
 	
 }

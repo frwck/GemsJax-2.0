@@ -18,6 +18,7 @@ import org.gemsjax.shared.metamodel.MetaConnection;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.user.client.Window;
+import com.smartgwt.client.widgets.form.validator.IsBooleanValidator;
 
 /**
  * This class is a {@link Drawable} that displays a {@link MetaConnection} on the {@link MetaClassCanvas}.
@@ -37,7 +38,7 @@ import com.google.gwt.user.client.Window;
  * @author Hannes Dorfmann
  *
  */
-public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, ResizeHandler, MoveHandler {
+public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, ResizeHandler, MoveHandler, HasPlaceable {
 	
 	
 
@@ -67,9 +68,6 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	private List<ClickHandler> clickHandlers;
 	private List<MoveHandler> moveHandlers;
 	private List<ResizeHandler> resizeHandlers;
-	
-	private List<AnchorPoint> sourceToBoxAnchorPoints;
-	private List<AnchorPoint> boxToTargetAnchorPoints;
 	
 	private AnchorPoint sourceAnchorPoint;
 	private AnchorPoint sourceConnectionBoxAnchorPoint;
@@ -120,8 +118,6 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		targetConnectionBoxAnchorPoint.setNextAnchorPoint(targetAnchorPoint);
 		
 		
-		sourceToBoxAnchorPoints = new ArrayList<AnchorPoint>();
-		boxToTargetAnchorPoints = new ArrayList<AnchorPoint>();
 	}
 	
 	
@@ -161,11 +157,24 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		targetAnchorPoint.draw(context);
 		targetConnectionBoxAnchorPoint.draw(context);
 		
-		for (AnchorPoint a: sourceToBoxAnchorPoints)
-			a.draw(context);
+		AnchorPoint a = sourceAnchorPoint.getNextAnchorPoint();
 		
-		for (AnchorPoint a: boxToTargetAnchorPoints)
+		// Draw anchor points between the source and the connection box	
+		while (a!=sourceConnectionBoxAnchorPoint)
+		{
 			a.draw(context);
+			a = a.getNextAnchorPoint();
+		}
+		
+
+		a=targetConnectionBoxAnchorPoint.getNextAnchorPoint();
+		// Draw Anchot points between the connection box and the target
+		while (a!=targetAnchorPoint)
+		{
+			a.draw(context);
+			a = a.getNextAnchorPoint();
+		}
+		
 	}
 	
 	
@@ -615,18 +624,6 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 
 
 
-	public List<AnchorPoint> getSourceToBoxAnchorPoints() {
-		return sourceToBoxAnchorPoints;
-	}
-
-
-
-
-
-	public List<AnchorPoint> getBoxToTargetAnchorPoints() {
-		return boxToTargetAnchorPoints;
-	}
-
 
 
 
@@ -657,6 +654,80 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 
 	public AnchorPoint getTargetConnectionBoxAnchorPoint() {
 		return targetConnectionBoxAnchorPoint;
+	}
+
+
+	
+	
+	private boolean isBetween(double minValue, double maxValue, double valueToCheck)
+	{
+		return valueToCheck>=minValue && valueToCheck<=maxValue;
+	}
+
+	
+
+
+
+	@Override
+	public AnchorPoint hasPlaceableAt(double x, double y) {
+		
+		
+		
+		// Calculate the absolute Positions for the 4 default AnchorPoints
+		if (isBetween(source.getX()+sourceAnchorPoint.getX()-(sourceAnchorPoint.getWidth()/2), source.getX()+sourceAnchorPoint.getX()+(sourceAnchorPoint.getWidth()/2), x)
+			&& isBetween(source.getY()+sourceAnchorPoint.getY()-(sourceAnchorPoint.getHeight()/2), source.getY()+sourceAnchorPoint.getY()+(sourceAnchorPoint.getHeight()/2), y)
+			)
+			return sourceAnchorPoint;
+		
+		
+		if (isBetween(connectionBox.getX()+sourceConnectionBoxAnchorPoint.getX()-(sourceConnectionBoxAnchorPoint.getWidth()/2), connectionBox.getX()+sourceConnectionBoxAnchorPoint.getX()+(sourceConnectionBoxAnchorPoint.getWidth()/2), x)
+			&& isBetween(connectionBox.getY()+sourceConnectionBoxAnchorPoint.getY()-(sourceConnectionBoxAnchorPoint.getHeight()/2), connectionBox.getY()+sourceConnectionBoxAnchorPoint.getY()+(sourceConnectionBoxAnchorPoint.getHeight()/2), y)
+			)
+			return sourceConnectionBoxAnchorPoint;
+		
+		
+		if (isBetween(connectionBox.getX()+targetConnectionBoxAnchorPoint.getX()-(targetConnectionBoxAnchorPoint.getWidth()/2), connectionBox.getX()+targetConnectionBoxAnchorPoint.getX()+(targetConnectionBoxAnchorPoint.getWidth()/2), x)
+			&& isBetween(connectionBox.getY()+targetConnectionBoxAnchorPoint.getY()-(targetConnectionBoxAnchorPoint.getHeight()/2), connectionBox.getY()+targetConnectionBoxAnchorPoint.getY()+(targetConnectionBoxAnchorPoint.getHeight()/2), y)
+			)
+			return targetConnectionBoxAnchorPoint;
+		
+		
+		// Calculate the absolute Positions for the 4 default AnchorPoints
+		if (isBetween(target.getX()+targetAnchorPoint.getX()-(targetAnchorPoint.getWidth()/2), target.getX()+targetAnchorPoint.getX()+(targetAnchorPoint.getWidth()/2), x)
+			&& isBetween(target.getY()+targetAnchorPoint.getY()-(targetAnchorPoint.getHeight()/2), target.getY()+targetAnchorPoint.getY()+(targetAnchorPoint.getHeight()/2), y)
+			)
+			return targetAnchorPoint;
+		
+		
+		
+		
+		
+		
+		// check AnchorPoints between source and connection box
+		AnchorPoint a = sourceAnchorPoint.getNextAnchorPoint();
+		// if we are at the end, than null should be there
+		while (a!=sourceConnectionBoxAnchorPoint)
+		{
+			if (a.hasCoordinate(x, y))
+				return a;
+			
+			a = a.getNextAnchorPoint();
+		}
+		
+		
+		// check AnchorPoints between connection Box and target
+		a=targetConnectionBoxAnchorPoint.getNextAnchorPoint();
+		
+		while (a!=targetAnchorPoint)
+		{
+			if (a.hasCoordinate(x, y))
+				return a;
+			
+			a = a.getNextAnchorPoint();
+		}
+		
+		
+		return null;
 	}
 
 }
