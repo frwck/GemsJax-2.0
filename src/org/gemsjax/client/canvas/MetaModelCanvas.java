@@ -134,6 +134,11 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	 */
 	private boolean moving;
 	
+	
+	private boolean placing;
+	
+	private AnchorPoint currentAnchorPoint;
+	
 	private EditingMode editingMode;
 	
 	
@@ -142,6 +147,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		
 		resizing = false;
 		moving = false;
+		placing = false;
 		
 		isMouseDown = false;
 		mouseDownX = -200;
@@ -395,8 +401,10 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		isMouseDown = false;
 		moving = false;
 		resizing = false;
+		placing = false;
 		currentMouseDownDrawable = null;
 		currentResizeArea = null;
+		currentAnchorPoint = null;
 		
 	}
 

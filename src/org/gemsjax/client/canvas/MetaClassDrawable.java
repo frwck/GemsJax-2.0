@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.swing.text.html.CSS;
 import javax.swing.text.html.parser.AttributeList;
 
 import org.gemsjax.client.canvas.Drawable;
@@ -31,6 +32,7 @@ import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
@@ -59,6 +61,8 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	private List <MouseOutHandler> mouseOutHandlers;
 	private List <IconLoadHandler> iconLoadableHandlers;
 	
+	
+	private String destinationAreaHighlightColor = "rgba(85,187,250,0.5)";
 
 	private MetaClass metaClass;
 	
@@ -275,6 +279,10 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		
 		
 		context.restore();
+		
+		
+		highlightDestinationArea(context);
+		
 		
 	}
 	
@@ -865,21 +873,36 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 
 	@Override
 	public void removeIconLoadHanlder(IconLoadHandler h) {
-		// TODO Auto-generated method stub
-		
+		iconLoadableHandlers.remove(h);
 	}
 
 
 	@Override
 	public boolean canAnchorPointBePlacedAt(double x, double y) {
-		// TODO Auto-generated method stub
-		return false;
+		return 
+			((x ==getX() || x==getX() + getWidth()) && y >=getY() && y <=getY()+getHeight() )	// left or right border
+			|| ( (y == getY() || y == getY()+getHeight() ) && x>=getX() && x<= getX() + getWidth()); // top or bottom border
 	}
 
 
 	@Override
 	public void highlightDestinationArea(Context2d context) {
-		// TODO Auto-generated method stub
+		
+		context.save();
+		context.setStrokeStyle(destinationAreaHighlightColor);
+		context.setLineWidth(3);
+		
+		context.beginPath();
+		context.moveTo(getX(), getY());
+		context.lineTo(getX(), getY()+getHeight());
+		context.lineTo(getX()+getWidth(), getY()+getHeight());
+		context.lineTo(getX()+getWidth(), getY());
+		context.lineTo(getX(), getY());
+		context.closePath();
+		
+		context.stroke();
+		
+		context.restore();
 		
 	}
 }

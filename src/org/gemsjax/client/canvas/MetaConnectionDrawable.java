@@ -78,6 +78,10 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	
 	
 	
+	/**
+	 * The offset when, the user try to click on this Drawable by clicking on the connection line 
+	 */
+	private double mouseOffSet = 7;
 	
 	
 	
@@ -110,6 +114,11 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		sourceConnectionBoxAnchorPoint = new AnchorPoint(connection.getSourceConnectionBoxRelativePoint(), connectionBox);
 		targetConnectionBoxAnchorPoint = new AnchorPoint(connection.getTargetConnectionBoxRelativePoint(), connectionBox);
 		targetAnchorPoint = new AnchorPoint(connection.getTargetRelativePoint(), target);
+		
+		// TODO remove test
+		sourceAnchorPoint.setNextAnchorPoint(sourceConnectionBoxAnchorPoint);
+		targetConnectionBoxAnchorPoint.setNextAnchorPoint(targetAnchorPoint);
+		
 		
 		sourceToBoxAnchorPoints = new ArrayList<AnchorPoint>();
 		boxToTargetAnchorPoints = new ArrayList<AnchorPoint>();
@@ -177,45 +186,109 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		boolean box = connectionBox.hasCoordinate(x, y);
 		
 		if (box ) return true;
+		
+		
+		double m =0, b = 0 , t = 0, currentX=0, currentY=0, nextX=0, nextY = 0;
+		
+		AnchorPoint current = sourceAnchorPoint;
+		AnchorPoint next = null;
+		
+		
+		while (current != sourceConnectionBoxAnchorPoint)
+		{
+			next = current.getNextAnchorPoint();
+			
+			// if the current is the sourceAnchorPoint, which is the start point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
+			if (current == sourceAnchorPoint)
+			{
+				currentX = source.getX() + sourceAnchorPoint.getX();
+				currentY = source.getY() + sourceAnchorPoint.getY();
+			}
+			else
+			{
+				currentX = current.getX();
+				currentY = current.getY();
+			}
+			
+			
+			
+			// if the next is the sourceConnectionBoxAnchorPoint, which is the end point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
+			if (next == sourceConnectionBoxAnchorPoint)
+			{
+				nextX = connectionBox.getX() + sourceConnectionBoxAnchorPoint.getX();
+				nextY = connectionBox.getY() + sourceConnectionBoxAnchorPoint.getY();
+			}
+			else
+			{
+				nextX = next.getX();
+				nextY = next.getY();
+			}
+			
+			// calculate the slopetriangle 
+			m = (currentY - nextY) / (currentX - nextX);
+			
+			// calculate x axis deferral	b = y - m*x
+			b = currentY - m * currentX;
+			
+			// temp variable to calculate  m * x + b = t
+			t = m * x + b;
+			
+			if (Math.abs(t - y)<=mouseOffSet)
+				return true;
+			
+			current = next;
+		}
+		
 	
-		// linear function 
-		// y = m*x + b
-		/*
-		// For the line between MetaClass A and NameBox
-		double y2 = connection.getSource().getY() + connection.getSourceRelativeY() ;
-		double y1 = connection.getConnectionBoxY() + connection.getSourceConnectionBoxRelativeY();
-		
-		double x2 = connection.getSource().getX() + connection.getSourceRelativeX();
-		double x1 = connection.getConnectionBoxX() + connection.getSourceConnectionBoxRelativeX(); 
-		
-		double m = (y2 -y1)/ (x2 - x1);
-		
-		double b = y1 - m*x1;
-		
-		boolean onAToNameBox = (y == m *x + b);
-		
-		if (onAToNameBox)
-			return true;
+		current = targetConnectionBoxAnchorPoint;
+		next = null;
 		
 		
-		// For the line between MetaClass B and NameBox
-		y2 = connection.getTarget().getY() + connection.getTargetRelativeY() ;
-		y1 = connection.getConnectionBoxY() + connection.getTargetConnectionBoxRelativeY();
+		while (current != targetAnchorPoint)
+		{
+			next = current.getNextAnchorPoint();
+			
+			// if the current is the targetConnectionBoxAnchorPoint, which is the start point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
+			if (current == targetConnectionBoxAnchorPoint)
+			{
+				currentX = connectionBox.getX() + targetConnectionBoxAnchorPoint.getX();
+				currentY = connectionBox.getY() + targetConnectionBoxAnchorPoint.getY();
+			}
+			else
+			{
+				currentX = current.getX();
+				currentY = current.getY();
+			}
+			
+			
+			
+			// if the next is the sourceConnectionBoxAnchorPoint, which is the end point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
+			if (next == targetAnchorPoint)
+			{
+				nextX = target.getX() + targetAnchorPoint.getX();
+				nextY = target.getY() + targetAnchorPoint.getY();
+			}
+			else
+			{
+				nextX = next.getX();
+				nextY = next.getY();
+			}
+			
+			// calculate the slopetriangle 
+			m = (currentY - nextY) / (currentX - nextX);
+			
+			// calculate x axis deferral	b = y - m*x
+			b = currentY - m * currentX;
+			
+			// temp variable to calculate  m * x + b = t
+			t = m * x + b;
+			
+			if (Math.abs(t - y)<=mouseOffSet)
+				return true;
+			
+			current = next;
+		}
 		
-		x2 = connection.getTarget().getX() + connection.getSourceRelativeX();
-		x1 = connection.getConnectionBoxX() + connection.getSourceConnectionBoxRelativeX(); 
-		
-		m = (y2 -y1)/ (x2 - x1);
-		
-		b = y1 - m*x1;
-		
-		boolean onBToNameBox = (y == m*x +b);
-		
-		if (onBToNameBox )
-			Window.alert("Connection clicked");
-		
-		return onBToNameBox;
-		*/
 		return false;
 	}
 

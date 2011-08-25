@@ -305,23 +305,6 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 
 			}
 			
-			/* TODO needed?
-			if (autoAdjustNameBoxRatio)
-			{
-				if (connection.getANameBoxRelativeX()>event.getWidth())
-					connection.setANameBoxRelativeX(event.getWidth());
-				
-				if (connection.getANameBoxRelativeY()>event.getHeight())
-					connection.setANameBoxRelativeY(event.getHeight());
-				
-				if (connection.getBNameBoxRelativeX()>event.getWidth())
-					connection.setBNameBoxRelativeX(event.getWidth());
-				
-				if (connection.getBNameBoxRelativeY()>event.getHeight())
-					connection.setBNameBoxRelativeY(event.getHeight());
-			}
-			*/ 
-			
 			view.redrawMetaModelCanvas();
 		}
 		
