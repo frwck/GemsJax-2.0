@@ -465,6 +465,15 @@ public  class MetaConnectionBox implements AnchorPointDestination {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+
+	@Override
+	public void highlightOnMouseOverDestinationArea(Context2d context) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

@@ -20,7 +20,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public class AnchorPoint implements Placeable, Focusable{
+public class AnchorPoint implements Placeable{
 	
 	/**
 	 * The current x coordinate.
@@ -39,7 +39,8 @@ public class AnchorPoint implements Placeable, Focusable{
 	private double width = 6;
 	private double height = 6;
 	private String borderColor = "2A4596";
-	private String backgroundColor = "white";
+	private String backgroundColor = "F7F3DC";
+	private String selectedBackgroundColor = "FAD816";
 	private double borderWeight = 1; 
 	
 	private AnchorPointDestination destination;
@@ -47,7 +48,6 @@ public class AnchorPoint implements Placeable, Focusable{
 	private AnchorPoint nextAnchorPoint;
 	
 	private List<PlaceHandler> placeHandlers;
-	private List<FocusHandler> focusHandlers;
 	
 	
 	/**
@@ -82,24 +82,26 @@ public class AnchorPoint implements Placeable, Focusable{
 	}
 
 	public void draw(Context2d context) {
-		double x = this.x -3 , y= this.y-3; // minus 3 to draw the AnchorPoint in the middle
+		
+		double x = this.x -width/2 , y= this.y-height/2; // minus 3 to draw the AnchorPoint in the middle
 		
 		if (destination != null) // than the current x
 		{
-			x = destination.getX() + this.x - 3;
-			y = destination.getY() + this.y -3;
+			x = destination.getX() + this.x - width/2;
+			y = destination.getY() + this.y - height/2;
 		}
+		
+		
+		if (selected && destination!= null)
+			destination.highlightDestinationArea(context);
 		
 		
 		context.setFillStyle(borderColor);
 		context.fillRect(x, y, width, height);
 		
-		context.setFillStyle(backgroundColor);
+		context.setFillStyle(selected ? selectedBackgroundColor : backgroundColor);
 		context.fillRect(x+borderWeight, y+borderWeight, width-2*borderWeight, height-2*borderWeight);
 		
-		
-		if (selected && destination!= null)
-			destination.highlightDestinationArea(context);
 	}
 	
 	
@@ -205,30 +207,6 @@ public class AnchorPoint implements Placeable, Focusable{
 		placeHandlers.remove(handler);
 	}
 
-	@Override
-	public void addFocusHandler(FocusHandler handler) {
-		if (!focusHandlers.contains(handler))
-			focusHandlers.add(handler);
-	}
-
-	@Override
-	public boolean fireFocusEvent(FocusEvent event) {
-		boolean delivered = false;
-		
-		for (FocusHandler h : focusHandlers)	
-		{
-			h.onFocusEvent(event);
-			delivered = true;
-		}
-		
-		return delivered;
-	}
-
-	@Override
-	public void removeFocusHandler(FocusHandler handler) {
-		
-		focusHandlers.remove(handler);
-	}
 	
 	
 

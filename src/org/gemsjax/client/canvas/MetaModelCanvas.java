@@ -117,7 +117,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	/**
 	 * Is used, to say which drawable is has the focus now
 	 */
-	private Drawable currentClicked;	
+	private Object currentClicked;	
 
 	/**
 	 * Is used to say, which {@link ResizeArea} has started the resizing progress.
@@ -196,7 +196,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		
 			case NORMAL:
 				
-				Drawable previous = currentClicked;
+				Object previous = currentClicked;
 				
 				currentClicked = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
 				
@@ -215,8 +215,6 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				}
 				
 				// TODO : Canvas: Wrong Focus (ResizeArea) When you move a Drawable in the canvas and will overlap it with another Drawable with the higher Z index, the Drawable  with the highest Z index will get the Focus instead of the drawable, which has been moved
-				
-				
 				
 				
 				// FocusEvent
@@ -288,6 +286,11 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				if (currentMouseDownDrawable!=null && currentMouseDownDrawable instanceof HasPlaceable)
 				{
 					this.currentPlaceable = ((HasPlaceable)currentMouseDownDrawable).hasPlaceableAt(event.getX(), event.getY());
+					
+					// Handle focus Events for Placeable, if they are also Focusable
+					if (currentPlaceable != null)
+						currentPlaceable.setSelected(true);
+					
 					SC.logWarn("Anchor Point "+currentPlaceable);
 				}
 				 
@@ -391,6 +394,16 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				}
 				
 				
+				if (placing && currentMouseDownDrawable instanceof HasPlaceable && currentPlaceable !=null)
+				{
+					
+					
+					PlaceEvent e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
+					
+					currentPlaceable.firePlaceEvent(e);
+				}
+				
+				
 				
 			break; // END editing mode
 		
@@ -403,6 +416,10 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		placing = false;
 		currentMouseDownDrawable = null;
 		currentResizeArea = null;
+		
+		if (currentPlaceable != null)
+			currentPlaceable.setSelected(false);
+		
 		currentPlaceable = null;
 		
 	}

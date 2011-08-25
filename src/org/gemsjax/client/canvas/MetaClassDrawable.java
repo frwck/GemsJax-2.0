@@ -63,6 +63,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	
 	
 	private String destinationAreaHighlightColor = "rgba(85,187,250,0.5)";
+	private String onMouseOverDestinationColor = "rgba(168,245,140,0.5)";
 
 	private MetaClass metaClass;
 	
@@ -883,7 +884,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 
 	@Override
 	public void highlightDestinationArea(Context2d context) {
-		
+	
 		context.save();
 		context.setStrokeStyle(destinationAreaHighlightColor);
 		context.setLineWidth(3);
@@ -899,6 +900,28 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		context.stroke();
 		
 		context.restore();
+	
 		
+	}
+
+
+	@Override
+	public void highlightOnMouseOverDestinationArea(Context2d context) {
+		
+		context.save();
+		context.setStrokeStyle(onMouseOverDestinationColor);
+		context.setLineWidth(3);
+		
+		context.beginPath();
+		context.moveTo(getX(), getY());
+		context.lineTo(getX(), getY()+getHeight());
+		context.lineTo(getX()+getWidth(), getY()+getHeight());
+		context.lineTo(getX()+getWidth(), getY());
+		context.lineTo(getX(), getY());
+		context.closePath();
+		
+		context.stroke();
+		
+		context.restore();
 	}
 }

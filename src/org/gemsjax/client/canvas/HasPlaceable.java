@@ -8,7 +8,7 @@ public interface HasPlaceable {
 	 * @param y
 	 * @return The {@link AnchorPoint}, which is at the coordinate x/y  or <code>null</code> if there is no {@link AnchorPoint}
 	 */
-	public AnchorPoint hasPlaceableAt(double x, double y);
+	public Placeable hasPlaceableAt(double x, double y);
 	
 	
 }

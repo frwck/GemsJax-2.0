@@ -138,6 +138,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					// Add PlaceHandler to the AnchorPoints between source and Connection box
 					AnchorPoint p = d.getSourceAnchorPoint();
 					
+					
 					while (p!=d.getSourceConnectionBoxAnchorPoint())
 					{
 						p.addPlaceHandler(this);
@@ -157,6 +158,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					}
 					
 					d.getTargetAnchorPoint().addPlaceHandler(this);
+					
 					
 					view.addDrawable(d);
 				
@@ -188,6 +190,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		else
 		if (event.getSource() instanceof MetaConnectionDrawable)
 			onMetaConnectionFocusEvent((MetaConnection) ((Drawable)event.getSource()).getDataObject(), event);
+	
 	}
 
 
@@ -228,7 +231,6 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	}
 	
 	
-	
 	private void onMetaClassFocusEvent(MetaClass metaClass, FocusEvent event)
 	{
 		if (event.getType()==FocusEventType.GOT_FOCUS)
@@ -251,7 +253,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			metaClass.setX(e.getX()-e.getDistanceToTopLeftX());
 			metaClass.setY(e.getY()-e.getDistanceToTopLeftY());
 			
-			// TODO collabrative info websocket
+			// TODO collaborative info websocket
 		}
 			
 		view.redrawMetaModelCanvas();
