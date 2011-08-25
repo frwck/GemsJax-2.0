@@ -81,6 +81,12 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	 */
 	private double mouseOffSet = 7;
 	
+	/**
+	 * The offset when, the user try to click on this Drawable by clicking on the connection line, but the line is not a linear function, 
+	 * but a vertical line instead
+	 */
+	private double verticalLineXOffset=7;
+	
 	
 	
 	/**
@@ -189,6 +195,9 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		return connection.getZIndex();
 	}
 
+
+	
+	
 	@Override
 	public boolean hasCoordinate(double x, double y) {
 		
@@ -233,6 +242,19 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 				nextY = next.getY();
 			}
 			
+			
+			
+			// special case that current and next have the same x coordinate, so there is a vertical line instead of a linear function
+			if (Math.abs(currentX-x)<=verticalLineXOffset && Math.abs(nextX-x)<=verticalLineXOffset)
+			{
+				if (currentY<nextY && isBetween(currentY, nextY, y))
+					return true;
+				else
+				if (currentY>=nextY && isBetween(nextY, currentY, y))
+					return true;
+			}
+			
+			
 			// calculate the slopetriangle 
 			m = (currentY - nextY) / (currentX - nextX);
 			
@@ -270,7 +292,6 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 			}
 			
 			
-			
 			// if the next is the sourceConnectionBoxAnchorPoint, which is the end point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
 			if (next == targetAnchorPoint)
 			{
@@ -281,6 +302,18 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 			{
 				nextX = next.getX();
 				nextY = next.getY();
+			}
+			
+			
+			
+			// special case that current and next have the same x coordinate, so there is a vertical line instead of a linear function
+			if (Math.abs(currentX-x)<=verticalLineXOffset && Math.abs(nextX-x)<=verticalLineXOffset)
+			{
+				if (currentY<nextY && isBetween(currentY, nextY, y))
+					return true;
+				else
+				if (currentY>=nextY && isBetween(nextY, currentY, y))
+					return true;
 			}
 			
 			// calculate the slopetriangle 
@@ -728,6 +761,24 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		
 		return null;
+	}
+	
+	
+	
+	public MetaClassDrawable getSourceDrawable()
+	{
+		return source;
+	}
+	
+	
+	public MetaClassDrawable getTargetDrawable()
+	{
+		return target;
+	}
+	
+	public MetaConnectionBox getConnectionBox()
+	{
+		return connectionBox;
 	}
 
 }

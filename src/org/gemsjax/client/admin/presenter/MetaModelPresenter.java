@@ -358,15 +358,43 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	public void onPlaceEvent(PlaceEvent event) {
 	
 		if (event.getSource() instanceof AnchorPoint && event.getParent() instanceof MetaConnectionDrawable)
-			onMetaConnectionAnchorPoint((AnchorPoint) event.getSource() , event);
+			onMetaConnectionAnchorPoint((AnchorPoint) event.getSource(), (MetaConnectionDrawable) event.getParent() , event);
 	}
 	
 	
 	
-	private void onMetaConnectionAnchorPoint(AnchorPoint p, PlaceEvent e)
+	private void onMetaConnectionAnchorPoint(AnchorPoint p, MetaConnectionDrawable parent,  PlaceEvent e)
 	{
-		p.setX(e.getX());
-		p.setY(e.getY());
+		double x=0, y=0;
+		
+		// transform to relative coordinates, if its one of the 4 default anchor points
+		if (p == parent.getSourceAnchorPoint())		
+		{
+			x = e.getX() - parent.getSourceDrawable().getX();
+			y = e.getY() - parent.getSourceDrawable().getY();
+		}
+		else
+		if (p == parent.getSourceConnectionBoxAnchorPoint())
+		{
+			x = e.getX() - parent.getConnectionBox().getX();
+			y = e.getY() - parent.getConnectionBox().getY();
+		}
+		else
+		if (p == parent.getTargetConnectionBoxAnchorPoint())
+		{
+			x = e.getX() - parent.getConnectionBox().getX();
+			y = e.getY() - parent.getConnectionBox().getY();
+		}
+		else
+		if (p == parent.getTargetAnchorPoint())
+		{
+			x = e.getX() - parent.getTargetDrawable().getX();
+			y = e.getY() - parent.getTargetDrawable().getY();
+		}
+		
+		
+		p.setX(x);
+		p.setY(y);
 		
 		view.redrawMetaModelCanvas();
 	}

@@ -144,7 +144,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	 * Is used to dertermine, which {@link Placeable} is already in use by the mouse cursor.
 	 * Normally this is a AnchorPoint
 	 */
-	private AnchorPoint currentPlaceable;
+	private Placeable currentPlaceable;
 	
 	private EditingMode editingMode;
 	
@@ -328,7 +328,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 				
 				
-				if (currentMouseDownDrawable != null &&  currentMouseDownDrawable instanceof HasPlaceable && currentPlaceable instanceof Placeable && currentPlaceable != null)
+				if (currentMouseDownDrawable != null &&  currentMouseDownDrawable instanceof HasPlaceable && currentPlaceable != null)
 				{
 					placing = true;
 					PlaceEvent e = new PlaceEvent(currentPlaceable, PlaceEventType.TEMP_PLACING, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
@@ -411,6 +411,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	@Override
 	public void onMouseOut(MouseOutEvent event) {
 		// If you are out of the canvas while Mouse is still down
+		// TODO need to give a correct event with correct coordinates 
 		onMouseUp(null);
 
 	}
