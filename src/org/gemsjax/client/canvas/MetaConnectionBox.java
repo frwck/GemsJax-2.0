@@ -26,7 +26,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public  class MetaConnectionBox implements AnchorPointDestination {
+public  class MetaConnectionBox implements PlaceableDestination {
 
 	/**
 	 * The connection, which name will be displayed with this {@link MetaConnectionBox}
@@ -453,7 +453,7 @@ public  class MetaConnectionBox implements AnchorPointDestination {
 
 
 	@Override
-	public Point canAnchorPointBePlacedAt(double x, double y) {
+	public Point canPlaceableBePlacedAt(double x, double y) {
 		// TODO Auto-generated method stub
 		return null;
 	}

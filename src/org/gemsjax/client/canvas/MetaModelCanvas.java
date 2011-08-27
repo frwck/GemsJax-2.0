@@ -334,8 +334,13 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				if (currentMouseDownDrawable != null &&  currentMouseDownDrawable instanceof HasPlaceable && currentPlaceable != null)
 				{
 					placing = true;
-					PlaceEvent e = new PlaceEvent(currentPlaceable, PlaceEventType.TEMP_PLACING, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
 					
+					if (currentPlaceable.getPlaceableDestination().canPlaceableBePlacedAt(event.getX(), event.getY()) != null)
+						currentPlaceable.setCanBePlaced(true);
+					else
+						currentPlaceable.setCanBePlaced(false);
+					
+					PlaceEvent e = new PlaceEvent(currentPlaceable, PlaceEventType.TEMP_PLACING, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
 					currentPlaceable.firePlaceEvent(e);
 					return;
 				}

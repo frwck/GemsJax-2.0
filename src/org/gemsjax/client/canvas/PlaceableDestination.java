@@ -4,13 +4,13 @@ import org.gemsjax.shared.Point;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 
-public interface AnchorPointDestination {
+public interface PlaceableDestination {
 	
 	
 
 	/**
 	 *  Highlight the destination where the AnchorPoint can be moved to in a graphical way on the canvas.
-	 *  This method is called directly from the {@link Anchor} if this {@link AnchorPointDestination} is the currently set 
+	 *  This method is called directly from the {@link Anchor} if this {@link PlaceableDestination} is the currently set 
 	 *  destination of the {@link Anchor} 
 	 *  @param context
 	 */
@@ -31,7 +31,7 @@ public interface AnchorPointDestination {
 	 * @return null, if the Pointer can not be placed there, or a correct {@link Point} calculated by respecting a offset.
 	 * 
 	 */
-	public Point canAnchorPointBePlacedAt(double x, double y);
+	public Point canPlaceableBePlacedAt(double x, double y);
 	
 	/**
 	 * Get the x coordinate 

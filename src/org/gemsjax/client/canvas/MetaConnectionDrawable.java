@@ -1,6 +1,7 @@
 package org.gemsjax.client.canvas;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.gemsjax.client.canvas.events.ClickEvent;
@@ -13,6 +14,7 @@ import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaConnectionImpl;
 import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 
@@ -40,11 +42,6 @@ import com.smartgwt.client.widgets.form.validator.IsBooleanValidator;
  */
 public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, ResizeHandler, MoveHandler, HasPlaceable {
 	
-	
-
-	
-	
-
 	/**
 	 * The {@link MetaConnectionImpl} that is displayed with this Drawable
 	 */
@@ -74,6 +71,10 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	private Anchor targetAnchorPoint;
 	private Anchor targetConnectionBoxAnchorPoint;
 	
+	/**
+	 * The mapping between the AnchorPoint (model) and the Anchor (View)
+	 */
+	private HashMap<AnchorPoint, Anchor> anchorsMap;
 	
 	
 	/**
@@ -119,10 +120,16 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		targetConnectionBoxAnchorPoint = new Anchor(connection.getTargetConnectionBoxRelativePoint(), connectionBox);
 		targetAnchorPoint = new Anchor(connection.getTargetRelativePoint(), target);
 		
+		anchorsMap = new HashMap<AnchorPoint, Anchor>();
+		
+		anchorsMap.put(connection.getSourceRelativePoint(), sourceAnchorPoint);
+		anchorsMap.put(connection.getSourceConnectionBoxRelativePoint(), sourceConnectionBoxAnchorPoint);
+		anchorsMap.put(connection.getTargetConnectionBoxRelativePoint(), targetConnectionBoxAnchorPoint);
+		anchorsMap.put(connection.getTargetRelativePoint(), targetAnchorPoint);
+		
 		// TODO remove test
 		sourceAnchorPoint.setNextAnchor(sourceConnectionBoxAnchorPoint);
 		targetConnectionBoxAnchorPoint.setNextAnchor(targetAnchorPoint);
-		
 		
 	}
 	

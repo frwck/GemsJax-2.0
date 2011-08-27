@@ -49,7 +49,7 @@ import com.google.gwt.user.client.ui.RootPanel;
  *
  */
 public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseOutable, MouseOverable, Moveable,
-											Resizeable, IconLoadable, AnchorPointDestination  {
+											Resizeable, IconLoadable, PlaceableDestination  {
 
 	
 	private List<ResizeArea> resizeAreas;
@@ -876,18 +876,22 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 
 
 	@Override
-	public Point canAnchorPointBePlacedAt(double x, double y) {
+	public Point canPlaceableBePlacedAt(double x, double y) {
 		
 		double offset = 3;
 		
 		// the left border
 		if (isBetween(x-offset, x+offset,x) && isBetween(getY(), getY()+getHeight(),y))
 			return new Point(getX(),y);
-		
-		/*
-			((x ==getX() || x==getX() + getWidth()) && y >=getY() && y <=getY()+getHeight() )	// left or right border
-			|| ( (y == getY() || y == getY()+getHeight() ) && x>=getX() && x<= getX() + getWidth()); // top or bottom border
-	*/
+		else	// right border
+		if (isBetween(x+getWidth()-offset, x+getWidth()+offset,x) && isBetween(getY(), getY()+getHeight(),y))
+			return new Point(getX()+getWidth(),y);
+		else // Top Border
+		if (isBetween(getX(), getX() + getWidth(), x ) && isBetween(getY()-offset, getY()+offset,y))
+			return new Point(x,getY());
+		else // bottom border
+		if (isBetween(getX(), getX() + getWidth(), x ) && isBetween(getY()+getHeight()-offset, getY()+getHeight()+offset,y))
+			return new Point(x,getY()+getHeight());
 		
 		return null;
 	}
@@ -911,7 +915,6 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		context.stroke();
 		
 		context.restore();
-	
 		
 	}
 

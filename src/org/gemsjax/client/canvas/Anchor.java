@@ -25,15 +25,15 @@ public class Anchor implements Placeable{
 	
 	/**
 	 * The current x coordinate.
-	 * <b>Notice:</b> If {@link AnchorPointDestination} is not null, than this coordinate is a relative coordinate.
-	 * The absolute coordinate can be computed by {@link #x} + {@link AnchorPointDestination#getX()}
+	 * <b>Notice:</b> If {@link PlaceableDestination} is not null, than this coordinate is a relative coordinate.
+	 * The absolute coordinate can be computed by {@link #x} + {@link PlaceableDestination#getX()}
 	 * @see #point
 	 */
 	private double x;
 	/**
 	 * The current y coordinate.
-	 *  <b>Notice:</b> If {@link AnchorPointDestination} is not null, than this coordinate is a relative coordinate.
-	 * The absolute coordinate can be computed by {@link #y} + {@link AnchorPointDestination#getY()}
+	 *  <b>Notice:</b> If {@link PlaceableDestination} is not null, than this coordinate is a relative coordinate.
+	 * The absolute coordinate can be computed by {@link #y} + {@link PlaceableDestination#getY()}
 	 * @see #point
 	 */
 	private double y;
@@ -42,9 +42,10 @@ public class Anchor implements Placeable{
 	private String borderColor = "2A4596";
 	private String backgroundColor = "F7F3DC";
 	private String selectedBackgroundColor = "FAD816";
+	private String canBePlacedBackgroundColor = "22CF00";
 	private double borderWeight = 1; 
 	
-	private AnchorPointDestination destination;
+	private PlaceableDestination destination;
 	
 	private Anchor nextAnchorPoint;
 	
@@ -61,16 +62,17 @@ public class Anchor implements Placeable{
 	private AnchorPoint anchorPoint;
 	
 	private boolean selected;
+	private boolean canBePlaced;
 	
 	/**
 	 * 
 	 * @param point
-	 * @param destination If destination == null than this AnchorPoint can be placed freely on the canvas, otherwise it can be only placed where {@link AnchorPointDestination#canAnchorPointBePlacedAt(double, double)} == true.
+	 * @param destination If destination == null than this AnchorPoint can be placed freely on the canvas, otherwise it can be only placed where {@link PlaceableDestination#canPlaceableBePlacedAt(double, double)} == true.
 	 * That is the case, if you want to create an {@link Anchor} for the source (or target) Drawable.
 	 * That also indicates, that the {@link #x} and {@link #y} coordinates are relative coordinates according to the source (or targets) current coordinates which can be computed to 
-	 * absolute coordinates via {@link AnchorPointDestination#getX()} + #x and {@link AnchorPointDestination#getY()} + {@link #y}
+	 * absolute coordinates via {@link PlaceableDestination#getX()} + #x and {@link PlaceableDestination#getY()} + {@link #y}
 	 */
-	public Anchor(AnchorPoint point, AnchorPointDestination destination)
+	public Anchor(AnchorPoint point, PlaceableDestination destination)
 	{
 
 		placeHandlers = new ArrayList<PlaceHandler>();
@@ -80,6 +82,7 @@ public class Anchor implements Placeable{
 		this.y = point.y;
 		this.setDestination(destination);
 		this.selected = false;
+		this.canBePlaced = false;
 	}
 
 	public void draw(Context2d context) {
@@ -100,7 +103,14 @@ public class Anchor implements Placeable{
 		context.setFillStyle(borderColor);
 		context.fillRect(x, y, width, height);
 		
-		context.setFillStyle(selected ? selectedBackgroundColor : backgroundColor);
+		if (canBePlaced)
+			context.setFillStyle(canBePlacedBackgroundColor);
+		else
+		if (selected)
+			context.setFillStyle(selectedBackgroundColor);
+		else
+			context.setFillStyle(backgroundColor);
+				
 		context.fillRect(x+borderWeight, y+borderWeight, width-2*borderWeight, height-2*borderWeight);
 		
 	}
@@ -150,11 +160,11 @@ public class Anchor implements Placeable{
 	 * Set the destination
 	 * @param destination
 	 */
-	public void setDestination(AnchorPointDestination destination) {
+	public void setDestination(PlaceableDestination destination) {
 		this.destination = destination;
 	}
 
-	public AnchorPointDestination getDestination() {
+	public PlaceableDestination getDestination() {
 		return destination;
 	}
 
@@ -206,6 +216,16 @@ public class Anchor implements Placeable{
 	@Override
 	public void removePlaceHandler(PlaceHandler handler) {
 		placeHandlers.remove(handler);
+	}
+
+	@Override
+	public void setCanBePlaced(boolean canPlaced) {
+		canBePlaced = canPlaced;
+	}
+
+	@Override
+	public PlaceableDestination getPlaceableDestination() {
+		return destination;
 	}
 
 	
