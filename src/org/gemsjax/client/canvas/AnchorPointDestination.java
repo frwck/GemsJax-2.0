@@ -1,5 +1,7 @@
 package org.gemsjax.client.canvas;
 
+import org.gemsjax.shared.Point;
+
 import com.google.gwt.canvas.dom.client.Context2d;
 
 public interface AnchorPointDestination {
@@ -8,8 +10,8 @@ public interface AnchorPointDestination {
 
 	/**
 	 *  Highlight the destination where the AnchorPoint can be moved to in a graphical way on the canvas.
-	 *  This method is called directly from the {@link AnchorPoint} if this {@link AnchorPointDestination} is the currently set 
-	 *  destination of the {@link AnchorPoint} 
+	 *  This method is called directly from the {@link Anchor} if this {@link AnchorPointDestination} is the currently set 
+	 *  destination of the {@link Anchor} 
 	 *  @param context
 	 */
 	public void highlightDestinationArea(Context2d context);
@@ -22,12 +24,14 @@ public interface AnchorPointDestination {
 	public void highlightOnMouseOverDestinationArea(Context2d context);
 	
 	/**
-	 * Checks and Determine, wherever the {@link AnchorPoint} can be moved to
+	 * Checks and determine, wherever the {@link Anchor} can be placed to.
+	 * Internal there is a offset, so the user dont need to place the {@link Anchor} exactly on the correct position.
 	 * @param x
 	 * @param y
-	 * @return true, if the Anchor can be  moved to this position, else false. Moved means in this case placed (for example by mouse release) at the position x/y
+	 * @return null, if the Pointer can not be placed there, or a correct {@link Point} calculated by respecting a offset.
+	 * 
 	 */
-	public boolean canAnchorPointBePlacedAt(double x, double y);
+	public Point canAnchorPointBePlacedAt(double x, double y);
 	
 	/**
 	 * Get the x coordinate 

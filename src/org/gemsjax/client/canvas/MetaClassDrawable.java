@@ -26,6 +26,7 @@ import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaAttributeImpl;
 import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
@@ -62,8 +63,8 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	private List <IconLoadHandler> iconLoadableHandlers;
 	
 	
-	private String destinationAreaHighlightColor = "rgba(85,187,250,0.5)";
-	private String onMouseOverDestinationColor = "rgba(168,245,140,0.5)";
+	private String destinationAreaHighlightColor = "rgba(168,245,140,0.5)";
+	private String onMouseOverDestinationColor = "rgba(85,187,250,0.5)";
 
 	private MetaClass metaClass;
 	
@@ -875,10 +876,20 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 
 
 	@Override
-	public boolean canAnchorPointBePlacedAt(double x, double y) {
-		return 
+	public Point canAnchorPointBePlacedAt(double x, double y) {
+		
+		double offset = 3;
+		
+		// the left border
+		if (isBetween(x-offset, x+offset,x) && isBetween(getY(), getY()+getHeight(),y))
+			return new Point(getX(),y);
+		
+		/*
 			((x ==getX() || x==getX() + getWidth()) && y >=getY() && y <=getY()+getHeight() )	// left or right border
 			|| ( (y == getY() || y == getY()+getHeight() ) && x>=getX() && x<= getX() + getWidth()); // top or bottom border
+	*/
+		
+		return null;
 	}
 
 

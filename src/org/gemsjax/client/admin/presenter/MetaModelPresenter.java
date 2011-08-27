@@ -4,7 +4,7 @@ package org.gemsjax.client.admin.presenter;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.view.MetaModelView;
-import org.gemsjax.client.canvas.AnchorPoint;
+import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaConnectionBox;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
@@ -136,13 +136,13 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					d.addFocusHandler(this);
 					
 					// Add PlaceHandler to the AnchorPoints between source and Connection box
-					AnchorPoint p = d.getSourceAnchorPoint();
+					Anchor p = d.getSourceAnchorPoint();
 					
 					
 					while (p!=d.getSourceConnectionBoxAnchorPoint())
 					{
 						p.addPlaceHandler(this);
-						p = p.getNextAnchorPoint();
+						p = p.getNextAnchor();
 					}
 					
 					d.getSourceConnectionBoxAnchorPoint().addPlaceHandler(this);
@@ -154,7 +154,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					while (p!=d.getTargetAnchorPoint())
 					{
 						p.addPlaceHandler(this);
-						p = p.getNextAnchorPoint();
+						p = p.getNextAnchor();
 					}
 					
 					d.getTargetAnchorPoint().addPlaceHandler(this);
@@ -359,13 +359,13 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	@Override
 	public void onPlaceEvent(PlaceEvent event) {
 	
-		if (event.getSource() instanceof AnchorPoint && event.getParent() instanceof MetaConnectionDrawable)
-			onMetaConnectionAnchorPoint((AnchorPoint) event.getSource(), (MetaConnectionDrawable) event.getParent() , event);
+		if (event.getSource() instanceof Anchor && event.getParent() instanceof MetaConnectionDrawable)
+			onMetaConnectionAnchorPoint((Anchor) event.getSource(), (MetaConnectionDrawable) event.getParent() , event);
 	}
 	
 	
 	
-	private void onMetaConnectionAnchorPoint(AnchorPoint p, MetaConnectionDrawable parent,  PlaceEvent e)
+	private void onMetaConnectionAnchorPoint(Anchor p, MetaConnectionDrawable parent,  PlaceEvent e)
 	{
 		double x=0, y=0;
 		

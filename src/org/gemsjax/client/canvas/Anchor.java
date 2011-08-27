@@ -8,19 +8,20 @@ import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.PlaceHandler;
+import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.Point;
 import org.gemsjax.client.canvas.events.PlaceEvent;
 import com.google.gwt.canvas.dom.client.Context2d;
 
 
 /**
- * {@link AnchorPoint} represents a Point that is displayed on the {@link MetaModelCanvas} and {@link ModelCanvas}.
- * A AnchorPoint is used to draw "agile" Connection between {@link Drawable} objects like {@link MetaClassDrawable}.
- * "Agile" connection means, that the user can set with the mouse the points (with {@link AnchorPoint}s) where the line of the connection goes by.
+ * {@link Anchor} represents a {@link AnchorPoint} in a graphical way on the {@link MetaModelCanvas} and {@link ModelCanvas}.
+ * A Anchor is used to draw "agile" connection between {@link Drawable} objects like {@link MetaClassDrawable} and {@link MetaConnectionDrawable}.
+ * "Agile" connection means, that the user can set with the mouse the points (with {@link Anchor}s) where the line of the connection goes by.
  * @author Hannes Dorfmann
  *
  */
-public class AnchorPoint implements Placeable{
+public class Anchor implements Placeable{
 	
 	/**
 	 * The current x coordinate.
@@ -45,19 +46,19 @@ public class AnchorPoint implements Placeable{
 	
 	private AnchorPointDestination destination;
 	
-	private AnchorPoint nextAnchorPoint;
+	private Anchor nextAnchorPoint;
 	
 	private List<PlaceHandler> placeHandlers;
 	
 	
 	/**
-	 * The Point, that is displayed with this {@link AnchorPoint}.
+	 * The {@link AnchorPoint}, that is displayed with this {@link Anchor}.
 	 * <b>Note</b> The Point's coordinates itself are only set, when the Mouse was released via the corresponding presenter.
 	 * {@link #x} and {@link #y} are the current coordinate, which are used to display the object and animations (for example move the AnchorPoint with the mouse),
 	 * so {@link #x} and {@link #y} are set permanently, but the {@link #point} itself is only set when the 
 	 * {@link MoveEvent} with the {@link MoveEventType#MOVE_FINISHED} is received (in the Presenter)
 	 */
-	private Point point;
+	private AnchorPoint anchorPoint;
 	
 	private boolean selected;
 	
@@ -65,16 +66,16 @@ public class AnchorPoint implements Placeable{
 	 * 
 	 * @param point
 	 * @param destination If destination == null than this AnchorPoint can be placed freely on the canvas, otherwise it can be only placed where {@link AnchorPointDestination#canAnchorPointBePlacedAt(double, double)} == true.
-	 * That is the case, if you want to create an {@link AnchorPoint} for the source (or target) Drawable.
+	 * That is the case, if you want to create an {@link Anchor} for the source (or target) Drawable.
 	 * That also indicates, that the {@link #x} and {@link #y} coordinates are relative coordinates according to the source (or targets) current coordinates which can be computed to 
 	 * absolute coordinates via {@link AnchorPointDestination#getX()} + #x and {@link AnchorPointDestination#getY()} + {@link #y}
 	 */
-	public AnchorPoint(Point point, AnchorPointDestination destination)
+	public Anchor(AnchorPoint point, AnchorPointDestination destination)
 	{
 
 		placeHandlers = new ArrayList<PlaceHandler>();
 		
-		this.point = point;
+		this.anchorPoint = point;
 		this.x = point.x;
 		this.y = point.y;
 		this.setDestination(destination);
@@ -158,19 +159,19 @@ public class AnchorPoint implements Placeable{
 	}
 
 	/**
-	 * Get the next {@link AnchorPoint}
-	 * @return The next {@link AnchorPoint} or null if we are at the end
+	 * Get the next {@link Anchor}
+	 * @return The next {@link Anchor} or null if we are at the end
 	 */
-	public AnchorPoint getNextAnchorPoint() {
+	public Anchor getNextAnchor() {
 		return nextAnchorPoint;
 	}
 
-	public void setNextAnchorPoint(AnchorPoint nextAnchorPoint) {
-		this.nextAnchorPoint = nextAnchorPoint;
+	public void setNextAnchor(Anchor nextAnchor) {
+		this.nextAnchorPoint = nextAnchor;
 	}
 
-	public Object getDataObject() {
-		return point;
+	public AnchorPoint getAnchorPoint() {
+		return anchorPoint;
 	}
 
 

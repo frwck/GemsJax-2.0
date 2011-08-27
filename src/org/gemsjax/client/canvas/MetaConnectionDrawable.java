@@ -69,10 +69,10 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	private List<MoveHandler> moveHandlers;
 	private List<ResizeHandler> resizeHandlers;
 	
-	private AnchorPoint sourceAnchorPoint;
-	private AnchorPoint sourceConnectionBoxAnchorPoint;
-	private AnchorPoint targetAnchorPoint;
-	private AnchorPoint targetConnectionBoxAnchorPoint;
+	private Anchor sourceAnchorPoint;
+	private Anchor sourceConnectionBoxAnchorPoint;
+	private Anchor targetAnchorPoint;
+	private Anchor targetConnectionBoxAnchorPoint;
 	
 	
 	
@@ -114,14 +114,14 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		setMetaClassA(metaClassA);
 		setMetaClassB(metaClassB);
 		
-		sourceAnchorPoint = new AnchorPoint(connection.getSourceRelativePoint(), source);
-		sourceConnectionBoxAnchorPoint = new AnchorPoint(connection.getSourceConnectionBoxRelativePoint(), connectionBox);
-		targetConnectionBoxAnchorPoint = new AnchorPoint(connection.getTargetConnectionBoxRelativePoint(), connectionBox);
-		targetAnchorPoint = new AnchorPoint(connection.getTargetRelativePoint(), target);
+		sourceAnchorPoint = new Anchor(connection.getSourceRelativePoint(), source);
+		sourceConnectionBoxAnchorPoint = new Anchor(connection.getSourceConnectionBoxRelativePoint(), connectionBox);
+		targetConnectionBoxAnchorPoint = new Anchor(connection.getTargetConnectionBoxRelativePoint(), connectionBox);
+		targetAnchorPoint = new Anchor(connection.getTargetRelativePoint(), target);
 		
 		// TODO remove test
-		sourceAnchorPoint.setNextAnchorPoint(sourceConnectionBoxAnchorPoint);
-		targetConnectionBoxAnchorPoint.setNextAnchorPoint(targetAnchorPoint);
+		sourceAnchorPoint.setNextAnchor(sourceConnectionBoxAnchorPoint);
+		targetConnectionBoxAnchorPoint.setNextAnchor(targetAnchorPoint);
 		
 		
 	}
@@ -163,22 +163,22 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		targetAnchorPoint.draw(context);
 		targetConnectionBoxAnchorPoint.draw(context);
 		
-		AnchorPoint a = sourceAnchorPoint.getNextAnchorPoint();
+		Anchor a = sourceAnchorPoint.getNextAnchor();
 		
 		// Draw anchor points between the source and the connection box	
 		while (a!=sourceConnectionBoxAnchorPoint)
 		{
 			a.draw(context);
-			a = a.getNextAnchorPoint();
+			a = a.getNextAnchor();
 		}
 		
 
-		a=targetConnectionBoxAnchorPoint.getNextAnchorPoint();
+		a=targetConnectionBoxAnchorPoint.getNextAnchor();
 		// Draw Anchot points between the connection box and the target
 		while (a!=targetAnchorPoint)
 		{
 			a.draw(context);
-			a = a.getNextAnchorPoint();
+			a = a.getNextAnchor();
 		}
 		
 	}
@@ -208,13 +208,13 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		double m =0, b = 0 , t = 0, currentX=0, currentY=0, nextX=0, nextY = 0;
 		
-		AnchorPoint current = sourceAnchorPoint;
-		AnchorPoint next = null;
+		Anchor current = sourceAnchorPoint;
+		Anchor next = null;
 		
 		
 		while (current != sourceConnectionBoxAnchorPoint)
 		{
-			next = current.getNextAnchorPoint();
+			next = current.getNextAnchor();
 			
 			// if the current is the sourceAnchorPoint, which is the start point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
 			if (current == sourceAnchorPoint)
@@ -277,7 +277,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		while (current != targetAnchorPoint)
 		{
-			next = current.getNextAnchorPoint();
+			next = current.getNextAnchor();
 			
 			// if the current is the targetConnectionBoxAnchorPoint, which is the start point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
 			if (current == targetConnectionBoxAnchorPoint)
@@ -661,7 +661,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 
 
 
-	public AnchorPoint getSourceAnchorPoint() {
+	public Anchor getSourceAnchorPoint() {
 		return sourceAnchorPoint;
 	}
 
@@ -669,7 +669,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 
 
 
-	public AnchorPoint getSourceConnectionBoxAnchorPoint() {
+	public Anchor getSourceConnectionBoxAnchorPoint() {
 		return sourceConnectionBoxAnchorPoint;
 	}
 
@@ -677,7 +677,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 
 
 
-	public AnchorPoint getTargetAnchorPoint() {
+	public Anchor getTargetAnchorPoint() {
 		return targetAnchorPoint;
 	}
 
@@ -685,7 +685,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 
 
 
-	public AnchorPoint getTargetConnectionBoxAnchorPoint() {
+	public Anchor getTargetConnectionBoxAnchorPoint() {
 		return targetConnectionBoxAnchorPoint;
 	}
 
@@ -702,7 +702,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 
 
 	@Override
-	public AnchorPoint hasPlaceableAt(double x, double y) {
+	public Anchor hasPlaceableAt(double x, double y) {
 		
 		
 		
@@ -737,26 +737,26 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		
 		// check AnchorPoints between source and connection box
-		AnchorPoint a = sourceAnchorPoint.getNextAnchorPoint();
+		Anchor a = sourceAnchorPoint.getNextAnchor();
 		// if we are at the end, than null should be there
 		while (a!=sourceConnectionBoxAnchorPoint)
 		{
 			if (a.hasCoordinate(x, y))
 				return a;
 			
-			a = a.getNextAnchorPoint();
+			a = a.getNextAnchor();
 		}
 		
 		
 		// check AnchorPoints between connection Box and target
-		a=targetConnectionBoxAnchorPoint.getNextAnchorPoint();
+		a=targetConnectionBoxAnchorPoint.getNextAnchor();
 		
 		while (a!=targetAnchorPoint)
 		{
 			if (a.hasCoordinate(x, y))
 				return a;
 			
-			a = a.getNextAnchorPoint();
+			a = a.getNextAnchor();
 		}
 		
 		

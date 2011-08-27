@@ -4,7 +4,7 @@ import org.gemsjax.client.canvas.events.PlaceEvent;
 import org.gemsjax.client.canvas.handler.PlaceHandler;
 
 /**
- * Placeable allows {@link AnchorPoint}s to be Placed somewhere over the canvas.
+ * Placeable allows {@link Anchor}s to be Placed somewhere over the canvas.
  * The difference between {@link Placeable} and {@link Moveable} is, that a {@link Placeable} can be moved and placed freely on the canvas, 
  * but can also (and thats the different)
  * only be placed in a certain range, called {@link AnchorPointDestination} ({@link AnchorPointDestination#canAnchorPointBePlacedAt(double, double)}).

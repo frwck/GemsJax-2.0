@@ -6,6 +6,7 @@ import java.util.List;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
+import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
@@ -53,7 +54,7 @@ public class MetaConnectionImpl implements MetaConnection {
 	private double targetIconHeight;
 	
 	/**
-	 * The {@link Point} where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
+	 * The {@link Point} / {@link AnchorPoint} where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
 	 * The source is the {@link MetaClass} which contains this MetaConnection in {@link MetaClass#getConnections()}.
 	 * This coordinate is relative to the source {@link MetaClassDrawable} object on the {@link MetaModelCanvas}.
 	 * That means, that the {@link MetaClassImpl#getX()} is the relative 0 coordinate on the x axis.
@@ -62,7 +63,7 @@ public class MetaConnectionImpl implements MetaConnection {
 	 * absolute coordinate on the {@link MetaModelCanvas} is 15 and can be computed by add {@link MetaClassImpl#getX()} to {@link Point#x}
 	 *@see #getSourceRelativePoint()
 	 */
-	private Point sourceRelativePoint;
+	private AnchorPoint sourceRelativePoint;
 	
 	/*
 	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
@@ -72,50 +73,32 @@ public class MetaConnectionImpl implements MetaConnection {
 	//private double sourceRelativeY;
 	
 	/**
-	 * The {@link Point} where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
+	 * The {@link Point} /  {@link AnchorPoint} where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
 	 * See {@link #sourceRelativePoint} for more information and a concrete example.
 	 * @see #getTargetRelativePoint()
 	 */
-	private Point targetRelativePoint;
+	private AnchorPoint targetRelativePoint;
 	
-	/*
-	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the {@link #target}.
-	 * See {@link #sourceRelativeX} for more information and a concrete example.
-	 * @see #getTargetRelativeY()
-	 */
-	//private double targetRelativeY;
-	
+
 	/**
-	 * The relative Point coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
+	 * The relative Point/ {@link AnchorPoint} coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
 	 * where the painted connection line
 	 * (starting from the source with the coordinates {@link #sourceRelativePoint}) touches
 	 * the connection box (which displays the {@link #name} and attributes of this Connection.
 	 */
-	private Point sourceConnectionBoxRelativePoint;
+	private AnchorPoint sourceConnectionBoxRelativePoint;
 	
-	/*
-	 * The relative Y coordinate (according to the absolute coordinate {@link #connectionBoxY}) 
-	 * where the painted connection line
-	 * (starting from the source, coordinates {@link #sourceRelativeX} / {@link #sourceRelativeY}) touches
-	 * the connection box (which displays the {@link #name} and attributes of this Connection.
-	 */
-	//private double sourceConnectionBoxRelativeY;
+
 	
 	/**
-	 * The relative Point  (according to the absolute coordinate {@link #connectionBoxX}) 
+	 * The relative Point/ {@link AnchorPoint}  (according to the absolute coordinate {@link #connectionBoxX}) 
 	 * where the painted connection line
 	 * (starting from {@link #target}, coordinates {@link #targetRelativeX} / {@link #targetRelativeY}) touches
 	 * the connection box (which displays the {@link #name} and attributes of this Connection.
 	 */
-	private Point targetConnectionBoxRelativePoint;
+	private AnchorPoint targetConnectionBoxRelativePoint;
 	
-	/*
-	 * The relative Y coordinate (according to the absolute coordinate {@link #connectionBoxX}) 
-	 * where the painted connection line
-	 * (starting from {@link #target}, coordinates {@link #targetRelativeX} / {@link #targetRelativeY}) touches
-	 * the name box (which displays the {@link #name} and attributes of this Connection.
-	 */
-	//private double targetConnectionBoxRelativeY;
+
 	
 	private String lineColor = "black";
 	
@@ -199,10 +182,10 @@ public class MetaConnectionImpl implements MetaConnection {
 		this.boxToTargetPoints = new ArrayList<Point>();
 		
 		//TODO correct id
-		sourceConnectionBoxRelativePoint = new Point("anchorID1",0,10);
-		sourceRelativePoint = new Point("anchorID2", 30, 40);
-		targetConnectionBoxRelativePoint = new Point("anchorID3", 20,80);
-		targetRelativePoint = new Point("anchorID4", 0, 10);
+		sourceConnectionBoxRelativePoint = new AnchorPoint("anchorID1",0,10);
+		sourceRelativePoint = new AnchorPoint("anchorID2", 30, 40);
+		targetConnectionBoxRelativePoint = new AnchorPoint("anchorID3", 20,80);
+		targetRelativePoint = new AnchorPoint("anchorID4", 0, 10);
 		
 		
 	}
@@ -597,38 +580,27 @@ public class MetaConnectionImpl implements MetaConnection {
 	}
 
 
-	@Override
-	public List<Point> getBoxToTargetAnchorPoints() {
-		return boxToTargetPoints;
-	}
-
 
 	@Override
-	public List<Point> getSourceToBoxAnchorPoints() {
-		return sourceToBoxPoints;
-	}
-
-
-	@Override
-	public Point getSourceConnectionBoxRelativePoint() {
+	public AnchorPoint getSourceConnectionBoxRelativePoint() {
 		return sourceConnectionBoxRelativePoint;
 	}
 
 
 	@Override
-	public Point getSourceRelativePoint() {
+	public AnchorPoint getSourceRelativePoint() {
 		return sourceRelativePoint;
 	}
 
 
 	@Override
-	public Point getTargetConnectionBoxRelativePoint() {
+	public AnchorPoint getTargetConnectionBoxRelativePoint() {
 		return targetConnectionBoxRelativePoint;
 	}
 
 
 	@Override
-	public Point getTargetRelativePoint() {
+	public AnchorPoint getTargetRelativePoint() {
 		return targetRelativePoint;
 	}
 

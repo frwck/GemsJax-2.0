@@ -12,6 +12,7 @@ import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaConnectionImpl;
+import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 
@@ -452,9 +453,9 @@ public  class MetaConnectionBox implements AnchorPointDestination {
 
 
 	@Override
-	public boolean canAnchorPointBePlacedAt(double x, double y) {
+	public Point canAnchorPointBePlacedAt(double x, double y) {
 		// TODO Auto-generated method stub
-		return false;
+		return null;
 	}
 
 

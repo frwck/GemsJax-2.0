@@ -2,11 +2,12 @@ package org.gemsjax.shared.metamodel;
 
 import java.util.List;
 
-import org.gemsjax.client.canvas.AnchorPoint;
+import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
@@ -149,7 +150,7 @@ public interface MetaConnection extends MetaModelElement{
 	public void setSourceIconHeight(double height);
 	
 	/**
-	 * The {@link Point} coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
+	 * The {@link AnchorPoint} coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
 	 * The source is the {@link MetaClass} which contains this MetaConnection in {@link MetaClass#getConnections()}.
 	 * This coordinate is relative to the source {@link MetaClassDrawable} object on the {@link MetaModelCanvas}.
 	 * That means, that the {@link MetaClassImpl#getX()} is the relative 0 coordinate on the x axis.
@@ -158,7 +159,7 @@ public interface MetaConnection extends MetaModelElement{
 	 * absolute coordinate on the {@link MetaModelCanvas} is 15 and can be computed by add {@link MetaClassImpl#getX()} to aRelativeX
 	 * @return
 	 */
-	public Point getSourceRelativePoint();
+	public AnchorPoint getSourceRelativePoint();
 	
 	/**
 	 * Get the width of a single char for attributes.
@@ -193,30 +194,13 @@ public interface MetaConnection extends MetaModelElement{
 	public int getNameFontSize();
 	
 	/**
-	 * The relative Point coordinate (according to the absolute coordinate {@link #nameBoxX}) 
+	 * The relative {@link AnchorPoint} coordinate (according to the absolute coordinate {@link #nameBoxX}) 
 	 * where the painted connection line
 	 * (starting from the source with the coordinates {@link #getSourceRelativeX()} / {@link #getsourceRelativeY()}) touches
 	 * the connection box (which displays the {@link #getName()} and attributes of this Connection.
 	 * @return
 	 */
-	public Point getSourceConnectionBoxRelativePoint();
-	
-	/*
-	 * The relative X coordinate (according to the absolute coordinate {@link #nameBoxX}) 
-	 * where the painted connection line
-	 * (starting from the source with the coordinates {@link #getSourceRelativeX()} / {@link #getSourceRelativeY()}) touches
-	 * the connection box (which displays the {@link #getName()} and attributes of this Connection.
-	 * @return
-	 */
-	//public double getSourceConnectionBoxRelativeY();
-	
-	
-	/*
-	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
-	 * See {@link #getSourceRelativeX()} for more information and a concrete example.
-	 * @see #getSourceRelativeY()
-	 */
-	//public double getSourceRelativeY();
+	public AnchorPoint getSourceConnectionBoxRelativePoint();
 	
 	/**
 	 * The background color gradient end color
@@ -263,35 +247,20 @@ public interface MetaConnection extends MetaModelElement{
 	public double getConnectionBoxY() ;
 	
 	/**
-	 * The relative {@link Point} coordinate (according to the absolute coordinate {@link #getConnectionBoxX()}) 
+	 * The relative {@link AnchorPoint} coordinate (according to the absolute coordinate {@link #getConnectionBoxX()}) 
 	 * where the painted connection line
 	 * (starting from {@link #getTarget()}, coordinates {@link #getTargetRelativePoint()} / {@link #getTargetRelativeY()}) touches
 	 * the connection box (which displays the name and attributes of this Connection.
 	 */
-	public Point getTargetConnectionBoxRelativePoint();
+	public AnchorPoint getTargetConnectionBoxRelativePoint();
 	
-	/*
-	 * The relative Y coordinate (according to the absolute coordinate {@link #getConnectionBoxX()}) 
-	 * where the painted connection line
-	 * (starting from {@link #getTarget()}, coordinates {@link #getTargetRelativePoint()} ) touches
-	 * the connection box (which displays the name and attributes of this Connection.
-	 */
-	//public double getTargetConnectionBoxRelativeY();
 	
 	
 	/**
-	 * The X coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the target.
-	 * See {@link #getSourceRelativeX()} for more information and a concrete example.
-	 * @see #getTargetRelativePoint()
+	 * The {@link AnchorPoint} where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the target.
 	 */
-	public Point getTargetRelativePoint();
-	
-	/*
-	 * The Y coordinate where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the target.
-	 * See {@link #getSourceRelativeX()} for more information and a concrete example.
-	 * @see #getTargetRelativePoint()
-	 */
-	//public double getTargetRelativeY();
+	public AnchorPoint getTargetRelativePoint();
+
 	
 	/**
 	 * For overlapping, same functionality as CSS z index
@@ -455,23 +424,7 @@ public interface MetaConnection extends MetaModelElement{
 	 * @return
 	 */
 	public MetaClass getSource();
-	
-	/**
-	 * Get a List of {@link Point}s  where the connection line goes along this points from the source start point to the connection box end point
-	 * by passing this points. On client side this Points are displayed on the canvas as {@link AnchorPoint}.
-	 * @return
-	 */
-	public List<Point> getSourceToBoxAnchorPoints();
-	
 
-	/**
-	 * Get a List of {@link Point}s  where the connection line goes along this points from the connection box start point to the target end point
-	 * by passing this points. On client side this Points are displayed on the canvas as {@link AnchorPoint}.
-	 * @return
-	 */
-	public List<Point> getBoxToTargetAnchorPoints();
-	
-	
 }
 
 

@@ -7,37 +7,20 @@ package org.gemsjax.shared;
  */
 public class Point {
 
-	/**
-	 * The unique id
-	 */
-	private String id;
-	
-	
-	/**
-	 * The x value
-	 */
 	public double x;
-	
-	/**
-	 * The y value
-	 */
 	public double y;
 	
-	public Point (String id, double x, double y)
+	
+	public Point()
 	{
-		this.id = id;
+		
+	}
+	
+	public Point(double x, double y)
+	{
 		this.x = x;
 		this.y = y;
 	}
 	
-	/**
-	 * Get the unique id
-	 * @return
-	 */
-	public String getID()
-	{
-		return id;
-	}
 	
-
 }
