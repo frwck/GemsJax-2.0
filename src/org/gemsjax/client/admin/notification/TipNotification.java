@@ -1,5 +1,6 @@
 package org.gemsjax.client.admin.notification;
 
+import org.gemsjax.client.admin.notification.NotificationEvent.NotificationEventType;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 
 import com.google.gwt.event.logical.shared.ResizeEvent;
@@ -20,10 +21,6 @@ public class TipNotification extends Notification implements ResizeHandler{
 	private static final int bottomPositionSpacer = 100;
 	
 	
-	private NotificationPosition position;
-	
-	private String title, text;
-	
 	public TipNotification(String title, String text, int timeToHide,  NotificationPosition position)
 	{
 		super();
@@ -31,9 +28,10 @@ public class TipNotification extends Notification implements ResizeHandler{
 		
 		this.setMembersMargin(5);
 		
-		this.position = position;
-		this.title = title;
-		this.text = text;
+		
+		setText(text);
+		setTitle(title);
+		setPosition(position);
 		
 		Window.addResizeHandler(this);
 		
@@ -56,7 +54,7 @@ public class TipNotification extends Notification implements ResizeHandler{
 			@Override
 			public void run() {
 				TipNotification.this.animateHide(AnimationEffect.FADE);
-				
+				fireNotificationEvent(new NotificationEvent(TipNotification.this, NotificationEventType.CLOSED));
 			}
 			
 		}.schedule(timeToHide);
@@ -159,7 +157,7 @@ public class TipNotification extends Notification implements ResizeHandler{
 		// If you change the AdminApplicationViewImpl.contentWidth field, you have to change the line below
 		int maxWidth = Window.getClientWidth() * Integer.parseInt(AdminApplicationViewImpl.contentWidth.substring(0, AdminApplicationViewImpl.contentWidth.indexOf("%")) ) / 100  - 10;
 		
-		int titleWidth = calculateWidth(true, title);
+		int titleWidth = calculateWidth(true, getTitle());
 		
 		
 		int titleHeight = 27;
@@ -177,9 +175,9 @@ public class TipNotification extends Notification implements ResizeHandler{
 		}
 		
 		
-		if (text!= null && text.length()!=0 )
+		if (getText()!= null && getText().length()!=0 )
 		{
-			textWidth = calculateWidth(false, text);
+			textWidth = calculateWidth(false, getText());
 			textHeight = 22;
 			if (textWidth>maxWidth)
 			{
@@ -196,7 +194,7 @@ public class TipNotification extends Notification implements ResizeHandler{
 		this.setHeight(titleHeight+textHeight);
 		
 		
-		switch (position)
+		switch (getNotificationPosition())
 		{
 			case BOTTOM_CENTERED:
 				this.setPageLeft((Window.getClientWidth()-this.getWidth())/2);
@@ -212,29 +210,6 @@ public class TipNotification extends Notification implements ResizeHandler{
 	public void onResize(ResizeEvent event) {
 		calculateWidthAndPosition();
 	}
-	
-	
-	public boolean isSameAs(TipNotification other)
-	{
-		if (this.text == null && other.text!= null) 
-			return false;
-		
-		if (this.text!=null && other.text==null)
-			return false;
-		
-		
-		if (!this.title.equals(other.title))
-			return false;
-		
-		if (this.text != null && other.text!=null)
-			if (!this.text.equals(other.text))
-				return false;
-		
-		
-		return true;
-	}
-
-
 	
 
 }

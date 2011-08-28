@@ -101,4 +101,11 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Use the mouse and the toolbar on the left to interact with the canvas")
 	  String MetaModelEditorWelcomeTip();
 	  
+	  @DefaultStringValue("It's not allowed to place this anchor here")
+	  String MetaModelAnchorPlaceNotAllowedTitle();
+	  
+
+	  @DefaultStringValue("The anchor must be placed in the corresponding area")
+	  String MetaModelAnchorPlaceNotAllowedText();
+	  
 }

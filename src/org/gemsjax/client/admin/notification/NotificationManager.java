@@ -3,7 +3,7 @@ package org.gemsjax.client.admin.notification;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.gemsjax.client.admin.notification.TipNotificationEvent.TipNotificationEventType;
+import org.gemsjax.client.admin.notification.NotificationEvent.NotificationEventType;
 
 
 import com.smartgwt.client.types.AnimationEffect;
@@ -12,27 +12,27 @@ import com.smartgwt.client.types.AnimationEffect;
  * This singleton class manages all {@link TipNotification}s
  * that are actually displayed on screen. 
  * Use {@link #show(TipNotification, AnimationEffect)} to display a new {@link TipNotification} on screen.
- * You always should use the {@link TipNotificationManager} to display {@link TipNotification}s
+ * You always should use the {@link NotificationManager} to display {@link TipNotification}s
  * @author Hannes Dorfmann
  *
  */
-public class TipNotificationManager implements TipNotificationHandler{
+public class NotificationManager implements NotificationHandler{
 	
-	private static TipNotificationManager instance = new TipNotificationManager();
+	private static NotificationManager instance ;
 	
-	private List<TipNotification> activeOnScreenNotifications;
+	private List<Notification> activeOnScreenNotifications;
 	
 	
-	private TipNotificationManager()
+	private NotificationManager()
 	{
-		activeOnScreenNotifications = new LinkedList<TipNotification>();
+		activeOnScreenNotifications = new LinkedList<Notification>();
 	}
 
 
 	@Override
-	public void onTipNotificationEvent(TipNotificationEvent event) {
+	public void onTipNotificationEvent(NotificationEvent event) {
 		
-		if (event.getType() == TipNotificationEventType.CLOSED)
+		if (event.getType() == NotificationEventType.CLOSED)
 			activeOnScreenNotifications.remove(event.getSource());
 		
 	}
@@ -42,8 +42,10 @@ public class TipNotificationManager implements TipNotificationHandler{
 	 * Get the singleton instance
 	 * @return
 	 */
-	public static TipNotificationManager  getInstance()
+	public static NotificationManager  getInstance()
 	{
+		if (instance == null)
+			instance = new NotificationManager();
 		return instance;
 	}
 	
@@ -56,10 +58,10 @@ public class TipNotificationManager implements TipNotificationHandler{
 	 * @param notification
 	 * @param effect
 	 */
-	public void show(TipNotification notification, AnimationEffect effect)
+	public void show(Notification notification, AnimationEffect effect)
 	{
 		// check if there is already the same TipNotification on screen
-		for (TipNotification n: activeOnScreenNotifications)
+		for (Notification n: activeOnScreenNotifications)
 		{
 			if (n.isSameAs(notification))
 				return;

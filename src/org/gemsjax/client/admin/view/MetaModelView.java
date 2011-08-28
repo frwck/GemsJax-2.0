@@ -2,6 +2,8 @@ package org.gemsjax.client.admin.view;
 
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
+import org.gemsjax.client.admin.notification.Notification;
+import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
@@ -69,5 +71,11 @@ public interface MetaModelView {
 	 * Redraw the canvas
 	 */
 	public void redrawMetaModelCanvas();
+	
+	/**
+	 * The View should display something (for example a  {@link Notification}) to inform the user that the {@link Anchor} can not be placed at the desired position
+	 * @param a
+	 */
+	public void showAnchorPlaceNotAllowed(Anchor a);
 
 }

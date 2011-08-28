@@ -6,11 +6,12 @@ import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
 import org.gemsjax.client.admin.notification.TipNotification;
-import org.gemsjax.client.admin.notification.TipNotificationManager;
+import org.gemsjax.client.admin.notification.NotificationManager;
 import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
+import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.Drawable;
@@ -129,7 +130,7 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 				
 			case CREATE_CLASS:		
 				newClassButton.setActive(true); 
-				TipNotificationManager.getInstance().show(new TipNotification(language.MetaModelToolbarNewMetaClassTip(), null , 3000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE); 
+				NotificationManager.getInstance().show(new TipNotification(language.MetaModelToolbarNewMetaClassTip(), null , 3000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE); 
 				
 			break;
 			case CREATE_RELATION:	newRelationButton.setActive(true); 
@@ -163,6 +164,13 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 	@Override
 	public void redrawMetaModelCanvas() {
 		canvas.redrawCanvas();
+	}
+
+	@Override
+	public void showAnchorPlaceNotAllowed(Anchor a) {
+
+		NotificationManager.getInstance().show(new TipNotification(language.MetaModelAnchorPlaceNotAllowedTitle(), null , 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE); 
+		
 	}
 	
 

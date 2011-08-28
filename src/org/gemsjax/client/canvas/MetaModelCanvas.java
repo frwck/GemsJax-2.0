@@ -8,6 +8,7 @@ import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
 import org.gemsjax.client.canvas.events.PlaceEvent.PlaceEventType;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
+import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaModelElement;
 
 
@@ -290,8 +291,6 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 					// Handle focus Events for Placeable, if they are also Focusable
 					if (currentPlaceable != null)
 						currentPlaceable.setSelected(true);
-					
-					SC.logWarn("Anchor Point "+currentPlaceable);
 				}
 				 
 			break; // End NORMAL
@@ -321,32 +320,34 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 						
 						ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.TEMP_RESIZE, width, height, event.getX(), event.getY(), currentResizeArea);
 						((Resizeable)currentMouseDownDrawable).fireResizeEvent(e);
-			
-						return; // Break at this point 
 					}
 				}
-		
 				
-		
-				
-				
-				
+				else
+					
 				if (currentMouseDownDrawable != null &&  currentMouseDownDrawable instanceof HasPlaceable && currentPlaceable != null)
 				{
 					placing = true;
 					
-					if (currentPlaceable.getPlaceableDestination().canPlaceableBePlacedAt(event.getX(), event.getY()) != null)
-						currentPlaceable.setCanBePlaced(true);
+					if (currentPlaceable.getPlaceableDestination() == null) // can be placed everywhere
+					{
+						// TODO should be something special be done?
+					}
 					else
-						currentPlaceable.setCanBePlaced(false);
+					{
+						if (currentPlaceable.getPlaceableDestination().canPlaceableBePlacedAt(event.getX(), event.getY()) != null)
+							currentPlaceable.setCanBePlaced(true);
+						else
+							currentPlaceable.setCanBePlaced(false);
+					}
 					
 					PlaceEvent e = new PlaceEvent(currentPlaceable, PlaceEventType.TEMP_PLACING, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
 					currentPlaceable.firePlaceEvent(e);
-					return;
+					
 				}
 				
-				
-				
+				else
+					
 				// MoveEvent
 				if (currentMouseDownDrawable instanceof Moveable && isMouseDown)
 				{
@@ -355,7 +356,6 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 			
 					((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
 					
-					return;
 				}
 				
 				
@@ -401,11 +401,24 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 				if (placing && currentMouseDownDrawable instanceof HasPlaceable && currentPlaceable !=null)
 				{
+					if (currentPlaceable.getPlaceableDestination()== null) // can be placed everywhere
+					{
+						PlaceEvent e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
+						currentPlaceable.firePlaceEvent(e);
+					}
+					else
+					{
+						Point p = currentPlaceable.getPlaceableDestination().canPlaceableBePlacedAt(event.getX(), event.getY());
+						PlaceEvent e;
+						
+						if (p == null) // Not allowed to be placed there
+							e = new PlaceEvent(currentPlaceable, PlaceEventType.NOT_ALLOWED, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
+						else
+							e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, p.x, p.y, (HasPlaceable)currentMouseDownDrawable);
+						
+						currentPlaceable.firePlaceEvent(e);
+					}
 					
-					
-					PlaceEvent e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
-					
-					currentPlaceable.firePlaceEvent(e);
 				}
 				
 				
@@ -427,8 +440,8 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 			currentPlaceable.setSelected(false);
 			currentPlaceable.setCanBePlaced(false);
 		}
-		currentPlaceable = null;
 		
+		currentPlaceable = null;
 	}
 
 

@@ -883,31 +883,16 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		
 		// the left border
 		if (isBetween(getX()-offset, getX()+offset,x) && isBetween(getY(), getY()+getHeight(),y))
-		{
-			SC.logWarn("left Border");
 			return new Point(getX(),y);
-		}
 		else	// right border
 		if (isBetween(getX()+getWidth()-offset, getX()+getWidth()+offset,x) && isBetween(getY(), getY()+getHeight(),y))
-		{
-
-			SC.logWarn("right Border");
 			return new Point(getX()+getWidth(),y);
-		}
 		else // Top Border
 		if (isBetween(getX(), getX() + getWidth(), x ) && isBetween(getY()-offset, getY()+offset,y))
-		{
-
-			SC.logWarn("top Border");
 			return new Point(x,getY());
-		}
 		else // bottom border
 		if (isBetween(getX(), getX() + getWidth(), x ) && isBetween(getY()+getHeight()-offset, getY()+getHeight()+offset,y))
-		{
-
-			SC.logWarn("bottom Border");
-			return new Point(x,getY()+getHeight());
-		}
+				return new Point(x,getY()+getHeight());
 		
 		return null;
 	}

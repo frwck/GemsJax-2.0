@@ -3,6 +3,8 @@ package org.gemsjax.client.admin.presenter;
 
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
+import org.gemsjax.client.admin.notification.TipNotification;
+import org.gemsjax.client.admin.notification.NotificationManager;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.Drawable;
@@ -23,6 +25,7 @@ import org.gemsjax.client.canvas.events.PlaceEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
+import org.gemsjax.client.canvas.events.PlaceEvent.PlaceEventType;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
@@ -32,6 +35,7 @@ import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.PlaceHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
+import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModel;
@@ -360,14 +364,15 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	public void onPlaceEvent(PlaceEvent event) {
 	
 		if (event.getSource() instanceof Anchor && event.getParent() instanceof MetaConnectionDrawable)
-			onMetaConnectionAnchorPoint((Anchor) event.getSource(), (MetaConnectionDrawable) event.getParent() , event);
+			onMetaConnectionAnchor((Anchor) event.getSource(), (MetaConnectionDrawable) event.getParent() , event);
+		
 	}
 	
 	
 	
-	private void onMetaConnectionAnchorPoint(Anchor p, MetaConnectionDrawable parent,  PlaceEvent e)
+	private void onMetaConnectionAnchor(Anchor p, MetaConnectionDrawable parent,  PlaceEvent e)
 	{
-		double x=0, y=0;
+		double x=e.getX() , y=e.getY();
 		
 		// transform to relative coordinates, if its one of the 4 default anchor points
 		if (p == parent.getSourceAnchorPoint())		
@@ -395,8 +400,39 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		}
 		
 		
-		p.setX(x);
-		p.setY(y);
+		if (e.getType() == PlaceEventType.TEMP_PLACING) // its just a temporary placing event, so update only the view
+		{
+			p.setX(x);
+			p.setY(y);
+			SC.logWarn("Temp placing");
+		}	
+		else
+		if (e.getType()==PlaceEventType.PLACING_FINISHED) // finished, so update the view, model and inform the other collaborative clients
+		{
+			p.setX(x);
+			p.setY(y);
+			AnchorPoint ap = p.getAnchorPoint();
+			
+			ap.x = x;
+			ap.y = y;
+			
+
+			SC.logWarn("Finished placing");
+			//TODO collaborativ websocket information
+		}
+		else
+		if(e.getType() == PlaceEventType.NOT_ALLOWED) // Not Allowed: display a notification, restore the anchors position to the position before the TEMP_PLACING has started
+		{
+			AnchorPoint ap = p.getAnchorPoint();
+			
+			p.setX(ap.x);
+			p.setY(ap.y);
+
+			SC.logWarn("Not allowed placing");
+			
+			view.showAnchorPlaceNotAllowed(p);
+		}
+		
 		
 		view.redrawMetaModelCanvas();
 	}
