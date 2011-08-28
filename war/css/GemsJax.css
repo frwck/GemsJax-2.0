@@ -235,6 +235,7 @@ This is the CSS style for the class Title
 	font-family: font:Verdana, Geneva, sans-serif;
 	margin: 0px 0px;
 	padding: 0px 0px;
+	text-align: center;
 }
 
 .tipNotification h2
@@ -244,4 +245,5 @@ This is the CSS style for the class Title
 	font-family: font:Verdana, Geneva, sans-serif;
 	margin: 0px 0px;
 	padding: 0px 0px;
+	text-align: justify;
 }
