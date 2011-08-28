@@ -422,9 +422,11 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		currentMouseDownDrawable = null;
 		currentResizeArea = null;
 		
-		if (currentPlaceable != null)
+		if (currentPlaceable != null) 
+		{
 			currentPlaceable.setSelected(false);
-		
+			currentPlaceable.setCanBePlaced(false);
+		}
 		currentPlaceable = null;
 		
 	}
