@@ -2,11 +2,14 @@ package org.gemsjax.client.metamodel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.gemsjax.client.metamodel.factory.MetaFactory;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaContainmentRelation;
+import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
 import org.gemsjax.shared.metamodel.exception.MetaContainmentRelationException;
@@ -37,8 +40,8 @@ public class MetaClassImpl implements MetaClass {
 	private String gradientEndColor="#FCFBD5";
 	
 	private String iconURL = "/metamodel/icons/book.jpg";
-	private double iconWidth = 200;
-	private double iconHeight = 200;
+	private double iconWidth = 50;
+	private double iconHeight = 50;
 	
 	
 	/**
@@ -157,7 +160,7 @@ public class MetaClassImpl implements MetaClass {
 	
 	private List <MetaConnection> connections;
 	
-	private List<MetaClass> inheritances;
+	private List<MetaInheritance> inheritances;
 	
 	private List<MetaContainmentRelation> containments;
 
@@ -184,7 +187,7 @@ public class MetaClassImpl implements MetaClass {
 		 
 		 // Lists
 		 attributes = new ArrayList<MetaAttribute>();
-		 inheritances = new ArrayList<MetaClass>();
+		 inheritances = new ArrayList<MetaInheritance>();
 		 connections = new ArrayList<MetaConnection>();
 		 containments = new ArrayList<MetaContainmentRelation>();
 		 
@@ -595,13 +598,16 @@ public class MetaClassImpl implements MetaClass {
 
 
 	@Override
-	public void addInheritance(MetaClass superMetaClass) throws MetaInheritanceExcepetion {
+	public MetaInheritance addInheritance(MetaClass superClass) throws MetaInheritanceExcepetion {
 		
-		for (MetaClass c : inheritances)
-			if (c.getID().equals(superMetaClass.getID()))
-				throw new MetaInheritanceExcepetion(this, superMetaClass );
+		for (MetaInheritance c : inheritances)
+			if (c.getSuperClass().getID().equals(superClass.getID()))
+				throw new MetaInheritanceExcepetion(this, superClass );
 		
-		inheritances.add(superMetaClass);
+		MetaInheritance i = MetaFactory.createInheritance(superClass);
+		
+		inheritances.add(i);
+		return i;
 	}
 
 
@@ -632,8 +638,8 @@ public class MetaClassImpl implements MetaClass {
 
 
 	@Override
-	public void removeInheritance(MetaClass type) {
-		inheritances.remove(type);
+	public void removeInheritance(MetaInheritance i) {
+		inheritances.remove(i);
 	}
 
 
@@ -656,7 +662,7 @@ public class MetaClassImpl implements MetaClass {
 
 
 	@Override
-	public List<MetaClass> getInheritances() {
+	public List<MetaInheritance> getInheritances() {
 		return inheritances;
 	}
 

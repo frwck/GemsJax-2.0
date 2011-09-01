@@ -69,8 +69,9 @@ public interface MetaClass extends MetaModelElement{
 	 * That means that this Meta class derives attributes from the super MetaClass (parameter).
 	 * @param superMetaClass
 	 * @throws MetaInheritanceExcepetion If a inheritance relation for the same superMetaClass already exists
+	 * @return The new created {@link MetaInheritance} object, which represents this relation
 	 */
-	public void addInheritance(MetaClass superMetaClass) throws MetaInheritanceExcepetion;
+	public MetaInheritance addInheritance(MetaClass superMetaClass) throws MetaInheritanceExcepetion;
 	
 	/**
 	 * <b> Use this just as a read only list!</b> <br />
@@ -97,16 +98,16 @@ public interface MetaClass extends MetaModelElement{
 	public List<MetaContainmentRelation> getContainmentRelations();
 	
 	/**
-	 * Get a List with all super classes / base types. That means, that this list contains all classes/ base types
-	 * from which this MetaClass derives.
+	 * Get a List with all super classes. That means, that this list contains all {@link MetaInheritance} objects, which represents inheritance relations
+	 * which this MetaClass derives.
 	 * @return
 	 */
-	public List<MetaClass> getInheritances();
+	public List<MetaInheritance> getInheritances();
 	
 	public void removeAttribute(MetaAttribute attribute);
 	public void removeConnection(MetaConnection connection);
 	public void removeContainmentRelation(MetaContainmentRelation relation);
-	public void removeInheritance(MetaClass type);
+	public void removeInheritance(MetaInheritance inheritance);
  
 	
 	// Properties for the painting

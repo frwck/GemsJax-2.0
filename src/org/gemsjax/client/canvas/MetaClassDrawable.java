@@ -339,23 +339,28 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	
 	private double drawIcon(double x, double y, Context2d context)
 	{
-		double height = 10;
-		double width = 10;
+		double height = metaClass.getIconHeight();
+		double width = metaClass.getIconWidth();
 		
-		double spaceLeft = 0;
+		double spaceLeft =  (getWidth() - metaClass.getIconWidth() )/ 2;
+		if (spaceLeft<0) spaceLeft=0;
 		
-		if (metaClass.getIconWidth()<getWidth())
+		//TODO rethinking of MetaClass icon
+		
+		
+		/*
+		if (metaClass.getIconWidth()>getWidth())
 		{
-			height = metaClass.getIconHeight();
+			width = getWidth();	
+			height = (width * metaClass.getIconHeight())/metaClass.getIconWidth();
+			
+		}
+		else
+		{	height = metaClass.getIconHeight();
 			width = metaClass.getIconWidth();
 			spaceLeft = (getWidth() - metaClass.getIconWidth() )/ 2;
 		}
-		else
-		{
-			width = getWidth();	
-			height = width/metaClass.getIconWidth() * getHeight();
-		}
-		
+		*/
 		
 		if (isIconLoaded())
 		{

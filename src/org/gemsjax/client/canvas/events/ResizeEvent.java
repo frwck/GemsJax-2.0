@@ -28,7 +28,13 @@ public class ResizeEvent {
 		 * That is normally be done, when the user releases the mouse button.
 		 * In this case the x/y coordinate of the underlying data object should be set and synchronized with the corresponding Drawable
 		 */
-		RESIZE_FINISHED
+		RESIZE_FINISHED,
+		
+		/**
+		 * Indicates that the Resizeable can not be resized, because the current {@link Resizeable#getMinHeight()} or {@link Resizeable#getMinWidth()} settings
+		 * not allow this
+		 */
+		NOT_ALLOWED
 	}
 	
 	

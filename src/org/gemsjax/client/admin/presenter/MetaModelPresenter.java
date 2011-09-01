@@ -297,8 +297,13 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					}
 				
 				// TODO collabrative info websocket (also changedAnchorPoints)
+				}
+			else
+			if (event.getType()==ResizeEventType.NOT_ALLOWED)
+			{
+				SC.logWarn("resize not allowed");
+				// TODO If not allowed cause minWidth / minHeight
 			}
-			
 			
 			
 			view.redrawMetaModelCanvas();
