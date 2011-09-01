@@ -316,10 +316,15 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 						double width = beforeResizeWidth +  event.getX() - mouseDownX;
 						double height = beforeResizeHeight + event.getY() - mouseDownY;
 						
+						Resizeable res = (Resizeable)currentMouseDownDrawable;
 						resizing = true;
 						
-						ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.TEMP_RESIZE, width, height, event.getX(), event.getY(), currentResizeArea);
-						((Resizeable)currentMouseDownDrawable).fireResizeEvent(e);
+						// Fire only a event if the minWidth and min Height allow this
+						if (res.getMinWidth()<width && res.getMinHeight()<height)
+						{
+							ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.TEMP_RESIZE, width, height, event.getX(), event.getY(), currentResizeArea);
+							res.fireResizeEvent(e);
+						}
 					}
 				}
 				
@@ -393,8 +398,16 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 						double width = beforeResizeWidth +  event.getX() - mouseDownX;
 						double height = beforeResizeHeight + event.getY() - mouseDownY;
 						
-						ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.RESIZE_FINISHED, width, height, event.getX(), event.getY(), currentResizeArea);
-						((Resizeable)currentMouseDownDrawable).fireResizeEvent(e);
+						
+						Resizeable res = (Resizeable)currentMouseDownDrawable;
+						
+						// Fire only a event if the minWidth and min Height allow this
+						if (res.getMinWidth()<width && res.getMinHeight()<height)
+						{
+							ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.RESIZE_FINISHED, width, height, event.getX(), event.getY(), currentResizeArea);
+							res.fireResizeEvent(e);
+						}
+						
 					}
 				}
 				

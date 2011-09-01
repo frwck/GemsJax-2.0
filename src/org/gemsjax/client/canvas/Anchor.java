@@ -3,6 +3,7 @@ package org.gemsjax.client.canvas;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
@@ -197,7 +198,10 @@ public class Anchor implements Placeable{
 	@Override
 	public void addPlaceHandler(PlaceHandler handler) {
 		if (!placeHandlers.contains(handler))
-			placeHandlers.add(handler);
+			if (handler instanceof Presenter)		// The presenter should always be the last in the list
+				placeHandlers.add(placeHandlers.size(), handler);
+			else
+				placeHandlers.add(0,handler);
 	}
 
 	@Override

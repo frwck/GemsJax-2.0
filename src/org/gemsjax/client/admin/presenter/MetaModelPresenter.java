@@ -1,6 +1,9 @@
 package org.gemsjax.client.admin.presenter;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.notification.TipNotification;
@@ -140,28 +143,28 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					d.addFocusHandler(this);
 					
 					// Add PlaceHandler to the AnchorPoints between source and Connection box
-					Anchor p = d.getSourceAnchorPoint();
+					Anchor p = d.getSourceAnchor();
 					
 					
-					while (p!=d.getSourceConnectionBoxAnchorPoint())
+					while (p!=d.getSourceConnectionBoxAnchor())
 					{
 						p.addPlaceHandler(this);
 						p = p.getNextAnchor();
 					}
 					
-					d.getSourceConnectionBoxAnchorPoint().addPlaceHandler(this);
+					d.getSourceConnectionBoxAnchor().addPlaceHandler(this);
 					
 					
 					// Add PlaceHandler to the AnchorPoints between connection box and target
-					p = d.getTargetConnectionBoxAnchorPoint();
+					p = d.getTargetConnectionBoxAnchor();
 					
-					while (p!=d.getTargetAnchorPoint())
+					while (p!=d.getTargetAnchor())
 					{
 						p.addPlaceHandler(this);
 						p = p.getNextAnchor();
 					}
 					
-					d.getTargetAnchorPoint().addPlaceHandler(this);
+					d.getTargetAnchor().addPlaceHandler(this);
 					
 					
 					view.addDrawable(d);
@@ -267,8 +270,6 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	private void onMetaClassResizeEvent(MetaClass metaClass, ResizeEvent event)
 	{
 
-		if (event.getWidth()>metaClass.getMinWidth() && event.getHeight()>metaClass.getMinHeight())
-		{
 		
 			// Its done, when ResizeEventType.TEMP_RESIZE  and  RESIZE_FINISHED
 			MetaClassDrawable d =(MetaClassDrawable) event.getSource();
@@ -280,14 +281,28 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 				metaClass.setWidth(event.getWidth());
 				metaClass.setHeight(event.getHeight());
 				
-				// TODO collabrative info websocket
+				
+				// Check for Anchors which position has been changed durrning the resizement
+				
+				List<AnchorPoint> changedAnchorPoints = new ArrayList<AnchorPoint>();
+				
+				
+				for (Anchor a : d.getDockedAnchors())
+				
+					if (a.getX()!=a.getAnchorPoint().x || a.getY() != a.getAnchorPoint().y)
+					{
+						a.getAnchorPoint().x = a.getX();
+						a.getAnchorPoint().y = a.getY();
+						changedAnchorPoints.add(a.getAnchorPoint());
+					}
+				
+				// TODO collabrative info websocket (also changedAnchorPoints)
 			}
 			
 			
 			
 			view.redrawMetaModelCanvas();
-			
-		}
+		
 	}
 
 	
@@ -315,8 +330,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	{
 		MetaConnectionDrawable d = (MetaConnectionDrawable)event.getSource();
 		
-		if (event.getWidth()>d.getMinWidth() && event.getHeight()>d.getMinHeight())
-		{
+		
 
 			d.setWidth(event.getWidth());
 			d.setHeight(event.getHeight());
@@ -338,7 +352,6 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			}
 			
 			view.redrawMetaModelCanvas();
-		}
 		
 	}
 	
@@ -375,25 +388,25 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		double x=e.getX() , y=e.getY();
 		
 		// transform to relative coordinates, if its one of the 4 default anchor points
-		if (p == parent.getSourceAnchorPoint())		
+		if (p == parent.getSourceAnchor())		
 		{
 			x = e.getX() - parent.getSourceDrawable().getX();
 			y = e.getY() - parent.getSourceDrawable().getY();
 		}
 		else
-		if (p == parent.getSourceConnectionBoxAnchorPoint())
+		if (p == parent.getSourceConnectionBoxAnchor())
 		{
 			x = e.getX() - parent.getConnectionBox().getX();
 			y = e.getY() - parent.getConnectionBox().getY();
 		}
 		else
-		if (p == parent.getTargetConnectionBoxAnchorPoint())
+		if (p == parent.getTargetConnectionBoxAnchor())
 		{
 			x = e.getX() - parent.getConnectionBox().getX();
 			y = e.getY() - parent.getConnectionBox().getY();
 		}
 		else
-		if (p == parent.getTargetAnchorPoint())
+		if (p == parent.getTargetAnchor())
 		{
 			x = e.getX() - parent.getTargetDrawable().getX();
 			y = e.getY() - parent.getTargetDrawable().getY();

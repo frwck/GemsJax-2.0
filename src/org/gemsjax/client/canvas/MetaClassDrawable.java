@@ -1,14 +1,9 @@
 package org.gemsjax.client.canvas;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.swing.text.html.CSS;
-import javax.swing.text.html.parser.AttributeList;
-
-import org.gemsjax.client.canvas.Drawable;
-import org.gemsjax.client.canvas.ResizeArea;
+import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.IconLoadEvent;
@@ -16,7 +11,6 @@ import org.gemsjax.client.canvas.events.MouseOutEvent;
 import org.gemsjax.client.canvas.events.MouseOverEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
-import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.IconLoadHandler;
@@ -24,28 +18,22 @@ import org.gemsjax.client.canvas.handler.MouseOutHandler;
 import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.metamodel.MetaAttributeImpl;
-import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaClass;
-import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.LoadEvent;
 import com.google.gwt.event.dom.client.LoadHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.RootPanel;
-import com.smartgwt.client.util.SC;
 
 
 
 /**
- * This class represents a MetaClass. A MetaClass must be added to a {@link MetaModelImpl} and sho
+ * This class represents a {@link MetaClass}
  * @author Hannes Dorfmann
  *
  */
@@ -112,6 +100,13 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	private boolean iconLoaded = false;
 	private Image iconImage;
 
+	/**
+	 * A list with all {@link Anchor}s that are docked to this {@link MetaClassDrawable}.
+	 * The list of Anchors is important to react on resizements to adjust the Anchors relative coordinates.
+	 */
+	private List<Anchor> dockedAnchors;
+	
+	
 	public MetaClassDrawable(MetaClass metaClass)
 	{
 		this.metaClass = metaClass;
@@ -144,6 +139,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		 mouseOutHandlers = new LinkedList<MouseOutHandler>();
 		 iconLoadableHandlers = new LinkedList<IconLoadHandler>();
 		 
+		 dockedAnchors = new LinkedList<Anchor>();
 		 
 		 this.x = metaClass.getX();
 		 this.y = metaClass.getY();
@@ -154,6 +150,37 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		 // a Resize Area
 		 resizeAreas.add(new ResizeArea(x+width-6, y+height-6, 6, 6));
 
+	}
+	
+	/**
+	 * Dock an {@link Anchor} to this {@link Drawable}.
+	 * This docking is important, to react on resizements.
+	 * @param a
+	 */
+	public void dockAnchor(Anchor a)
+	{
+		if (!dockedAnchors.contains(a))
+			dockedAnchors.add(a);
+	}
+	
+	
+	/**
+	 * Undock an {@link Anchor}
+	 * @see #dockAnchor(Anchor)
+	 * @param a
+	 */
+	public void undockAnchor(Anchor a)
+	{
+		dockedAnchors.remove(a);
+	}
+	
+	/**
+	 * Get a list with all {@link Anchor}s that are currently docked to this {@link MetaClassDrawable}
+	 * @return
+	 */
+	public List<Anchor> getDockedAnchors()
+	{
+		return dockedAnchors;
 	}
 	
 	
@@ -650,7 +677,12 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 */
 	@Override
 	public void addResizeHandler(ResizeHandler resizeHandler) {
-		resizeHandlers.add(resizeHandler);
+		
+		if (!resizeHandlers.contains(resizeHandler))
+			if (resizeHandler instanceof Presenter)		// The presenter should always be the last in the list
+				resizeHandlers.add(resizeHandlers.size(), resizeHandler);
+			else
+				resizeHandlers.add(0,resizeHandler);
 	}
 
 	@Override
@@ -660,7 +692,12 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 
 	@Override
 	public void addMoveHandler(MoveHandler moveHandler) {
-		moveHandlers.add(moveHandler);
+	
+			if (!moveHandlers.contains(moveHandler))
+				if (moveHandler instanceof Presenter)		// The presenter should always be the last in the list
+					moveHandlers.add(moveHandlers.size(), moveHandler);
+				else
+					moveHandlers.add(0,moveHandler);
 	}
 
 	@Override
@@ -672,7 +709,12 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 
 	@Override
 	public void addMouseOverHandler(MouseOverHandler mouseOverHandler) {
-		mouseOverHandlers.add(mouseOverHandler);
+		if (!mouseOverHandlers.contains(mouseOverHandler))
+			if (mouseOverHandler instanceof Presenter)		// The presenter should always be the last in the list
+				mouseOverHandlers.add(mouseOverHandlers.size(), mouseOverHandler);
+			else
+				mouseOverHandlers.add(0,mouseOverHandler);
+			
 	}
 
 	@Override
@@ -714,7 +756,10 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	public void addClickHandler(ClickHandler handler)
 	{
 		if (!clickHandlers.contains(handler))
-			clickHandlers.add(handler);
+			if (handler instanceof Presenter)		// The presenter should allways be the last in the list
+				clickHandlers.add(clickHandlers.size(), handler);
+			else
+				clickHandlers.add(0,handler);
 	}
 	
 	@Override
@@ -737,7 +782,11 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	@Override
 	public void addFocusHandler(FocusHandler handler) {
 		if (!focusHandlers.contains(handler))
-			focusHandlers.add(handler);
+			if (handler instanceof Presenter)		// The presenter should always be the last in the list
+				focusHandlers.add(focusHandlers.size(), handler);
+			else
+				focusHandlers.add(0,handler);
+			
 	}
 
 	@Override
@@ -753,17 +802,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	
 		focusHandlers.remove(handler);
 	}
-/*
-	@Override
-	public void onFocusEvent(FocusEvent event) {
-		
-		if (event.getType()==FocusEventType.GOT_FOCUS)
-			this.setSelected(true);
-		else
-			this.setSelected(false);
-		
-	}
-*/
+
 	@Override
 	public boolean fireMoveEvent(MoveEvent event) {
 		
@@ -812,7 +851,10 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	@Override
 	public void addMouseOutHandler(MouseOutHandler handler) {
 		if (!mouseOutHandlers.contains(handler))
-			mouseOutHandlers.add(handler);
+			if (handler instanceof Presenter)		// The presenter should always be the last in the list
+				mouseOutHandlers.add(mouseOutHandlers.size(), handler);
+			else
+				mouseOutHandlers.add(0,handler);
 	}
 
 	@Override
@@ -850,8 +892,14 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 
 	@Override
 	public void addIconLoadHandler(IconLoadHandler h) {
+		
+		
 		if (!iconLoadableHandlers.contains(h))
-			iconLoadableHandlers.add(h);
+			if (!iconLoadableHandlers.contains(h))
+				if (h instanceof Presenter)		// The presenter should always be the last in the list
+					iconLoadableHandlers.add(iconLoadableHandlers.size(), h);
+				else
+					iconLoadableHandlers.add(0,h);
 	}
 
 
@@ -916,7 +964,6 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		context.stroke();
 		
 		context.restore();
-		
 	}
 
 
