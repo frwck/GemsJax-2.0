@@ -12,14 +12,20 @@ import org.gemsjax.shared.metamodel.MetaModel;
 public class MetaBaseTypeException extends Exception{
 	
 	private MetaModel metaModel;
+	private String baseTypeName;
 		
-	public MetaBaseTypeException(MetaModel metaModel)
+	public MetaBaseTypeException(MetaModel metaModel, String baseTypeName)
 	{
 		this.metaModel = metaModel;
+		this.baseTypeName = baseTypeName;
 	}
 
 	public MetaModel getMetaModel() {
 		return metaModel;
+	}
+
+	public String getBaseTypeName() {
+		return baseTypeName;
 	}
 
 }

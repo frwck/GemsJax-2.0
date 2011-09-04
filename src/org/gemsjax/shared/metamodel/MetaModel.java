@@ -35,10 +35,10 @@ public interface MetaModel  extends MetaModelElement{
 	public void setName(String name);
 
 	/**
-	 * Create and add a {@link MetaClass}
+	 * Add a {@link MetaClass}
 	 * @param metaClass
 	 */
-	public MetaClass addMetaClass(String id, String name) throws MetaClassException;
+	public void addMetaClass(MetaClass metaClass) throws MetaClassException;
 	
 	/**
 	 * Remove {@link MetaClass}

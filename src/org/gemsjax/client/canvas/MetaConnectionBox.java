@@ -42,29 +42,6 @@ public  class MetaConnectionBox implements PlaceableDestination {
 	 */
 	private double dotWidth = 3;
 
-
-	/**
-	 * The space (in pixel) between the name text and the top border line
-	 */
-	private double nameTopSpace = 3;
-	
-
-	/**
-	 * The space (in pixel) between the name text and the left border line
-	 */
-	private double nameLeftSpace = 3;
-	
-
-	/**
-	 * The space (in pixel) between the name text and the right border line
-	 */
-	private double nameRightSpace = 3;
-	
-	/**
-	 * The space (in pixel) between the name text and the bottom border line
-	 */
-	private double nameBottomSpace = 3;
-	
 	
 	private List<ResizeArea> resizeAreas;
 	private List<MoveHandler> moveHandlers;
@@ -209,14 +186,14 @@ public  class MetaConnectionBox implements PlaceableDestination {
 	
 	private void drawName(Context2d context)
 	{
-		String txt = getWidth()-nameLeftSpace > (connection.getName().length()*connection.getNameFontCharWidth()) 
-		? connection.getName() : connection.getName().subSequence(0, (int) ((getWidth()- nameLeftSpace)/connection.getNameFontCharWidth() - 3))+"...";
+		String txt = getWidth() - connection.getNameLeftSpace() > (connection.getName().length()*connection.getNameFontCharWidth()) 
+		? connection.getName() : connection.getName().subSequence(0, (int) ((getWidth()- connection.getNameLeftSpace())/connection.getNameFontCharWidth() - 3))+"...";
 
 		context.setFillStyle(connection.getFontColor());
 		context.setFont(connection.getNameFontSize()+"px "+connection.getFontFamily());
 		
 		context.setTextAlign("left");
-		context.fillText(txt, getX()+nameLeftSpace, getY()+nameTopSpace+connection.getNameFontSize());
+		context.fillText(txt, getX()+connection.getNameLeftSpace(), getY()+connection.getNameTopSpace()+connection.getNameFontSize());
 
 	}
 	

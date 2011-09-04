@@ -481,40 +481,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 */
 	public void autoSize()
 	{
-		// TODO optimization 
-		
-		double nameWidth = metaClass.getNameLeftSpace() + metaClass.getName().length()*metaClass.getNameFontCharWidth() + metaClass.getNameRightSpace();
-		double nameHeight = metaClass.getNameTopSpace() + metaClass.getNameFontSize() + metaClass.getNameBottomSpace();
-		
-		double attributesHeight = metaClass.getAttributeListTopSpace() + metaClass.getAttributes().size()* (metaClass.getAttributeFontSize() + metaClass.getAttributeToAttributeSpace()) + metaClass.getAttributeListBottomSpace();
-		
-		
-		
-		int longestChar = 0;
-		
-		// Calculate the longest attribute (attribute string)
-		for (int i =0; i<metaClass.getAttributes().size();i++)
-		{
-			MetaAttribute a = metaClass.getAttributes().get(i);
-			if ((a.getName().length() + a.getType().getName().length() + 3 )> longestChar)	// + 3 is for the separator String " : " between name and type
-				longestChar = a.getName().length() + a.getType().getName().length() + 3;
-		}
-		
-		double attributeWidth = metaClass.getAttributeListLeftSpace() + longestChar *metaClass.getAttributeFontCharWidth() + metaClass.getAttributeListRightSpace();
-		
-		if (metaClass.isDisplayingAttributes())
-		{
-			// Set width
-			if (attributeWidth>nameWidth)
-				metaClass.setWidth( attributeWidth );
-			else
-				metaClass.setWidth( nameWidth );
-		}
-		else
-			metaClass.setWidth(nameWidth);
-			
-		// Set height
-		metaClass.setHeight(metaClass.isDisplayingAttributes() ? (nameHeight + attributesHeight) : nameHeight); 
+		metaClass.autoSize();
 		
 		// Set the ResizeArea at the correct Position
 		autoSetResizeAreaPosition();

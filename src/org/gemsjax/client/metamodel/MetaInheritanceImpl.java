@@ -16,14 +16,17 @@ public class MetaInheritanceImpl implements MetaInheritance{
 	 */
 	private MetaClass superClass;
 	
+	private MetaClass ownerClass;
+	
 	private AnchorPoint classRelativeAnchorPoint;
 	private AnchorPoint superClassRelativeAnchorPoint;
 	
 	
-	public MetaInheritanceImpl(String id, MetaClass superClass)
+	public MetaInheritanceImpl(String id, MetaClass ownerClass, MetaClass superClass)
 	{
 		this.id = id;
 		this.superClass = superClass;
+		this.ownerClass = ownerClass;
 	}
 	
 	
@@ -63,6 +66,31 @@ public class MetaInheritanceImpl implements MetaInheritance{
 	@Override
 	public void setSuperClassRelativeAnchorPoint(AnchorPoint a) {
 		this.superClassRelativeAnchorPoint = a;
+	}
+
+
+
+
+	@Override
+	public MetaClass getOwnerClass() {
+		return ownerClass;
+	}
+
+
+
+
+	@Override
+	public void setOwnerClass(MetaClass ownerClass) {
+		this.ownerClass = ownerClass;
+	}
+
+
+
+
+	@Override
+	public void setSuperClass(MetaClass superClass) {
+	
+		this.superClass = superClass;
 	}
 
 }

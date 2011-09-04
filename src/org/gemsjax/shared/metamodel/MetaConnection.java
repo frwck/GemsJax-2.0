@@ -162,6 +162,12 @@ public interface MetaConnection extends MetaModelElement{
 	public AnchorPoint getSourceRelativePoint();
 	
 	/**
+	 * @see #getSourceRelativePoint()
+	 * @param point
+	 */
+	public void setSourceRelativePoint(AnchorPoint point);
+	
+	/**
 	 * Get the width of a single char for attributes.
 	 * This value is needed to compute the width of a attribute text
 	 * @return
@@ -201,6 +207,12 @@ public interface MetaConnection extends MetaModelElement{
 	 * @return
 	 */
 	public AnchorPoint getSourceConnectionBoxRelativePoint();
+	
+	/**
+	 * @see #getSourceConnectionBoxRelativePoint()
+	 * @param point
+	 */
+	public void setSourceConnectionBoxRelativePoint(AnchorPoint point);
 	
 	/**
 	 * The background color gradient end color
@@ -254,13 +266,24 @@ public interface MetaConnection extends MetaModelElement{
 	 */
 	public AnchorPoint getTargetConnectionBoxRelativePoint();
 	
+	/**
+	 * @see #getTargetConnectionBoxRelativePoint()
+	 * @param point
+	 */
+	public void setTargetConnectionBoxRelativePoint(AnchorPoint point);
+	
 	
 	
 	/**
 	 * The {@link AnchorPoint} where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the target.
 	 */
 	public AnchorPoint getTargetRelativePoint();
-
+	
+	/**
+	 * @see #getTargetRelativePoint()
+	 * @param point
+	 */
+	public void setTargetRelativePoint(AnchorPoint point);
 	
 	/**
 	 * For overlapping, same functionality as CSS z index
@@ -424,6 +447,35 @@ public interface MetaConnection extends MetaModelElement{
 	 * @return
 	 */
 	public MetaClass getSource();
+	
+	/**
+	 * Calculate and set the width and height for the connection box
+	 */
+	public void autoSize();
+	
+	/**
+	 * The space between the left border and the name
+	 * @return
+	 */
+	public double getNameLeftSpace();
+	
+	/**
+	 * The space between the top border and the name
+	 * @return
+	 */
+	public double getNameTopSpace();
+	
+	/**
+	 * The space between underneath the name (between name and attribute list, if attribute list is displayed)
+	 * @return
+	 */
+	public double getNameBottomSpace();
+	
+	/**
+	 * The top space over the start of the attribute list
+	 * @return
+	 */
+	public double getAttributeToAttributeSpace();
 
 }
 

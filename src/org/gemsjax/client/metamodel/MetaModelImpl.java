@@ -53,11 +53,11 @@ public class MetaModelImpl implements MetaModel{
 	 * @return true otherwise it will throw an {@link NameNotAvailableException}
 	 * @throws NameNotAvailableException if the name is already assigned to another {@link MetaClass}
 	 */
-	public boolean isMetaClassNameAvailable(String desiredName) throws MetaClassException
+	public boolean isMetaClassNameAvailable(String desiredName)
 	{
 		for (MetaClass m: metaClasses)
 			if (m.getName().equals(desiredName))
-				throw new MetaClassException(desiredName, this);
+				return false;
 		
 		
 		return true;
@@ -65,23 +65,20 @@ public class MetaModelImpl implements MetaModel{
 	
 	
 	/**
-	 * Creates a MetaClass and add this new MetaClass to this MetaModel
+	 * Add a {@link MetaClass} to this {@link MetaModel}
 	 * @param metaClassName
 	 * @throws MetaClassException if the name of the {@link MetaClassImpl} is already assigned to another {@link MetaClassImpl} and so not available
 	 * @return The new created {@link MetaClassImpl} object
 	 */
 	@Override
-	public MetaClass addMetaClass(String id, String metaClassName) throws MetaClassException{
+	public void addMetaClass(MetaClass metaClass) throws MetaClassException {
 		
-		if (isMetaClassNameAvailable(metaClassName))
-		{
-			MetaClassImpl mc = new MetaClassImpl(id,metaClassName);
-			metaClasses.add(mc);
-			return mc;
-		}
 		
-		// Should never be reached, because isMetaClassNameAvailable should throw a MetaClassNameExcption
-		return null;
+		
+		if (isMetaClassNameAvailable(metaClass.getName()))
+			metaClasses.add(metaClass);
+		else
+			throw new MetaClassException(metaClass.getName(), this);
 	}
 
 	@Override
@@ -89,7 +86,7 @@ public class MetaModelImpl implements MetaModel{
 		
 		for (MetaBaseType t: baseTypes)
 			if (t.getID().equals(baseType.getID()) || t.getName().equals(baseType.getName()))
-				throw new MetaBaseTypeException(this);
+				throw new MetaBaseTypeException(this,baseType.getName());
 		
 		baseTypes.add(baseType);
 	}

@@ -316,16 +316,13 @@ public class MetaClassImpl implements MetaClass {
 	
 	
 	@Override
-	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException
+	public void addAttribute(MetaAttribute attribute) throws MetaAttributeException
 	{
 		for(MetaAttribute a : attributes)
-			if (a.getName().equals(name))
+			if (attribute == a || a.getID().equals(attribute.getID()) || a.getName().equals(attribute.getName()) )
 				throw new MetaAttributeException(name, this);
 		
-		MetaAttribute attribute = new MetaAttributeImpl(id, name, type);
 		attributes.add(attribute);
-		
-		return attribute;
 	}
 	
 	@Override
@@ -565,49 +562,37 @@ public class MetaClassImpl implements MetaClass {
 
 
 	@Override
-	public MetaConnection addConnection(String id, String name, MetaClass target, int lower, int upper) throws MetaConnectionException {
+	public void addConnection(MetaConnection connection) throws MetaConnectionException {
 		
 		for (MetaConnection c : connections)
-			if (c.getName().equals(name))
+			if (c.getName().equals(connection.getName()) || c.getID().equals(connection.getID()))
 				throw new MetaConnectionException(this,name);
 		
-		MetaConnection c = new MetaConnectionImpl(id, name, target, lower, upper);
-		c.setSource(this);
-		
-		connections.add(c);
-		
-		return c;
-		
+		connections.add(connection);
+			
 	}
 
 
 	@Override
-	public MetaContainmentRelation addContainmentRelation(String id, MetaClass classToContain, int max, int min) throws MetaContainmentRelationException
+	public void addContainmentRelation(MetaContainmentRelation relation) throws MetaContainmentRelationException
 	{
 		for (MetaContainmentRelation r : containments)
-			if (r.getMetaClass().getID().equals(classToContain.getID()))
-				throw new MetaContainmentRelationException(this, classToContain);
+			if (r.getMetaClass().getID().equals(relation.getID()) || r.getMetaClass().getID().equals(relation.getMetaClass().getID() ) )
+				throw new MetaContainmentRelationException(this, relation.getMetaClass());
 		
-		
-		MetaContainmentRelation r = new MetaContainmentRelationImpl(id, this, classToContain, min, max);
-		containments.add(r);
-		
-		return r;
-		
+		containments.add(relation);
 	}
 
 
 	@Override
-	public MetaInheritance addInheritance(MetaClass superClass) throws MetaInheritanceExcepetion {
+	public void addInheritance(MetaInheritance inheritance) throws MetaInheritanceExcepetion {
 		
 		for (MetaInheritance c : inheritances)
-			if (c.getSuperClass().getID().equals(superClass.getID()))
-				throw new MetaInheritanceExcepetion(this, superClass );
+			if (c.getSuperClass().getID().equals(inheritance.getSuperClass().getID()))
+				throw new MetaInheritanceExcepetion(this, inheritance.getSuperClass() );
 		
-		MetaInheritance i = MetaFactory.createInheritance(superClass);
 		
-		inheritances.add(i);
-		return i;
+		inheritances.add(inheritance);
 	}
 
 
@@ -670,6 +655,58 @@ public class MetaClassImpl implements MetaClass {
 	@Override
 	public double getIconToClassBoxSpace() {
 		return iconToClassBoxSpace;
+	}
+
+
+	@Override
+	public void autoSize() {
+
+		// TODO optimization 
+		
+		double nameWidth = this.getNameLeftSpace() + this.getName().length()*this.getNameFontCharWidth() + this.getNameRightSpace();
+		double nameHeight = this.getNameTopSpace() + this.getNameFontSize() + this.getNameBottomSpace();
+		
+		double attributesHeight = this.getAttributeListTopSpace() + this.getAttributes().size()* (this.getAttributeFontSize() + this.getAttributeToAttributeSpace()) + this.getAttributeListBottomSpace();
+		
+		
+		
+		int longestChar = 0;
+		
+		// Calculate the longest attribute (attribute string)
+		for (int i =0; i<this.getAttributes().size();i++)
+		{
+			MetaAttribute a = this.getAttributes().get(i);
+			if ((a.getName().length() + a.getType().getName().length() + 3 )> longestChar)	// + 3 is for the separator String " : " between name and type
+				longestChar = a.getName().length() + a.getType().getName().length() + 3;
+		}
+		
+		double attributeWidth = this.getAttributeListLeftSpace() + longestChar *this.getAttributeFontCharWidth() + this.getAttributeListRightSpace();
+		
+		if (this.isDisplayingAttributes())
+		{
+			// Set width
+			if (attributeWidth>nameWidth)
+				this.setWidth( attributeWidth );
+			else
+				this.setWidth( nameWidth );
+		}
+		else
+			this.setWidth(nameWidth);
+			
+		// Set height
+		
+		double height=0;
+		
+		if (iconURL!=null && !iconURL.equals(""))
+			height += iconHeight;
+		
+		if (isDisplayingAttributes())
+			height+= nameHeight + attributesHeight;
+		else
+			height += nameHeight;
+		
+		this.setHeight(height); 
+		
 	}
 
 

@@ -32,46 +32,35 @@ public interface MetaClass extends MetaModelElement{
 	public void setName(String name);
 
 	/**
-	 * Create and add a {@link MetaAttribute} to this MetaClass
-	 * @param id
-	 * @param name
-	 * @param type
-	 * @return The added and new creates {@link MetaAttribute}
+	 * Add a {@link MetaAttribute} to this MetaClass
+	 * @param attribute
 	 * @throws MetaAttributeException
 	 */
-	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException;
+	public void addAttribute(MetaAttribute attribute) throws MetaAttributeException;
 	
 	/**
-	 * Create and add a new {@link MetaConnection}
-	 * @param id
-	 * @param name
-	 * @param target
-	 * @param lower
-	 * @param upper
-	 * @return The new created and added MetaConnection object
+	 * Add a {@link MetaConnection}
+	 * @param connection
 	 * @throws MetaConnectionException if a MetaConnection with the same name exists.
 	 */
-	public MetaConnection addConnection(String id, String name, MetaClass target, int lower, int upper)  throws MetaConnectionException;
+	public void addConnection(MetaConnection connection)  throws MetaConnectionException;
 	
 	/**
-	 * Create and add a new {@link MetaContainmentRelation} object
-	 * @param id
-	 * @param classToContain The MetaClass which is contained 
-	 * @param max
-	 * @param min
+	 * Add a {@link MetaContainmentRelation} 
+	 * @param containmentRelation
 	 * @return The new created {@link MetaContainmentRelation} object
 	 */
-	public MetaContainmentRelation addContainmentRelation(String id, MetaClass classToContain, int max, int min) throws MetaContainmentRelationException;
+	public void addContainmentRelation(MetaContainmentRelation containmentRelation) throws MetaContainmentRelationException;
 	
 	
 	/**
-	 * create a new inheritance relation between this {@link MetaClass} and the other super MetaClass (parameter).
+	 * Add a {@link MetaInheritance}
 	 * That means that this Meta class derives attributes from the super MetaClass (parameter).
 	 * @param superMetaClass
 	 * @throws MetaInheritanceExcepetion If a inheritance relation for the same superMetaClass already exists
 	 * @return The new created {@link MetaInheritance} object, which represents this relation
 	 */
-	public MetaInheritance addInheritance(MetaClass superMetaClass) throws MetaInheritanceExcepetion;
+	public void addInheritance(MetaInheritance inheritance) throws MetaInheritanceExcepetion;
 	
 	/**
 	 * <b> Use this just as a read only list!</b> <br />
@@ -494,6 +483,11 @@ public interface MetaClass extends MetaModelElement{
 	 * @param height
 	 */
 	public void setIconHeight(double height);
+	
+	/**
+	 * Calculate and set the width and height, so that the name and  all attributes can be displayed completely
+	 */
+	public void autoSize();
 		
 	
 	

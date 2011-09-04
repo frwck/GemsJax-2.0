@@ -149,6 +149,34 @@ public class MetaConnectionImpl implements MetaConnection {
 	
 	
 	/**
+	 * The space (in pixel) between the name text and the top border line
+	 */
+	private double nameTopSpace = 3;
+	
+
+	/**
+	 * The space (in pixel) between the name text and the left border line
+	 */
+	private double nameLeftSpace = 3;
+	
+
+	/**
+	 * The space (in pixel) between the name text and the right border line
+	 */
+	private double nameRightSpace = 3;
+	
+	/**
+	 * The space (in pixel) between the name text and the bottom border line
+	 */
+	private double nameBottomSpace = 3;
+	
+	
+	private double attributeListLeftSpace = 3;
+	
+	private double attributeListTopSpace = 3;
+	
+	
+	/**
 	 * The font family name. For an easier calculation of the width of a text you should allways use a monospace font.
 	 * <b>If you change the font, you also have to recalculate {@link #nameFontCharWidth} and {@link #attributeFontCharWidth}. <b>
 	 * @see MetaClassImpl#nameFontCharWidth
@@ -156,32 +184,30 @@ public class MetaConnectionImpl implements MetaConnection {
 	private String fontFamily ="Courier";
 	
 	private List<MetaAttribute> attributes;
+
+	private double attributeListBottomSpace = 3;
+
+	private double attributeListRightSpace = 3;
+
+	private double attributeFontCharWidth = 3;
+
+	private double attributeToAttributeSpace = 3;
 	
 	
-	private List<Point> sourceToBoxPoints;
-	private List<Point> boxToTargetPoints;
 	
 	
-	public MetaConnectionImpl(String id, String name, MetaClass target, int lower, int upper)
+	public MetaConnectionImpl(String id, String name, MetaClass source, MetaClass target)
 	{
+		this.id  = id;
 		this.target = target;
-		this.id = id;
+		this.source = source;
 		this.name = name;
-		this.targetLowerBound = lower;
-		this.targetUpperBound = upper;
+
 		this.attributes = new ArrayList<MetaAttribute>();
-		this.sourceToBoxPoints = new ArrayList<Point>();
-		this.boxToTargetPoints = new ArrayList<Point>();
-		
-		//TODO correct id
-		sourceConnectionBoxRelativePoint = new AnchorPoint("anchorID1",0,10);
-		sourceRelativePoint = new AnchorPoint("anchorID2", 30, 40);
-		targetConnectionBoxRelativePoint = new AnchorPoint("anchorID3", 20,80);
-		targetRelativePoint = new AnchorPoint("anchorID4", 0, 10);
 		
 		
 	}
-	
+
 
 	@Override
 	public void setTarget(MetaClass target) {
@@ -596,5 +622,145 @@ public class MetaConnectionImpl implements MetaConnection {
 	}
 
 
+	@Override
+	public void setSourceConnectionBoxRelativePoint(AnchorPoint point) {
+		this.sourceConnectionBoxRelativePoint = point;
+	}
+
+
+	@Override
+	public void setTargetConnectionBoxRelativePoint(AnchorPoint point) {
+		this.targetConnectionBoxRelativePoint = point;
+	}
+
+
+	@Override
+	public void setTargetRelativePoint(AnchorPoint point) {
+		this.targetRelativePoint = point;
+	}
+
+
+	@Override
+	public void setSourceRelativePoint(AnchorPoint point) {
+		this.sourceConnectionBoxRelativePoint = point;
+	}
+
+
+	@Override
+	public void autoSize() {
+
+		// TODO optimization 
+		
+		double nameWidth = this.getNameLeftSpace() + this.getName().length()*this.getNameFontCharWidth() + this.getNameRightSpace();
+		double nameHeight = this.getNameTopSpace() + this.getNameFontSize() + this.getNameBottomSpace();
+		
+		double attributesHeight = this.getAttributeListTopSpace() + this.getAttributes().size()* (this.getAttributeFontSize() + this.getAttributeToAttributeSpace()) + this.getAttributeListBottomSpace();
+		
+		
+		
+		int longestChar = 0;
+		
+		// Calculate the longest attribute (attribute string)
+		for (int i =0; i<this.getAttributes().size();i++)
+		{
+			MetaAttribute a = this.getAttributes().get(i);
+			if ((a.getName().length() + a.getType().getName().length() + 3 )> longestChar)	// + 3 is for the separator String " : " between name and type
+				longestChar = a.getName().length() + a.getType().getName().length() + 3;
+		}
+		
+		double attributeWidth = this.getAttributeListLeftSpace() + longestChar *this.getAttributeFontCharWidth() + this.getAttributeListRightSpace();
+		
+		if (this.isDisplayingAttributes())
+		{
+			// Set width
+			if (attributeWidth>nameWidth)
+				this.setConnectionBoxWidth( attributeWidth );
+			else
+				this.setConnectionBoxWidth( nameWidth );
+		}
+		else
+			this.setConnectionBoxWidth(nameWidth);
+			
+		// Set height
+		
+		double height=0;
+		
+		if (isDisplayingAttributes())
+			height+= nameHeight + attributesHeight;
+		else
+			height += nameHeight;
+		
+		this.setConnectionBoxHeight(height); 
+	}
+
+
+	private double getAttributeListTopSpace() {
+		return attributeListTopSpace;
+	}
+
+
+	private double getAttributeFontCharWidth() {
+		return attributeFontCharWidth;
+	}
+
+
+	private double getAttributeListRightSpace() {
+		return attributeListRightSpace;
+	}
+
+
+	public double getAttributeToAttributeSpace() {
+		return attributeToAttributeSpace;
+	}
+
+
+	public double getNameTopSpace() {
+		return nameTopSpace;
+	}
+
+
+	public void setNameTopSpace(double nameTopSpace) {
+		this.nameTopSpace = nameTopSpace;
+	}
+
+
+	public double getNameLeftSpace() {
+		return nameLeftSpace;
+	}
+
+
+	public void setNameLeftSpace(double nameLeftSpace) {
+		this.nameLeftSpace = nameLeftSpace;
+	}
+
+
+	public double getNameRightSpace() {
+		return nameRightSpace;
+	}
+
+
+	public void setNameRightSpace(double nameRightSpace) {
+		this.nameRightSpace = nameRightSpace;
+	}
+
+	
+	public double getNameBottomSpace()
+	{
+		return nameBottomSpace;
+	}
+	
+	
+	public double getAttributeListLeftSpace()
+	{
+		return attributeListLeftSpace;
+	}
+	
+
+	public double getAttributeListBottomSpace()
+	{
+		return attributeListBottomSpace;
+	}
+
+	
 
 }

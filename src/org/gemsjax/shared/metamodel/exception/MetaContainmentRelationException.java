@@ -18,7 +18,6 @@ public class MetaContainmentRelationException extends Exception {
 	{
 		this.container = container;
 		this.toContain = toContain;
-		
 	}
 
 	/**
