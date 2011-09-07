@@ -17,6 +17,7 @@ import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaConnectionImpl;
 import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.shared.AnchorPoint;
+import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 
@@ -42,7 +43,7 @@ import com.smartgwt.client.widgets.form.validator.IsBooleanValidator;
  * @author Hannes Dorfmann
  *
  */
-public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, ResizeHandler, HasPlaceable {
+public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, ResizeHandler, HasPlaceable,  PlaceableDestination{
 	
 	/**
 	 * The {@link MetaConnectionImpl} that is displayed with this Drawable
@@ -72,6 +73,9 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	private Anchor sourceConnectionBoxAnchor;
 	private Anchor targetAnchor;
 	private Anchor targetConnectionBoxAnchor;
+	
+	private String destinationAreaHighlightColor = "rgba(168,245,140,0.5)";
+	private String onMouseOverDestinationColor = "rgba(85,187,250,0.5)";
 	
 	/**
 	 * The mapping between the AnchorPoint (model) and the Anchor (View)
@@ -132,8 +136,8 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		anchorMap = new HashMap <AnchorPoint, Anchor>();
 		
 		sourceAnchor = new Anchor(connection.getSourceRelativePoint(), source);
-		sourceConnectionBoxAnchor = new Anchor(connection.getSourceConnectionBoxRelativePoint(), connectionBox);
-		targetConnectionBoxAnchor = new Anchor(connection.getTargetConnectionBoxRelativePoint(), connectionBox);
+		sourceConnectionBoxAnchor = new Anchor(connection.getSourceConnectionBoxRelativePoint(), this);
+		targetConnectionBoxAnchor = new Anchor(connection.getTargetConnectionBoxRelativePoint(), this);
 		targetAnchor = new Anchor(connection.getTargetRelativePoint(), target);
 		
 		anchorMap.put(connection.getSourceRelativePoint(), sourceAnchor);
@@ -311,9 +315,80 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 			currentPoint = currentPoint.getNextAnchorPoint();
 		}
 		
-	
+		
+		
+		
+		currentAnchor = targetConnectionBoxAnchor;
+		nextAnchor = null;
+		
+		currentPoint = targetConnectionBoxAnchor.getAnchorPoint();
+		
+		
+		while (currentPoint != targetAnchor.getAnchorPoint())
+		{
+			currentAnchor = anchorMap.get(currentPoint);
+			nextAnchor = anchorMap.get(currentPoint.getNextAnchorPoint());
+			
+			// if the current is the sourceAnchorPoint, which is the start point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
+			if (currentAnchor == targetConnectionBoxAnchor)
+			{
+				currentX = connectionBox.getX() + targetConnectionBoxAnchor.getX();
+				currentY = connectionBox.getY() + targetConnectionBoxAnchor.getY();
+			}
+			else
+			{
+				currentX = currentAnchor.getX();
+				currentY = currentAnchor.getY();
+			}
+			
+			
+			
+			// if the next is the sourceConnectionBoxAnchorPoint, which is the end point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
+			if (nextAnchor == targetAnchor)
+			{
+				nextX = target.getX() + targetAnchor.getX();
+				nextY = target.getY() + targetAnchor.getY();
+			}
+			else
+			{
+				nextX = nextAnchor.getX();
+				nextY = nextAnchor.getY();
+			}
+			
+			
+			
+			// special case that current and next have the same x coordinate, so there is a vertical line instead of a linear function
+			if (Math.abs(currentX-x)<=verticalLineXOffset && Math.abs(nextX-x)<=verticalLineXOffset)
+			{
+				if (currentY<nextY && isBetween(currentY, nextY, y))
+					return true;
+				else
+				if (currentY>=nextY && isBetween(nextY, currentY, y))
+					return true;
+			}
+			
+			
+			// calculate the slopetriangle 
+			m = (currentY - nextY) / (currentX - nextX);
+			
+			// calculate x axis deferral	b = y - m*x
+			b = currentY - m * currentX;
+			
+			// temp variable to calculate  m * x + b = t
+			t = m * x + b;
+			
+			if (Math.abs(t - y)<=mouseOffSet)
+				return true;
+			
+			currentPoint = currentPoint.getNextAnchorPoint();
+		}
+
+
+		
+		/*
 		currentPoint = targetConnectionBoxAnchor.getAnchorPoint();
 		currentAnchor = targetConnectionBoxAnchor;
+		
 		nextAnchor = null;
 		currentX =0;
 		currentY = 0;
@@ -377,7 +452,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 			
 			currentPoint = currentPoint.getNextAnchorPoint();
 		}
-		
+		*/
 		return false;
 	}
 
@@ -873,6 +948,67 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	public Anchor getAnchor(AnchorPoint anchorPoint)
 	{
 		return anchorMap.get(anchorPoint);
+	}
+
+	@Override
+	public Point canPlaceableBePlacedAt(double x, double y) {
+		
+		double offset = 3;
+		
+		// the left border
+		if (isBetween(connectionBox.getX()-offset, connectionBox.getX()+offset,x) && isBetween(connectionBox.getY(), connectionBox.getY()+connectionBox.getHeight(),y))
+			return new Point(connectionBox.getX(),y);
+		else	// right border
+		if (isBetween(connectionBox.getX()+connectionBox.getWidth()-offset, connectionBox.getX()+connectionBox.getWidth()+offset,x) && isBetween(connectionBox.getY(), connectionBox.getY()+connectionBox.getHeight(),y))
+			return new Point(connectionBox.getX()+connectionBox.getWidth(),y);
+		else // Top Border
+		if (isBetween(connectionBox.getX(), connectionBox.getX() + connectionBox.getWidth(), x ) && isBetween(connectionBox.getY()-offset, connectionBox.getY()+offset,y))
+			return new Point(x,connectionBox.getY());
+		else // bottom border
+		if (isBetween(connectionBox.getX(), connectionBox.getX() + connectionBox.getWidth(), x ) && isBetween(connectionBox.getY()+connectionBox.getHeight()-offset, connectionBox.getY()+connectionBox.getHeight()+offset,y))
+				return new Point(x,connectionBox.getY()+connectionBox.getHeight());
+		
+		return null;
+		
+	}
+
+	@Override
+	public void highlightDestinationArea(Context2d context) {
+		
+		context.save();
+		context.setStrokeStyle(destinationAreaHighlightColor);
+		context.setLineWidth(3);
+		
+		context.beginPath();
+		context.moveTo(connectionBox.getX(), connectionBox.getY());
+		context.lineTo(connectionBox.getX(), connectionBox.getY()+connectionBox.getHeight());
+		context.lineTo(connectionBox.getX()+connectionBox.getWidth(), connectionBox.getY()+connectionBox.getHeight());
+		context.lineTo(connectionBox.getX()+connectionBox.getWidth(), connectionBox.getY());
+		context.lineTo(connectionBox.getX(), connectionBox.getY());
+		context.closePath();
+		
+		context.stroke();
+		
+		context.restore();
+	}
+
+	@Override
+	public void highlightOnMouseOverDestinationArea(Context2d context) {
+		context.save();
+		context.setStrokeStyle(onMouseOverDestinationColor);
+		context.setLineWidth(3);
+		
+		context.beginPath();
+		context.moveTo(connectionBox.getX(), connectionBox.getY());
+		context.lineTo(connectionBox.getX(), connectionBox.getY()+connectionBox.getHeight());
+		context.lineTo(connectionBox.getX()+connectionBox.getWidth(), connectionBox.getY()+connectionBox.getHeight());
+		context.lineTo(connectionBox.getX()+connectionBox.getWidth(), connectionBox.getY());
+		context.lineTo(connectionBox.getX(), connectionBox.getY());
+		context.closePath();
+		
+		context.stroke();
+		
+		context.restore();
 	}
 
 }

@@ -4,13 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.gemsjax.client.admin.presenter.Presenter;
-import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
-import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.PlaceHandler;
 import org.gemsjax.shared.AnchorPoint;
-import org.gemsjax.shared.Point;
 import org.gemsjax.client.canvas.events.PlaceEvent;
 import com.google.gwt.canvas.dom.client.Context2d;
 
@@ -47,8 +44,6 @@ public class Anchor implements Placeable{
 	private double borderWeight = 1; 
 	
 	private PlaceableDestination destination;
-	
-	private Anchor nextAnchorPoint;
 	
 	private List<PlaceHandler> placeHandlers;
 	

@@ -26,7 +26,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public  class MetaConnectionBox implements PlaceableDestination {
+public  class MetaConnectionBox {
 
 	/**
 	 * The connection, which name will be displayed with this {@link MetaConnectionBox}
@@ -44,9 +44,6 @@ public  class MetaConnectionBox implements PlaceableDestination {
 
 	
 	private List<ResizeArea> resizeAreas;
-	private List<MoveHandler> moveHandlers;
-	private List<ResizeHandler> resizeHandlers;
-	private List <FocusHandler> focusHandlers;
 	 
 
 	/**
@@ -59,13 +56,6 @@ public  class MetaConnectionBox implements PlaceableDestination {
 	 */
 	private double minHeight = 30;
 	
-	/**
-	 * If the {@link MetaConnectionBox} is resized and this flag is set to true,
-	 * than the {@link MetaConnectionImpl#setSourceConnectionBoxRelativeX(double)}, {@link MetaConnectionImpl#setSourceConnectionBoxRelativeY(double)}, {@link MetaConnectionImpl#setTargetConnectionBoxRelativeX(double)}
-	 * and {@link MetaConnectionImpl#setTargetConnectionBoxRelativeY(double)} will be set according to the previous (before the resizing) 
-	 * percental ratio.
-	 */
-	private boolean autoAdjustNameBoxRatio = true;
 	
 	/**
 	 * The current x coordinate of this {@link MetaConnectionBox}.
@@ -139,9 +129,6 @@ public  class MetaConnectionBox implements PlaceableDestination {
 		this.connectionDrawable = connectionDrawable;
 		
 		resizeAreas = new LinkedList<ResizeArea>();
-		moveHandlers = new LinkedList<MoveHandler>();
-		resizeHandlers = new LinkedList<ResizeHandler>();
-		focusHandlers = new LinkedList<FocusHandler>();
 		
 		resizeAreas.add(new ResizeArea(getX()+ getWidth()-6, getY()+ getHeight()-6, 6, 6));
 		
@@ -269,7 +256,6 @@ public  class MetaConnectionBox implements PlaceableDestination {
 	 * @see MoveEventType#TEMP_MOVE
 	 * @return
 	 */
-	@Override
 	public double getX() {
 		return x;
 	}
@@ -287,7 +273,6 @@ public  class MetaConnectionBox implements PlaceableDestination {
 	 * @see MoveEventType#TEMP_MOVE
 	 * @return
 	 */
-	@Override
 	public double getY() {
 		return y;
 	}
@@ -428,32 +413,5 @@ public  class MetaConnectionBox implements PlaceableDestination {
 	}
 
 
-
-	@Override
-	public Point canPlaceableBePlacedAt(double x, double y) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-
-	@Override
-	public void highlightDestinationArea(Context2d context) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-	@Override
-	public void highlightOnMouseOverDestinationArea(Context2d context) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
 
 }
