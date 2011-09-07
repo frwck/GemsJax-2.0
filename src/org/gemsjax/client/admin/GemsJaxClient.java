@@ -3,6 +3,8 @@ package org.gemsjax.client.admin;
 import org.gemsjax.client.websocket.WebSocket;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.smartgwt.client.util.SC;
 
 
@@ -21,6 +23,23 @@ public class GemsJaxClient implements EntryPoint {
 		
 		SC.showConsole();
 
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			
+			@Override
+			public void onUncaughtException(Throwable e) {
+				
+				String msg =e.getMessage()+" \n";
+				
+				for (StackTraceElement el : e.getStackTrace())
+					msg += el.toString() + "\n";
+				
+				
+				SC.say(msg);
+				SC.logWarn(msg);
+				
+			}
+		})
+		;
 		
 		AdminApplicationController adminApplicationcontroller = AdminApplicationController.getInstance();
 		adminApplicationcontroller.start();

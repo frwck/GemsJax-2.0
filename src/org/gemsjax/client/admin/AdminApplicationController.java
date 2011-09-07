@@ -16,6 +16,7 @@ import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.metamodel.MetaBaseTypeImpl;
 import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.client.metamodel.MetaModelImpl;
+import org.gemsjax.client.metamodel.factory.MetaFactory;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
@@ -29,6 +30,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.util.SC;
 
 /**
  * The AdminApplicationController controls the presenters and the History and will listen to the {@link WebSocket} for the server-client communication
@@ -117,7 +119,7 @@ public class AdminApplicationController {
 		
 		try {
 			
-			
+			/*
 			MetaBaseType baseType = new MetaBaseTypeImpl("base1", "String BaseType");
 			
 			MetaModel metaModel = new MetaModelImpl("id1", "MetaModel1");
@@ -165,26 +167,59 @@ public class AdminApplicationController {
 			
 			
 			
+			*/
 			
-			new MetaModelPresenter(eventBus, new MetaModelViewImpl("MetaModel 1", language), metaModel);
+			MetaBaseType baseType = MetaFactory.createExistingBaseType("basetypeID", "BaseType 1");
+			
+			MetaModel metaModel = MetaFactory.createMetaModel("MetaFactory Model");
+			
+			
+			MetaClass c1 = MetaFactory.createClass("Class1", 50, 50);
+			
+			MetaClass c2 = MetaFactory.createClass("Class2",300,100);
+			
+			
+			for (int i =1; i<=10; i++)
+			{
+				c1.addAttribute(MetaFactory.createAttribute("Attribute "+i,baseType));
+				c2.addAttribute(MetaFactory.createAttribute("Attribute "+i,baseType));
+			}
+			
+			
+			
+			MetaConnection con = MetaFactory.createMetaConnection("Connection", c1, c2);
+			
+			c1.addConnection(con);
+			
+			
+			metaModel.addMetaClass(c1);
+			metaModel.addMetaClass(c2);
+			
+			
+			
+			new MetaModelPresenter(eventBus, new MetaModelViewImpl("MetaFactory Model", language), metaModel);
 			
 			
 			
 		} catch (CanvasSupportException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (MetaBaseTypeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			SC.logWarn(e.getMessage());
 		} catch (MetaAttributeException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
+			SC.logWarn(e.getMessage());
 		} catch (MetaConnectionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
+			SC.logWarn(e.getMessage());
 		} catch (MetaClassException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+
+			SC.logWarn(e.getMessage());
 		}
 	
 		

@@ -169,18 +169,13 @@ public class Anchor implements Placeable{
 		return destination;
 	}
 
-	/**
-	 * Get the next {@link Anchor}
-	 * @return The next {@link Anchor} or null if we are at the end
-	 */
-	public Anchor getNextAnchor() {
-		return nextAnchorPoint;
-	}
 
-	public void setNextAnchor(Anchor nextAnchor) {
-		this.nextAnchorPoint = nextAnchor;
+	
+	public AnchorPoint getNextAnchorPoint()
+	{
+		return anchorPoint.getNextAnchorPoint();
 	}
-
+	
 	public AnchorPoint getAnchorPoint() {
 		return anchorPoint;
 	}

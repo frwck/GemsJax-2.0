@@ -143,25 +143,36 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					d.addFocusHandler(this);
 					
 					// Add PlaceHandler to the AnchorPoints between source and Connection box
-					Anchor p = d.getSourceAnchor();
+					AnchorPoint currentPoint = d.getSourceAnchor().getAnchorPoint();
+					Anchor a ;
 					
-					
-					while (p!=d.getSourceConnectionBoxAnchor())
+					while (currentPoint!=d.getSourceConnectionBoxAnchor().getAnchorPoint())
 					{
-						p.addPlaceHandler(this);
-						p = p.getNextAnchor();
+						a = d.getAnchor(currentPoint);
+						if (a != null)
+							a.addPlaceHandler(this);
+						else
+							SC.logWarn("Error: Anchor not found for AnchorPoint "+currentPoint);
+						
+						currentPoint = currentPoint.getNextAnchorPoint();
 					}
 					
 					d.getSourceConnectionBoxAnchor().addPlaceHandler(this);
 					
 					
 					// Add PlaceHandler to the AnchorPoints between connection box and target
-					p = d.getTargetConnectionBoxAnchor();
+					currentPoint = d.getTargetConnectionBoxAnchor().getAnchorPoint();
 					
-					while (p!=d.getTargetAnchor())
+					while (currentPoint!=d.getTargetAnchor().getAnchorPoint())
 					{
-						p.addPlaceHandler(this);
-						p = p.getNextAnchor();
+						a = d.getAnchor(currentPoint);
+						
+						if (a != null)
+							a.addPlaceHandler(this);
+						else
+							SC.logWarn("Error: Anchor not found for AnchorPoint "+currentPoint);
+						
+						currentPoint = currentPoint.getNextAnchorPoint();
 					}
 					
 					d.getTargetAnchor().addPlaceHandler(this);
@@ -270,13 +281,15 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	private void onMetaClassResizeEvent(MetaClass metaClass, ResizeEvent event)
 	{
 
+		if (event.getWidth()<metaClass.getMinWidth() || event.getHeight()<metaClass.getMinHeight())
+			return;
 		
 			// Its done, when ResizeEventType.TEMP_RESIZE  and  RESIZE_FINISHED
 			MetaClassDrawable d =(MetaClassDrawable) event.getSource();
 			d.setWidth( event.getWidth());
 			d.setHeight(event.getHeight());
 				
-			if (event.getType()==ResizeEventType.RESIZE_FINISHED)
+			if (event.getType()==ResizeEventType.RESIZE_FINISHED )
 			{
 				metaClass.setWidth(event.getWidth());
 				metaClass.setHeight(event.getHeight());

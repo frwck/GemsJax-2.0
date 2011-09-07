@@ -17,6 +17,7 @@ import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
 import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion;
@@ -162,6 +163,14 @@ public class MetaFactory {
 		MetaClass c = new MetaClassImpl(nextID(), name, x,y);
 		c.autoSize();
 		
+		double minHeight = c.getNameTopSpace() + c.getNameFontSize() + c.getNameBottomSpace();
+		
+		if (c.getIconURL()!= null && !c.getIconURL().equals(""))
+			minHeight+=c.getIconHeight();
+		
+		c.setMinHeight(minHeight);
+		c.setMinWidth(30);
+		
 		return c;
 	}
 	
@@ -190,6 +199,7 @@ public class MetaFactory {
  * @param nameFontColor
  * @return
  * @throws MetaClassException
+ * @throws MetaAttributeException 
  */
 	public static MetaClass createExistingClass(String id, String name, double x, double y, double zIndex,
 			double width,
@@ -205,9 +215,10 @@ public class MetaFactory {
 			String iconURL,
 			double iconWidth,
 			double iconHeight,
-			String nameFontColor
+			String nameFontColor,
+			List<MetaAttribute> attributes
 			
-	) throws MetaClassException
+	) throws MetaAttributeException
 	
 	
 	{
@@ -228,6 +239,10 @@ public class MetaFactory {
 		c.setNameFontColor(nameFontColor);
 		c.setZIndex(zIndex);
 		
+		for (MetaAttribute a: attributes)
+			c.addAttribute(a);
+		
+		
 		
 		// TODO is FontSize, space etc needed to be set?
 		
@@ -235,7 +250,7 @@ public class MetaFactory {
 	}
 	
 	
-	/*
+	/**
 	 * Create a new {@link MetaBaseType}
 	 * @param metaModel
 	 * @param name
@@ -248,8 +263,8 @@ public class MetaFactory {
 		
 		return t;
 	}
-	
 	*/
+	
 	
 	/**
 	 * Create a {@link MetaBaseType} with the given id and name
@@ -297,11 +312,25 @@ public class MetaFactory {
 	 * @param target
 	 * @return
 	 */
-	public static synchronized MetaConnection createMetaConnection(String name, MetaClass source, MetaClass target, double x, double y)
+	public static synchronized MetaConnection createMetaConnection(String name, MetaClass source, MetaClass target)
 	{
 		MetaConnection con = new MetaConnectionImpl(nextID(), name, source, target);
 		
 		con.autoSize();
+		
+	
+		
+		double x, y;
+		
+		/// Calculate the direct way / coordinates for the connection box
+		
+		if (source.getX()<target.getX())
+			x =  source.getX() + ( ( target.getX() - (source.getX() + source.getWidth() ) ) - con.getConnectionBoxWidth() ) /2 ;
+		else
+			x =  target.getX() + ( ( source.getX() - (target.getX() + target.getWidth() ) ) - con.getConnectionBoxWidth() ) /2 ;
+		
+		
+		y = source.getY() + ( Math.abs(source.getY() - target.getY()) - con.getConnectionBoxHeight() /2);
 		
 		con.setConnectionBoxX(x);
 		con.setConnectionBoxY(y);
@@ -309,7 +338,7 @@ public class MetaFactory {
 		AnchorPoint sourcePoint = new AnchorPoint(nextID(), source.getWidth(), (source.getHeight()/2));
 		AnchorPoint targetPoint = new AnchorPoint(nextID(), 0, (target.getHeight()/2));
 		
-		AnchorPoint boxSourcePoint = new AnchorPoint(nextID(), 0, y+(con.getConnectionBoxHeight()/2));
+		AnchorPoint boxSourcePoint = new AnchorPoint(nextID(), 0, (con.getConnectionBoxHeight()/2));
 		AnchorPoint boxTargetPoint = new AnchorPoint(nextID(), con.getConnectionBoxWidth(), (con.getConnectionBoxHeight()/2));
 		
 		
@@ -329,6 +358,8 @@ public class MetaFactory {
 		
 		return con;
 	}
+	
+	
 	
 	
 	

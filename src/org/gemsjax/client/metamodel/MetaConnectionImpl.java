@@ -642,7 +642,7 @@ public class MetaConnectionImpl implements MetaConnection {
 
 	@Override
 	public void setSourceRelativePoint(AnchorPoint point) {
-		this.sourceConnectionBoxRelativePoint = point;
+		this.sourceRelativePoint = point;
 	}
 
 
