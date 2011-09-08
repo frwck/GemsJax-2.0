@@ -330,14 +330,12 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		d.setX(e.getX()-e.getDistanceToTopLeftX());
 		d.setY(e.getY()-e.getDistanceToTopLeftY());
 
-		SC.logWarn("Move Temp "+d.getX()+" "+d.getY()+"     "+connection.getConnectionBoxX()+" "+connection.getConnectionBoxY());
 		
 		if (e.getType()==MoveEventType.MOVE_FINISHED){
 			connection.setConnectionBoxX(e.getX()-e.getDistanceToTopLeftX());
 			connection.setConnectionBoxY(e.getY()-e.getDistanceToTopLeftY());
 			
 			// TODO collabrative info websocket
-			SC.logWarn("Move FINISHED "+d.getX()+" "+d.getY()+"     "+connection.getConnectionBoxX()+" "+connection.getConnectionBoxY());
 		}
 		
 		view.redrawMetaModelCanvas();
@@ -367,6 +365,18 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 				connection.setConnectionBoxWidth(event.getWidth());
 				connection.setConnectionBoxHeight(event.getHeight());
 				
+				
+				List<AnchorPoint> changedAnchorPoints = new ArrayList<AnchorPoint>();
+				
+				
+				for (Anchor a : d.getDockedAnchors())
+				
+					if (a.getX()!=a.getAnchorPoint().x || a.getY() != a.getAnchorPoint().y)
+					{
+						a.getAnchorPoint().x = a.getX();
+						a.getAnchorPoint().y = a.getY();
+						changedAnchorPoints.add(a.getAnchorPoint());
+					}
 				
 				// TODO collaborative websocket info
 				

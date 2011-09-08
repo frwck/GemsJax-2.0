@@ -108,8 +108,8 @@ public class MetaConnectionImpl implements MetaConnection {
 	
 	private int lineSize = 2;
 	
-	private String gradientStartColor ="#94c1f7";
-	private String gradientEndColor="#94dbf2";
+	private String gradientStartColor ="#d4f496";
+	private String gradientEndColor="#eef7dc";
 	
 	private boolean selected = false;
 	

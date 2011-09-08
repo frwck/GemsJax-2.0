@@ -157,6 +157,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 * This docking is important, to react on resizements.
 	 * @param a
 	 */
+	@Override
 	public void dockAnchor(Anchor a)
 	{
 		if (!dockedAnchors.contains(a))
@@ -169,6 +170,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 * @see #dockAnchor(Anchor)
 	 * @param a
 	 */
+	@Override
 	public void undockAnchor(Anchor a)
 	{
 		dockedAnchors.remove(a);
@@ -178,6 +180,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 * Get a list with all {@link Anchor}s that are currently docked to this {@link MetaClassDrawable}
 	 * @return
 	 */
+	@Override
 	public List<Anchor> getDockedAnchors()
 	{
 		return dockedAnchors;

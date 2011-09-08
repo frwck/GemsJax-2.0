@@ -1,5 +1,8 @@
 package org.gemsjax.client.canvas;
 
+import java.util.List;
+
+import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.shared.Point;
 
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -44,5 +47,22 @@ public interface PlaceableDestination {
 	 * @return
 	 */
 	public double getY();
+	
+	/**
+	 * Use this method to add an {@link Anchor} to the {@link #getDockedAnchors()} list
+	 */
+	public void dockAnchor(Anchor a);
+	
+	/**
+	 * Use this method to remove an {@link Anchor} from the {@link #getDockedAnchors()} list
+	 */
+	public void undockAnchor(Anchor a);
+	
+	/**
+	 * Get a list with all docked {@link Anchor}.
+	 * This list is important to determine which {@link Anchor}s must be replaced after {@link ResizeEvent}s etc. 
+	 * @return
+	 */
+	public List<Anchor> getDockedAnchors();
 
 }

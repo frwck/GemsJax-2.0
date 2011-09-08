@@ -71,6 +71,8 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	private List<MoveHandler> moveHandlers;
 	private List<ResizeHandler> resizeHandlers;
 	
+	public List<Anchor> dockedAnchors;
+	
 	private Anchor sourceAnchor;
 	private Anchor sourceConnectionBoxAnchor;
 	private Anchor targetAnchor;
@@ -78,6 +80,8 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	
 	private String destinationAreaHighlightColor = "rgba(168,245,140,0.5)";
 	private String onMouseOverDestinationColor = "rgba(85,187,250,0.5)";
+	
+	
 	
 	/**
 	 * The mapping between the AnchorPoint (model) and the Anchor (View)
@@ -118,9 +122,11 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		clickHandlers = new ArrayList<ClickHandler>();
 		moveHandlers = new ArrayList<MoveHandler>();
 		resizeHandlers = new ArrayList<ResizeHandler>();
+		dockedAnchors = new ArrayList<Anchor>();
 
 		
 		generateAnchors();
+		
 		
 		
 		setSource(metaClassA);
@@ -141,6 +147,12 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		sourceConnectionBoxAnchor = new Anchor(connection.getSourceConnectionBoxRelativePoint(), this);
 		targetConnectionBoxAnchor = new Anchor(connection.getTargetConnectionBoxRelativePoint(), this);
 		targetAnchor = new Anchor(connection.getTargetRelativePoint(), target);
+		
+		
+		// docking 
+		this.dockAnchor(sourceConnectionBoxAnchor);
+		this.dockAnchor(targetConnectionBoxAnchor);
+		
 		
 		anchorMap.put(connection.getSourceRelativePoint(), sourceAnchor);
 		anchorMap.put(connection.getSourceConnectionBoxRelativePoint(), sourceConnectionBoxAnchor);
@@ -1068,6 +1080,42 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		context.stroke();
 		
 		context.restore();
+	}
+	
+	
+	
+	/**
+	 * Dock an {@link Anchor} to this {@link Drawable}.
+	 * This docking is important, to react on resizements.
+	 * @param a
+	 */
+	@Override
+	public void dockAnchor(Anchor a)
+	{
+		if (!dockedAnchors.contains(a))
+			dockedAnchors.add(a);
+	}
+	
+	
+	/**
+	 * Undock an {@link Anchor}
+	 * @see #dockAnchor(Anchor)
+	 * @param a
+	 */
+	@Override
+	public void undockAnchor(Anchor a)
+	{
+		dockedAnchors.remove(a);
+	}
+	
+	/**
+	 * Get a list with all {@link Anchor}s that are currently docked to this {@link MetaClassDrawable}
+	 * @return
+	 */
+	@Override
+	public List<Anchor> getDockedAnchors()
+	{
+		return dockedAnchors;
 	}
 
 }
