@@ -960,6 +960,32 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		
 		context.restore();
 	}
+
+	@Override
+	public BorderDirection getCoordinatesBorderDirection(double x, double y) {
+	
+		double offset = 5;
+		
+		// TOP
+		if (isBetween(this.x, this.x+this.width, x) && isBetween(this.y-offset, this.y+offset, y))
+			return BorderDirection.TOP;
+		else
+		// BOTTOM
+		if (isBetween(this.x, this.x+this.width, x) && isBetween(this.y + this.height-offset, this.y+this.height+offset, y))
+			return BorderDirection.BOTTOM;
+		else
+		// LEFT
+		if (isBetween(this.y, this.y+this.height, y) && isBetween(this.x -offset, this.x + offset, x))
+			return BorderDirection.LEFT;
+		else
+		// RIGHT
+		if (isBetween(this.y, this.y+this.height, y) && isBetween(this.x + this.width -offset, this.x + this.width + offset, x))
+			return BorderDirection.RIGHT;
+		
+		
+		return BorderDirection.NOWHERE;
+		
+	}
 	
 	
 	

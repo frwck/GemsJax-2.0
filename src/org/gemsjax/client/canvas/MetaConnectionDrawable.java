@@ -18,14 +18,8 @@ import org.gemsjax.client.metamodel.MetaConnectionImpl;
 import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.Point;
-import org.gemsjax.shared.metamodel.MetaAttribute;
-import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
-
-import com.gargoylesoftware.htmlunit.html.xpath.IsDescendantOfContextualFormFunction;
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.user.client.Window;
-import com.smartgwt.client.widgets.form.validator.IsBooleanValidator;
 
 /**
  * This class is a {@link Drawable} that displays a {@link MetaConnection} on the {@link MetaClassCanvas}.
@@ -1116,6 +1110,34 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	public List<Anchor> getDockedAnchors()
 	{
 		return dockedAnchors;
+	}
+	
+	
+	
+	@Override
+	public BorderDirection getCoordinatesBorderDirection(double x, double y) {
+	
+		double offset = 5;
+		
+		// TOP
+		if (isBetween(connectionBox.getX(), connectionBox.getX()+connectionBox.getWidth(), x) && isBetween(connectionBox.getY()-offset, connectionBox.getY()+offset, y))
+			return BorderDirection.TOP;
+		else
+		// BOTTOM
+		if (isBetween(connectionBox.getX(), connectionBox.getX()+connectionBox.getWidth(), x) && isBetween(connectionBox.getY() + connectionBox.getHeight()-offset, connectionBox.getY()+connectionBox.getHeight()+offset, y))
+			return BorderDirection.BOTTOM;
+		else
+		// LEFT
+		if (isBetween(connectionBox.getY(), connectionBox.getY()+connectionBox.getHeight(), y) && isBetween(connectionBox.getX() -offset, connectionBox.getX() + offset, x))
+			return BorderDirection.LEFT;
+		else
+		// RIGHT
+		if (isBetween(connectionBox.getY(), connectionBox.getY()+connectionBox.getHeight(), y) && isBetween(connectionBox.getX() + connectionBox.getWidth() -offset, connectionBox.getX() + connectionBox.getWidth() + offset, x))
+			return BorderDirection.RIGHT;
+		
+		
+		return BorderDirection.NOWHERE;
+		
 	}
 
 }

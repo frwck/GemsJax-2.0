@@ -38,7 +38,7 @@ public interface Drawable {
 	public boolean isSelected();
 	
 	/**
-	 * Get the Object that is displayed with this drawable on the canvas.
+	 * Get the data object that is displayed with this drawable on the canvas.
 	 * This is normaly a {@link MetaClassImpl}, {@link MetaConnectionImpl}, {@link InheritanceRelation}, ...
 	 * @return
 	 */

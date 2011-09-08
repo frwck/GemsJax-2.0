@@ -10,6 +10,34 @@ import com.google.gwt.canvas.dom.client.Context2d;
 public interface PlaceableDestination {
 	
 	
+	/**
+	 * Is used with {@link Drawable#getCoordinatesBorderDirection(double, double)} to determine if a coordinate is on a certain border
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	public enum BorderDirection
+	{
+		TOP,
+		BOTTOM,
+		LEFT,
+		RIGHT,
+		/**
+		 * Used to indicate, that the coordinate is not part of the border
+		 */
+		NOWHERE
+	}
+	
+
+	/**
+	 * This method is used to determine where a x/y point is on this {@link Drawable}.
+	 * This is normally used by the {@link MetaConnectionDrawable}, {@link MetaInheritanceDrawable} etc. to determine how the icon should be rotated
+	 * @param x
+	 * @param y
+	 * @return One of the direction defined in {@link BorderDirection}
+	 */
+	public BorderDirection getCoordinatesBorderDirection(double x, double y);
+	
+	
 
 	/**
 	 *  Highlight the destination where the AnchorPoint can be moved to in a graphical way on the canvas.
@@ -64,5 +92,8 @@ public interface PlaceableDestination {
 	 * @return
 	 */
 	public List<Anchor> getDockedAnchors();
+	
+	
+	
 
 }
