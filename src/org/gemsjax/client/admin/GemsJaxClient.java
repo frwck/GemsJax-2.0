@@ -1,5 +1,6 @@
 package org.gemsjax.client.admin;
 
+
 import org.gemsjax.client.websocket.WebSocket;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -28,15 +29,16 @@ public class GemsJaxClient implements EntryPoint {
 			@Override
 			public void onUncaughtException(Throwable e) {
 				
-				String msg =e.getMessage()+" \n";
+				String msg =e.toString() + " "+e.getLocalizedMessage() +" "+ e.getMessage()+" \n";
 				
 				for (StackTraceElement el : e.getStackTrace())
 					msg += el.toString() + "\n";
 				
 				
+				e.printStackTrace();
 				SC.say(msg);
 				SC.logWarn(msg);
-				
+
 			}
 		})
 		;
@@ -48,7 +50,6 @@ public class GemsJaxClient implements EntryPoint {
 		
 		
 	}
-		
 
 }
 	

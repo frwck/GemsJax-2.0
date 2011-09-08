@@ -2,13 +2,11 @@ package org.gemsjax.shared.metamodel;
 
 import java.util.List;
 
-import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.shared.AnchorPoint;
-import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 
@@ -59,7 +57,7 @@ public interface MetaConnection extends MetaModelElement{
 	public void setTarget(MetaClass target);
 	public MetaClass getTarget();
 	
-	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException;
+	public void addAttribute(MetaAttribute attribute) throws MetaAttributeException;
 	
 	/**
 	 * <b> Use this just as a read only list!</b> <br />
@@ -477,6 +475,40 @@ public interface MetaConnection extends MetaModelElement{
 	 */
 	public double getAttributeToAttributeSpace();
 
+	
+	/**
+	 * The space between the left border and the list of attributes
+	 * @return
+	 */
+	public double getAttributeLeftSpace();
+	
+	/**
+	 * The space between the right border and the end of the last attribute char
+	 * @return
+	 */
+	public double getAttributeRightSpace();
+	
+	/**
+	 * The space  on the top between the start of the attribute list and the separator line (bottom of the name) 
+	 * @return
+	 */
+	public double getAttributeListTopSpace();
+	
+	/**
+	 * Get the width of a single char 
+	 * @return
+	 */
+	public double getAttributeFontCharWidth();
+	
+	
+	public double getConnectionBoxMinWidth();
+	public double getConnectionBoxMinHeight();
+	
+	public void setConnectionBoxMinWidth(double width);
+	public void setConnectionBoxMinHeight(double height);
+	
+	
+	
 }
 
 

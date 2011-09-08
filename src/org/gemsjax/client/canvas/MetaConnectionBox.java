@@ -13,11 +13,13 @@ import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaConnectionImpl;
 import org.gemsjax.shared.Point;
+import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 
 import com.google.gwt.canvas.dom.client.CanvasGradient;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.smartgwt.client.util.SC;
 
 /**
  * This class is used to display a box with the {@link MetaConnection} name and attributes on the {@link MetaModelCanvas}.
@@ -45,16 +47,6 @@ public  class MetaConnectionBox {
 	
 	private List<ResizeArea> resizeAreas;
 	 
-
-	/**
-	 * The minimum width. Its not allowed to resize to a width less then this value
-	 */
-	private double minWidth = 30;
-	
-	/**
-	 * The minimum height. Its not allowed to resize to a height less then this value
-	 */
-	private double minHeight = 30;
 	
 	
 	/**
@@ -146,11 +138,11 @@ public  class MetaConnectionBox {
 		
 		drawDottedRect(context,getX(), getY(), getWidth(), getHeight());
 		
-		
 		context.setFillStyle(gradient);
 		context.fillRect(getX(), getY(), getWidth(), getHeight());
 		
 		drawName(context);
+		drawAttributes(context);
 		
 		if (connection.isSelected())
 			drawOnSelected(context);
@@ -173,6 +165,8 @@ public  class MetaConnectionBox {
 	
 	private void drawName(Context2d context)
 	{
+		
+		context.save();
 		String txt = getWidth() - connection.getNameLeftSpace() > (connection.getName().length()*connection.getNameFontCharWidth()) 
 		? connection.getName() : connection.getName().subSequence(0, (int) ((getWidth()- connection.getNameLeftSpace())/connection.getNameFontCharWidth() - 3))+"...";
 
@@ -181,9 +175,69 @@ public  class MetaConnectionBox {
 		
 		context.setTextAlign("left");
 		context.fillText(txt, getX()+connection.getNameLeftSpace(), getY()+connection.getNameTopSpace()+connection.getNameFontSize());
+		
+		
+		// if there is at least one attribute, draw a horizontal line
+		if (connection.isDisplayingAttributes() && connection.getAttributes().size()>0 && height > connection.getNameFontSize()+connection.getNameTopSpace()+connection.getNameBottomSpace())
+		{
+			context.setFillStyle(connection.getLineColor());
+			context.setLineWidth(1);
+			
+			context.fillRect(x, y+connection.getNameFontSize()+connection.getNameTopSpace()+connection.getNameBottomSpace(), width, 1);
+		}
 
+		context.restore();
 	}
 	
+	
+	
+	private void drawAttributes(Context2d context) {
+		
+		if ( connection.isDisplayingAttributes() && connection.getAttributes().size()==0 )
+			return;
+		
+		context.setFillStyle(connection.getFontColor());
+		context.setFont(""+connection.getAttributeFontSize()+"px "+connection.getFontFamily());
+		context.setTextAlign("left");
+		
+		double x = getX() + connection.getAttributeLeftSpace();
+		double y = getY() + connection.getNameFontSize() + connection.getNameTopSpace()+ connection.getNameBottomSpace()+connection.getAttributeListTopSpace();
+		
+		String txt;
+		
+		double heightForAttributeList = getHeight() - connection.getNameTopSpace() - connection.getNameBottomSpace() - connection.getAttributeListTopSpace();
+		
+		int attributeLines = (int) (heightForAttributeList / (connection.getAttributeFontSize()+connection.getAttributeToAttributeSpace()) );
+		
+		if (attributeLines>connection.getAttributes().size())
+			attributeLines = connection.getAttributes().size();
+		
+		String sub;
+		double widthNeeded, widthAvailable;
+		
+		for (int i =0; i<attributeLines; i++)
+		{
+			MetaAttribute a = connection.getAttributes().get(i);
+		
+			widthAvailable = getWidth()-connection.getAttributeLeftSpace()-connection.getAttributeRightSpace();
+			widthNeeded = (a.getName().length()+a.getType().getName().length()+3)*connection.getAttributeFontCharWidth();
+			
+			SC.logWarn("ne "+widthNeeded + " av "+ widthAvailable + " wi "+getWidth() + " "+(a.getName().length()+a.getType().getName().length()+3) +" "+connection.getAttributeFontCharWidth()) ;
+			
+			if (widthAvailable<=widthNeeded)
+			{
+				sub = a.getName()+" : "+a.getType().getName();
+				txt = sub.subSequence(0, (int) ((widthAvailable/connection.getAttributeFontCharWidth()) - 3))+"...";
+			}
+				else
+				txt =  a.getName()+" : "+a.getType().getName();
+			
+			context.fillText(txt, x, y);
+				
+			y+=connection.getAttributeFontSize()+connection.getAttributeToAttributeSpace();
+		}
+		
+	}
 	
 	
 	private void drawDottedRect(Context2d context, double ox, double oy, double width, double height)
@@ -336,12 +390,12 @@ public  class MetaConnectionBox {
 	
 	public double getMinWidth()
 	{
-		return minWidth;
+		return connection.getConnectionBoxMinWidth();
 	}
 	
 	public double getMinHeight()
 	{
-		return minHeight;
+		return connection.getConnectionBoxMinHeight();
 	}
 
 	

@@ -346,6 +346,10 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	
 	private void onMetaConnectionResizeEvent(MetaConnection connection, ResizeEvent event)
 	{
+		
+		if (event.getWidth()<connection.getConnectionBoxMinWidth() || event.getHeight()<connection.getConnectionBoxMinHeight())
+			return;
+		
 		MetaConnectionDrawable d = (MetaConnectionDrawable)event.getSource();
 		
 		

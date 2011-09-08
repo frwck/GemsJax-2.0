@@ -38,6 +38,16 @@ public class MetaConnectionImpl implements MetaConnection {
 	 */
 	private String id;
 	
+	/**
+	 * The minimum width. Its not allowed to resize to a width less then this value
+	 */
+	private double connectionMinWidth = 30;
+	
+	/**
+	 * The minimum height. Its not allowed to resize to a height less then this value
+	 */
+	private double connectionMinHeight = 20;
+	
 	
 	private int targetLowerBound;
 	
@@ -98,8 +108,8 @@ public class MetaConnectionImpl implements MetaConnection {
 	
 	private int lineSize = 2;
 	
-	private String gradientStartColor ="#89E093";
-	private String gradientEndColor="#6DF76D";
+	private String gradientStartColor ="#94c1f7";
+	private String gradientEndColor="#94dbf2";
 	
 	private boolean selected = false;
 	
@@ -143,7 +153,6 @@ public class MetaConnectionImpl implements MetaConnection {
 	private double nameFontCharWidth = 12;
 	
 	
-	private double attributeFontCharWidht = 9;
 	
 	private double attributeFontSize = 14;
 	
@@ -173,7 +182,7 @@ public class MetaConnectionImpl implements MetaConnection {
 	
 	private double attributeListLeftSpace = 3;
 	
-	private double attributeListTopSpace = 3;
+	private double attributeListTopSpace = 20;
 	
 	
 	/**
@@ -189,7 +198,7 @@ public class MetaConnectionImpl implements MetaConnection {
 
 	private double attributeListRightSpace = 3;
 
-	private double attributeFontCharWidth = 3;
+	private double attributeFontCharWidth = 9;
 
 	private double attributeToAttributeSpace = 3;
 	
@@ -539,13 +548,13 @@ public class MetaConnectionImpl implements MetaConnection {
 
 	@Override
 	public void setAttributeFontCharWidht(double attributeFontCharWidht) {
-		this.attributeFontCharWidht = attributeFontCharWidht;
+		this.attributeFontCharWidth = attributeFontCharWidht;
 	}
 
 
 	@Override
 	public double getAttributeFontCharWidht() {
-		return attributeFontCharWidht;
+		return attributeFontCharWidth;
 	}
 
 
@@ -574,15 +583,14 @@ public class MetaConnectionImpl implements MetaConnection {
 
 
 	@Override
-	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException {
+	public void addAttribute(MetaAttribute attribute) throws MetaAttributeException {
 		
 		for (MetaAttribute a: attributes)
-			if (a.getID().equals(id) || a.getName().equals(name))
+			if (a == attribute || a.getID().equals(attribute.getID()) || a.getName().equals(attribute.getName()))
 				throw new MetaAttributeException(name, this);
 		
-		MetaAttribute a = new MetaAttributeImpl(id, name, type);
-		attributes.add(a);
-		return a;
+		attributes.add(attribute);
+		
 	}
 
 
@@ -694,12 +702,12 @@ public class MetaConnectionImpl implements MetaConnection {
 	}
 
 
-	private double getAttributeListTopSpace() {
+	public double getAttributeListTopSpace() {
 		return attributeListTopSpace;
 	}
 
 
-	private double getAttributeFontCharWidth() {
+	public double getAttributeFontCharWidth() {
 		return attributeFontCharWidth;
 	}
 
@@ -759,6 +767,43 @@ public class MetaConnectionImpl implements MetaConnection {
 	public double getAttributeListBottomSpace()
 	{
 		return attributeListBottomSpace;
+	}
+
+
+	@Override
+	public double getAttributeLeftSpace() {
+		return attributeListLeftSpace;
+	}
+
+
+	@Override
+	public double getAttributeRightSpace() {
+		return attributeListRightSpace;
+	}
+
+
+	@Override
+	public double getConnectionBoxMinHeight() {
+		return connectionMinHeight;
+	}
+
+
+	@Override
+	public double getConnectionBoxMinWidth() {
+		return connectionMinWidth;
+	}
+
+
+	@Override
+	public void setConnectionBoxMinHeight(double height) {
+		connectionMinHeight = height;
+		
+	}
+
+
+	@Override
+	public void setConnectionBoxMinWidth(double width) {
+		connectionMinWidth = width;
 	}
 
 	

@@ -1,5 +1,6 @@
 package org.gemsjax.client.canvas;
 
+import org.apache.tools.ant.taskdefs.rmic.KaffeRmic;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.PlaceEvent;
@@ -148,6 +149,12 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	private Placeable currentPlaceable;
 	
 	private EditingMode editingMode;
+	
+	/**
+	 * A little hack to call {@link #onMouseUp(MouseUpEvent)} from {@link #onMouseOut(MouseOutEvent)} since it's not possible to generate the {@link MouseUpEvent}
+	 * to with the mouse out properties
+	 */
+	private MouseOutEvent lastMouseOutEvent;
 	
 	
 	public MetaModelCanvas() throws CanvasSupportException {
@@ -376,6 +383,27 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	@Override
 	public void onMouseUp(MouseUpEvent event) {
 
+		double x, y;
+		int screenX, screenY;
+		
+		
+		if (event != null)
+		{
+			x = event.getX();
+			y = event.getY();
+			screenX = event.getScreenX();
+			screenY = event.getScreenY();
+			
+		}
+		else // little hack, because onMouseUp will call this method with null as argument because its not possible to pass the MouseOut properties as an MouseUp event
+		{
+			x = lastMouseOutEvent.getX();
+			y = lastMouseOutEvent.getY();
+
+			screenX = lastMouseOutEvent.getScreenX();
+			screenY = lastMouseOutEvent.getScreenY();
+		}
+		
 		
 		switch (editingMode)
 		{
@@ -384,7 +412,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				if (moving && currentMouseDownDrawable instanceof Moveable && isMouseDown)
 				{
 		
-					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.MOVE_FINISHED, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
+					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.MOVE_FINISHED, mouseDownX, mouseDownY, x, y, mouseDownInitialXDistance, mouseDownInitialYDistance, screenX, screenY, isMouseDown);
 		
 					((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
 					
@@ -395,8 +423,8 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				{
 					if (resizeableOnlyOnSelected && currentMouseDownDrawable.isSelected())
 					{
-						double width = beforeResizeWidth +  event.getX() - mouseDownX;
-						double height = beforeResizeHeight + event.getY() - mouseDownY;
+						double width = beforeResizeWidth +  x - mouseDownX;
+						double height = beforeResizeHeight + y - mouseDownY;
 						
 						
 						Resizeable res = (Resizeable)currentMouseDownDrawable;
@@ -404,11 +432,11 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 						// Fire only a event if the minWidth and min Height allow this
 						if (res.getMinWidth()<width && res.getMinHeight()<height)
 						{
-							ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.RESIZE_FINISHED, width, height, event.getX(), event.getY(), currentResizeArea);
+							ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.RESIZE_FINISHED, width, height, x, y, currentResizeArea);
 							res.fireResizeEvent(e);
 						}
 						else
-							res.fireResizeEvent(new ResizeEvent(res,  ResizeEventType.NOT_ALLOWED, width, height, event.getX(), event.getY(), currentResizeArea));
+							res.fireResizeEvent(new ResizeEvent(res,  ResizeEventType.NOT_ALLOWED, width, height, x, y, currentResizeArea));
 						
 					}
 				}
@@ -418,16 +446,16 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				{
 					if (currentPlaceable.getPlaceableDestination()== null) // can be placed everywhere
 					{
-						PlaceEvent e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
+						PlaceEvent e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, x, y, (HasPlaceable)currentMouseDownDrawable);
 						currentPlaceable.firePlaceEvent(e);
 					}
 					else
 					{
-						Point p = currentPlaceable.getPlaceableDestination().canPlaceableBePlacedAt(event.getX(), event.getY());
+						Point p = currentPlaceable.getPlaceableDestination().canPlaceableBePlacedAt(x, y);
 						PlaceEvent e;
 						
 						if (p == null) // Not allowed to be placed there
-							e = new PlaceEvent(currentPlaceable, PlaceEventType.NOT_ALLOWED, event.getX(), event.getY(), (HasPlaceable)currentMouseDownDrawable);
+							e = new PlaceEvent(currentPlaceable, PlaceEventType.NOT_ALLOWED, x, y, (HasPlaceable)currentMouseDownDrawable);
 						else
 							e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, p.x, p.y, (HasPlaceable)currentMouseDownDrawable);
 						
@@ -436,7 +464,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 					
 				}
 				
-				
+
 				
 			break; // END editing mode
 		
@@ -463,8 +491,10 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	@Override
 	public void onMouseOut(MouseOutEvent event) {
 		// If you are out of the canvas while Mouse is still down
-		// TODO need to give a correct event with correct coordinates 
-		onMouseUp(null);
+		
+		// TODO is the current mouse out behavior desired?
+		//lastMouseOutEvent = event;
+		//onMouseUp(null);
 
 	}
 	

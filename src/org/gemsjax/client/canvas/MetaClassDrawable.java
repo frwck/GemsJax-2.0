@@ -331,7 +331,6 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		context.fillRect(x,y, this.width, height);
 		context.setShadowBlur(0);
 		
-		
 		context.setFillStyle(gradient);
 		context.fillRect(x+metaClass.getBorderSize(), y+metaClass.getBorderSize(), width-2*metaClass.getBorderSize(), height-2*metaClass.getBorderSize());
 		
@@ -467,7 +466,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		
 		
 		// if there is at least one attribute, draw a horizontal line
-		if (metaClass.isDisplayingAttributes() && metaClass.getAttributes().size()>0 && height > y+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace())
+		if (metaClass.isDisplayingAttributes() && metaClass.getAttributes().size()>0 && height > metaClass.getIconHeight()+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace())
 		{
 			context.setFillStyle(metaClass.getBorderColor());
 			context.fillRect(x, y+metaClass.getNameFontSize()+metaClass.getNameTopSpace()+metaClass.getNameBottomSpace(), width, metaClass.getBorderSize());

@@ -186,10 +186,12 @@ public class AdminApplicationController {
 			}
 			
 			
-			
 			MetaConnection con = MetaFactory.createMetaConnection("Connection", c1, c2);
 			
 			c1.addConnection(con);
+			
+			for (int i =0; i<10;i++)
+				con.addAttribute(MetaFactory.createAttribute("Con Attribute"+i, baseType));
 			
 			
 			metaModel.addMetaClass(c1);

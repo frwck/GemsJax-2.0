@@ -169,7 +169,7 @@ public class MetaFactory {
 			minHeight+=c.getIconHeight();
 		
 		c.setMinHeight(minHeight);
-		c.setMinWidth(30);
+		c.setMinWidth(c.getNameLeftSpace() + c.getNameRightSpace() + c.getNameFontCharWidth() * 5);
 		
 		return c;
 	}
@@ -317,8 +317,9 @@ public class MetaFactory {
 		MetaConnection con = new MetaConnectionImpl(nextID(), name, source, target);
 		
 		con.autoSize();
-		
 	
+		con.setConnectionBoxMinHeight(con.getNameTopSpace() + con.getNameBottomSpace() + con.getNameFontSize());
+		con.setConnectionBoxMinWidth(con.getNameLeftSpace() + con.getNameFontCharWidth()*5);
 		
 		double x, y;
 		
@@ -354,6 +355,7 @@ public class MetaFactory {
 		con.setSourceConnectionBoxRelativePoint(boxSourcePoint);
 		con.setTargetRelativePoint(targetPoint);
 		con.setTargetConnectionBoxRelativePoint(boxTargetPoint);
+		
 		
 		
 		return con;

@@ -18,9 +18,11 @@ import org.gemsjax.client.metamodel.MetaConnectionImpl;
 import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.Point;
+import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 
+import com.gargoylesoftware.htmlunit.html.xpath.IsDescendantOfContextualFormFunction;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.form.validator.IsBooleanValidator;
@@ -172,19 +174,8 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	public void draw(Context2d context) {
 		
 		context.save();
-		context.beginPath();
-		context.setFillStyle(connection.getLineColor());
-		context.setLineWidth(connection.getLineSize());
 		
-		context.moveTo(source.getX() + sourceAnchor.getX(), source.getY() + sourceAnchor.getY());
-		context.lineTo( connectionBox.getX()+ sourceConnectionBoxAnchor.getX(), connectionBox.getY()+ sourceConnectionBoxAnchor.getY());
-		
-		context.moveTo(target.getX() + targetAnchor.getX(), target.getY() + targetAnchor.getY());
-		context.lineTo(connectionBox.getX() + targetConnectionBoxAnchor.getX(), connectionBox.getY() + targetConnectionBoxAnchor.getY());
-	
-		
-		context.stroke();
-		context.restore();
+		drawConnectionLines(context);
 		
 		connectionBox.draw(context);
 		
@@ -192,6 +183,74 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 			drawOnSelect(context);
 		
 	}
+	
+	
+	
+	private void drawConnectionLines(Context2d context)
+	{
+		context.save();
+		context.beginPath();
+		context.setFillStyle(connection.getLineColor());
+		context.setLineWidth(connection.getLineSize());
+		
+		
+		
+		double prevX , prevY;
+		Anchor a;
+		
+		prevX = source.getX() + sourceAnchor.getX();
+		prevY = source.getY() + sourceAnchor.getY();
+		
+		AnchorPoint current = sourceAnchor.getAnchorPoint().getNextAnchorPoint();
+		
+		// Draw line between the source and the connection box	
+		while (current!=sourceConnectionBoxAnchor.getAnchorPoint())
+		{
+			a = anchorMap.get(current);
+			
+			context.moveTo(prevX, prevY);
+			context.lineTo( a.getX(), a.getY());
+			
+			prevX = a.getX();
+			prevY = a.getY();
+			current = current.getNextAnchorPoint();
+		}
+		
+		
+		// At last, draw line from previous to the connectionBoxAnchor (the finish)
+		context.moveTo(prevX, prevY);
+		context.lineTo( connectionBox.getX() + sourceConnectionBoxAnchor.getX(), connectionBox.getY()+ sourceConnectionBoxAnchor.getY());
+		
+		
+
+		
+		prevX = targetConnectionBoxAnchor.getX() + connectionBox.getX();
+		prevY = targetConnectionBoxAnchor.getY() + connectionBox.getY();
+		
+		current=targetConnectionBoxAnchor.getAnchorPoint().getNextAnchorPoint();
+		
+		// Draw Anchor points between the connection box and the target
+		while (current!=targetAnchor.getAnchorPoint())
+		{
+			a = anchorMap.get(current);
+			
+			context.moveTo(prevX, prevY);
+			context.lineTo( a.getX(), a.getY());
+			
+			prevX = a.getX();
+			prevY = a.getY();
+			current = current.getNextAnchorPoint();
+		}
+		
+		// At last, draw line from previous to the targetAnchor (the finish)
+		context.moveTo(prevX, prevY);
+		context.lineTo( target.getX() + targetAnchor.getX(), target.getY()+ targetAnchor.getY());
+		
+		context.stroke();
+		context.restore();
+	}
+	
+	
 	
 	
 	private void drawOnSelect(Context2d context)
