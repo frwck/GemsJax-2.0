@@ -54,14 +54,14 @@ public class MetaConnectionImpl implements MetaConnection {
 	private int targetUpperBound;
 	
 	
-	private String sourceIconUrl;
-	private String targetIconUrl;
+	private String sourceIconUrl = "/metamodel/icons/connection.gif";
+	private String targetIconUrl = "/metamodel/icons/connection.gif";
 	
-	private double sourceIconWidth;
-	private double sourceIconHeight;
+	private double sourceIconWidth = 30;
+	private double sourceIconHeight = 30;
 	
-	private double targetIconWidth;
-	private double targetIconHeight;
+	private double targetIconWidth = 30;
+	private double targetIconHeight = 30;
 	
 	/**
 	 * The {@link Point} /  {@link AnchorPoint} where the {@link MetaConnectionDrawable} (which displays this connection in a graphical way) touches the {@link MetaClassDrawable} of the source.
@@ -463,7 +463,7 @@ public class MetaConnectionImpl implements MetaConnection {
 
 
 	@Override
-	public String getSourceIcon() {
+	public String getSourceIconURL() {
 		return sourceIconUrl;
 	}
 
@@ -484,7 +484,7 @@ public class MetaConnectionImpl implements MetaConnection {
 
 
 	@Override
-	public String getTargetIcon() {
+	public String getTargetIconURL() {
 		return targetIconUrl;
 	}
 
@@ -505,7 +505,7 @@ public class MetaConnectionImpl implements MetaConnection {
 
 
 	@Override
-	public void setSourceIcon(String url) {
+	public void setSourceIconURL(String url) {
 		this.sourceIconUrl = url;
 	}
 
@@ -533,7 +533,7 @@ public class MetaConnectionImpl implements MetaConnection {
 
 
 	@Override
-	public void setTargetIcon(String url) {
+	public void setTargetIconURL(String url) {
 		this.targetIconUrl = url;
 	}
 

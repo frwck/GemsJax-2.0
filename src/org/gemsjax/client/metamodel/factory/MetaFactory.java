@@ -347,9 +347,6 @@ public class MetaFactory {
 		boxTargetPoint.setNextAnchorPoint(targetPoint);
 		
 		
-		sourcePoint.setNextAnchorPoint(boxSourcePoint);
-		boxTargetPoint.setNextAnchorPoint(targetPoint);
-		
 		
 		con.setSourceRelativePoint(sourcePoint);
 		con.setSourceConnectionBoxRelativePoint(boxSourcePoint);

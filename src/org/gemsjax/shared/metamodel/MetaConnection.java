@@ -5,6 +5,7 @@ import java.util.List;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
+import org.gemsjax.client.canvas.PlaceableDestination;
 import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
@@ -71,28 +72,36 @@ public interface MetaConnection extends MetaModelElement{
 	
 	
 	/**
-	 * Get the icon, that is painted on the "target" end of this connection
+	 * Get the icon, that is painted on the "target" end of this connection.
+	 * The icon itself is an image which is stored as is should be painted on the top border.
+	 * The icon will be rotated automatically by the help of {@link PlaceableDestination#getCoordinatesBorderDirection(double, double)}
 	 * @return
 	 */
-	public String getTargetIcon();
+	public String getTargetIconURL();
 	
 	/**
 	 * Set the icon, that is displayed on the target end of this connection
+	 * The icon itself is an image which is stored as is should be painted on the top border.
+	 * The icon will be rotated automatically by the help of {@link PlaceableDestination#getCoordinatesBorderDirection(double, double)}
 	 * @param url
 	 */
-	public void setTargetIcon(String url);
+	public void setTargetIconURL(String url);
 	
 	/**
 	 * Get the icon, that is displayed on the "source" end of this connection
+	 * The icon itself is an image which is stored as is should be painted on the top border.
+	 * The icon will be rotated automatically by the help of {@link PlaceableDestination#getCoordinatesBorderDirection(double, double)}
 	 * @return
 	 */
-	public String getSourceIcon();
+	public String getSourceIconURL();
 	
 	/**
 	 * Set the icon, that is displayed on the "source" end of this connection
+	 * The icon itself is an image which is stored as is should be painted on the top border.
+	 * The icon will be rotated automatically by the help of {@link PlaceableDestination#getCoordinatesBorderDirection(double, double)}
 	 * @param url
 	 */
-	public void setSourceIcon(String url);
+	public void setSourceIconURL(String url);
 	
 	/**
 	 * Get the current width of the icon. That is not the width of the icon itself, but the width, 

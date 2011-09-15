@@ -141,6 +141,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					d.addMoveHandler(this);
 					d.addResizeHandler(this);
 					d.addFocusHandler(this);
+					d.addIconLoadHandler(this);
 					
 					// Add PlaceHandler to the AnchorPoints between source and Connection box
 					AnchorPoint currentPoint = d.getSourceAnchor().getAnchorPoint();
@@ -449,7 +450,6 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		{
 			p.setX(x);
 			p.setY(y);
-			SC.logWarn("Temp placing");
 		}	
 		else
 		if (e.getType()==PlaceEventType.PLACING_FINISHED) // finished, so update the view, model and inform the other collaborative clients
@@ -462,7 +462,6 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			ap.y = y;
 			
 
-			SC.logWarn("Finished placing");
 			//TODO collaborativ websocket information
 		}
 		else
@@ -473,7 +472,6 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			p.setX(ap.x);
 			p.setY(ap.y);
 
-			SC.logWarn("Not allowed placing");
 			
 			view.showAnchorPlaceNotAllowed(p);
 		}

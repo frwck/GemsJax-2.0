@@ -7,11 +7,13 @@ import java.util.List;
 import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.events.FocusEvent;
+import org.gemsjax.client.canvas.events.IconLoadEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
+import org.gemsjax.client.canvas.handler.IconLoadHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.metamodel.MetaConnectionImpl;
@@ -20,6 +22,12 @@ import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.util.SC;
 
 /**
  * This class is a {@link Drawable} that displays a {@link MetaConnection} on the {@link MetaClassCanvas}.
@@ -39,7 +47,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Hannes Dorfmann
  *
  */
-public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, ResizeHandler, HasPlaceable,  PlaceableDestination{
+public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, ResizeHandler, HasPlaceable,  PlaceableDestination, IconLoadable{
 	
 	/**
 	 * The {@link MetaConnectionImpl} that is displayed with this Drawable
@@ -64,6 +72,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	private List<ClickHandler> clickHandlers;
 	private List<MoveHandler> moveHandlers;
 	private List<ResizeHandler> resizeHandlers;
+	private List<IconLoadHandler> iconHandlers;
 	
 	public List<Anchor> dockedAnchors;
 	
@@ -75,6 +84,12 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	private String destinationAreaHighlightColor = "rgba(168,245,140,0.5)";
 	private String onMouseOverDestinationColor = "rgba(85,187,250,0.5)";
 	
+	
+	private Image sourceIconImage;
+	private Image targetIconImage;
+	
+	private boolean sourceIconLoaded = false;
+	private boolean targetIconLoaded = false;
 	
 	
 	/**
@@ -116,17 +131,76 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		clickHandlers = new ArrayList<ClickHandler>();
 		moveHandlers = new ArrayList<MoveHandler>();
 		resizeHandlers = new ArrayList<ResizeHandler>();
+		iconHandlers = new ArrayList<IconLoadHandler>();
 		dockedAnchors = new ArrayList<Anchor>();
-
 		
 		generateAnchors();
-		
-		
-		
+
 		setSource(metaClassA);
 		setTarget(metaClassB);
 		
+		
+		// Icons
+		initIcons();
 	}
+	
+	
+	public ImageElement getSourceIcon()
+	{
+		return (ImageElement) sourceIconImage.getElement().cast();
+	}
+	
+	
+	public ImageElement getTargetIcon()
+	{
+		return (ImageElement) targetIconImage.getElement().cast();
+	}
+	
+	
+	private void initIcons()
+	{
+		sourceIconImage = new Image();
+		
+		sourceIconImage.addLoadHandler(new LoadHandler() {
+				
+				@Override
+				public void onLoad(LoadEvent event) {
+					sourceIconLoaded = true;
+					fireIconLoadEvent(new IconLoadEvent(MetaConnectionDrawable.this, sourceIconImage.getUrl()));
+				}
+			});
+				
+	
+		sourceIconImage.setVisible(false);
+		RootPanel.get().add(sourceIconImage); // image must be on page to fire load events
+		
+		sourceIconLoaded = false;
+		sourceIconImage.setUrl(connection.getSourceIconURL());
+		
+		
+		targetIconImage = new Image();
+		
+		targetIconImage.addLoadHandler(new LoadHandler() {
+				
+				@Override
+				public void onLoad(LoadEvent event) {
+					targetIconLoaded = true;
+					fireIconLoadEvent(new IconLoadEvent(MetaConnectionDrawable.this, targetIconImage.getUrl()));
+				}
+			});
+				
+	
+		targetIconImage.setVisible(false);
+		RootPanel.get().add(targetIconImage); // image must be on page to fire load events
+		
+		targetIconLoaded = false;
+		targetIconImage.setUrl(connection.getTargetIconURL());
+		
+		
+		
+	}
+	
+	
 	
 	/**
 	 * Generates the Anchors for the line between source and connection box and the connection box and the target
@@ -137,10 +211,17 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	
 		anchorMap = new HashMap <AnchorPoint, Anchor>();
 		
-		sourceAnchor = new Anchor(connection.getSourceRelativePoint(), source);
-		sourceConnectionBoxAnchor = new Anchor(connection.getSourceConnectionBoxRelativePoint(), this);
-		targetConnectionBoxAnchor = new Anchor(connection.getTargetConnectionBoxRelativePoint(), this);
-		targetAnchor = new Anchor(connection.getTargetRelativePoint(), target);
+		
+		AnchorPoint sp = connection.getSourceRelativePoint();
+		AnchorPoint scp = connection.getSourceConnectionBoxRelativePoint();
+		AnchorPoint tcp = connection.getTargetConnectionBoxRelativePoint();
+		AnchorPoint tp = connection.getTargetRelativePoint();
+		
+		
+		sourceAnchor = new Anchor(sp, source);
+		sourceConnectionBoxAnchor = new Anchor(scp, this);
+		targetConnectionBoxAnchor = new Anchor(tcp, this);
+		targetAnchor = new Anchor(tp, target);
 		
 		
 		// docking 
@@ -164,7 +245,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		current = targetConnectionBoxAnchor.getNextAnchorPoint();
 		
-		while (current!=targetAnchor.getNextAnchorPoint())
+		while (current!=targetAnchor.getAnchorPoint())
 		{
 			anchorMap.put(current, new Anchor(current, null));
 			current = current.getNextAnchorPoint();
@@ -185,11 +266,146 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		connectionBox.draw(context);
 		
+		// TODO what to do with the icons
+		//drawIcons(context);
+		
+		
 		if (connection.isSelected())
 			drawOnSelect(context);
 		
+		
+		context.restore();
 	}
 	
+	
+	private void drawIcons(Context2d context)
+	{
+		double height = connection.getSourceIconHeight();
+		double width = connection.getSourceIconWidth();
+		
+		double x = source.getX() + sourceAnchor.getX() ;
+		double y = source.getY() + sourceAnchor.getY() ;
+		
+		
+		if (connection.getSourceIconURL()!=null && !connection.getSourceIconURL().equals(""))
+		{
+			if (sourceIconLoaded)
+			{
+				context.save();
+				
+				SC.logWarn("Destination: "+sourceAnchor.getDestination().getCoordinatesBorderDirection(x, y));
+				
+				context.translate(x-connection.getSourceIconWidth(), y);
+				
+				switch(sourceAnchor.getDestination().getCoordinatesBorderDirection(x, y))
+				{
+					
+					case LEFT: 	context.rotate(2*Math.PI - Math.PI/2); break;
+								
+					case BOTTOM:context.rotate(Math.PI); break;
+								
+					case RIGHT: context.rotate(Math.PI/2); break;
+					
+					case NOWHERE:
+					case TOP:	
+					default: 	break;
+				}
+				
+				
+				context.drawImage(getSourceIcon(), 0,0, width, height);
+				context.restore();
+				
+				
+			}
+			else
+			{	
+	
+				String loadingTxt = "Loading";
+				
+				context.setFont(""+connection.getAttributeFontSize()+"px "+connection.getFontFamily());
+				double textWidth = loadingTxt.length() * connection.getAttributeFontCharWidth();
+				
+				context.setFillStyle("black");
+				context.setTextAlign("left");
+				
+				if (textWidth<width)
+					context.fillText(loadingTxt, x+((width-textWidth)/2), y+connection.getAttributeFontSize(), width);
+				else
+				{
+					int chars = (int)(textWidth / connection.getAttributeFontCharWidth()) - 3;
+					
+					if (chars<=0)
+						context.fillText("...", x, y+connection.getAttributeFontSize(), width);
+					else
+						context.fillText(loadingTxt.substring(0, chars)+"...", x, y+connection.getAttributeFontSize(), width);
+				}
+			}
+		}
+		
+		
+		
+		
+		if (connection.getTargetIconURL()!=null && !connection.getTargetIconURL().equals(""))
+		{
+		
+			x = target.getX() + targetAnchor.getX();
+			y = target.getY() + targetAnchor.getY();
+			
+			width = connection.getTargetIconWidth();
+			height = connection.getTargetIconHeight();
+	
+			if (targetIconLoaded)
+			{
+				context.save();
+				
+				context.translate(x, y);
+				
+				switch(targetAnchor.getDestination().getCoordinatesBorderDirection(x, y))
+				{
+					
+					case LEFT: 	context.rotate(Math.PI/2); break;
+								
+					case BOTTOM:context.rotate(Math.PI); break;
+								
+					case RIGHT: context.rotate(2*Math.PI - Math.PI/2); break;
+					
+					case NOWHERE: 
+					case TOP:	
+					default: 	context.rotate(0); break;
+				}
+				
+				context.drawImage(getTargetIcon(), 0,0, width, height);
+				
+				context.restore();
+				
+			}
+			else
+			{	
+	
+				String loadingTxt = "Loading";
+				
+				context.setFont(""+connection.getAttributeFontSize()+"px "+connection.getFontFamily());
+				double textWidth = loadingTxt.length() * connection.getAttributeFontCharWidth();
+				
+				context.setFillStyle("black");
+				context.setTextAlign("left");
+				
+				if (textWidth<width)
+					context.fillText(loadingTxt, x+((width-textWidth)/2), y+connection.getAttributeFontSize(), width);
+				else
+				{
+					int chars = (int)(textWidth / connection.getAttributeFontCharWidth()) - 3;
+					
+					if (chars<=0)
+						context.fillText("...", x, y+connection.getAttributeFontSize(), width);
+					else
+						context.fillText(loadingTxt.substring(0, chars)+"...", x, y+connection.getAttributeFontSize(), width);
+				}
+			}
+		
+		}
+		
+	}
 	
 	
 	private void drawConnectionLines(Context2d context)
@@ -448,76 +664,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 			currentPoint = currentPoint.getNextAnchorPoint();
 		}
 
-
 		
-		/*
-		currentPoint = targetConnectionBoxAnchor.getAnchorPoint();
-		currentAnchor = targetConnectionBoxAnchor;
-		
-		nextAnchor = null;
-		currentX =0;
-		currentY = 0;
-		nextX = 0;
-		nextY=0;
-		
-		
-		while (currentPoint != targetAnchor.getAnchorPoint())
-		{
-			currentAnchor = anchorMap.get(currentPoint);
-			nextAnchor = anchorMap.get(currentPoint.getNextAnchorPoint());
-			
-			// if the current is the targetConnectionBoxAnchorPoint, which is the start point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
-			if (currentAnchor == targetConnectionBoxAnchor)
-			{
-				currentX = connectionBox.getX() + targetConnectionBoxAnchor.getX();
-				currentY = connectionBox.getY() + targetConnectionBoxAnchor.getY();
-			}
-			else
-			{
-				currentX = currentAnchor.getX();
-				currentY = currentAnchor.getY();
-			}
-			
-			
-			// if the next is the sourceConnectionBoxAnchorPoint, which is the end point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
-			if (nextAnchor == targetAnchor)
-			{
-				nextX = target.getX() + targetAnchor.getX();
-				nextY = target.getY() + targetAnchor.getY();
-			}
-			else
-			{
-				nextX = nextAnchor.getX();
-				nextY = nextAnchor.getY();
-			}
-			
-			
-			
-			// special case that current and next have the same x coordinate, so there is a vertical line instead of a linear function
-			if (Math.abs(currentX-x)<=verticalLineXOffset && Math.abs(nextX-x)<=verticalLineXOffset)
-			{
-				if (currentY<nextY && isBetween(currentY, nextY, y))
-					return true;
-				else
-				if (currentY>=nextY && isBetween(nextY, currentY, y))
-					return true;
-			}
-			
-			// calculate the slopetriangle 
-			m = (currentY - nextY) / (currentX - nextX);
-			
-			// calculate x axis deferral	b = y - m*x
-			b = currentY - m * currentX;
-			
-			// temp variable to calculate  m * x + b = t
-			t = m * x + b;
-			
-			if (Math.abs(t - y)<=mouseOffSet)
-				return true;
-			
-			currentPoint = currentPoint.getNextAnchorPoint();
-		}
-		*/
 		return false;
 	}
 
@@ -1138,6 +1285,30 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		return BorderDirection.NOWHERE;
 		
+	}
+
+	@Override
+	public void addIconLoadHandler(IconLoadHandler h) {
+		if (!iconHandlers.contains(h))
+			iconHandlers.add(h);
+	}
+
+	@Override
+	public boolean fireIconLoadEvent(IconLoadEvent e) {
+		boolean delivered = false;
+		
+		for (IconLoadHandler h: iconHandlers)
+		{
+			h.onIconLoaded(e);
+			delivered = true;
+		}
+		
+		return delivered;
+	}
+
+	@Override
+	public void removeIconLoadHanlder(IconLoadHandler h) {
+		iconHandlers.remove(h);
 	}
 
 }
