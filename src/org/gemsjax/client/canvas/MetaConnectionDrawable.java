@@ -411,6 +411,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	private void drawConnectionLines(Context2d context)
 	{
 		context.save();
+		context.beginPath();
 		context.setFillStyle(connection.getLineColor());
 		context.setLineWidth(connection.getLineSize());
 		
