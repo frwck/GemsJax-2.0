@@ -14,6 +14,7 @@ import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaConnectionBox;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
+import org.gemsjax.client.canvas.MetaInheritanceDrawable;
 import org.gemsjax.client.canvas.Moveable;
 import org.gemsjax.client.canvas.ResizeArea;
 import org.gemsjax.client.canvas.Resizeable;
@@ -41,6 +42,7 @@ import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
+import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
 
 import com.google.gwt.event.shared.EventBus;
@@ -128,9 +130,10 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			}
 			
 			
-			// Add all Connections
+			
 			for (MetaClass c: metaModel.getMetaClasses())
 			{
+				// Add all Connections
 				for (MetaConnection con: c.getConnections())
 				{
 					MetaClassDrawable source = (MetaClassDrawable) view.getDrawableOf(con.getSource());
@@ -182,6 +185,38 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 					view.addDrawable(d);
 				
 				}
+				
+				
+				// All inheritances
+				for (MetaInheritance inh : c.getInheritances())
+				{
+					MetaClassDrawable ownerClass = (MetaClassDrawable) view.getDrawableOf(inh.getOwnerClass());
+					MetaClassDrawable superClass = (MetaClassDrawable) view.getDrawableOf(inh.getSuperClass());
+					
+					
+					MetaInheritanceDrawable d = new MetaInheritanceDrawable( inh, ownerClass, superClass);
+					d.addFocusHandler(this);
+					
+					// Add PlaceHandler to the AnchorPoints between source and Connection box
+					AnchorPoint currentPoint = d.getOwnerClassAnchor().getAnchorPoint();
+					Anchor a ;
+					
+					while (currentPoint!=d.getSuperClassAnchor().getAnchorPoint())
+					{
+						a = d.getAnchor(currentPoint);
+						if (a != null)
+							a.addPlaceHandler(this);
+						else
+							SC.logWarn("Error: Anchor not found for AnchorPoint "+currentPoint);
+						
+						currentPoint = currentPoint.getNextAnchorPoint();
+					}
+					
+					d.getSuperClassAnchor().addPlaceHandler(this);
+					
+					view.addDrawable(d);
+				}
+				
 			}	
 			
 			
@@ -209,8 +244,12 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		else
 		if (event.getSource() instanceof MetaConnectionDrawable)
 			onMetaConnectionFocusEvent((MetaConnection) ((Drawable)event.getSource()).getDataObject(), event);
-	
+		else
+		if (event.getSource() instanceof MetaInheritanceDrawable)
+			onMetaInheritanceFocusEvent((MetaInheritance) ((Drawable)event.getSource()).getDataObject(), event);
 	}
+
+	
 
 
 	@Override
@@ -389,6 +428,16 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	}
 	
 	
+	private void onMetaInheritanceFocusEvent(MetaInheritance inheritance, FocusEvent event)
+	{
+		if (event.getType()==FocusEventType.GOT_FOCUS)
+			inheritance.setSelected(true);
+		else
+			inheritance.setSelected(false);
+		
+		view.redrawMetaModelCanvas();
+	}
+	
 	private void onMetaConnectionFocusEvent(MetaConnection connection, FocusEvent event)
 	{
 		if (event.getType()==FocusEventType.GOT_FOCUS)
@@ -411,7 +460,67 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	
 		if (event.getSource() instanceof Anchor && event.getParent() instanceof MetaConnectionDrawable)
 			onMetaConnectionAnchor((Anchor) event.getSource(), (MetaConnectionDrawable) event.getParent() , event);
+		else
+		if (event.getSource() instanceof Anchor && event.getParent() instanceof MetaInheritanceDrawable)
+			onMetaInheritanceAnchor((Anchor) event.getSource(), (MetaInheritanceDrawable) event.getParent() , event);
 		
+		
+	}
+	
+	
+	
+	private void onMetaInheritanceAnchor(Anchor p, MetaInheritanceDrawable parent, PlaceEvent e)
+	{
+
+		double x=e.getX() , y=e.getY();
+		
+		// transform to relative coordinates, if its one of the 4 default anchor points
+		if (p == parent.getOwnerClassAnchor())		
+		{
+			x = e.getX() - parent.getOwnerDrawable().getX();
+			y = e.getY() - parent.getOwnerDrawable().getY();
+		}
+		else
+		if (p == parent.getSuperClassAnchor())
+		{
+			x = e.getX() - parent.getSuperDrawable().getX();
+			y = e.getY() - parent.getSuperDrawable().getY();
+		}
+		
+		
+		
+		if (e.getType() == PlaceEventType.TEMP_PLACING) // its just a temporary placing event, so update only the view
+		{
+			p.setX(x);
+			p.setY(y);
+		}	
+		else
+		if (e.getType()==PlaceEventType.PLACING_FINISHED) // finished, so update the view, model and inform the other collaborative clients
+		{
+			p.setX(x);
+			p.setY(y);
+			AnchorPoint ap = p.getAnchorPoint();
+			
+			ap.x = x;
+			ap.y = y;
+			
+
+			//TODO collaborativ websocket information
+		}
+		else
+		if(e.getType() == PlaceEventType.NOT_ALLOWED) // Not Allowed: display a notification, restore the anchors position to the position before the TEMP_PLACING has started
+		{
+			AnchorPoint ap = p.getAnchorPoint();
+			
+			p.setX(ap.x);
+			p.setY(ap.y);
+
+			
+			view.showAnchorPlaceNotAllowed(p);
+		}
+		
+		
+		view.redrawMetaModelCanvas();
 	}
 	
 	

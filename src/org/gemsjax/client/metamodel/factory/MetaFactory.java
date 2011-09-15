@@ -64,11 +64,11 @@ public class MetaFactory {
 		
 		MetaInheritance i = new MetaInheritanceImpl(nextID(), ownerClass, superClass);
 		
-		i.setClassRelativeAnchorPoint(new AnchorPoint(nextID(),ownerClass.getX()+(ownerClass.getWidth()/2), ownerClass.getY()));
+		i.setOwnerClassRelativeAnchorPoint(new AnchorPoint(nextID(),ownerClass.getWidth()/2,  0));
 		
-		i.setSuperClassRelativeAnchorPoint(new AnchorPoint(nextID(), superClass.getX()+(superClass.getWidth()/2), superClass.getY()+superClass.getHeight()));
+		i.setSuperClassRelativeAnchorPoint(new AnchorPoint(nextID(), superClass.getWidth()/2, 0));
 		
-		i.getClassRelativeAnchorPoint().setNextAnchorPoint(i.getSuperClassRelativeAnchorPoint());
+		i.getOwnerClassRelativeAnchorPoint().setNextAnchorPoint(i.getSuperClassRelativeAnchorPoint());
 		
 		
 		return i;
@@ -95,7 +95,7 @@ public class MetaFactory {
 	 * @param classAnchorID
 	 * @param classX The relative x coordinate for the class (which derives from the super class) {@link AnchorPoint}
 	 * @param classY The relative y coordinate for the class (which derives from the super class) {@link AnchorPoint}
-	 * @param otherAnchorPoints The list with the {@link AnchorPoint}s that are between the {@link MetaInheritance#getClassRelativeAnchorPoint()} and {@link MetaInheritance#getSuperClassRelativeAnchorPoint()} in the given list order <b>(the {@link AnchorPoint#getNextAnchorPoint()} must already be set correct)</b>.
+	 * @param otherAnchorPoints The list with the {@link AnchorPoint}s that are between the {@link MetaInheritance#getOwnerClassRelativeAnchorPoint()} and {@link MetaInheritance#getSuperClassRelativeAnchorPoint()} in the given list order <b>(the {@link AnchorPoint#getNextAnchorPoint()} must already be set correct)</b>.
 	 *			That means that the list element with index 0 is the next element of the "class  {@link AnchorPoint}" and the list element with index 1 is the next  {@link AnchorPoint} of the element with index 0 ...
 	 * @return The created {@link MetaInheritance} object
 	 * @throws MetaInheritanceExcepetion  Is thrown if there already exists a inheritance relation between ownerClass and superClass
@@ -115,7 +115,7 @@ public class MetaFactory {
 			otherAnchorPoints.get(otherAnchorPoints.size()-1).setNextAnchorPoint(sa);
 		}
 		
-		inh.setClassRelativeAnchorPoint(ca);
+		inh.setOwnerClassRelativeAnchorPoint(ca);
 		inh.setSuperClassRelativeAnchorPoint(sa);
 		
 		return inh;

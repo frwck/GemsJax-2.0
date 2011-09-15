@@ -1,5 +1,6 @@
 package org.gemsjax.shared.metamodel;
 
+import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.shared.AnchorPoint;
 
 /**
@@ -11,6 +12,8 @@ import org.gemsjax.shared.AnchorPoint;
  * <br/>
  *  OwnerClass --------->  SuperClass
  * 
+ * <br /> <br />
+ * The {@link AnchorPoint}s will linked in this direction: ownerClassAnchorPoint --> ... --> superClassAnchorPoint
  * 
  * @author Hannes Dorfmann
  *
@@ -36,10 +39,23 @@ public interface MetaInheritance extends MetaModelElement{
 	
 	public AnchorPoint getSuperClassRelativeAnchorPoint();
 	
-	public AnchorPoint getClassRelativeAnchorPoint();
+	public AnchorPoint getOwnerClassRelativeAnchorPoint();
 	
 	public void setSuperClassRelativeAnchorPoint(AnchorPoint a);
 	
-	public void setClassRelativeAnchorPoint(AnchorPoint a);
+	public void setOwnerClassRelativeAnchorPoint(AnchorPoint a);
+	
+	
+	public double getLineSize();
+	public void setLineSize(double lineWidth);
+	
+	public String getLineColor();
+	public void setLineColor(String color);
+	
+	public double getZIndex();
+	public void setZIndex(double zIndex);
+	
+	public void setSelected(boolean selected);
+	public boolean isSelected();
 	
 }

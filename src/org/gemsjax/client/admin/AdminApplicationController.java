@@ -20,11 +20,13 @@ import org.gemsjax.client.metamodel.factory.MetaFactory;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
+import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
 import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
+import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
@@ -198,6 +200,11 @@ public class AdminApplicationController {
 			metaModel.addMetaClass(c2);
 			
 			
+			MetaInheritance inh = MetaFactory.createInheritance(c1, c2);
+			c1.addInheritance(inh);
+			
+			
+			
 			
 			new MetaModelPresenter(eventBus, new MetaModelViewImpl("MetaFactory Model", language), metaModel);
 			
@@ -221,6 +228,10 @@ public class AdminApplicationController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 
+			SC.logWarn(e.getMessage());
+		} catch (MetaInheritanceExcepetion e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			SC.logWarn(e.getMessage());
 		}
 	

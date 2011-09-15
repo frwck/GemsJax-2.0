@@ -106,7 +106,7 @@ public class MetaConnectionImpl implements MetaConnection {
 	
 	private String fontColor = "black";
 	
-	private int lineSize = 2;
+	private int lineSize = 1;
 	
 	private String gradientStartColor ="#d4f496";
 	private String gradientEndColor="#eef7dc";

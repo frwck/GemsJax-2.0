@@ -4,6 +4,11 @@ import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 
+/**
+ * 
+ * @author Hannes Dorfmann
+ *
+ */
 public class MetaInheritanceImpl implements MetaInheritance{
 
 	/**
@@ -18,8 +23,15 @@ public class MetaInheritanceImpl implements MetaInheritance{
 	
 	private MetaClass ownerClass;
 	
-	private AnchorPoint classRelativeAnchorPoint;
+	private AnchorPoint ownerClassRelativeAnchorPoint;
 	private AnchorPoint superClassRelativeAnchorPoint;
+	
+	private double lineWidth = 1;
+	private String lineColor = "black";
+	
+	private double zIndex;
+	
+	private boolean selected = false;
 	
 	
 	public MetaInheritanceImpl(String id, MetaClass ownerClass, MetaClass superClass)
@@ -33,8 +45,8 @@ public class MetaInheritanceImpl implements MetaInheritance{
 	
 	
 	@Override
-	public AnchorPoint getClassRelativeAnchorPoint() {
-		return classRelativeAnchorPoint;
+	public AnchorPoint getOwnerClassRelativeAnchorPoint() {
+		return ownerClassRelativeAnchorPoint;
 	}
 
 	@Override
@@ -56,8 +68,8 @@ public class MetaInheritanceImpl implements MetaInheritance{
 
 
 	@Override
-	public void setClassRelativeAnchorPoint(AnchorPoint a) {
-		this.classRelativeAnchorPoint = a;
+	public void setOwnerClassRelativeAnchorPoint(AnchorPoint a) {
+		this.ownerClassRelativeAnchorPoint = a;
 	}
 
 
@@ -91,6 +103,70 @@ public class MetaInheritanceImpl implements MetaInheritance{
 	public void setSuperClass(MetaClass superClass) {
 	
 		this.superClass = superClass;
+	}
+
+
+
+
+	@Override
+	public double getLineSize() {
+		return lineWidth;
+	}
+
+
+
+
+	@Override
+	public void setLineSize(double lineWidth) {
+		this.lineWidth = lineWidth;
+	}
+
+
+
+
+	@Override
+	public String getLineColor() {
+		return lineColor;
+	}
+
+
+
+
+	@Override
+	public void setLineColor(String color) {
+		this.lineColor = color;
+	}
+
+
+
+
+	@Override
+	public double getZIndex() {
+		return zIndex;
+	}
+
+
+
+
+	@Override
+	public void setZIndex(double zIndex) {
+		this.zIndex = zIndex;
+	}
+
+
+
+
+	@Override
+	public boolean isSelected() {
+		return selected;
+	}
+
+
+
+
+	@Override
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 
 }
