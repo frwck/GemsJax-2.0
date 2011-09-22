@@ -110,7 +110,7 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 	{
 		context.save();
 		context.setStrokeStyle(inheritance.getLineColor());
-		context.setFillStyle("white");
+		context.setFillStyle("green");
 		context.setLineWidth(inheritance.getLineSize());
 		
 		
@@ -121,14 +121,18 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		prevX = ownerDrawable.getX() + ownerAnchor.getX();
 		prevY = ownerDrawable.getY() + ownerAnchor.getY();
 		
+		
+
 		AnchorPoint current = ownerAnchor.getAnchorPoint().getNextAnchorPoint();
+		
+		context.beginPath();
+		context.moveTo(prevX, prevY);
 		
 		// Draw line between the ownerDrawable and superClass
 		while (current!=superAnchor.getAnchorPoint())
 		{
 			a = anchorMap.get(current);
 			
-			context.moveTo(prevX, prevY);
 			context.lineTo( a.getX(), a.getY());
 			
 			prevX = a.getX();
@@ -136,6 +140,8 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 			current = current.getNextAnchorPoint();
 		}
 		
+		
+		context.stroke();
 		
 		// Draw the triangle
 		
@@ -146,52 +152,72 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		double sx = superDrawable.getX() + superAnchor.getX();
 		double sy = superDrawable.getY() + superAnchor.getY();
 		
-		context.beginPath();
+		
 		
 		switch (superAnchor.getPlaceableDestination().getCoordinatesBorderDirection( sx, sy))
 		{
-			case BOTTOM: 	context.moveTo(sx, sy);
+			case BOTTOM: 	context.beginPath();
+							context.moveTo(sx, sy);
 							context.lineTo(sx - triangleLineWidth/2, sy+triangleHeight);
-							context.moveTo(sx - triangleLineWidth/2, sy+triangleHeight);
 							context.lineTo(sx + triangleLineWidth/2, sy+triangleHeight);
-							context.moveTo(sx - triangleLineWidth/2, sy+triangleHeight);
 							context.lineTo(sx, sy);
 							
+							context.closePath();
+							context.stroke();
+							context.fill();
+							
 							// Line to triangle
+							context.beginPath();
 							context.moveTo(prevX, prevY);
 							context.lineTo(sx,sy+triangleHeight);
 							lineToTrianglePoint.x = sx;
 							lineToTrianglePoint.y = sy +triangleHeight;
 							
+							context.stroke();
+							
 							break;
 							
-			case RIGHT: 	context.moveTo(sx, sy);
+							
+			case RIGHT: 	
+							context.beginPath();
+							context.moveTo(sx, sy);
 							context.lineTo(sx + triangleHeight, sy-triangleLineWidth/2);
-							context.moveTo(sx + triangleHeight, sy-triangleLineWidth/2);
 							context.lineTo(sx + triangleHeight, sy + triangleLineWidth/2);
-							context.moveTo(sx + triangleHeight, sy + triangleLineWidth/2);
 							context.lineTo(sx, sy);
 							
+							context.closePath();
+							context.stroke();
+							context.fill();
+							
 							//Line to triangle
+							context.beginPath();
 							context.moveTo(prevX, prevY);
 							context.lineTo(sx + triangleHeight, sy);
 							lineToTrianglePoint.x = sx+triangleHeight;
 							lineToTrianglePoint.y = sy;
 							
+							context.stroke();
+							
 							break;
 
 							
 							
-			case LEFT:		context.moveTo(sx, sy);
+			case LEFT:		context.beginPath();
+							context.moveTo(sx, sy);
 							context.lineTo(sx - triangleHeight, sy - triangleLineWidth/2);
-							context.moveTo(sx - triangleHeight, sy - triangleLineWidth/2);
 							context.lineTo(sx - triangleHeight, sy + triangleLineWidth/2);
-							context.moveTo(sx - triangleHeight, sy + triangleLineWidth/2);
 							context.lineTo(sx, sy);
 							
+							context.closePath();
+							context.stroke();
+							context.fill();
+							
 							//Line to triangle
+							context.beginPath();
 							context.moveTo(prevX, prevY);
 							context.lineTo(sx - triangleHeight, sy);
+							
+							context.stroke();
 							
 							lineToTrianglePoint.x = sx-triangleHeight;
 							lineToTrianglePoint.y = sy;
@@ -201,28 +227,29 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 							
 			case NOWHERE:
 			case TOP:
-			default:		context.moveTo(sx, sy);
+			default:		
+							context.beginPath();
+							context.moveTo(sx, sy);
 							context.lineTo(sx - triangleLineWidth/2, sy-triangleHeight);
-							context.moveTo(sx - triangleLineWidth/2, sy-triangleHeight);
 							context.lineTo(sx + triangleLineWidth/2, sy-triangleHeight);
-							context.moveTo(sx + triangleLineWidth/2, sy-triangleHeight);
 							context.lineTo(sx, sy);
 							
+							context.closePath();
+							context.stroke();
+							context.fill();
+							
 							// Line to triangle
+							context.beginPath();
 							context.moveTo(prevX, prevY);
 							context.lineTo(sx,sy-triangleHeight);
+							
+							context.stroke();
 							
 							lineToTrianglePoint.x = sx;
 							lineToTrianglePoint.y = sy-triangleHeight;
 							break;
 		}
 		
-		context.closePath();
-		
-		context.stroke();
-		context.setFillStyle("green");
-		context.fill();
-
 		context.restore();
 	}
 	

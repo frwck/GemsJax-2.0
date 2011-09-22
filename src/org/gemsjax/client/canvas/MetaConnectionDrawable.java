@@ -411,7 +411,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	private void drawConnectionLines(Context2d context)
 	{
 		context.save();
-		context.beginPath();
+		
 		context.setFillStyle(connection.getLineColor());
 		context.setLineWidth(connection.getLineSize());
 		
@@ -423,14 +423,17 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		prevX = source.getX() + sourceAnchor.getX();
 		prevY = source.getY() + sourceAnchor.getY();
 		
+
 		AnchorPoint current = sourceAnchor.getAnchorPoint().getNextAnchorPoint();
 		
+		context.beginPath();
+		context.moveTo(prevX, prevY);
+	
 		// Draw line between the source and the connection box	
 		while (current!=sourceConnectionBoxAnchor.getAnchorPoint())
 		{
 			a = anchorMap.get(current);
 			
-			context.moveTo(prevX, prevY);
 			context.lineTo( a.getX(), a.getY());
 			
 			prevX = a.getX();
@@ -440,23 +443,24 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		
 		// At last, draw line from previous to the connectionBoxAnchor (the finish)
-		context.moveTo(prevX, prevY);
+		//context.moveTo(prevX, prevY);
 		context.lineTo( connectionBox.getX() + sourceConnectionBoxAnchor.getX(), connectionBox.getY()+ sourceConnectionBoxAnchor.getY());
 		
-		
-
+		context.stroke();
 		
 		prevX = targetConnectionBoxAnchor.getX() + connectionBox.getX();
 		prevY = targetConnectionBoxAnchor.getY() + connectionBox.getY();
 		
 		current=targetConnectionBoxAnchor.getAnchorPoint().getNextAnchorPoint();
 		
+		context.beginPath();
+		context.moveTo(prevX, prevY);
+		
 		// Draw Anchor points between the connection box and the target
 		while (current!=targetAnchor.getAnchorPoint())
 		{
 			a = anchorMap.get(current);
 			
-			context.moveTo(prevX, prevY);
 			context.lineTo( a.getX(), a.getY());
 			
 			prevX = a.getX();
@@ -465,10 +469,12 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		}
 		
 		// At last, draw line from previous to the targetAnchor (the finish)
-		context.moveTo(prevX, prevY);
+		// context.moveTo(prevX, prevY);
 		context.lineTo( target.getX() + targetAnchor.getX(), target.getY()+ targetAnchor.getY());
 		
+		
 		context.stroke();
+	
 		context.restore();
 	}
 	
