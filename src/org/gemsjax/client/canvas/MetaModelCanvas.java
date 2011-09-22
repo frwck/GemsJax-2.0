@@ -1,6 +1,5 @@
 package org.gemsjax.client.canvas;
 
-import org.apache.tools.ant.taskdefs.rmic.KaffeRmic;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.PlaceEvent;
@@ -10,7 +9,6 @@ import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
 import org.gemsjax.client.canvas.events.PlaceEvent.PlaceEventType;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.shared.Point;
-import org.gemsjax.shared.metamodel.MetaModelElement;
 
 
 import com.google.gwt.event.dom.client.ClickEvent;

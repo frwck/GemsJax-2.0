@@ -136,8 +136,8 @@ public  class MetaConnectionBox {
 		gradient.addColorStop(0,connection.getGradientStartColor());
 		gradient.addColorStop(0.7, connection.getGradientEndColor());
 		
-		drawDottedRect(context,getX(), getY(), getWidth(), getHeight());
-		
+		//drawDottedRect(context,getX(), getY(), getWidth(), getHeight());
+		context.strokeRect(getX(), getY(), getWidth(), getHeight());
 		context.setFillStyle(gradient);
 		context.fillRect(getX(), getY(), getWidth(), getHeight());
 		

@@ -29,7 +29,7 @@ public class MetaInheritanceImpl implements MetaInheritance{
 	private double lineWidth = 1;
 	private String lineColor = "black";
 	
-	private double zIndex;
+	private double zIndex = 100;
 	
 	private boolean selected = false;
 	

@@ -8,12 +8,13 @@ import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.shared.AnchorPoint;
+import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.uibinder.rebind.model.OwnerClass;
 
-public class MetaInheritanceDrawable implements Drawable, Focusable{
+public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceable{
 
 	
 	private MetaInheritance inheritance;
@@ -41,11 +42,18 @@ public class MetaInheritanceDrawable implements Drawable, Focusable{
 	
 	private double triangleLineWidth = 10;
 	
+	
+	
+	private Point lineToTrianglePoint;
+	
+	
 	public MetaInheritanceDrawable(MetaInheritance inheritance, MetaClassDrawable ownerDrawable, MetaClassDrawable superDrawable)
 	{
 		this.inheritance = inheritance;
 		this.ownerDrawable = ownerDrawable;
 		this.superDrawable = superDrawable;
+		
+		lineToTrianglePoint = new Point();
 		
 		focusHandlers = new ArrayList<FocusHandler>();
 		// generate the Anchors
@@ -86,7 +94,7 @@ public class MetaInheritanceDrawable implements Drawable, Focusable{
 		AnchorPoint current = ownerAnchor.getAnchorPoint();
 		Anchor a;
 		
-		while (current!=ownerAnchor.getAnchorPoint())
+		while (current!=superAnchor.getAnchorPoint())
 		{
 			a = anchorMap.get(current);
 			a.draw(context);
@@ -94,7 +102,7 @@ public class MetaInheritanceDrawable implements Drawable, Focusable{
 			current = current.getNextAnchorPoint();
 		}
 		
-		ownerAnchor.draw(context);
+		superAnchor.draw(context);
 		
 	}
 	
@@ -136,9 +144,9 @@ public class MetaInheritanceDrawable implements Drawable, Focusable{
 		double triangleHeight = Math.sqrt(Math.pow(triangleLineWidth,2) - Math.pow(triangleLineWidth/2, 2));
 		
 		double sx = superDrawable.getX() + superAnchor.getX();
-		double sy = superDrawable.getY()+ superAnchor.getY();
+		double sy = superDrawable.getY() + superAnchor.getY();
 		
-		//context.beginPath();
+		context.beginPath();
 		
 		switch (superAnchor.getPlaceableDestination().getCoordinatesBorderDirection( sx, sy))
 		{
@@ -152,10 +160,12 @@ public class MetaInheritanceDrawable implements Drawable, Focusable{
 							// Line to triangle
 							context.moveTo(prevX, prevY);
 							context.lineTo(sx,sy+triangleHeight);
+							lineToTrianglePoint.x = sx;
+							lineToTrianglePoint.y = sy +triangleHeight;
 							
 							break;
 							
-			case LEFT: 		context.moveTo(sx, sy);
+			case RIGHT: 	context.moveTo(sx, sy);
 							context.lineTo(sx + triangleHeight, sy-triangleLineWidth/2);
 							context.moveTo(sx + triangleHeight, sy-triangleLineWidth/2);
 							context.lineTo(sx + triangleHeight, sy + triangleLineWidth/2);
@@ -165,11 +175,14 @@ public class MetaInheritanceDrawable implements Drawable, Focusable{
 							//Line to triangle
 							context.moveTo(prevX, prevY);
 							context.lineTo(sx + triangleHeight, sy);
+							lineToTrianglePoint.x = sx+triangleHeight;
+							lineToTrianglePoint.y = sy;
+							
 							break;
 
 							
 							
-			case RIGHT:		context.moveTo(sx, sy);
+			case LEFT:		context.moveTo(sx, sy);
 							context.lineTo(sx - triangleHeight, sy - triangleLineWidth/2);
 							context.moveTo(sx - triangleHeight, sy - triangleLineWidth/2);
 							context.lineTo(sx - triangleHeight, sy + triangleLineWidth/2);
@@ -179,6 +192,10 @@ public class MetaInheritanceDrawable implements Drawable, Focusable{
 							//Line to triangle
 							context.moveTo(prevX, prevY);
 							context.lineTo(sx - triangleHeight, sy);
+							
+							lineToTrianglePoint.x = sx-triangleHeight;
+							lineToTrianglePoint.y = sy;
+							
 							break;
 			
 							
@@ -194,12 +211,17 @@ public class MetaInheritanceDrawable implements Drawable, Focusable{
 							// Line to triangle
 							context.moveTo(prevX, prevY);
 							context.lineTo(sx,sy-triangleHeight);
+							
+							lineToTrianglePoint.x = sx;
+							lineToTrianglePoint.y = sy-triangleHeight;
 							break;
 		}
 		
-		//context.closePath();
+		context.closePath();
+		
 		context.stroke();
-		//context.fill();
+		context.setFillStyle("green");
+		context.fill();
 
 		context.restore();
 	}
@@ -250,8 +272,8 @@ public class MetaInheritanceDrawable implements Drawable, Focusable{
 			if (nextAnchor == superAnchor)
 			{
 				// TODO line is at triangle center
-				nextX = ownerDrawable.getX() + superAnchor.getX();
-				nextY = ownerDrawable.getY() + superAnchor.getY();
+				nextX = lineToTrianglePoint.x;
+				nextY = lineToTrianglePoint.y;
 			}
 			else
 			{
@@ -376,6 +398,51 @@ public class MetaInheritanceDrawable implements Drawable, Focusable{
 	@Override
 	public void removeFocusHandler(FocusHandler handler) {
 		focusHandlers.remove(handler);
+	}
+
+
+
+
+	@Override
+	public Placeable hasPlaceableAt(double x, double y) {
+	
+		
+		// Calculate the absolute Positions for the owner default AnchorPoint
+		if (isBetween(ownerDrawable.getX()+ownerAnchor.getX()-(ownerAnchor.getWidth()/2), ownerDrawable.getX()+ownerAnchor.getX()+(ownerAnchor.getWidth()/2), x)
+			&& isBetween(ownerDrawable.getY()+ownerAnchor.getY()-(ownerAnchor.getHeight()/2), ownerDrawable.getY()+ownerAnchor.getY()+(ownerAnchor.getHeight()/2), y)
+			)
+			return ownerAnchor;
+		
+		
+		// Calculate the absolute Positions for the super default AnchorPoint
+		if (isBetween(superDrawable.getX()+superAnchor.getX()-(superAnchor.getWidth()/2), superDrawable.getX()+superAnchor.getX()+(superAnchor.getWidth()/2), x)
+			&& isBetween(superDrawable.getY()+superAnchor.getY()-(superAnchor.getHeight()/2), superDrawable.getY()+superAnchor.getY()+(superAnchor.getHeight()/2), y)
+			)
+			return superAnchor;
+		
+		
+		
+		
+		
+		
+		// check AnchorPoints between source and connection box
+	
+		
+		AnchorPoint currentPoint = ownerAnchor.getAnchorPoint();
+		Anchor a;
+		// if we are at the end, than null should be there
+		while (currentPoint!=superAnchor.getAnchorPoint())
+		{
+			a = anchorMap.get(currentPoint);
+			
+			if (a.hasCoordinate(x, y))
+				return a;
+			
+			currentPoint = currentPoint.getNextAnchorPoint();
+		}
+		
+				
+		return null;
 	}
 	
 	

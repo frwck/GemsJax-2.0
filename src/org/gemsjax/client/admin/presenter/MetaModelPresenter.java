@@ -430,6 +430,8 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	
 	private void onMetaInheritanceFocusEvent(MetaInheritance inheritance, FocusEvent event)
 	{
+		
+		
 		if (event.getType()==FocusEventType.GOT_FOCUS)
 			inheritance.setSelected(true);
 		else
@@ -460,10 +462,10 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	
 		if (event.getSource() instanceof Anchor && event.getParent() instanceof MetaConnectionDrawable)
 			onMetaConnectionAnchor((Anchor) event.getSource(), (MetaConnectionDrawable) event.getParent() , event);
+		
 		else
 		if (event.getSource() instanceof Anchor && event.getParent() instanceof MetaInheritanceDrawable)
 			onMetaInheritanceAnchor((Anchor) event.getSource(), (MetaInheritanceDrawable) event.getParent() , event);
-		
 		
 	}
 	
@@ -472,6 +474,8 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	private void onMetaInheritanceAnchor(Anchor p, MetaInheritanceDrawable parent, PlaceEvent e)
 	{
 
+		SC.logWarn("Place MetaInheritance");
+		
 		double x=e.getX() , y=e.getY();
 		
 		// transform to relative coordinates, if its one of the 4 default anchor points

@@ -23,8 +23,12 @@ public interface Drawable {
 	 */
 	public boolean hasCoordinate(double x, double y);
 	
-	
+	/**
+	 * Has the same meaning as the CSS z indexd
+	 * @return
+	 */
 	public double getZIndex();
+	
 	
 	/**
 	 * This method will be called when an object should be painted on the canvas
@@ -43,5 +47,6 @@ public interface Drawable {
 	 * @return
 	 */
 	public Object getDataObject();
+	
 	
 }
