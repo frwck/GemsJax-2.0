@@ -11,6 +11,7 @@ import org.gemsjax.client.canvas.events.MouseOutEvent;
 import org.gemsjax.client.canvas.events.MouseOverEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
+import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.IconLoadHandler;
@@ -175,6 +176,9 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	{
 		dockedAnchors.remove(a);
 	}
+	
+	
+	
 	
 	/**
 	 * Get a list with all {@link Anchor}s that are currently docked to this {@link MetaClassDrawable}
@@ -537,7 +541,22 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 * @see #getWidth()
 	 */
 	public void setWidth(double width) {
+		
+		double oldWidth = this.width;
 		this.width = width;
+		adjustDockedAnchors(oldWidth, height, width, height);
+		autoSetResizeAreaPosition();
+	}
+	
+	public void setWidthHeight(double width, double height)
+	{
+		double oldWidth = this.width;
+		double oldHeight = this.height;
+		
+		this.height = height;
+		this.width = width;
+		
+		adjustDockedAnchors(oldWidth, oldHeight, width, this.height);
 		autoSetResizeAreaPosition();
 	}
 
@@ -546,8 +565,36 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 * @see #getHeight()
 	 */
 	public void setHeight(double height) {
+		double oldHeight = this.height;
 		this.height = height;
+		adjustDockedAnchors(this.width, oldHeight, width, height);
 		autoSetResizeAreaPosition();
+	}
+	
+	/**
+	 * This method will adjust automatically all {@link #dockedAnchors} (docked by calling  {@link #dockAnchor(Anchor)} ).
+	 * This method is called by {@link #setWidth(double)}, {@link #setHeight(double)} and {@link #setWidthHeight(double, double)}, 
+	 * so that the Anchors will always be set on the border of this {@link MetaClassDrawable}, even after resizements.
+	 * @param oldWidth
+	 * @param oldHeight
+	 * @param newWidth
+	 * @param newHeight
+	 */
+	private void adjustDockedAnchors(double oldWidth, double oldHeight, double newWidth, double newHeight)
+	{
+		for (Anchor a : dockedAnchors)				
+		{
+				double x = a.getX();
+				double y = a.getY();
+				
+				if (x==oldWidth && oldWidth!=newWidth)
+					a.setX(newWidth);
+				
+				if (y == oldHeight && oldHeight!=newHeight)
+					a.setY(newHeight);
+				
+		}
+			
 	}
 
 

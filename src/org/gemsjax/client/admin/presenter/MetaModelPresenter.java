@@ -473,8 +473,6 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	
 	private void onMetaInheritanceAnchor(Anchor p, MetaInheritanceDrawable parent, PlaceEvent e)
 	{
-
-		SC.logWarn("Place MetaInheritance");
 		
 		double x=e.getX() , y=e.getY();
 		

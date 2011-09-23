@@ -95,6 +95,11 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	 * Fire ResizeEvents only, if the corresponding Drawable is selected ({@link Drawable#isSelected()})
 	 */
 	private boolean resizeableOnlyOnSelected = true;
+	
+	/**
+	 * Fire MoveEvents only, if the corresponding Drawable is selected ({@link Drawable#isSelected()})
+	 */
+	private boolean moveableOnlyOnSelected = false;
 
 
 	/**
@@ -316,7 +321,25 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				// Resize, if mouse is on a ResizeArea and Resizeable
 				if (currentMouseDownDrawable != null && currentMouseDownDrawable instanceof Resizeable && isMouseDown && currentResizeArea != null)
 				{
-					if (resizeableOnlyOnSelected && currentMouseDownDrawable.isSelected())
+					if (resizeableOnlyOnSelected)
+					{
+						if (currentMouseDownDrawable.isSelected())
+						{
+							double width = beforeResizeWidth +  event.getX() - mouseDownX;
+							double height = beforeResizeHeight + event.getY() - mouseDownY;
+							
+							Resizeable res = (Resizeable)currentMouseDownDrawable;
+							resizing = true;
+							
+							// Fire only a event if the minWidth and min Height allow this
+							if (res.getMinWidth()<width && res.getMinHeight()<height)
+							{
+								ResizeEvent e = new ResizeEvent((Resizeable) currentMouseDownDrawable, ResizeEventType.TEMP_RESIZE, width, height, event.getX(), event.getY(), currentResizeArea);
+								res.fireResizeEvent(e);
+							}
+						}
+					}
+					else
 					{
 						double width = beforeResizeWidth +  event.getX() - mouseDownX;
 						double height = beforeResizeHeight + event.getY() - mouseDownY;
@@ -361,10 +384,25 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				// MoveEvent
 				if (currentMouseDownDrawable instanceof Moveable && isMouseDown)
 				{
-					moving = true;
-					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.TEMP_MOVE, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
-			
-					((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
+					if (moveableOnlyOnSelected)
+					{
+						
+						if (currentMouseDownDrawable.isSelected())
+						{
+						
+							moving = true;
+							MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.TEMP_MOVE, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
+					
+							((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
+						}
+					}
+					else
+					{
+						moving = true;
+						MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.TEMP_MOVE, mouseDownX, mouseDownY, event.getX(), event.getY(), mouseDownInitialXDistance, mouseDownInitialYDistance, event.getScreenX(), event.getScreenY(), isMouseDown);
+				
+						((Moveable)currentMouseDownDrawable).fireMoveEvent(e);
+					}
 					
 				}
 				
@@ -409,7 +447,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 				if (moving && currentMouseDownDrawable instanceof Moveable && isMouseDown)
 				{
-		
+					//TODO needed to check the moveableOnlyOnSelected field ?
 					MoveEvent e = new MoveEvent((Moveable)currentMouseDownDrawable, MoveEventType.MOVE_FINISHED, mouseDownX, mouseDownY, x, y, mouseDownInitialXDistance, mouseDownInitialYDistance, screenX, screenY, isMouseDown);
 		
 					((Moveable)currentMouseDownDrawable).fireMoveEvent(e);

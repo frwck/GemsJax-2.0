@@ -12,7 +12,11 @@ import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-
+/**
+ * This class is a {@link Drawable} that dispalyes an inheritance relation on the canvas.
+ * @author Hannes Dorfmann
+ *
+ */
 public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceable{
 
 	
@@ -74,6 +78,9 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		
 		ownerAnchor = new Anchor(inheritance.getOwnerClassRelativeAnchorPoint(), ownerDrawable);
 		superAnchor = new Anchor(inheritance.getSuperClassRelativeAnchorPoint(), superDrawable);
+		
+		this.ownerDrawable.dockAnchor(ownerAnchor);
+		this.superDrawable.dockAnchor(superAnchor);
 		
 		anchorMap.put(inheritance.getOwnerClassRelativeAnchorPoint(), ownerAnchor);
 		anchorMap.put(inheritance.getSuperClassRelativeAnchorPoint(), superAnchor);
@@ -170,37 +177,6 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		
 		switch (superAnchor.getPlaceableDestination().getCoordinatesBorderDirection( sx, sy))
 		{
-			case BOTTOM: 	context.beginPath();
-							context.moveTo(sx, sy);
-							trianglePoints[0].x = sx;
-							trianglePoints[0].y = sy;
-							
-							context.lineTo(sx - triangleLineWidth/2, sy+triangleHeight);
-							trianglePoints[1].x = sx - triangleLineWidth/2;
-							trianglePoints[1].y = sy+triangleHeight;
-							
-							context.lineTo(sx + triangleLineWidth/2, sy+triangleHeight);
-							trianglePoints[2].x = sx + triangleLineWidth/2;
-							trianglePoints[2].y = sy+triangleHeight;
-							
-							context.lineTo(sx, sy);
-							
-							context.closePath();
-							context.stroke();
-							context.fill();trianglePoints[0] = new Point();
-							
-							
-							// Line to triangle
-							context.beginPath();
-							context.moveTo(prevX, prevY);
-							context.lineTo(sx,sy+triangleHeight);
-							lineToTrianglePoint.x = sx;
-							lineToTrianglePoint.y = sy +triangleHeight;
-							
-							context.stroke();
-							
-							break;
-							
 							
 			case RIGHT: 	
 							context.beginPath();
@@ -267,9 +243,7 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 							break;
 			
 							
-			case NOWHERE:
 			case TOP:
-			default:		
 							context.beginPath();
 							context.moveTo(sx, sy);
 							trianglePoints[0].x = sx;
@@ -298,6 +272,41 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 							
 							lineToTrianglePoint.x = sx;
 							lineToTrianglePoint.y = sy-triangleHeight;
+							break;
+							
+							
+			case NOWHERE:				
+			case BOTTOM: 	
+			default:
+							context.beginPath();
+							context.moveTo(sx, sy);
+							trianglePoints[0].x = sx;
+							trianglePoints[0].y = sy;
+							
+							context.lineTo(sx - triangleLineWidth/2, sy+triangleHeight);
+							trianglePoints[1].x = sx - triangleLineWidth/2;
+							trianglePoints[1].y = sy+triangleHeight;
+							
+							context.lineTo(sx + triangleLineWidth/2, sy+triangleHeight);
+							trianglePoints[2].x = sx + triangleLineWidth/2;
+							trianglePoints[2].y = sy+triangleHeight;
+							
+							context.lineTo(sx, sy);
+							
+							context.closePath();
+							context.stroke();
+							context.fill();trianglePoints[0] = new Point();
+							
+							
+							// Line to triangle
+							context.beginPath();
+							context.moveTo(prevX, prevY);
+							context.lineTo(sx,sy+triangleHeight);
+							lineToTrianglePoint.x = sx;
+							lineToTrianglePoint.y = sy +triangleHeight;
+							
+							context.stroke();
+							
 							break;
 		}
 		

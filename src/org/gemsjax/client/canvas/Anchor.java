@@ -16,6 +16,7 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * {@link Anchor} represents a {@link AnchorPoint} in a graphical way on the {@link MetaModelCanvas} and {@link ModelCanvas}.
  * A Anchor is used to draw "agile" connection between {@link Drawable} objects like {@link MetaClassDrawable} and {@link MetaConnectionDrawable}.
  * "Agile" connection means, that the user can set with the mouse the points (with {@link Anchor}s) where the line of the connection goes by.
+ * 
  * @author Hannes Dorfmann
  *
  */

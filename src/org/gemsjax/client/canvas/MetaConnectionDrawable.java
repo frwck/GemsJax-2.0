@@ -10,7 +10,6 @@ import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.IconLoadEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent;
-import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.IconLoadHandler;
@@ -47,7 +46,7 @@ import com.smartgwt.client.util.SC;
  * @author Hannes Dorfmann
  *
  */
-public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, ResizeHandler, HasPlaceable,  PlaceableDestination, IconLoadable{
+public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Resizeable, Focusable, HasPlaceable,  PlaceableDestination, IconLoadable{
 	
 	/**
 	 * The {@link MetaConnectionImpl} that is displayed with this Drawable
@@ -782,47 +781,6 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 
 
 
-	@Override
-	public void onResize(ResizeEvent event) {
-		
-		/* Hanldle only TEMP_RESIZE Events, because the RESIZE_FINISHED should be caught by the MetaModelPresenter.  */
-		if (event.getType()==ResizeEventType.TEMP_RESIZE || event.getType()==ResizeEventType.RESIZE_FINISHED )
-			if (event.getSource() == this.source)
-			{
-				
-				double x = sourceAnchor.getX();
-				double y = sourceAnchor.getY();
-				double oldWidth = source.getWidth();
-				double oldHeight = source.getHeight();
-				
-				if (x==oldWidth && oldWidth!=event.getWidth())
-					sourceAnchor.setX(event.getWidth());
-				
-				if (y == oldHeight && oldHeight!=event.getHeight())
-					sourceAnchor.setY(event.getHeight());
-				
-			}
-			else
-			if (event.getSource() == this.target)
-			{
-				double x = targetAnchor.getX();
-				double y = targetAnchor.getY();
-				double oldWidth = target.getWidth();
-				double oldHeight = target.getHeight();
-				
-				if (x==oldWidth && oldWidth!=event.getWidth())
-					targetAnchor.setX(event.getWidth());
-				
-				if (y == oldHeight && oldHeight!=event.getHeight())
-					targetAnchor.setY(event.getHeight());
-			}
-			
-		
-		
-		
-	}
-
-
 	public MetaClassDrawable getSource() {
 		return source;
 	}
@@ -832,23 +790,19 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 
 	/**
 	 * Set the source (Drawable) of this {@link MetaConnectionDrawable} (named {@link #source}).
-	 * This method register this {@link MetaConnectionDrawable} as an {@link ResizeHandler} for the
-	 * new set source {@link MetaClassDrawable}.
-	 * If the source was set previously, this call will unregister this {@link MetaConnectionDrawable} as a {@link ResizeHandler} to the old source.
+	 * The call of this method will also dock the {@link #sourceAnchor} on the {@link #cource} by calling {@link MetaClassDrawable#dockAnchor(Anchor)}
+	 * and call {@link MetaClassDrawable#undockAnchor(Anchor)} of the previous source.
 	 * @param source
 	 */
 	public void setSource(MetaClassDrawable source) {
 		
 		if (this.source!=null)
 		{
-			this.source.removeResizeHandler(this);
 			this.source.undockAnchor(sourceAnchor);
 		}
 		
 		this.source = source;
 		this.source.dockAnchor(sourceAnchor);
-		
-		this.source.addResizeHandler(this);
 	}
 
 
@@ -865,23 +819,19 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 
 	/**
 	 * Set the target (Drawable) of this {@link MetaConnectionDrawable} (named {@link #source}).
-	 * This method register this {@link MetaConnectionDrawable} as an {@link ResizeHandler} for the
-	 * new set target {@link MetaClassDrawable}.
-	 * If the target was set previously, this call will unregister this {@link MetaConnectionDrawable} as a {@link ResizeHandler} to the old target.
+	 * The call of this method will also dock the {@link #targetAnchor} on the {@link #target} by calling {@link MetaClassDrawable#dockAnchor(Anchor)}
+	 * and call {@link MetaClassDrawable#undockAnchor(Anchor)} of the previous target.
 	 * @param target
 	 */
 	public void setTarget(MetaClassDrawable target) {
 		
 		if (this.target!=null)
 		{
-			this.target.removeResizeHandler(this);
 			this.target.undockAnchor(targetAnchor);
 		}
 		
 		this.target = target;
 		this.target.dockAnchor(targetAnchor);
-		
-		this.target.addResizeHandler(this);
 		
 	}
 
