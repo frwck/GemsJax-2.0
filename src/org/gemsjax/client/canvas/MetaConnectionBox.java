@@ -221,9 +221,7 @@ public  class MetaConnectionBox {
 		
 			widthAvailable = getWidth()-connection.getAttributeLeftSpace()-connection.getAttributeRightSpace();
 			widthNeeded = (a.getName().length()+a.getType().getName().length()+3)*connection.getAttributeFontCharWidth();
-			
-			SC.logWarn("ne "+widthNeeded + " av "+ widthAvailable + " wi "+getWidth() + " "+(a.getName().length()+a.getType().getName().length()+3) +" "+connection.getAttributeFontCharWidth()) ;
-			
+		
 			if (widthAvailable<=widthNeeded)
 			{
 				sub = a.getName()+" : "+a.getType().getName();

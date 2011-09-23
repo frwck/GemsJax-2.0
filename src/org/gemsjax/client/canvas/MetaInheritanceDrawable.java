@@ -12,7 +12,6 @@ import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 
 import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.uibinder.rebind.model.OwnerClass;
 
 public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceable{
 
@@ -40,11 +39,20 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 	private double verticalLineXOffset=7;
 	
 	
-	private double triangleLineWidth = 10;
+	private double triangleLineWidth = 20;
 	
 	
-	
+	/**
+	 * Is the {@link Point} where the line touches the triangle which displays the inheritance super class
+	 */
 	private Point lineToTrianglePoint;
+	
+	/**
+	 * Stores the 3 {@link Point}s of the inheritance triangle which displays the inheritance super class.
+	 * These 3 points will be calculates in the {@link #drawLine(Context2d)} method and is used in the {@link #hasCoordinate(double, double)}
+	 * to determine if a mouse interaction is on the triangle and so part of the {@link MetaInheritanceDrawable}.
+	 */
+	private Point trianglePoints[];
 	
 	
 	public MetaInheritanceDrawable(MetaInheritance inheritance, MetaClassDrawable ownerDrawable, MetaClassDrawable superDrawable)
@@ -54,6 +62,11 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		this.superDrawable = superDrawable;
 		
 		lineToTrianglePoint = new Point();
+		trianglePoints = new Point[3];
+		trianglePoints[0] = new Point();
+		trianglePoints[1] = new Point();
+		trianglePoints[2] = new Point();
+		
 		
 		focusHandlers = new ArrayList<FocusHandler>();
 		// generate the Anchors
@@ -110,7 +123,7 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 	{
 		context.save();
 		context.setStrokeStyle(inheritance.getLineColor());
-		context.setFillStyle("green");
+		context.setFillStyle("white");
 		context.setLineWidth(inheritance.getLineSize());
 		
 		
@@ -143,7 +156,8 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		
 		context.stroke();
 		
-		// Draw the triangle
+		// Draw the triangletrianglePoints[0] = new Point();
+		
 		
 		
 		
@@ -158,13 +172,23 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		{
 			case BOTTOM: 	context.beginPath();
 							context.moveTo(sx, sy);
+							trianglePoints[0].x = sx;
+							trianglePoints[0].y = sy;
+							
 							context.lineTo(sx - triangleLineWidth/2, sy+triangleHeight);
+							trianglePoints[1].x = sx - triangleLineWidth/2;
+							trianglePoints[1].y = sy+triangleHeight;
+							
 							context.lineTo(sx + triangleLineWidth/2, sy+triangleHeight);
+							trianglePoints[2].x = sx + triangleLineWidth/2;
+							trianglePoints[2].y = sy+triangleHeight;
+							
 							context.lineTo(sx, sy);
 							
 							context.closePath();
 							context.stroke();
-							context.fill();
+							context.fill();trianglePoints[0] = new Point();
+							
 							
 							// Line to triangle
 							context.beginPath();
@@ -181,8 +205,17 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 			case RIGHT: 	
 							context.beginPath();
 							context.moveTo(sx, sy);
+							trianglePoints[0].x = sx;
+							trianglePoints[0].y = sy;
+							
 							context.lineTo(sx + triangleHeight, sy-triangleLineWidth/2);
+							trianglePoints[1].x = sx + triangleHeight;
+							trianglePoints[1].y = sy-triangleLineWidth/2;
+							
 							context.lineTo(sx + triangleHeight, sy + triangleLineWidth/2);
+							trianglePoints[2].x = sx + triangleHeight;
+							trianglePoints[2].y = sy + triangleLineWidth/2;
+							
 							context.lineTo(sx, sy);
 							
 							context.closePath();
@@ -204,8 +237,17 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 							
 			case LEFT:		context.beginPath();
 							context.moveTo(sx, sy);
+							trianglePoints[0].x = sx;
+							trianglePoints[0].y = sy;
+							
 							context.lineTo(sx - triangleHeight, sy - triangleLineWidth/2);
+							trianglePoints[1].x = sx - triangleHeight;
+							trianglePoints[1].y = sy - triangleLineWidth/2;
+							
 							context.lineTo(sx - triangleHeight, sy + triangleLineWidth/2);
+							trianglePoints[2].x = sx - triangleHeight;
+							trianglePoints[2].y = sy + triangleLineWidth/2;
+							
 							context.lineTo(sx, sy);
 							
 							context.closePath();
@@ -230,8 +272,17 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 			default:		
 							context.beginPath();
 							context.moveTo(sx, sy);
+							trianglePoints[0].x = sx;
+							trianglePoints[0].y = sy;
+							
 							context.lineTo(sx - triangleLineWidth/2, sy-triangleHeight);
+							trianglePoints[1].x = sx - triangleLineWidth/2;
+							trianglePoints[1].y = sy-triangleHeight;
+							
 							context.lineTo(sx + triangleLineWidth/2, sy-triangleHeight);
+							trianglePoints[2].x = sx + triangleLineWidth/2;
+							trianglePoints[2].y = sy-triangleHeight;
+							
 							context.lineTo(sx, sy);
 							
 							context.closePath();
@@ -263,9 +314,51 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 	public double getZIndex() {
 		return inheritance.getZIndex();
 	}
+	
+	
+	/**
+	 * Checks if a Point is in the triangle with the coordinates {@link #trianglePoints} to determine if a mouse interaction like click etc. 
+	 * is the triangle which is displayed as the super class inheritance part of this {@link Drawable}.
+	 * This problem is solved by solving the equivalations:<br />
+	 *  I.  px = ax + s*(bx -ax ) +t*(cx - ax) <br />
+	 * II. py = ay + s*(by -ay) + t*(cy - ay) <br />
+	 * 
+	 * Then the 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	private boolean isPointInTrianle(double px, double py)
+	{
+		Point a = trianglePoints[0], b = trianglePoints[1], c = trianglePoints[2];
+		
+		double t = (- b.y*px + a.x*b.y + px*a.y - a.x*a.y + py*b.x - a.y*b.x - py*a.x + a.y*a.x) 
+					/(- c.x*b.y + a.x*b.y + c.x*a.y - a.x*a.y + c.y*b.x - a.y*b.x - c.y *a.x + a.y*a.x);
+		
+		double s = (py-a.y - t * (c.y-a.y) ) / (b.y - a.y);
+		
+		 // 0<= s,t <= 1 UND 0<= s+ t <= 1
+		return 0<=s && 0<=t && 0<= (s+t) && (s+t)<=1;
+	}
+	
 
 	@Override
 	public boolean hasCoordinate(double x, double y) {
+		
+		
+		if (isPointInTrianle(x, y))
+			return true;
+		
+		// special case, if this Drawable is selected so the superAnchor is also Part of this drawable because the Anchor itself is not 
+		// part of the linear function that is calculated underneath.
+		if (isSelected())
+			// Calculate the absolute Positions for the super default AnchorPoint
+			if (isBetween(superDrawable.getX()+superAnchor.getX()-(superAnchor.getWidth()/2), superDrawable.getX()+superAnchor.getX()+(superAnchor.getWidth()/2), x)
+				&& isBetween(superDrawable.getY()+superAnchor.getY()-(superAnchor.getHeight()/2), superDrawable.getY()+superAnchor.getY()+(superAnchor.getHeight()/2), y)
+				)
+				return true;
+			
+		
 		
 		double currentX, currentY, nextX, nextY, m, b, t;
 		
