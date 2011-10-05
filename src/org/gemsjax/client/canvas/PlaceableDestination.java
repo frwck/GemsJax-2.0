@@ -79,19 +79,19 @@ public interface PlaceableDestination {
 	/**
 	 * Use this method to add an {@link Anchor} to the {@link #getDockedAnchors()} list
 	 */
-	public void dockAnchor(Anchor a);
+	public void dockAnchor(DockableAnchor a);
 	
 	/**
 	 * Use this method to remove an {@link Anchor} from the {@link #getDockedAnchors()} list
 	 */
-	public void undockAnchor(Anchor a);
+	public void undockAnchor(DockableAnchor a);
 	
 	/**
 	 * Get a list with all docked {@link Anchor}.
 	 * This list is important to determine which {@link Anchor}s must be replaced after {@link ResizeEvent}s etc. 
 	 * @return
 	 */
-	public List<Anchor> getDockedAnchors();
+	public List<DockableAnchor> getDockedAnchors();
 	
 	
 	

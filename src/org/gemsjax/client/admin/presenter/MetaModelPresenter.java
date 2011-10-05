@@ -10,6 +10,7 @@ import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.notification.NotificationManager;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.canvas.Anchor;
+import org.gemsjax.client.canvas.DockableAnchor;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaConnectionBox;
 import org.gemsjax.client.canvas.MetaConnectionDrawable;
@@ -328,6 +329,7 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			MetaClassDrawable d =(MetaClassDrawable) event.getSource();
 			d.setWidth( event.getWidth());
 			d.setHeight(event.getHeight());
+			d.adjustDockedAnchors();
 				
 			if (event.getType()==ResizeEventType.RESIZE_FINISHED )
 			{
@@ -476,20 +478,6 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		
 		double x=e.getX() , y=e.getY();
 		
-		// transform to relative coordinates, if its one of the 4 default anchor points
-		if (p == parent.getOwnerClassAnchor())		
-		{
-			x = e.getX() - parent.getOwnerDrawable().getX();
-			y = e.getY() - parent.getOwnerDrawable().getY();
-		}
-		else
-		if (p == parent.getSuperClassAnchor())
-		{
-			x = e.getX() - parent.getSuperDrawable().getX();
-			y = e.getY() - parent.getSuperDrawable().getY();
-		}
-		
-		
 		
 		if (e.getType() == PlaceEventType.TEMP_PLACING) // its just a temporary placing event, so update only the view
 		{
@@ -503,9 +491,16 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			p.setY(y);
 			AnchorPoint ap = p.getAnchorPoint();
 			
-			ap.x = x;
-			ap.y = y;
-			
+			if (p instanceof DockableAnchor)
+			{
+				ap.x = ((DockableAnchor)p).getRelativeX();
+				ap.y = ((DockableAnchor)p).getRelativeY();
+			}
+			else
+			{
+				ap.x = x;
+				ap.y = y;
+			}
 
 			//TODO collaborativ websocket information
 		}
@@ -514,9 +509,16 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		{
 			AnchorPoint ap = p.getAnchorPoint();
 			
-			p.setX(ap.x);
-			p.setY(ap.y);
-
+			if (p instanceof DockableAnchor)
+			{
+				((DockableAnchor) p).setRelativeX(ap.x);
+				((DockableAnchor) p).setRelativeY(ap.y);
+			}
+			else
+			{
+				p.setX(ap.x);
+				p.setY(ap.y);
+			}
 			
 			view.showAnchorPlaceNotAllowed(p);
 		}
@@ -531,31 +533,6 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 	{
 		double x=e.getX() , y=e.getY();
 		
-		// transform to relative coordinates, if its one of the 4 default anchor points
-		if (p == parent.getSourceAnchor())		
-		{
-			x = e.getX() - parent.getSourceDrawable().getX();
-			y = e.getY() - parent.getSourceDrawable().getY();
-		}
-		else
-		if (p == parent.getSourceConnectionBoxAnchor())
-		{
-			x = e.getX() - parent.getConnectionBox().getX();
-			y = e.getY() - parent.getConnectionBox().getY();
-		}
-		else
-		if (p == parent.getTargetConnectionBoxAnchor())
-		{
-			x = e.getX() - parent.getConnectionBox().getX();
-			y = e.getY() - parent.getConnectionBox().getY();
-		}
-		else
-		if (p == parent.getTargetAnchor())
-		{
-			x = e.getX() - parent.getTargetDrawable().getX();
-			y = e.getY() - parent.getTargetDrawable().getY();
-		}
-		
 		
 		if (e.getType() == PlaceEventType.TEMP_PLACING) // its just a temporary placing event, so update only the view
 		{
@@ -569,9 +546,16 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 			p.setY(y);
 			AnchorPoint ap = p.getAnchorPoint();
 			
-			ap.x = x;
-			ap.y = y;
-			
+			if (p instanceof DockableAnchor)
+			{
+				ap.x = ((DockableAnchor)p).getRelativeX();
+				ap.y = ((DockableAnchor)p).getRelativeY();
+			}
+			else
+			{
+				ap.x = x;
+				ap.y = y;
+			}	
 
 			//TODO collaborativ websocket information
 		}
@@ -580,9 +564,16 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		{
 			AnchorPoint ap = p.getAnchorPoint();
 			
-			p.setX(ap.x);
-			p.setY(ap.y);
-
+			if (p instanceof DockableAnchor)
+			{
+				((DockableAnchor) p).setRelativeX(ap.x);
+				((DockableAnchor) p).setRelativeY(ap.y);
+			}
+			else
+			{
+				p.setX(ap.x);
+				p.setY(ap.y);
+			}
 			
 			view.showAnchorPlaceNotAllowed(p);
 		}

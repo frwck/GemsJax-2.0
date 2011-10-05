@@ -17,6 +17,8 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * A Anchor is used to draw "agile" connection between {@link Drawable} objects like {@link MetaClassDrawable} and {@link MetaConnectionDrawable}.
  * "Agile" connection means, that the user can set with the mouse the points (with {@link Anchor}s) where the line of the connection goes by.
  * 
+ * <b> NOTICE:</b> There exists a subclass {@link DockableAnchor} which are special {@link Anchor}s that can be docked on {@link Drawable}s
+ * which implements the interface {@link PlaceableDestination}.
  * @author Hannes Dorfmann
  *
  */
@@ -24,18 +26,13 @@ public class Anchor implements Placeable{
 	
 	/**
 	 * The current x coordinate.
-	 * <b>Notice:</b> If {@link PlaceableDestination} is not null, than this coordinate is a relative coordinate.
-	 * The absolute coordinate can be computed by {@link #x} + {@link PlaceableDestination#getX()}
-	 * @see #point
 	 */
-	private double x;
+	protected double x;
 	/**
 	 * The current y coordinate.
-	 *  <b>Notice:</b> If {@link PlaceableDestination} is not null, than this coordinate is a relative coordinate.
-	 * The absolute coordinate can be computed by {@link #y} + {@link PlaceableDestination#getY()}
 	 * @see #point
 	 */
-	private double y;
+	protected double y;
 	private double width = 6;
 	private double height = 6;
 	private String borderColor = "2A4596";
@@ -44,7 +41,6 @@ public class Anchor implements Placeable{
 	private String canBePlacedBackgroundColor = "22CF00";
 	private double borderWeight = 1; 
 	
-	private PlaceableDestination destination;
 	
 	private List<PlaceHandler> placeHandlers;
 	
@@ -69,7 +65,7 @@ public class Anchor implements Placeable{
 	 * That also indicates, that the {@link #x} and {@link #y} coordinates are relative coordinates according to the source (or targets) current coordinates which can be computed to 
 	 * absolute coordinates via {@link PlaceableDestination#getX()} + #x and {@link PlaceableDestination#getY()} + {@link #y}
 	 */
-	public Anchor(AnchorPoint point, PlaceableDestination destination)
+	public Anchor(AnchorPoint point)
 	{
 
 		placeHandlers = new ArrayList<PlaceHandler>();
@@ -77,25 +73,13 @@ public class Anchor implements Placeable{
 		this.anchorPoint = point;
 		this.x = point.x;
 		this.y = point.y;
-		this.setDestination(destination);
 		this.selected = false;
 		this.canBePlaced = false;
 	}
 
 	public void draw(Context2d context) {
 		
-		double x = this.x -width/2 , y= this.y-height/2; // minus 3 to draw the AnchorPoint in the middle
-		
-		if (destination != null) // than the current x
-		{
-			x = destination.getX() + this.x - width/2;
-			y = destination.getY() + this.y - height/2;
-		}
-		
-		
-		if (selected && destination!= null)
-			destination.highlightDestinationArea(context);
-		
+		double x = getX() -width/2 , y= getY()-height/2; // minus 3 to draw the AnchorPoint in the middle
 		
 		context.setFillStyle(borderColor);
 		context.fillRect(x, y, width, height);
@@ -118,68 +102,94 @@ public class Anchor implements Placeable{
 		return valueToCheck>=minValue && valueToCheck<=maxValue;
 	}
 	
+	/**
+	 * Checks if the coordinate is part of the Anchor
+	 * @param x
+	 * @param y
+	 * @return
+	 */
 	public boolean hasCoordinate(double x, double y)
 	{
-		if (isBetween(this.x-(width/2), this.x+(width/2),x) && isBetween(this.y-(height/2), this.y+(height/2),y))
+		if (isBetween(getX()-(getWidth()/2), getX()+(getWidth()/2),x) && isBetween(getY()-(getHeight()/2), getY()+(getHeight()/2),y))
 			return true;
 		else
 			return false;
 	}
 
-
+	/**
+	 * Get the width of the {@link Anchor}
+	 * @return
+	 */
 	public double getWidth()
 	{
 		return width;
 	}
 	
+	/**
+	 * Get the height
+	 * @return
+	 */
 	public double getHeight()
 	{
 		return height;
 	}
 
+	/**
+	 * Get the absolute x coordinate
+	 * @return
+	 */
 	public double getX() {
 		return x;
 	}
 
+	/**
+	 * Get the absolute y coordinate
+	 * @return
+	 */
 	public double getY() {
 		return y;
 	}
 
+	/**
+	 * Set the absolute x coordinate
+	 */
 	public void setX(double x) {
 		this.x = x;
 	}
 
+	/**
+	 * Set the absolute y coordinate
+	 */
 	public void setY(double y) {
 		this.y = y;
 	}
 
-	/**
-	 * Set the destination
-	 * @param destination
+
+	/**	
+	 * Get the next {@link AnchorPoint},
+	 * @see AnchorPoint#getNextAnchorPoint()
+	 * @return
 	 */
-	public void setDestination(PlaceableDestination destination) {
-		this.destination = destination;
-	}
-
-	public PlaceableDestination getDestination() {
-		return destination;
-	}
-
-
-	
 	public AnchorPoint getNextAnchorPoint()
 	{
 		return anchorPoint.getNextAnchorPoint();
 	}
 	
+	/**
+	 * Get the {@link AnchorPoint} that is displayed with this {@link Anchor}
+	 * @return
+	 */
 	public AnchorPoint getAnchorPoint() {
 		return anchorPoint;
 	}
 
-
+	/**
+	 * Is the Anchor currently selected
+	 */
 	public boolean isSelected() {
 		return selected;
 	}
+	
 	
 	public void setSelected(boolean selected)
 	{
@@ -213,14 +223,22 @@ public class Anchor implements Placeable{
 		placeHandlers.remove(handler);
 	}
 
+	/**
+	 * By setting this flag to true will cause the {@link #draw(Context2d)} method to draw 
+	 * the {@link Anchor} in a other way to make a visual effect to indicate that the {@link Anchor} 
+	 * can be placed at the current mouse position
+	 */
 	@Override
 	public void setCanBePlaced(boolean canPlaced) {
 		canBePlaced = canPlaced;
 	}
 
+	/**
+	 * Always return null to indicate, that the Anchor can be placed anywhere
+	 */
 	@Override
 	public PlaceableDestination getPlaceableDestination() {
-		return destination;
+		return null;
 	}
 
 	

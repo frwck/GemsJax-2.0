@@ -105,7 +105,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 * A list with all {@link Anchor}s that are docked to this {@link MetaClassDrawable}.
 	 * The list of Anchors is important to react on resizements to adjust the Anchors relative coordinates.
 	 */
-	private List<Anchor> dockedAnchors;
+	private List<DockableAnchor> dockedAnchors;
 	
 	
 	public MetaClassDrawable(MetaClass metaClass)
@@ -140,7 +140,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		 mouseOutHandlers = new LinkedList<MouseOutHandler>();
 		 iconLoadableHandlers = new LinkedList<IconLoadHandler>();
 		 
-		 dockedAnchors = new LinkedList<Anchor>();
+		 dockedAnchors = new LinkedList<DockableAnchor>();
 		 
 		 this.x = metaClass.getX();
 		 this.y = metaClass.getY();
@@ -159,7 +159,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 * @param a
 	 */
 	@Override
-	public void dockAnchor(Anchor a)
+	public void dockAnchor(DockableAnchor a)
 	{
 		if (!dockedAnchors.contains(a))
 			dockedAnchors.add(a);
@@ -172,7 +172,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 * @param a
 	 */
 	@Override
-	public void undockAnchor(Anchor a)
+	public void undockAnchor(DockableAnchor a)
 	{
 		dockedAnchors.remove(a);
 	}
@@ -185,7 +185,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 * @return
 	 */
 	@Override
-	public List<Anchor> getDockedAnchors()
+	public List<DockableAnchor> getDockedAnchors()
 	{
 		return dockedAnchors;
 	}
@@ -542,21 +542,15 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 */
 	public void setWidth(double width) {
 		
-		double oldWidth = this.width;
 		this.width = width;
-		adjustDockedAnchors(oldWidth, height, width, height);
 		autoSetResizeAreaPosition();
 	}
 	
 	public void setWidthHeight(double width, double height)
 	{
-		double oldWidth = this.width;
-		double oldHeight = this.height;
-		
 		this.height = height;
 		this.width = width;
 		
-		adjustDockedAnchors(oldWidth, oldHeight, width, this.height);
 		autoSetResizeAreaPosition();
 	}
 
@@ -565,34 +559,38 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	 * @see #getHeight()
 	 */
 	public void setHeight(double height) {
-		double oldHeight = this.height;
 		this.height = height;
-		adjustDockedAnchors(this.width, oldHeight, width, height);
 		autoSetResizeAreaPosition();
 	}
 	
 	/**
-	 * This method will adjust automatically all {@link #dockedAnchors} (docked by calling  {@link #dockAnchor(Anchor)} ).
-	 * This method is called by {@link #setWidth(double)}, {@link #setHeight(double)} and {@link #setWidthHeight(double, double)}, 
-	 * so that the Anchors will always be set on the border of this {@link MetaClassDrawable}, even after resizements.
-	 * @param oldWidth
-	 * @param oldHeight
-	 * @param newWidth
-	 * @param newHeight
+	 * This method adjusts automatically all {@link #dockedAnchors} (docked by calling  {@link #dockAnchor(Anchor)} ).
+	 * This method is should be called after resizements of the width or height of this drawable to ensure, that no {@link DockableAnchor}
+	 * is out of the border or in the border.
+	 * 
 	 */
-	private void adjustDockedAnchors(double oldWidth, double oldHeight, double newWidth, double newHeight)
+	public void adjustDockedAnchors()
 	{
-		for (Anchor a : dockedAnchors)				
+		
+		for (DockableAnchor a : dockedAnchors)				
 		{
-				double x = a.getX();
-				double y = a.getY();
-				
-				if (x==oldWidth && oldWidth!=newWidth)
-					a.setX(newWidth);
-				
-				if (y == oldHeight && oldHeight!=newHeight)
-					a.setY(newHeight);
-				
+			
+			if (a.getRelativeY() > getHeight())
+				a.setRelativeY(getHeight());
+			
+			if (a.getRelativeX()> getWidth())
+				a.setRelativeX(getWidth());
+			
+			
+			if (a.getRelativeY()<getHeight() && a.getRelativeY() > 0)
+				if (a.getRelativeX()>0 && a.getRelativeX()<getWidth())
+					a.setRelativeX(getWidth());
+
+
+			if (a.getRelativeX()<getWidth() && a.getRelativeX()>0)
+				if (a.getRelativeY()>0 && a.getRelativeY()<getHeight())
+					a.setRelativeY(getHeight());
+			
 		}
 			
 	}

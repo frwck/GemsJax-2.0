@@ -73,12 +73,12 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	private List<ResizeHandler> resizeHandlers;
 	private List<IconLoadHandler> iconHandlers;
 	
-	public List<Anchor> dockedAnchors;
+	public List<DockableAnchor> dockedAnchors;
 	
-	private Anchor sourceAnchor;
-	private Anchor sourceConnectionBoxAnchor;
-	private Anchor targetAnchor;
-	private Anchor targetConnectionBoxAnchor;
+	private DockableAnchor sourceAnchor;
+	private DockableAnchor sourceConnectionBoxAnchor;
+	private DockableAnchor targetAnchor;
+	private DockableAnchor targetConnectionBoxAnchor;
 	
 	private String destinationAreaHighlightColor = "rgba(168,245,140,0.5)";
 	private String onMouseOverDestinationColor = "rgba(85,187,250,0.5)";
@@ -131,7 +131,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		moveHandlers = new ArrayList<MoveHandler>();
 		resizeHandlers = new ArrayList<ResizeHandler>();
 		iconHandlers = new ArrayList<IconLoadHandler>();
-		dockedAnchors = new ArrayList<Anchor>();
+		dockedAnchors = new ArrayList<DockableAnchor>();
 		
 		generateAnchors();
 
@@ -217,10 +217,10 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		AnchorPoint tp = connection.getTargetRelativePoint();
 		
 		
-		sourceAnchor = new Anchor(sp, source);
-		sourceConnectionBoxAnchor = new Anchor(scp, this);
-		targetConnectionBoxAnchor = new Anchor(tcp, this);
-		targetAnchor = new Anchor(tp, target);
+		sourceAnchor = new DockableAnchor(sp, source);
+		sourceConnectionBoxAnchor = new DockableAnchor(scp, this);
+		targetConnectionBoxAnchor = new DockableAnchor(tcp, this);
+		targetAnchor = new DockableAnchor(tp, target);
 		
 		
 		// docking 
@@ -237,7 +237,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		while (current!=sourceConnectionBoxAnchor.getAnchorPoint())
 		{
-			anchorMap.put(current, new Anchor(current, null));
+			anchorMap.put(current, new Anchor(current));
 			current = current.getNextAnchorPoint();
 		}
 		
@@ -246,7 +246,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		while (current!=targetAnchor.getAnchorPoint())
 		{
-			anchorMap.put(current, new Anchor(current, null));
+			anchorMap.put(current, new Anchor(current));
 			current = current.getNextAnchorPoint();
 		}
 		
@@ -292,11 +292,10 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 			{
 				context.save();
 				
-				SC.logWarn("Destination: "+sourceAnchor.getDestination().getCoordinatesBorderDirection(x, y));
 				
 				context.translate(x-connection.getSourceIconWidth(), y);
 				
-				switch(sourceAnchor.getDestination().getCoordinatesBorderDirection(x, y))
+				switch(sourceAnchor.getPlaceableDestination().getCoordinatesBorderDirection(x, y))
 				{
 					
 					case LEFT: 	context.rotate(2*Math.PI - Math.PI/2); break;
@@ -359,7 +358,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 				
 				context.translate(x, y);
 				
-				switch(targetAnchor.getDestination().getCoordinatesBorderDirection(x, y))
+				switch(targetAnchor.getPlaceableDestination().getCoordinatesBorderDirection(x, y))
 				{
 					
 					case LEFT: 	context.rotate(Math.PI/2); break;
@@ -419,8 +418,8 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		double prevX , prevY;
 		Anchor a;
 		
-		prevX = source.getX() + sourceAnchor.getX();
-		prevY = source.getY() + sourceAnchor.getY();
+		prevX = sourceAnchor.getX();
+		prevY = sourceAnchor.getY();
 		
 
 		AnchorPoint current = sourceAnchor.getAnchorPoint().getNextAnchorPoint();
@@ -443,12 +442,12 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		// At last, draw line from previous to the connectionBoxAnchor (the finish)
 		//context.moveTo(prevX, prevY);
-		context.lineTo( connectionBox.getX() + sourceConnectionBoxAnchor.getX(), connectionBox.getY()+ sourceConnectionBoxAnchor.getY());
+		context.lineTo( sourceConnectionBoxAnchor.getX(), sourceConnectionBoxAnchor.getY());
 		
 		context.stroke();
 		
-		prevX = targetConnectionBoxAnchor.getX() + connectionBox.getX();
-		prevY = targetConnectionBoxAnchor.getY() + connectionBox.getY();
+		prevX = targetConnectionBoxAnchor.getX() ;
+		prevY = targetConnectionBoxAnchor.getY() ;
 		
 		current=targetConnectionBoxAnchor.getAnchorPoint().getNextAnchorPoint();
 		
@@ -469,7 +468,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		// At last, draw line from previous to the targetAnchor (the finish)
 		// context.moveTo(prevX, prevY);
-		context.lineTo( target.getX() + targetAnchor.getX(), target.getY()+ targetAnchor.getY());
+		context.lineTo( targetAnchor.getX(), targetAnchor.getY());
 		
 		
 		context.stroke();
@@ -547,31 +546,14 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 			currentAnchor = anchorMap.get(currentPoint);
 			nextAnchor = anchorMap.get(currentPoint.getNextAnchorPoint());
 			
-			// if the current is the sourceAnchorPoint, which is the start point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
-			if (currentAnchor == sourceAnchor)
-			{
-				currentX = source.getX() + sourceAnchor.getX();
-				currentY = source.getY() + sourceAnchor.getY();
-			}
-			else
-			{
-				currentX = currentAnchor.getX();
-				currentY = currentAnchor.getY();
-			}
+			currentX = currentAnchor.getX();
+			currentY = currentAnchor.getY();
 			
 			
 			
 			// if the next is the sourceConnectionBoxAnchorPoint, which is the end point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
-			if (nextAnchor == sourceConnectionBoxAnchor)
-			{
-				nextX = connectionBox.getX() + sourceConnectionBoxAnchor.getX();
-				nextY = connectionBox.getY() + sourceConnectionBoxAnchor.getY();
-			}
-			else
-			{
-				nextX = nextAnchor.getX();
-				nextY = nextAnchor.getY();
-			}
+			nextX = nextAnchor.getX();
+			nextY = nextAnchor.getY();
 			
 			
 			
@@ -615,32 +597,12 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 			currentAnchor = anchorMap.get(currentPoint);
 			nextAnchor = anchorMap.get(currentPoint.getNextAnchorPoint());
 			
-			// if the current is the sourceAnchorPoint, which is the start point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
-			if (currentAnchor == targetConnectionBoxAnchor)
-			{
-				currentX = connectionBox.getX() + targetConnectionBoxAnchor.getX();
-				currentY = connectionBox.getY() + targetConnectionBoxAnchor.getY();
-			}
-			else
-			{
-				currentX = currentAnchor.getX();
-				currentY = currentAnchor.getY();
-			}
+			currentX = currentAnchor.getX();
+			currentY = currentAnchor.getY();
 			
 			
-			
-			// if the next is the sourceConnectionBoxAnchorPoint, which is the end point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
-			if (nextAnchor == targetAnchor)
-			{
-				nextX = target.getX() + targetAnchor.getX();
-				nextY = target.getY() + targetAnchor.getY();
-			}
-			else
-			{
-				nextX = nextAnchor.getX();
-				nextY = nextAnchor.getY();
-			}
-			
+			nextX = nextAnchor.getX();
+			nextY = nextAnchor.getY();
 			
 			
 			// special case that current and next have the same x coordinate, so there is a vertical line instead of a linear function
@@ -937,40 +899,38 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	public void adjustConnectionBoxAnchors()
 	{
 		
-		if (sourceConnectionBoxAnchor.getY() > getHeight())
-			sourceConnectionBoxAnchor.setY(getHeight());
+		if (sourceConnectionBoxAnchor.getRelativeY() > getHeight())
+			sourceConnectionBoxAnchor.setRelativeY(getHeight());
 		
-		if (sourceConnectionBoxAnchor.getX()> getWidth())
-			sourceConnectionBoxAnchor.setX(getWidth());
+		if (sourceConnectionBoxAnchor.getRelativeX()> getWidth())
+			sourceConnectionBoxAnchor.setRelativeX(getWidth());
 		
 		
-		if (sourceConnectionBoxAnchor.getY()<getHeight() && sourceConnectionBoxAnchor.getY() > 0)
-			if (sourceConnectionBoxAnchor.getX()>0 && sourceConnectionBoxAnchor.getX()<getWidth())
-				sourceConnectionBoxAnchor.setX(getWidth());
+		if (sourceConnectionBoxAnchor.getRelativeY()<getHeight() && sourceConnectionBoxAnchor.getRelativeY() > 0)
+			if (sourceConnectionBoxAnchor.getRelativeX()>0 && sourceConnectionBoxAnchor.getRelativeX()<getWidth())
+				sourceConnectionBoxAnchor.setRelativeX(getWidth());
 
 
-		if (sourceConnectionBoxAnchor.getX()<getWidth() && sourceConnectionBoxAnchor.getX()>0)
-			if (sourceConnectionBoxAnchor.getY()>0 && sourceConnectionBoxAnchor.getY()<getHeight())
-				sourceConnectionBoxAnchor.setY(getHeight());
+		if (sourceConnectionBoxAnchor.getRelativeX()<getWidth() && sourceConnectionBoxAnchor.getRelativeX()>0)
+			if (sourceConnectionBoxAnchor.getRelativeY()>0 && sourceConnectionBoxAnchor.getRelativeY()<getHeight())
+				sourceConnectionBoxAnchor.setRelativeY(getHeight());
 		
 		
+		if (targetConnectionBoxAnchor.getRelativeY() > getHeight())
+			targetConnectionBoxAnchor.setRelativeY(getHeight());
+		
+		if (targetConnectionBoxAnchor.getRelativeX()> getWidth())
+			targetConnectionBoxAnchor.setRelativeX(getWidth());
 		
 		
-		if (targetConnectionBoxAnchor.getY() > getHeight())
-			targetConnectionBoxAnchor.setY(getHeight());
-		
-		if (targetConnectionBoxAnchor.getX()> getWidth())
-			targetConnectionBoxAnchor.setX(getWidth());
-		
-		
-		if (targetConnectionBoxAnchor.getY()<getHeight() && targetConnectionBoxAnchor.getY()>0)
-			if (targetConnectionBoxAnchor.getX()>0 && targetConnectionBoxAnchor.getX()<getWidth())
-				targetConnectionBoxAnchor.setX(getWidth());
+		if (targetConnectionBoxAnchor.getRelativeY()<getHeight() && targetConnectionBoxAnchor.getRelativeY()>0)
+			if (targetConnectionBoxAnchor.getRelativeX()>0 && targetConnectionBoxAnchor.getRelativeX()<getWidth())
+				targetConnectionBoxAnchor.setRelativeX(getWidth());
 		
 
-		if (targetConnectionBoxAnchor.getX()<getWidth() && targetConnectionBoxAnchor.getX()>0)
-			if (targetConnectionBoxAnchor.getY()>0 && targetConnectionBoxAnchor.getY()<getHeight())
-				targetConnectionBoxAnchor.setY(getHeight());
+		if (targetConnectionBoxAnchor.getRelativeX()<getWidth() && targetConnectionBoxAnchor.getRelativeX()>0)
+			if (targetConnectionBoxAnchor.getRelativeY()>0 && targetConnectionBoxAnchor.getRelativeY()<getHeight())
+				targetConnectionBoxAnchor.setRelativeY(getHeight());
 	}
 
 
@@ -1027,32 +987,21 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		
 		// Calculate the absolute Positions for the 4 default AnchorPoints
-		if (isBetween(source.getX()+sourceAnchor.getX()-(sourceAnchor.getWidth()/2), source.getX()+sourceAnchor.getX()+(sourceAnchor.getWidth()/2), x)
-			&& isBetween(source.getY()+sourceAnchor.getY()-(sourceAnchor.getHeight()/2), source.getY()+sourceAnchor.getY()+(sourceAnchor.getHeight()/2), y)
-			)
+		if (sourceAnchor.hasCoordinate(x, y))
 			return sourceAnchor;
 		
 		
-		if (isBetween(connectionBox.getX()+sourceConnectionBoxAnchor.getX()-(sourceConnectionBoxAnchor.getWidth()/2), connectionBox.getX()+sourceConnectionBoxAnchor.getX()+(sourceConnectionBoxAnchor.getWidth()/2), x)
-			&& isBetween(connectionBox.getY()+sourceConnectionBoxAnchor.getY()-(sourceConnectionBoxAnchor.getHeight()/2), connectionBox.getY()+sourceConnectionBoxAnchor.getY()+(sourceConnectionBoxAnchor.getHeight()/2), y)
-			)
+		if (sourceConnectionBoxAnchor.hasCoordinate(x, y))
 			return sourceConnectionBoxAnchor;
 		
 		
-		if (isBetween(connectionBox.getX()+targetConnectionBoxAnchor.getX()-(targetConnectionBoxAnchor.getWidth()/2), connectionBox.getX()+targetConnectionBoxAnchor.getX()+(targetConnectionBoxAnchor.getWidth()/2), x)
-			&& isBetween(connectionBox.getY()+targetConnectionBoxAnchor.getY()-(targetConnectionBoxAnchor.getHeight()/2), connectionBox.getY()+targetConnectionBoxAnchor.getY()+(targetConnectionBoxAnchor.getHeight()/2), y)
-			)
+		if (targetConnectionBoxAnchor.hasCoordinate(x, y))
 			return targetConnectionBoxAnchor;
 		
 		
 		// Calculate the absolute Positions for the 4 default AnchorPoints
-		if (isBetween(target.getX()+targetAnchor.getX()-(targetAnchor.getWidth()/2), target.getX()+targetAnchor.getX()+(targetAnchor.getWidth()/2), x)
-			&& isBetween(target.getY()+targetAnchor.getY()-(targetAnchor.getHeight()/2), target.getY()+targetAnchor.getY()+(targetAnchor.getHeight()/2), y)
-			)
+		if (targetAnchor.hasCoordinate(x, y))
 			return targetAnchor;
-		
-		
-		
 		
 		
 		
@@ -1187,7 +1136,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	 * @param a
 	 */
 	@Override
-	public void dockAnchor(Anchor a)
+	public void dockAnchor(DockableAnchor a)
 	{
 		if (!dockedAnchors.contains(a))
 			dockedAnchors.add(a);
@@ -1200,7 +1149,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	 * @param a
 	 */
 	@Override
-	public void undockAnchor(Anchor a)
+	public void undockAnchor(DockableAnchor a)
 	{
 		dockedAnchors.remove(a);
 	}
@@ -1210,7 +1159,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	 * @return
 	 */
 	@Override
-	public List<Anchor> getDockedAnchors()
+	public List<DockableAnchor> getDockedAnchors()
 	{
 		return dockedAnchors;
 	}

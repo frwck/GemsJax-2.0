@@ -25,8 +25,8 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 	private HashMap<AnchorPoint, Anchor> anchorMap;
 	private List<FocusHandler> focusHandlers;
 	
-	private Anchor ownerAnchor;
-	private Anchor superAnchor;
+	private DockableAnchor ownerAnchor;
+	private DockableAnchor superAnchor;
 	
 	private MetaClassDrawable ownerDrawable;
 	private MetaClassDrawable superDrawable;
@@ -76,8 +76,8 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		// generate the Anchors
 		anchorMap = new HashMap<AnchorPoint, Anchor>();
 		
-		ownerAnchor = new Anchor(inheritance.getOwnerClassRelativeAnchorPoint(), ownerDrawable);
-		superAnchor = new Anchor(inheritance.getSuperClassRelativeAnchorPoint(), superDrawable);
+		ownerAnchor = new DockableAnchor(inheritance.getOwnerClassRelativeAnchorPoint(), ownerDrawable);
+		superAnchor = new DockableAnchor(inheritance.getSuperClassRelativeAnchorPoint(), superDrawable);
 		
 		this.ownerDrawable.dockAnchor(ownerAnchor);
 		this.superDrawable.dockAnchor(superAnchor);
@@ -89,7 +89,7 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		
 		while (current!=superAnchor.getAnchorPoint())
 		{
-			anchorMap.put(current, new Anchor(current, null));
+			anchorMap.put(current, new Anchor(current));
 			current = current.getNextAnchorPoint();
 		}
 		
@@ -138,8 +138,8 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		double prevX , prevY;
 		Anchor a;
 		
-		prevX = ownerDrawable.getX() + ownerAnchor.getX();
-		prevY = ownerDrawable.getY() + ownerAnchor.getY();
+		prevX = ownerAnchor.getX();
+		prevY = ownerAnchor.getY();
 		
 		
 
@@ -170,8 +170,8 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 		
 		double triangleHeight = Math.sqrt(Math.pow(triangleLineWidth,2) - Math.pow(triangleLineWidth/2, 2));
 		
-		double sx = superDrawable.getX() + superAnchor.getX();
-		double sy = superDrawable.getY() + superAnchor.getY();
+		double sx = superAnchor.getX();
+		double sy = superAnchor.getY();
 		
 		
 		
@@ -337,7 +337,7 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 	 * @param y
 	 * @return
 	 */
-	private boolean isPointInTrianle(double px, double py)
+	private boolean isPointInTriangle(double px, double py)
 	{
 		Point a = trianglePoints[0], b = trianglePoints[1], c = trianglePoints[2];
 		
@@ -355,16 +355,14 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 	public boolean hasCoordinate(double x, double y) {
 		
 		
-		if (isPointInTrianle(x, y))
+		if (isPointInTriangle(x, y))
 			return true;
 		
 		// special case, if this Drawable is selected so the superAnchor is also Part of this drawable because the Anchor itself is not 
 		// part of the linear function that is calculated underneath.
 		if (isSelected())
 			// Calculate the absolute Positions for the super default AnchorPoint
-			if (isBetween(superDrawable.getX()+superAnchor.getX()-(superAnchor.getWidth()/2), superDrawable.getX()+superAnchor.getX()+(superAnchor.getWidth()/2), x)
-				&& isBetween(superDrawable.getY()+superAnchor.getY()-(superAnchor.getHeight()/2), superDrawable.getY()+superAnchor.getY()+(superAnchor.getHeight()/2), y)
-				)
+			if (superAnchor.hasCoordinate(x, y))
 				return true;
 			
 		
@@ -383,17 +381,8 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 			currentAnchor = anchorMap.get(currentPoint);
 			nextAnchor = anchorMap.get(currentPoint.getNextAnchorPoint());
 			
-			// if the current is the sourceAnchorPoint, which is the start point, than you first have to calculate the absolute x/y since in the AnchorPoint itself has relative coordinates
-			if (currentAnchor == ownerAnchor)
-			{
-				currentX = ownerDrawable.getX() + ownerAnchor.getX();
-				currentY = ownerDrawable.getY() + ownerAnchor.getY();
-			}
-			else
-			{
-				currentX = currentAnchor.getX();
-				currentY = currentAnchor.getY();
-			}
+			currentX = currentAnchor.getX();
+			currentY = currentAnchor.getY();
 			
 			
 			
@@ -537,20 +526,13 @@ public class MetaInheritanceDrawable implements Drawable, Focusable, HasPlaceabl
 	
 		
 		// Calculate the absolute Positions for the owner default AnchorPoint
-		if (isBetween(ownerDrawable.getX()+ownerAnchor.getX()-(ownerAnchor.getWidth()/2), ownerDrawable.getX()+ownerAnchor.getX()+(ownerAnchor.getWidth()/2), x)
-			&& isBetween(ownerDrawable.getY()+ownerAnchor.getY()-(ownerAnchor.getHeight()/2), ownerDrawable.getY()+ownerAnchor.getY()+(ownerAnchor.getHeight()/2), y)
-			)
+		if (ownerAnchor.hasCoordinate(x, y))
 			return ownerAnchor;
 		
 		
 		// Calculate the absolute Positions for the super default AnchorPoint
-		if (isBetween(superDrawable.getX()+superAnchor.getX()-(superAnchor.getWidth()/2), superDrawable.getX()+superAnchor.getX()+(superAnchor.getWidth()/2), x)
-			&& isBetween(superDrawable.getY()+superAnchor.getY()-(superAnchor.getHeight()/2), superDrawable.getY()+superAnchor.getY()+(superAnchor.getHeight()/2), y)
-			)
+		if (superAnchor.hasCoordinate(x, y))
 			return superAnchor;
-		
-		
-		
 		
 		
 		
