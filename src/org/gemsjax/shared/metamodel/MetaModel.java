@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
@@ -17,7 +18,7 @@ import org.gemsjax.shared.metamodel.exception.MetaClassException;
  * @author Hannes Dorfmann
  *
  */
-public interface MetaModel  extends MetaModelElement{
+public interface MetaModel  extends Collaborateable, MetaModelElement{
 
 	
 	/**

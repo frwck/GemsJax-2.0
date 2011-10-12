@@ -1,6 +1,6 @@
 package org.gemsjax.client;
 
-import org.gemsjax.client.websocket.WebSocket;
+import org.gemsjax.client.communication.WebSocket;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.media.client.Audio;

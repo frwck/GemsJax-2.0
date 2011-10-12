@@ -1,16 +1,39 @@
-package org.gemsjax.client.websocket;
+package org.gemsjax.client.communication;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.gemsjax.client.communication.exception.WebSocketSendException;
+
+import net.sourceforge.htmlunit.corejs.javascript.ast.ThrowStatement;
 
 public class WebSocket {
 
-	
+	/**
+	 * A list with all registered channels
+	 */
+	private List<Channel> channels;
 	 
     public WebSocket() {
-        
+        channels = new ArrayList<Channel>();
     }
     
     public WebSocket(String serverURL)
     {
-    	
+    	this();
+    }
+    
+    
+    public void addChannel(Channel c)
+    {
+    	if (!channels.contains(c))
+    		channels.add(c);
+    }
+    
+    
+    public void removeChannel(Channel c)
+    {
+    	channels.remove(c);
     }
     
     private void onOpen() {
@@ -37,6 +60,11 @@ public class WebSocket {
     	
     }
     
+    private void onSendError(String msgToSend) throws WebSocketSendException
+    {
+    	throw new WebSocketSendException(msgToSend);
+    }
+    
     private void onError()
     {
     	System.out.println("An Error occurred");
@@ -52,7 +80,7 @@ public class WebSocket {
     public native void connect(String server) /*-{
         var that = this;
         if (!window.WebSocket) {
-            that.@org.gemsjax.client.websocket.WebSocket::onWebSocketNotSupported()();
+            that.@org.gemsjax.client.communication.WebSocket::onWebSocketNotSupported()();
             return;
         }
         
@@ -69,7 +97,7 @@ public class WebSocket {
                 return;
             }
              console.log("onopen, readyState: "+that._ws.readyState);
-             that.@org.gemsjax.client.websocket.WebSocket::onOpen()();
+             that.@org.gemsjax.client.communication.WebSocket::onOpen()();
              console.log("onopen done");
              
         };
@@ -79,29 +107,29 @@ public class WebSocket {
             console.log("WebSocket _onmessage() data="+response.data);
            
             if (response.data) {
-                that.@org.gemsjax.client.websocket.WebSocket::onMessage(Ljava/lang/String;)( response.data );
+                that.@org.gemsjax.client.communication.WebSocket::onMessage(Ljava/lang/String;)( response.data );
             }
         };
 
         that._ws.onclose = function(m) {
              console.log("WebSocket["+server+"]_ws.onclose() state:"+that._ws.readyState);
-             that.@org.gemsjax.client.websocket.WebSocket::onClose()();
+             that.@org.gemsjax.client.communication.WebSocket::onClose()();
         };
         
         that._ws.onerror = function() {
              console.log("WebSocket["+server+"]_ws.onclose() state:"+that._ws.readyState);
              alert("Error");
-             that.@org.gemsjax.client.websocket.WebSocket::onError()();
+             that.@org.gemsjax.client.communication.WebSocket::onError()();
         };
     }-*/;
 
-    public native void send(String message) /*-{
+    public native void send(String message) throws WebSocketSendException /*-{
         if (this._ws) {
             console.log("WebSocket sending:"+message);
            
             this._ws.send(message);
         } else {
-            this.@org.gemsjax.client.websocket.WebSocket::notConnected()();
+            this.@org.gemsjax.client.communication.WebSocket::onSendError(Ljava/lang/String;)(message);
         }
     }-*/;
 

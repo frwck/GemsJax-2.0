@@ -1,7 +1,7 @@
 package org.gemsjax.client.admin;
 
 
-import org.gemsjax.client.websocket.WebSocket;
+import org.gemsjax.client.communication.WebSocket;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
