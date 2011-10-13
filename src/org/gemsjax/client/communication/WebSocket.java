@@ -4,25 +4,57 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.gemsjax.client.communication.exception.WebSocketSendException;
+import org.gemsjax.server.GemsJaxServer;
 
-import net.sourceforge.htmlunit.corejs.javascript.ast.ThrowStatement;
-
+/**
+ * {@link WebSocket} is the way how the client communicates with the server.
+ * But the client application should not use this {@link WebSocket} directly, but should use the {@link Channel}s to
+ * send and receive messages.<br />
+ * <b>Notice:</b> This is a singleton, so use {@link #getInstance()} to access the {@link WebSocket}
+ * @author Hannes Dorfmann
+ *
+ */
 public class WebSocket {
 
+	/**
+	 * The singleton instance
+	 */
+	private static WebSocket INSTANCE = new WebSocket();
+	
+	/**
+	 * The URL to the server
+	 */
+	private static final String serverURL="localhost:8443";
+	
+	/**
+	 * The absolute URL to the WebSocket Servlet on the {@link GemsJaxServer}.
+	 * <br/><br />
+	 * <b>Notice</b> The url is not needed, the server url is stored in {@link #serverURL}
+	 */
+	private static final String webSocketServletURL = "/Collaboration";
+	
+	
 	/**
 	 * A list with all registered channels
 	 */
 	private List<Channel> channels;
 	 
-    public WebSocket() {
+    private WebSocket() {
         channels = new ArrayList<Channel>();
+        //connect("wss://"+serverURL+webSocketServletURL);
     }
     
-    public WebSocket(String serverURL)
+   
+    
+    
+    public static WebSocket getInstance()
     {
-    	this();
+    	if (INSTANCE == null)
+    		INSTANCE = new WebSocket();
+    	
+    	
+    	return INSTANCE;
     }
-    
     
     public void addChannel(Channel c)
     {
@@ -47,7 +79,13 @@ public class WebSocket {
 
     
     private void onMessage(String message) {
-        System.out.println("Message received "+ message);
+       
+    	for (Channel c: channels)
+        {
+        	if (message.matches(c.getFilterRegEx()))
+        		c.onMessageReceived(message);
+        }
+    	
     }
     
     private void onWebSocketNotSupported()

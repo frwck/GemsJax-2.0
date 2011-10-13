@@ -2,6 +2,7 @@ package org.gemsjax.client.admin;
 
 
 import org.gemsjax.client.communication.WebSocket;
+import org.gemsjax.client.communication.exception.WebSocketSendException;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -16,11 +17,15 @@ public class GemsJaxClient implements EntryPoint {
 	private WebSocket webSocket;
 	
 	public void onModuleLoad() {
-		/*
-		webSocket = new WebSocket();
-		webSocket.connect("wss://localhost:8443/GemsJaxServlet");
-		*/
-		// gemsJaxUI = DesktopEnviromentUI.getInstance();
+		
+		
+		WebSocket webSocket = WebSocket.getInstance();
+		try {
+			webSocket.send("Test");
+		} catch (WebSocketSendException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		SC.showConsole();
 
