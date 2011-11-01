@@ -1,3 +1,24 @@
 GemsJax 2.0 
 
-push test
+This repository conatins two projects:
+- GemsJaxClient (Eclipse GWT Web Application Project)
+- GemsJaxServer (Eclipse Java Project)
+
+
+We recomment to create a new Eclipse workspace to work with this repository.
+
+So follow this steps:
+
+1. Create a new and empty Eclipse Workspace
+
+2. Install git (if not installed yet) and follow this instruction to configure git: http://help.github.com/set-up-git-redirect
+
+3. Go in your new created Eclipse Workspace and do the following git commands:
+
+   3.1 Initialize a new local git repository with this command:
+       git init
+
+   3.2 Get the current repository content to your local repository with this command:
+       git pull origin master
+
+4. Now your new Eclipse workspace folder contains the two projects (GemsJaxClient, GemsJaxServer, see above)

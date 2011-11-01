@@ -1,0 +1,41 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+.loginLogoContainer
+{
+	width:800px;
+	background-image:url(/images/logobackground.png);
+	border:none;
+	text-decoration:none;
+	
+	margin-top:10px;
+	margin-bottom:20px;
+}
+
+
+.loginWelcomeLabel
+{
+	font-size:24px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight:bold;
+	color:#333;
+	margin-bottom:15px;
+}
+
+
+
+.loginLinkLabel
+{
+	margin-top:15px;
+	margin-bottom:10px;
+}
+
+
+
+
+
+
+
+
+
