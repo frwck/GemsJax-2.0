@@ -11,7 +11,7 @@ Follow this steps:
 
 1. Create a new and empty Eclipse Workspace
 
-2. Install git (if not installed yet) and follow this instruction to configure git: http://help.github.com/set-up-git-redirect
+2. Install git (if not installed yet) and configure git (see http://help.github.com/set-up-git-redirect )
 
 3. Add github as new remote with this command:
    git remote add origin git@github.com:matzef/GemsJax-2.0.git
