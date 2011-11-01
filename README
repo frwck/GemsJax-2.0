@@ -7,18 +7,21 @@ This repository conatins two projects:
 
 We recomment to create a new Eclipse workspace to work with this repository.
 
-So follow this steps:
+Follow this steps:
 
 1. Create a new and empty Eclipse Workspace
 
 2. Install git (if not installed yet) and follow this instruction to configure git: http://help.github.com/set-up-git-redirect
 
-3. Go in your new created Eclipse Workspace and do the following git commands:
+3. Add github as new remote with this command:
+   git remote add origin git@github.com:matzef/GemsJax-2.0.git
 
-   3.1 Initialize a new local git repository with this command:
+4. Go in your new created Eclipse Workspace and do the following git commands:
+
+   4.1 Initialize a new local git repository with this command:
        git init
 
-   3.2 Get the current repository content to your local repository with this command:
+   4.2 Get the current repository content to your local repository with this command:
        git pull origin master
 
-4. Now your new Eclipse workspace folder contains the two projects (GemsJaxClient, GemsJaxServer, see above)
+5. Now your new Eclipse workspace folder contains the two projects (GemsJaxClient, GemsJaxServer, see above)
