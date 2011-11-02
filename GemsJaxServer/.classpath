@@ -26,5 +26,6 @@
 	<classpathentry kind="lib" path="lib/jetty/jetty-xml-8.0.3.v20111011.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/servlet-api-3.0.jar"/>
 	<classpathentry kind="lib" path="/GemsJaxClient/src/org/gemsjax/shared"/>
+	<classpathentry kind="lib" path="lib/hibernate/hibernate3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
