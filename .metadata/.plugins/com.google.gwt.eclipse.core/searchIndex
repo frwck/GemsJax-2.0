@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <JavaRefs>
-<JavaRef class="com.google.gwt.eclipse.core.search.JsniJavaRefParamType" offset="5470" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">Ljava/lang/String;</JavaRef>
-<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="5083" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onError()</JavaRef>
-<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="5413" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onSendError(Ljava/lang/String;)</JavaRef>
-<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="4546" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onMessage(Ljava/lang/String;)</JavaRef>
-<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="4224" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onOpen()</JavaRef>
-<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="3597" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onWebSocketNotSupported()</JavaRef>
-<JavaRef class="com.google.gwt.eclipse.core.search.JsniJavaRefParamType" offset="4601" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">Ljava/lang/String;</JavaRef>
-<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="4821" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onClose()</JavaRef>
+<JavaRef class="com.google.gwt.eclipse.core.search.JsniJavaRefParamType" offset="5426" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">Ljava/lang/String;</JavaRef>
+<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="4180" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onOpen()</JavaRef>
+<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="4502" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onMessage(Ljava/lang/String;)</JavaRef>
+<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="3553" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onWebSocketNotSupported()</JavaRef>
+<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="4777" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onClose()</JavaRef>
+<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="5039" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onError()</JavaRef>
+<JavaRef class="com.google.gwt.eclipse.core.search.IndexedJsniJavaRef" offset="5369" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">@org.gemsjax.client.communication.WebSocket::onSendError(Ljava/lang/String;)</JavaRef>
+<JavaRef class="com.google.gwt.eclipse.core.search.JsniJavaRefParamType" offset="4557" source="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocket.java">Ljava/lang/String;</JavaRef>
 </JavaRefs>

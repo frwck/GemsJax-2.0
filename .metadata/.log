@@ -19,3 +19,24 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64
 
 !ENTRY com.google.gdt.eclipse.core 1 0 2011-11-02 11:43:19.217
 !MESSAGE Scheduled rebuild of project GemsJaxClient because of plugin update (current version: 2.3.3.r35v201107211953)
+
+!ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-11-02 16:22:52.492
+!MESSAGE Failed to load icon cache
+
+!ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-11-02 18:49:55.379
+!MESSAGE Failed to load icon cache
+
+!ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-11-02 21:33:04.793
+!MESSAGE Failed to load icon cache
+!SESSION 2011-11-03 11:02:27.104 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=de_DE
+Command-line arguments:  -data /home/hannes/GemsJaxWorkspace -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.ui 4 4 2011-11-03 11:26:53.595
+!MESSAGE Invalid preference page path: CSS Files
+
+!ENTRY org.eclipse.ui 4 4 2011-11-03 11:26:53.623
+!MESSAGE Invalid preference page path: JavaScript

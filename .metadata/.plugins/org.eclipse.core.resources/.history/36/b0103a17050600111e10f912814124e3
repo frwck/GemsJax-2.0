@@ -1,0 +1,26 @@
+package org.gemsjax.shared.user;
+
+/**
+ * This is the shared interface for User. It provides the public methods, that 
+ * @author hannes
+ *
+ */
+public interface User {
+
+	/**
+	 * Get the users internal id
+	 * @return
+	 */
+	public String getId();
+	
+	/**
+	 * Get the username
+	 * @return
+	 */
+	public String getUsername();
+	
+	public String getDisplayedName();
+	
+	public UserOnlineState getOnlineState();
+	
+}

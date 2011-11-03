@@ -1,0 +1,47 @@
+package org.gemsjax.shared.experiment;
+
+import java.util.List;
+
+import org.gemsjax.shared.user.RegisteredUser;
+import org.gemsjax.shared.user.User;
+
+/**
+ * An {@link Experiment} 
+ * @author Hannes Dorfmann
+ *
+ */
+public interface Experiment {
+	
+		/**
+	 * Get the unique Experiment id
+	 * @return
+	 */
+	public long getId();
+	
+	
+	public RegisteredUser getCreator();
+	
+	/**
+	 * Get the the Users that administrate this Experiments
+	 * @return
+	 */
+	public List<RegisteredUser> getAdministrators();
+	
+	/**
+	 * Get the name of this Experiment
+	 * @return
+	 */
+	public String getName();
+	
+	/**
+	 * Get the description
+	 * @return
+	 */
+	public String getDescription();
+	
+	/**
+	 * Get the {@link ExperimentGroup}s 
+	 * @return
+	 */
+	public List<ExperimentGroup> getGroups();
+}

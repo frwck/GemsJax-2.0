@@ -1,0 +1,13 @@
+package org.gemsjax.shared.user;
+
+/**
+ * Is used to determine the user online state
+ * @author hannes
+ *
+ */
+public enum UserOnlineState {
+	
+	ONLINE,
+	OFFLINE
+
+}

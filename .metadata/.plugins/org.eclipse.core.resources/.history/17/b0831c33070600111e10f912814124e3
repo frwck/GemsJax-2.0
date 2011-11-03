@@ -1,0 +1,13 @@
+package org.gemsjax.shared.experiment;
+/**
+ * 
+ * @author Hannes Dorfmann
+ *
+ */
+public interface Experiment {
+
+	public long getId();
+	public String getName();
+	public String getDescription();
+	
+}

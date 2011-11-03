@@ -1,0 +1,11 @@
+package org.gemsjax.shared.experiment;
+
+public interface ExperimentInvitation {
+	
+	
+	public long getId();
+	
+	
+	
+
+}

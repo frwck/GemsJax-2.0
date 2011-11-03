@@ -1,0 +1,8 @@
+package org.gemsjax.shared.user;
+
+public enum UserOnlineState {
+	
+	ONLINE,
+	OFFLINE
+
+}

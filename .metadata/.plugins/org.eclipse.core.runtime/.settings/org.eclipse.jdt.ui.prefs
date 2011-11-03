@@ -1,15 +1,22 @@
-#Tue Nov 01 20:57:12 CET 2011
-useQuickDiffPrefPage=true
-proposalOrderMigrated=true
-tabWidthPropagated=true
-content_assist_proposals_background=255,255,255
-org.eclipse.jdt.ui.javadoclocations.migrated=true
+#Thu Nov 03 11:28:26 CET 2011
+content_assist_proposals_foreground=60,60,60
+org.eclipse.jdt.ui.overrideannotation=true
+spelling_locale_initialized=true
+org.eclipse.jdt.ui.gettersetter.use.is=true
+org.eclipse.jdt.ui.text.templates_migrated=true
 useAnnotationsPrefPage=true
+eclipse.preferences.version=1
 org.eclipse.jface.textfont=1|Monospace|10.0|0|GTK|1|;
+tabWidthPropagated=true
+org.eclipse.jdt.ui.exception.name=e
 org.eclipse.jdt.ui.editor.tab.width=
+fontPropagated=true
+org.eclipse.jdt.ui.text.custom_code_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates><template autoinsert\="false" context\="typecomment_context" deleted\="false" description\="Comment for created types" enabled\="true" id\="org.eclipse.jdt.ui.text.codetemplates.typecomment" name\="typecomment">/**\n * @author Hannes Dorfmann\n *\n * ${tags}\n */</template></templates>
+org.eclipse.jdt.ui.javadoclocations.migrated=true
+proposalOrderMigrated=true
+content_assist_proposals_background=255,255,255
 org.eclipse.jdt.ui.formatterprofiles.version=11
 content_assist_number_of_computers=14
-spelling_locale_initialized=true
-eclipse.preferences.version=1
-content_assist_proposals_foreground=60,60,60
-fontPropagated=true
+useQuickDiffPrefPage=true
+org.eclipse.jdt.ui.text.custom_templates=<?xml version\="1.0" encoding\="UTF-8" standalone\="no"?><templates/>
+org.eclipse.jdt.ui.text.code_templates_migrated=true

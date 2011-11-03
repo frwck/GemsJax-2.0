@@ -1,0 +1,10 @@
+package org.gemsjax.shared.user;
+
+
+public interface User {
+
+	public String getId();
+	
+	public String getUsername();
+	
+}

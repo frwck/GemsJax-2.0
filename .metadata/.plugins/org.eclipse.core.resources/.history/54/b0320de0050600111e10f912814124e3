@@ -1,0 +1,14 @@
+package org.gemsjax.shared.user;
+
+/**
+ * This is a {@link User} that represents a normal registered {@link User}
+ * @author hannes
+ *
+ */
+public interface RegisterdUser extends User{
+
+	
+	public String getUsername();
+	
+	
+}
