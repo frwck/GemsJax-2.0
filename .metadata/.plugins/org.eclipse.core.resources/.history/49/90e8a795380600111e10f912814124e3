@@ -1,0 +1,7 @@
+package org.gemsjax.server.user;
+
+
+
+public class RegisteredUserImpl extends RegisteredUser {
+
+}

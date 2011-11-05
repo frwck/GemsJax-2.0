@@ -16,4 +16,7 @@ public interface RegisteredUser extends User{
 	 */
 	public String getEmail();
 	
+	public void setDisplayedName(String displayedName);
+	
+	
 }

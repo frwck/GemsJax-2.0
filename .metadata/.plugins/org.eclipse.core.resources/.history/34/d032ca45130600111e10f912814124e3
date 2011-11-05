@@ -1,0 +1,16 @@
+package org.gemsjax.shared.tag;
+
+
+/**
+ * Adds the ability to add tag 
+ * @author Hannes Dorfmann
+ *
+ */
+public interface Tagable {
+
+	public void addTag(Tag t) throws TagException;
+	public void removeTag(Tag t);
+	
+	public List<Tag> getTags();
+	
+}

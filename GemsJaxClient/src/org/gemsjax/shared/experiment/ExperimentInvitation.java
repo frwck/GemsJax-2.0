@@ -16,7 +16,7 @@ public interface ExperimentInvitation {
 	 * The unique id
 	 * @return
 	 */
-	public long getId();
+	public int getId();
 	
 	/**
 	 * The invitation is for this {@link ExperimentGroup}
@@ -31,7 +31,7 @@ public interface ExperimentInvitation {
 	public String getVerificationCode();
 	
 	/**
-	 * Returns true if an {@link ExperimentUser} was created and alredy loged in to the {@link ExperimentGroup} with this {@link ExperimentInvitation} 
+	 * Returns true if an {@link ExperimentUser} was created and already logged in  (at least one time) to the {@link ExperimentGroup} with this {@link ExperimentInvitation} 
 	 * @return
 	 */
 	public boolean hasParticipated();
@@ -41,6 +41,8 @@ public interface ExperimentInvitation {
 	 * @return
 	 */
 	public String getEmail();
+	
+	public void setEmail(String email);
 	
 
 }

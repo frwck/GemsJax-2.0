@@ -1,0 +1,48 @@
+package org.gemsjax.server.persistence.experiment;
+
+import org.gemsjax.shared.experiment.ExperimentGroup;
+import org.gemsjax.shared.experiment.ExperimentInvitation;
+
+public class ExperimentInvitationImpl implements ExperimentInvitation {
+
+	private int id;
+	
+	private String email;
+	private ExperimentGroup experimentGroup;
+	
+	
+	@Override
+	public String getEmail() {
+		return email;
+	}
+
+	@Override
+	public ExperimentGroup getExperimentGroup() {
+		return experimentGroup;
+	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String getVerificationCode() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasParticipated() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setEmail(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

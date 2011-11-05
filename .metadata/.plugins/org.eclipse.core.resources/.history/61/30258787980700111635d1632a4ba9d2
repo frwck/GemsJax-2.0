@@ -1,0 +1,5 @@
+package org.gemsjax.server.persistence.experiment;
+
+public class ExperimentGroupImpl {
+
+}

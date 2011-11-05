@@ -1,0 +1,11 @@
+package org.gemsjax.server.persistence.dao;
+
+public class UserDAO {
+	
+	
+	public void createRegisteredUser(String username, String passwordHash, String email)
+	{
+		
+	}
+
+}

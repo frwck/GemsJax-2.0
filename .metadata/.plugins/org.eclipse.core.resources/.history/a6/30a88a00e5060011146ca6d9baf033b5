@@ -1,0 +1,42 @@
+package org.gemsjax.server.persistence.dao;
+
+import org.gemsjax.server.persistence.HibernateUtil;
+import org.gemsjax.server.persistence.user.RegisteredUserImpl;
+import org.gemsjax.shared.user.RegisteredUser;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class UserDAO {
+	
+	private Session session ;
+	
+	public UserDAO()
+	{
+		session = HibernateUtil.getOpenedSession();
+	}
+	
+	/**
+	 * Creates and stores a new {@link RegisteredUser}
+	 * @param username
+	 * @param passwordHash
+	 * @param email
+	 * @return
+	 */
+	public RegisteredUser createRegisteredUser(String username, String passwordHash, String email)
+	{
+		RegisteredUserImpl user = new RegisteredUserImpl();
+		user.setUsername(username);
+		user.setPasswordHash(passwordHash);
+		user.setDisplayedName(username);
+		
+		Transaction tx = session.beginTransaction();
+
+		session.save(user);
+
+		tx.commit();
+		session.close();
+		
+		return user;
+	}
+
+}

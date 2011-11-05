@@ -1,14 +1,12 @@
 package org.gemsjax.shared.experiment;
 
-import java.util.List;
-
+import java.util.Set;
 import org.gemsjax.shared.user.RegisteredUser;
-import org.gemsjax.shared.user.User;
 
 /**
  * An {@link Experiment} is owned by a {@link RegisteredUser} ({@link #getOwner()}) and only this {@link RegisteredUser} can delete this Experiment completely (including all results and resulting models).
  * An {@link Experiment} can be administrated by at least one {@link RegisteredUser}s ({@link #getAdministrators()})
- * An {@link Experiment} has at least one {@link ExperimentGroup} ({@link #getGroups()}).
+ * An {@link Experiment} has at least one {@link ExperimentGroup} ({@link #getExperimentGroups()}).
  * @author Hannes Dorfmann
  *
  */
@@ -18,7 +16,7 @@ public interface Experiment {
 	 * Get the unique Experiment id
 	 * @return
 	 */
-	public long getId();
+	public int getId();
 	
 	/**
 	 * Get the creator / owner, who has created this {@link Experiment}.
@@ -28,10 +26,16 @@ public interface Experiment {
 	public RegisteredUser getOwner();
 	
 	/**
+	 * Set the owner
+	 * @param owner
+	 */
+	public void setOwner(RegisteredUser owner);
+	
+	/**
 	 * Get the the Users that administrate this Experiments
 	 * @return
 	 */
-	public List<RegisteredUser> getAdministrators();
+	public Set<RegisteredUser> getAdministrators();
 	
 	/**
 	 * Get the name of this Experiment
@@ -40,14 +44,27 @@ public interface Experiment {
 	public String getName();
 	
 	/**
+	 * 
+	 * @param name
+	 */
+	public void setName(String name);
+	
+	/**
 	 * Get the description
 	 * @return
 	 */
 	public String getDescription();
 	
 	/**
+	 * Set the description
+	 * @param description
+	 * @return
+	 */
+	public void setDescription(String description);
+	
+	/**
 	 * Get the {@link ExperimentGroup}s 
 	 * @return
 	 */
-	public List<ExperimentGroup> getGroups();
+	public Set<ExperimentGroup> getExperimentGroups();
 }

@@ -1,0 +1,14 @@
+package org.gemsjax.server.persistence.dao;
+
+import org.gemsjax.server.persistence.HibernateUtil;
+import org.hibernate.Session;
+
+public class ExperimentDAO {
+
+private Session session ;
+	
+	public ExperimentDAO()
+	{
+		session = HibernateUtil.getOpenedSession();
+	}
+}

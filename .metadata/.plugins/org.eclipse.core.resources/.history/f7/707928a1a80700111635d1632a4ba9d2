@@ -1,0 +1,7 @@
+package org.gemsjax.server.persistence.experiment;
+
+import org.gemsjax.shared.experiment.ExperimentInvitation;
+
+public class ExperimentInvitationImpl implements ExperimentInvitation {
+
+}

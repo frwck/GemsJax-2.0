@@ -1,0 +1,21 @@
+package org.gemsjax.shared.tag;
+
+/**
+ * The kind of exception is used to express that a Tag can not be given to the {@link Tagable}
+ * @author Hannes Dorfmann
+ *
+ */
+public class TagException extends Exception{
+
+	private Tag tag;
+	
+	public TagException(Tag t)
+	{
+		this.tag = t;
+	}
+	
+	public Tag getTag()
+	{
+		return tag;
+	}
+}

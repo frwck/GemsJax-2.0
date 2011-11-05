@@ -1,0 +1,22 @@
+package org.gemsjax.server.persistence.dao;
+
+import org.gemsjax.server.persistence.HibernateUtil;
+import org.hibernate.SessionFactory;
+
+public class UserDAO {
+	
+	private SessionFactory session ;
+	
+	public UserDAO()
+	{
+		session = HibernateUtil.getSessionFactory();
+	}
+	
+	
+	public void createRegisteredUser(String username, String passwordHash, String email)
+	{
+		
+		
+	}
+
+}

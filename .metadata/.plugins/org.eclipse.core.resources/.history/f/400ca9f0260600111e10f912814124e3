@@ -1,0 +1,15 @@
+package org.gemsjax.shared.tag;
+
+/**
+ * 
+ * @author Hannes Dorfmann
+ *
+ */
+public interface Tag {
+
+	public String getId();
+	
+	public String getName();
+	
+	
+}

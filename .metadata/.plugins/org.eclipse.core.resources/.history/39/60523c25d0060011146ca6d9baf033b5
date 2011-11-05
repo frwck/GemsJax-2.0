@@ -1,0 +1,6 @@
+package org.gemsjax.server.test.persistence;
+
+
+public class UserDAOTest {
+
+}

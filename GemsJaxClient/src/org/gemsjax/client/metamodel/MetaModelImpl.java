@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.gemsjax.shared.collaboration.VectorClock;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -13,6 +14,8 @@ import org.gemsjax.shared.metamodel.MetaModelElement;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
+import org.gemsjax.shared.user.RegisteredUser;
+import org.gemsjax.shared.user.User;
 
 
 /**
@@ -30,6 +33,14 @@ public class MetaModelImpl implements MetaModel{
 	private List<MetaBaseType> baseTypes;
 	private List<MetaAttribute> attributes;
 	
+	private String keywords;
+	private List<User> users;
+	
+	private VectorClock vectorClock;
+	
+	// TODO how to set owner?
+	private RegisteredUser owner;
+	
 	/**
 	 * This map provides a quick access map for getting a element by its id
 	 */
@@ -44,6 +55,8 @@ public class MetaModelImpl implements MetaModel{
 		baseTypes = new ArrayList<MetaBaseType>();
 		idMap = new HashMap<String, MetaModelElement>();	
 		attributes = new ArrayList<MetaAttribute>();
+		users = new ArrayList<User>();
+		vectorClock = new VectorClock();
 	}
 	
 	/**
@@ -155,6 +168,26 @@ public class MetaModelImpl implements MetaModel{
 	@Override
 	public void removeAttribute(MetaAttribute attribute) {
 		attributes.remove(attribute);
+	}
+
+	@Override
+	public RegisteredUser getOwner() {
+		return owner;
+	}
+
+	@Override
+	public List<User> getUsers() {
+		return users;
+	}
+
+	@Override
+	public VectorClock getVectorClock() {
+		return vectorClock;
+	}
+
+	@Override
+	public String getKeyWords() {
+		return keywords;
 	}
 	
 }

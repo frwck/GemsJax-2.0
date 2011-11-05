@@ -1,0 +1,21 @@
+package org.gemsjax.shared.experiment;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import org.gemsjax.shared.user.ExperimentUser;
+
+public interface ExperimentGroup {
+	
+	public long getId();
+
+	public Set<ExperimentUser> getParticipants();
+	
+	public Date getStartDate();
+	public Date getEndDate();
+	
+	public void setStartDate(Date d);
+	public void setEndDate(Date d);
+	
+}

@@ -1,0 +1,7 @@
+package org.gemsjax.server.persistence.dao.exception;
+
+public class ConstraintException  extends Exception {
+
+	
+	
+}

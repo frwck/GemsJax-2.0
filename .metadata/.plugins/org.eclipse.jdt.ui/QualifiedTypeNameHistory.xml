@@ -1,2 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<qualifiedTypeNameHistroy/>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.ibm.icu.impl.USerializedSet"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.tag.Tag"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.tag.Tagable"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.tag.TagException"/>
+<fullyQualifiedTypeName name="java.util.HashMap"/>
+<fullyQualifiedTypeName name="java.util.Map"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.collaboration.Collaborateable"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.collaboration.Transaction"/>
+<fullyQualifiedTypeName name="javax.jws.soap.SOAPBinding.Use"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.user.User"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.collaboration.VectorClock"/>
+<fullyQualifiedTypeName name="test.TestC"/>
+<fullyQualifiedTypeName name="org.hibernate.cfg.Configuration"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.user.UserImpl"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.user.UserOnlineState"/>
+<fullyQualifiedTypeName name="org.junit.BeforeClass"/>
+<fullyQualifiedTypeName name="org.hibernate.SessionFactory"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.HibernateUtil"/>
+<fullyQualifiedTypeName name="org.hibernate.Transaction"/>
+<fullyQualifiedTypeName name="org.hibernate.Session"/>
+<fullyQualifiedTypeName name="org.hibernate.Query"/>
+<fullyQualifiedTypeName name="java.util.Iterator"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.user.RegisteredUser"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.user.RegisteredUserImpl"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.UserDAO"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="org.hibernate.exception.ConstraintViolationException"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.exception.UsernameInUseException"/>
+<fullyQualifiedTypeName name="org.junit.AfterClass"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.experiment.Experiment"/>
+<fullyQualifiedTypeName name="java.util.Set"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.experiment.ExperimentImpl"/>
+<fullyQualifiedTypeName name="java.util.TreeMap"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.user.ExperimentUser"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.experiment.ExperimentGroup"/>
+<fullyQualifiedTypeName name="java.util.LinkedHashSet"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.experiment.ExperimentInvitation"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl"/>
+</qualifiedTypeNameHistroy>

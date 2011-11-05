@@ -1,6 +1,10 @@
 package org.gemsjax.shared.collaboration;
 
+import java.util.List;
+
 import org.gemsjax.shared.collaboration.command.Command;
+import org.gemsjax.shared.user.RegisteredUser;
+import org.gemsjax.shared.user.User;
 
 /**
  * This interface adds the ability to work collaborative on something.
@@ -10,7 +14,7 @@ import org.gemsjax.shared.collaboration.command.Command;
  * @author Hannes Dorfmann
  *
  */
-public interface Collaborateable {
+public interface Collaborateable{
 
 	/**
 	 * Get the unique ID.
@@ -19,5 +23,35 @@ public interface Collaborateable {
 	 * @return
 	 */
 	public String getID();
+	
+	/**
+	 * Get the Owner who has created this {@link Collaborateable}
+	 * @return
+	 */
+	public RegisteredUser getOwner();
+	
+	/**
+	 * Get the namecine espanol
+	 * @return
+	 */
+	public String getName();
+	
+	/**
+	 * Get all {@link User}s that work collaborative on this {@link Collaborateable}.
+	 * @return
+	 */
+	public List<User> getUsers();
+	
+	/**
+	 * Get the {@link VectorClock}
+	 * @return
+	 */
+	public VectorClock getVectorClock();
+	
+	/**
+	 * Used for the search system
+	 * @return
+	 */
+	public String getKeyWords();
 	
 }

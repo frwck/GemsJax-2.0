@@ -1,0 +1,37 @@
+package org.gemsjax.shared.collaboration;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.gemsjax.shared.user.User;
+
+public class VectorClock {
+
+	
+	private Map<User, Long> clockEntries;
+	
+	
+	public VectorClock()
+	{
+		clockEntries = new HashMap<User, Long>();
+	}
+	
+	
+	public void setValue(User user, long clockValue)
+	{
+		clockEntries.put(user, clockValue);
+	}
+	
+	
+	public long getValue(User u)
+	{
+		Long l =  clockEntries.get(u);
+		
+		if (l==null)
+			return 0;
+		else 
+			return l;
+	}
+	
+	
+}

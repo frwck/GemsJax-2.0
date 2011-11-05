@@ -1,0 +1,16 @@
+package org.gemsjax.shared.tag;
+
+public class TagException extends Exception{
+
+	private Tag tag;
+	
+	public TagException(Tag t)
+	{
+		this.tag = t;
+	}
+	
+	public Tag getTag()
+	{
+		return tag;
+	}
+}

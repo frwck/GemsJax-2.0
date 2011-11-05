@@ -18,7 +18,7 @@ import org.gemsjax.shared.metamodel.exception.MetaClassException;
  * @author Hannes Dorfmann
  *
  */
-public interface MetaModel  extends Collaborateable{
+public interface MetaModel  extends Collaborateable {
 
 	
 	/**

@@ -1,0 +1,9 @@
+package org.gemsjax.server.user;
+
+import org.gemsjax.shared.user.RegisteredUser;
+
+
+
+public class RegisteredUserImpl implements RegisteredUser {
+
+}

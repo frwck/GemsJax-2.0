@@ -1,0 +1,30 @@
+package org.gemsjax.server.persistence.dao;
+
+import org.gemsjax.server.persistence.HibernateUtil;
+import org.gemsjax.shared.experiment.Experiment;
+import org.gemsjax.shared.experiment.ExperimentGroup;
+import org.gemsjax.shared.experiment.ExperimentInvitation;
+import org.gemsjax.shared.user.ExperimentUser;
+import org.hibernate.Session;
+
+
+/**
+ * Use this Data Access Object to get Instances of:
+ * <ul>
+ * <li> {@link Experiment}</li>
+ * <li> {@link ExperimentUser}</li>
+ * <li> {@link ExperimentGroup}</li>
+ * <li> {@link ExperimentInvitation}</li>
+ * </ul>
+ * @author Hannes Dorfmann
+ *
+ */
+public class ExperimentDAO {
+
+private Session session ;
+	
+	public ExperimentDAO()
+	{
+		session = HibernateUtil.getOpenedSession();
+	}
+}

@@ -7,4 +7,8 @@
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="false" key="deleteSubPackages"/>
 	</section>
+	<section name="InferTypeArguments">
+		<item value="true" key="leaveUnconstrainedRaw"/>
+		<item value="true" key="assumeCloneReturnsSameType"/>
+	</section>
 </section>

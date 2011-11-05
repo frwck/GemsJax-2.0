@@ -1,0 +1,21 @@
+package org.gemsjax.server.test.persistence;
+
+import org.junit.BeforeClass;
+
+
+public class UserDAOTest {
+	
+	
+	 @BeforeClass 
+	 public static void onlyOnce() {
+		 
+	 }
+	
+	
+	
+	public void createRegisteredUser()
+	{
+		
+	}
+
+}

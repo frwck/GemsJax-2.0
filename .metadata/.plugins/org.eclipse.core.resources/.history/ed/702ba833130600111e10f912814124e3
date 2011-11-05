@@ -1,0 +1,11 @@
+package org.gemsjax.shared.tag;
+
+
+/**
+ * Adds the ability to add tag 
+ * @author Hannes Dorfmann
+ *
+ */
+public interface Tagable {
+
+}

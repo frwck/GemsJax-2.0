@@ -2,7 +2,6 @@ package org.gemsjax.client.admin;
 
 
 import org.gemsjax.client.communication.WebSocket;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -17,7 +16,6 @@ import com.smartgwt.client.util.SC;
 public class GemsJaxClient implements EntryPoint {
 
 	public void onModuleLoad() {
-		
 		
 		WebSocket webSocket = WebSocket.getInstance();
 		

@@ -1,0 +1,9 @@
+package org.gemsjax.shared.collaboration;
+
+public class VectorClock {
+
+	
+	private Hashmap<User, Long> clockEntries;
+	
+	
+}

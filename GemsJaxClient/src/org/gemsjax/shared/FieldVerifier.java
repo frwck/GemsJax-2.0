@@ -51,6 +51,15 @@ public class FieldVerifier {
 		return toCheck!=null && !toCheck.equals("");
 	}
 	
+	/**
+	 * Check if a String is not Empty (not null and not the empty String "")
+	 * @param toCheck
+	 * @return
+	 */
+	public static boolean isEmpty(String toCheck)
+	{
+		return toCheck==null || toCheck.equals("");
+	}
 	
 	
 }

@@ -1,0 +1,73 @@
+package org.gemsjax.server.test.persistence;
+
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
+import org.gemsjax.shared.user.RegisteredUser;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+
+public class UserDAOTest {
+	
+	private static String username;
+	private static String password;
+	private static String email;
+	private static int userCounter;
+	
+	private static UserDAO dao;
+	
+	
+	 @BeforeClass 
+	 public static void onlyOnce() {
+
+		 dao = new UserDAO();
+		 
+		 username = "username";
+		 password = "password";
+		 email = "email";
+		 userCounter = 0;
+	 }
+	
+	
+	@Test
+	public void createRegisteredUser() throws MoreThanOneExcpetion
+	{
+		int createCount = 10;
+		List<RegisteredUser> createdUsers = new ArrayList<RegisteredUser>();
+		
+		for (int i =1; i<=createCount;i++)
+		{
+			RegisteredUser u = dao.createRegisteredUser(username+i, password+i, email+i);
+			dao.createRegisteredUser(username+i, password+i, email+i);
+			createdUsers.add(u);
+		}
+		
+		for (int i =1; i<=createCount;i++)
+		{
+			RegisteredUser u = dao.getUserByLogin(username+i, password+i);
+			
+			assertTrue(u!=null);
+			assertEquals(u.getDisplayedName(), username+i);
+			assertEquals(u.getUsername(), username+i);
+			assertEquals(u.getEmail(), email+i);
+			
+		}
+		
+		
+		for (RegisteredUser u: createdUsers)
+		{
+			dao.deleteRegisteredUser(u);
+			assertNull(dao.getRegisteredUserById(u.getId()));
+		}
+		
+		
+	}
+	
+	
+
+}

@@ -1,0 +1,16 @@
+package org.gemsjax.shared.user;
+
+import org.gemsjax.shared.experiment.Experiment;
+
+/**
+ * This is a {@link User} that is used for Experiments
+ * @author Hannes Dorfmann
+ *
+ */
+public interface ExperimentUser extends User {
+
+	public String getUsername();
+	
+	public Experiment getExperiment();
+	
+}

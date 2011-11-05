@@ -1,0 +1,40 @@
+package org.gemsjax.server.user;
+
+import org.gemsjax.shared.user.RegisteredUser;
+import org.gemsjax.shared.user.UserOnlineState;
+
+
+
+public class RegisteredUserImpl implements RegisteredUser {
+
+	@Override
+	public String getEmail() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getDisplayedName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public UserOnlineState getOnlineState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

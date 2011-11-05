@@ -1,0 +1,10 @@
+package org.gemsjax.shared.tag;
+
+public interface Tag {
+
+	public String getId();
+	
+	public String getName();
+	
+	
+}
