@@ -90,7 +90,7 @@ public class ExperimentGroupImpl implements ExperimentGroup{
 		this.name = name;
 	}
 
-	
+	@Override
 	public void setExperiment(Experiment e)
 	{
 		this.experiment = e;

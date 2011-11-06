@@ -2,12 +2,14 @@ package org.gemsjax.server.persistence.dao;
 
 import java.util.List;
 import org.gemsjax.server.persistence.HibernateUtil;
+import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.server.persistence.user.UserImpl;
 import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.user.RegisteredUser;
+import org.gemsjax.shared.user.User;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -32,16 +34,19 @@ public class UserDAO {
 	 */
 	public RegisteredUser createRegisteredUser(String username, String passwordHash, String email) throws UsernameInUseException
 	{
+		
+		
+		Transaction tx = null;
+		
 		try
 		{	
+			tx = session.beginTransaction();
 			RegisteredUserImpl user = new RegisteredUserImpl();
 			user.setUsername(username);
 			user.setPasswordHash(passwordHash);
 			user.setDisplayedName(username);
 			user.setEmail(email);
 			
-			Transaction tx = session.beginTransaction();
-	
 			session.save(user);
 	
 			tx.commit();
@@ -50,7 +55,17 @@ public class UserDAO {
 		}
 		catch (ConstraintViolationException e)
 		{
+			if (tx != null)
+				tx.rollback();
+			
 			throw new UsernameInUseException(username, e.getMessage());
+		}
+		catch (RuntimeException e)
+		{
+			if (tx != null)
+				tx.rollback();
+			
+			throw e;
 		}
 	}
 	
@@ -78,17 +93,37 @@ public class UserDAO {
 	}
 	
 	
+	/**
+	 * Delete an {@link User}
+	 * @param u
+	 */
 	public void deleteRegisteredUser(RegisteredUser u )
 	{
-		Transaction tx = session.beginTransaction();
-
-		session.delete(u);
-
-		tx.commit();
+		Transaction tx = null;
+		try
+		{
+			tx = session.beginTransaction();
+	
+				session.delete(u);
+	
+			tx.commit();
+		}
+		catch (RuntimeException e)
+		{
+			if (tx!=null)
+				tx.rollback();
+			
+			throw e;
+		}
 	}
 	
 	
-	
+	/**
+	 * Get a {@link User} by his unique id
+	 * @param id
+	 * @return
+	 * @throws MoreThanOneExcpetion
+	 */
 	public RegisteredUser getRegisteredUserById(int id) throws MoreThanOneExcpetion
 	{
 		Query query = session.createQuery( "FROM RegisteredUserImpl WHERE id = "+id );
@@ -106,17 +141,37 @@ public class UserDAO {
 	
 	
 	
-	public void updateDisplayedName(UserImpl u, String displayedName) throws IllegalArgumentException
+	/**
+	 * 
+	 * @param u
+	 * @param displayedName
+	 * @throws ArgumentException
+	 */
+	public void updateDisplayedName(UserImpl u, String displayedName) throws ArgumentException
 	{
 		if (FieldVerifier.isEmpty(displayedName))
-			throw new IllegalArgumentException("Displayed name is empty");
+			throw new ArgumentException("Displayed name is empty");
 		
-		if (!u.getDisplayedName().equals(displayedName))
+		Transaction tx = null;
+		
+		try 
 		{
-			Transaction tx = session.beginTransaction();
-				u.setDisplayedName(displayedName);
-			tx.commit();
+		
+			if (!u.getDisplayedName().equals(displayedName))
+			{
+				tx = session.beginTransaction();
+					u.setDisplayedName(displayedName);
+				tx.commit();
+			}
+			
+		} catch(RuntimeException e)
+		{
+			if (tx != null)
+				tx.rollback();
+			
+			throw e;
 		}
+		
 	}
 	
 

@@ -1,0 +1,15 @@
+package org.gemsjax.server.persistence.dao.exception;
+
+/**
+ * This {@link Exception} is the same as {@link IllegalArgumentException}.
+ * @author Hannes Dorfmann
+ *
+ */
+public class ArgumentException extends Exception {
+	
+	public ArgumentException(String msg)
+	{
+		super(msg);
+	}
+
+}

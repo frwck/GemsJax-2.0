@@ -23,6 +23,7 @@ public interface ExperimentInvitation {
 	 * @return
 	 */
 	public ExperimentGroup getExperimentGroup();
+	public void setExperimentGroup(ExperimentGroup group);
 	
 	/**
 	 * The verification code is used to determine if this {@link ExperimentInvitation} is valid / expired or already used ({@link #hasParticipated()}).

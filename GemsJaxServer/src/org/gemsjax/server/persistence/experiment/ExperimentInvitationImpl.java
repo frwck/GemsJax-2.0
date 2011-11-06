@@ -49,4 +49,15 @@ public class ExperimentInvitationImpl implements ExperimentInvitation {
 		this.email = email;
 	}
 
+
+	@Override
+	public void setExperimentGroup(ExperimentGroup group) {
+		this.experimentGroup = group;
+	}
+
+	public void setVerificationCode(String code)
+	{
+		this.verificationCode = code;
+	}
+	
 }

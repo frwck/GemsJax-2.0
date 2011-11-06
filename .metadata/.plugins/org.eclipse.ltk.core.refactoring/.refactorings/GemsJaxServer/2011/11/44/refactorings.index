@@ -8,3 +8,6 @@
 1320510725008	Rename type 'ExperimentUser'
 1320512074388	Copy file
 1320530907954	Rename local variable 'e'
+1320576421014	Rename local variable 'e'
+1320597130625	Rename package 'org.gemsjax.server.test.persistence'
+1320599609030	Rename type 'ExperimentDAO'

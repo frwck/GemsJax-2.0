@@ -20,6 +20,7 @@ public interface ExperimentGroup {
 	public void setEndDate(Date d);
 	
 	public Experiment getExperiment();
+	public void setExperiment(Experiment e);
 	
 	public String getName();
 	public void setName(String name);
