@@ -16,13 +16,13 @@
 <coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="76" y="30"/>
 <coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="124" y="30"/>
 <coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
-<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="130" y="30"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="184" y="30"/>
 <coolItem id="group.editor" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.jdt.ui.ClassFileEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" itemType="typeToolBarContribution" x="-1" y="-1"/>
-<coolItem id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.jdt.ui.CompilationUnitEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="group.help" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.help" itemType="typeToolBarContribution" x="-1" y="-1"/>
@@ -49,6 +49,7 @@
 <part id="13"/>
 <part id="14"/>
 <part id="15"/>
+<part id="16"/>
 </presentation>
 </folder>
 </info>
@@ -59,10 +60,6 @@
 <editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="Experiment.java" partName="Experiment.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/experiment/Experiment.java" title="Experiment.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/experiment/Experiment.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/experiment/Experiment.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="685" selectionTopPixel="0"/>
-</editor>
-<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="RegisteredUser.java" partName="RegisteredUser.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/user/RegisteredUser.java" title="RegisteredUser.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/user/RegisteredUser.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/user/RegisteredUser.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="53" selectionOffset="295" selectionTopPixel="0"/>
 </editor>
 <editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="User.java" partName="User.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/user/User.java" title="User.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/user/User.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/user/User.java"/>
@@ -89,7 +86,7 @@
 </editor>
 <editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAO.java" partName="ExperimentDAO.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java" title="ExperimentDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5445" selectionTopPixel="2968"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="10017" selectionTopPixel="6589"/>
 </editor>
 <editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="ExperimentUser.java" partName="ExperimentUser.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/user/ExperimentUser.java" title="ExperimentUser.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/user/ExperimentUser.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/user/ExperimentUser.java"/>
@@ -109,11 +106,19 @@
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentInvitationImpl.java" partName="ExperimentInvitationImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentInvitationImpl.java" title="ExperimentInvitationImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentInvitationImpl.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentInvitationImpl.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="990" selectionTopPixel="469"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1080" selectionTopPixel="554"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UserDAO.java" partName="UserDAO.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/dao/UserDAO.java" title="UserDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/UserDAO.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/UserDAO.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3829" selectionTopPixel="1725"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAOTest.java" partName="ExperimentDAOTest.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java" title="ExperimentDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/ExperimentDAOTest.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="17" selectionOffset="40" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="InvitationException.java" partName="InvitationException.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/InvitationException.java" title="InvitationException.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/InvitationException.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/InvitationException.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="304" selectionTopPixel="0"/>
 </editor>
 </editors>
 <views>
@@ -406,165 +411,161 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentGroupImpl.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/UserDAO.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/experiment/ExperimentGroup.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/experiment/ExperimentInvitation.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/user/RegisteredUser.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" path="/GemsJaxServer/src/User.hbm.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/InvitationException.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentInvitationImpl.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentGroupImpl.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/ArgumentException.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/UserDAO.java"/>
 </editors>
+<item historyLabel="ExperimentDAOTest.java" index="1">
+<position info="not_deleted" x="40" y="17"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8152" y="0"/>
+</item>
 <item historyLabel="UserDAO.java" index="2">
-<position info="not_deleted" x="2985" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="353" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="3467" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="3614" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="3405" y="0"/>
-</item>
-<item historyLabel="ExperimentGroupImpl.java" index="0">
-<position info="not_deleted" x="353" y="19"/>
-</item>
-<item historyLabel="ExperimentGroupImpl.java" index="0">
-<position info="not_deleted" x="1602" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="3405" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="3612" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="3636" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="3669" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="3120" y="10"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="3130" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="5760" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="4381" y="0"/>
-</item>
-<item historyLabel="ExperimentGroup.java" index="3">
-<position info="not_deleted" x="566" y="0"/>
-</item>
-<item historyLabel="ExperimentGroup.java" index="3">
-<position info="not_deleted" x="532" y="0"/>
-</item>
-<item historyLabel="ExperimentInvitation.java" index="4">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="ExperimentInvitation.java" index="4">
-<position info="not_deleted" x="776" y="0"/>
+<item historyLabel="UserDAO.java" index="2">
+<position info="not_deleted" x="1501" y="151"/>
 </item>
-<item historyLabel="ExperimentGroup.java" index="3">
-<position info="not_deleted" x="532" y="0"/>
+<item historyLabel="ExperimentDAOTest.java" index="1">
+<position info="not_deleted" x="40" y="17"/>
 </item>
-<item historyLabel="ExperimentInvitationImpl.java" index="5">
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8152" y="0"/>
+</item>
+<item historyLabel="RegisteredUser.java" index="3">
+<position info="not_deleted" x="295" y="53"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="7592" y="0"/>
+</item>
+<item historyLabel="UserDAO.java" index="2">
+<position info="not_deleted" x="1433" y="0"/>
+</item>
+<item historyLabel="ExperimentDAOTest.java" index="1">
+<position info="not_deleted" x="40" y="17"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="7592" y="0"/>
+</item>
+<item historyLabel="User.hbm.xml" index="4"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="7592" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8256" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8344" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8663" y="0"/>
+</item>
+<item historyLabel="InvitationException.java" index="5">
+<position info="not_deleted" x="304" y="0"/>
+</item>
+<item historyLabel="ExperimentDAOTest.java" index="1">
+<position info="not_deleted" x="40" y="17"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8663" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="9394" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="9388" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8663" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8661" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8663" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="9037" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8824" y="0"/>
+</item>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8857" y="0"/>
+</item>
+<item historyLabel="ExperimentInvitationImpl.java" index="6">
 <position info="not_deleted" x="990" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="4865" y="0"/>
+<item historyLabel="ExperimentInvitationImpl.java" index="6">
+<position info="not_deleted" x="179" y="24"/>
 </item>
-<item historyLabel="ExperimentGroupImpl.java" index="6">
-<position/>
+<item historyLabel="ExperimentInvitationImpl.java" index="6">
+<position info="not_deleted" x="1080" y="0"/>
 </item>
-<item historyLabel="ExperimentGroupImpl.java" index="6">
-<position/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8750" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="4865" y="0"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="9024" y="0"/>
 </item>
-<item historyLabel="ExperimentGroupImpl.java" index="6">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8990" y="0"/>
 </item>
-<item historyLabel="ExperimentGroupImpl.java" index="6">
-<position info="not_deleted" x="1558" y="13"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="9175" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="4865" y="0"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="8669" y="31"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="5026" y="0"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="7094" y="20"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="4819" y="46"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="6863" y="0"/>
 </item>
-<item historyLabel="ArgumentException.java" index="7">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="6859" y="0"/>
 </item>
-<item historyLabel="ArgumentException.java" index="7">
-<position info="not_deleted" x="348" y="0"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="6378" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="4819" y="46"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="5905" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="4585" y="0"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="1500" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="4580" y="0"/>
+<item historyLabel="UserDAO.java" index="2">
+<position info="not_deleted" x="1433" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="4757" y="0"/>
+<item historyLabel="UserDAO.java" index="2">
+<position info="not_deleted" x="1743" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="1708" y="0"/>
+<item historyLabel="UserDAO.java" index="2">
+<position info="not_deleted" x="2728" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="1699" y="0"/>
+<item historyLabel="UserDAO.java" index="2">
+<position info="not_deleted" x="3829" y="0"/>
 </item>
-<item historyLabel="UserDAO.java" index="8">
-<position info="not_deleted" x="3129" y="0"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="1500" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="3836" y="0"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="9732" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="5388" y="0"/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="9830" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position/>
+<item historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="9861" y="0"/>
 </item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="5388" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="5301" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="5053" y="0"/>
-</item>
-<item historyLabel="UserDAO.java" index="8">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="5053" y="0"/>
-</item>
-<item active="true" historyLabel="ExperimentDAO.java" index="1">
-<position info="not_deleted" x="5760" y="0"/>
+<item active="true" historyLabel="ExperimentDAO.java" index="0">
+<position info="not_deleted" x="9894" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -584,6 +585,12 @@
 </trimLayout>
 </window>
 <mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="InvitationException.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/InvitationException.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/InvitationException.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAO.java" tooltip="GemsJaxServer/src/test/persistence/ExperimentDAO.java">
+<persistable path="/GemsJaxServer/src/test/persistence/ExperimentDAO.java"/>
+</file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UserDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/UserDAO.java">
 <persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/UserDAO.java"/>
 </file>
@@ -622,12 +629,6 @@
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UserDAOTest.java" tooltip="GemsJaxServer/src/org/gemsjax/server/test/persistence/UserDAOTest.java">
 <persistable path="/GemsJaxServer/src/org/gemsjax/server/test/persistence/UserDAOTest.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="Experiment.hbm.xml" tooltip="GemsJaxServer/src/Experiment.hbm.xml">
-<persistable path="/GemsJaxServer/src/Experiment.hbm.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentUser.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentUser.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentUser.java"/>
 </file>
 </mruList>
 </workbench>

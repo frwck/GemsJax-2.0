@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="ExperimentDAOTest" project="GemsJaxServer" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="test.persistence.ExperimentDAOTest" time="2.701">
+    <testcase name="experimentTests" classname="test.persistence.ExperimentDAOTest" time="2.701"/>
+  </testsuite>
+</testrun>

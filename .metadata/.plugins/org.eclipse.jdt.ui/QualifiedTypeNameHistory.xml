@@ -9,7 +9,6 @@
 <fullyQualifiedTypeName name="org.gemsjax.shared.collaboration.Collaborateable"/>
 <fullyQualifiedTypeName name="org.gemsjax.shared.collaboration.Transaction"/>
 <fullyQualifiedTypeName name="javax.jws.soap.SOAPBinding.Use"/>
-<fullyQualifiedTypeName name="org.gemsjax.shared.user.User"/>
 <fullyQualifiedTypeName name="org.gemsjax.shared.collaboration.VectorClock"/>
 <fullyQualifiedTypeName name="test.TestC"/>
 <fullyQualifiedTypeName name="org.hibernate.cfg.Configuration"/>
@@ -25,7 +24,6 @@
 <fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion"/>
 <fullyQualifiedTypeName name="org.gemsjax.shared.user.RegisteredUser"/>
 <fullyQualifiedTypeName name="org.gemsjax.server.persistence.user.RegisteredUserImpl"/>
-<fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.UserDAO"/>
 <fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="org.hibernate.exception.ConstraintViolationException"/>
@@ -33,9 +31,6 @@
 <fullyQualifiedTypeName name="org.junit.AfterClass"/>
 <fullyQualifiedTypeName name="java.util.TreeMap"/>
 <fullyQualifiedTypeName name="java.util.LinkedHashSet"/>
-<fullyQualifiedTypeName name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl"/>
-<fullyQualifiedTypeName name="org.gemsjax.shared.experiment.ExperimentInvitation"/>
-<fullyQualifiedTypeName name="org.gemsjax.shared.user.ExperimentUser"/>
 <fullyQualifiedTypeName name="org.gemsjax.server.persistence.experiment.ExperimentImpl"/>
 <fullyQualifiedTypeName name="org.gemsjax.server.persistence.user.UserImpl"/>
 <fullyQualifiedTypeName name="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl"/>
@@ -43,9 +38,18 @@
 <fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="org.gemsjax.shared.experiment.ExperimentGroup"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
-<fullyQualifiedTypeName name="java.lang.RuntimeException"/>
 <fullyQualifiedTypeName name="java.lang.IllegalArgumentException"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.experiment.Experiment"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.user.ExperimentUser"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.exception.InvitationException"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.experiment.ExperimentInvitation"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.experiment.ExperimentInvitationImpl"/>
+<fullyQualifiedTypeName name="java.util.UUID"/>
+<fullyQualifiedTypeName name="java.lang.Throwable"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.UserDAO"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.user.User"/>
 <fullyQualifiedTypeName name="org.gemsjax.shared.FieldVerifier"/>
 <fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.exception.ArgumentException"/>
-<fullyQualifiedTypeName name="org.gemsjax.shared.experiment.Experiment"/>
+<fullyQualifiedTypeName name="java.lang.RuntimeException"/>
 </qualifiedTypeNameHistroy>

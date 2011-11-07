@@ -1,0 +1,67 @@
+package test.persistence;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.gemsjax.server.persistence.dao.ExperimentDAO;
+import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.shared.user.ExperimentUser;
+import org.gemsjax.shared.user.RegisteredUser;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+public class ExperimentDAOTest {
+	
+	private static String username;
+	private static String password;
+	private static String email;
+	private static int userCounter;
+	
+	private static List<ExperimentUser> createdExperimentUsers;
+	private static LIst<Experiment> createdExperiments;
+	
+	private static ExperimentDAO dao;
+	private static UserDAO registeredUserDAO;
+	
+	private static RegisteredUser owner1;
+	
+	
+	
+	
+	 @BeforeClass 
+	 public static void classSetup() throws UsernameInUseException {
+
+		 dao = new ExperimentDAO();
+		 registeredUserDAO = new UserDAO();
+		 
+		 username = "username";
+		 password = "password";
+		 email = "email";
+		 userCounter = 0;
+		 
+		 createdExperimentUsers = new ArrayList<ExperimentUser>();
+		  owner1 = registeredUserDAO.createRegisteredUser("owner1", "passwordHash", "email"); 
+			
+	 }
+	 
+	 
+	 @Test
+	 public void createExperiment()
+	 {
+		 
+		 int tests = 10;
+		 
+		
+		 
+		 for (int i =0; i<tests; i++)
+		 {
+			 
+			 
+			 
+		 }
+		
+		 
+	 }
+
+}

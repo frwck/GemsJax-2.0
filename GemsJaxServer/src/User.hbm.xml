@@ -11,13 +11,31 @@
     
     <property name="displayedName" column="displayedName" type="string"/>
     
+    
+    
+    
+    
     <joined-subclass name="org.gemsjax.server.persistence.user.RegisteredUserImpl" table="RegisteredUser">
         <key column="user_id"/>
         <property name="username" column="username" type="string" />
         <property name="passwordHash" column="password" type="string" />
         <property name="email" column="email" type="string" />
         
+        <set name="ownedExperiments" table="Experiment" lazy="false" fetch="select">
+            <key>
+                <column name="User_id_owner" not-null="true" />
+            </key>
+            <one-to-many class="org.gemsjax.server.persistence.experiment.ExperimentImpl" />
+    	</set>
+    	
+    	<set name="administratedExperiments" table="AdministrateExperiment" inverse="true" >        
+			 <key column="User_id"/>         
+				<many-to-many column="Experiment_id" class="org.gemsjax.server.persistence.experiment.ExperimentImpl"/>    
+		</set> 
     </joined-subclass>
+    
+    
+    
     
     
     <joined-subclass name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl" table="ExperimentUser">

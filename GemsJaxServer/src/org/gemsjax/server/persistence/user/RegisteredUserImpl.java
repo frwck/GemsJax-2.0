@@ -1,5 +1,10 @@
 package org.gemsjax.server.persistence.user;
 
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.UserOnlineState;
 
@@ -11,10 +16,15 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 	private String username;
 	private String passwordHash;
 	
+	private Set<Experiment> ownedExperiments;
+	private Set<Experiment> administratedExperiments;
+	
 	
 	public RegisteredUserImpl()
 	{
 		setOnlineState( UserOnlineState.OFFLINE);
+		ownedExperiments = new LinkedHashSet<Experiment>();
+		administratedExperiments = new LinkedHashSet<Experiment>();
 	}
 	
 	

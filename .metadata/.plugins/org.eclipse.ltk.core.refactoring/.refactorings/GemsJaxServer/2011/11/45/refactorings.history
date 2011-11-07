@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename field &apos;createdRegisteredUsers&apos; in &apos;test.persistence.ExperimentDAOTest&apos; to &apos;createdExperimentUsers&apos;&#x0A;- Original project: &apos;GemsJaxServer&apos;&#x0A;- Original element: &apos;test.persistence.ExperimentDAOTest.createdRegisteredUsers&apos;&#x0A;- Renamed element: &apos;test.persistence.ExperimentDAOTest.createdExperimentUsers&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" delegate="false" deprecate="false" description="Rename field &apos;createdRegisteredUsers&apos;" flags="589826" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src&lt;test.persistence{ExperimentDAOTest.java[ExperimentDAOTest^createdRegisteredUsers" name="createdExperimentUsers" references="true" setter="false" stamp="1320662596134" textual="false" version="1.0"/>
+</session>

@@ -18,9 +18,28 @@
                 <column name="Experiment_id" not-null="true" />
             </key>
             <one-to-many class="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl" />
-        </set>
+    </set>
+    
+    
+    <many-to-one name="owner" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" fetch="select">
+            <column name="User_id_owner" not-null="true" />
+    </many-to-one>
+    
+    
+    <set name="administrators" table="AdministrateExperiment" inverse="false">        
+			 <key column="Experiment_id"/>         
+				<many-to-many column="User_id" class="org.gemsjax.server.persistence.user.RegisteredUserImpl"/>    
+	</set>
         
 </class>
+
+
+
+
+
+
+
+
 
 
 <class name="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl" table="ExperimentGroup">
@@ -54,6 +73,8 @@
     </set>
     
 </class>
+
+
 
 
 

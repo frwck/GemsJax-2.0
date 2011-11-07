@@ -1,0 +1,37 @@
+package test.persistence;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.gemsjax.server.persistence.dao.ExperimentDAO;
+import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.shared.user.RegisteredUser;
+import org.junit.BeforeClass;
+
+public class ExperimentDAOTest {
+	
+	private static String username;
+	private static String password;
+	private static String email;
+	private static int userCounter;
+	
+	private static List<ExperimentUser> createdRegisteredUsers;
+	
+	private static ExperimentDAO dao;
+	
+	
+	 @BeforeClass 
+	 public static void classSetup() {
+
+		 dao = new ExperimentDAO();
+		 
+		 username = "username";
+		 password = "password";
+		 email = "email";
+		 userCounter = 0;
+		 
+		 createdRegisteredUsers = new ArrayList<RegisteredUser>();
+			
+	 }
+
+}
