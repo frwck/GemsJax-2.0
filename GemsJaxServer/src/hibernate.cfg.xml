@@ -23,6 +23,7 @@
     <property name="hibernate.hbm2ddl.auto">update</property>
     
     <mapping resource="User.hbm.xml"/>
+    <mapping resource="Collaborateable.hbm.xml" />
     <mapping resource="Experiment.hbm.xml" />
     
   </session-factory>

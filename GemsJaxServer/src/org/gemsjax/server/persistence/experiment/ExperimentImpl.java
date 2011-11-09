@@ -2,9 +2,10 @@ package org.gemsjax.server.persistence.experiment;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+import org.gemsjax.server.data.metamodel.MetaModelImpl;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
+import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.user.RegisteredUser;
 
 public class ExperimentImpl implements Experiment{
@@ -13,6 +14,7 @@ public class ExperimentImpl implements Experiment{
 	private String name;
 	private String description;
 	private RegisteredUser owner;
+	private MetaModelImpl metaModelTemplate;
 
 	private Set<RegisteredUser> administrators;
 	private Set<ExperimentGroup> experimentGroups;
@@ -71,6 +73,16 @@ public class ExperimentImpl implements Experiment{
 	@Override
 	public void setOwner(RegisteredUser owner) {
 		this.owner = owner;
+	}
+
+
+	public void setMetaModelTemplate(MetaModelImpl metaModelTemplate) {
+		this.metaModelTemplate = metaModelTemplate;
+	}
+
+
+	public MetaModelImpl getMetaModelTemplate() {
+		return metaModelTemplate;
 	}
 
 }

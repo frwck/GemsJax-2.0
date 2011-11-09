@@ -924,3 +924,6 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64
 
 !ENTRY org.eclipse.wst.common.project.facet.core 4 0 2011-11-09 10:52:17.836
 !MESSAGE Project facet wst.web has not been defined. It is used in plugin org.eclipse.jst.common.project.facet.core.
+
+!ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-11-09 19:18:28.469
+!MESSAGE Failed to load icon cache

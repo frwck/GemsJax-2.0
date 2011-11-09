@@ -4,7 +4,7 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-access="field">
-<class name="org.gemsjax.server.persistence.collaborateable" table="Collaborateable">
+<class name="org.gemsjax.server.persistence.collaborateable.CollaborateableImpl" table="Collaborateable">
     <id name="id" type="int" column="id">
     	<generator class="increment" />
     </id>
@@ -12,35 +12,13 @@
     <property name="name" column="name" type="string"/>
     <property name="keywords" column="keywords" type="string"/>
     
-    <property name="name" column="name" type="string"/>
-    
-    
-    
-    
-    
-    <!-- 
-    <joined-subclass name="org.gemsjax.server.persistence.user.RegisteredUserImpl" table="RegisteredUser">
-        <key column="user_id"/>
-        <property name="username" column="username" type="string" />
-        <property name="passwordHash" column="password" type="string" />
-        <property name="email" column="email" type="string" />
-        
-        <set name="ownedExperiments" table="Experiment" lazy="false" fetch="select">
-            <key>
-                <column name="User_id_owner" not-null="true" />
-            </key>
-            <one-to-many class="org.gemsjax.server.persistence.experiment.ExperimentImpl" />
-    	</set>
-    	
-    	<set name="administratedExperiments" table="AdministrateExperiment" inverse="true" >        
-			 <key column="User_id"/>         
-				<many-to-many column="Experiment_id" class="org.gemsjax.server.persistence.experiment.ExperimentImpl"/>    
-		</set> 
+    <joined-subclass name="org.gemsjax.server.data.metamodel.MetaModelImpl" table="MetaModel">
+        <key column="Collaborateable"/>
     </joined-subclass>
     
     
     
-    
+    <!-- 
     
     <joined-subclass name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl" table="ExperimentUser">
         <key column="user_id"/>

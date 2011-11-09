@@ -5,3 +5,5 @@
 1320837946527	Delete elements
 1320838337264	Rename package 'org.gemsjax.client.metamodel'
 1320838592259	Delete element
+1320844511541	Rename type 'MetaModelDAO'
+1320846093488	Encapsulate field 'metaModelTemplate'

@@ -13,6 +13,8 @@
     <property name="name" column="name" type="string"/>
     <property name="description" column="description" type="string"/>
     
+    <many-to-one name="metaModelTemplate" column="MetaModel_id_template" unique="true" not-null="false"/>
+    
     <set name="experimentGroups" table="ExperimentGroup" lazy="false" fetch="select">
             <key>
                 <column name="Experiment_id" not-null="true" />
