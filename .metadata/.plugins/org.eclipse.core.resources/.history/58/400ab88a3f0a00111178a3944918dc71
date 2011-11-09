@@ -1,0 +1,13 @@
+package org.gemsjax.server.persistence.collaborateable;
+
+import org.gemsjax.shared.collaboration.Collaborateable;
+
+public class CollaborateableImpl implements Collaborateable
+{
+	
+	public CollaborateableImpl()
+	{
+		
+	}
+
+}

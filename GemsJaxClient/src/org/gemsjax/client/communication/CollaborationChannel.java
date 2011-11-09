@@ -36,7 +36,7 @@ public class CollaborationChannel implements Channel{
 	public CollaborationChannel(Collaborateable collaborateable)
 	{
 		this.collaborateable = collaborateable;
-		filterRegEx = RegExFactory.generate("col", "on", collaborateable.getID());
+		filterRegEx = RegExFactory.generate("col", "on", ""+collaborateable.getId());
 		
 	}
 	

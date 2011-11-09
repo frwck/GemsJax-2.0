@@ -39,9 +39,6 @@ public class MetaFactory {
 	private  MetaFactory() {}
 	
 	
-	
-	
-	
 	private static synchronized  String nextID()
 	{
 		return UUID.uuid().toString();
@@ -128,9 +125,9 @@ public class MetaFactory {
 	 * @param name
 	 * @return
 	 */
-	public static MetaModel createMetaModel(String name)
+	public static MetaModel createMetaModel(int id, String name)
 	{
-		MetaModel m = new MetaModelImpl(nextID(), name);
+		MetaModel m = new MetaModelImpl(id, name);
 		
 		return m;
 	}
@@ -141,7 +138,7 @@ public class MetaFactory {
 	 * @param name The name
 	 * @return
 	 */
-	public static MetaModel createExistingMetaModel(String id, String name)
+	public static MetaModel createExistingMetaModel(int id, String name)
 	{
 		return new MetaModelImpl(id, name);
 	}

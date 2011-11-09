@@ -1,7 +1,9 @@
 package org.gemsjax.shared.collaboration;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.gemsjax.shared.collaboration.command.Command;
@@ -29,7 +31,7 @@ public class Transaction {
 	 * The {@link Command}s that are executed within this transaction.
 	 * <b>NOTICE:</b> The commands are executed in the order as they are added to this list. 
 	 */
-	private List<Command> commands;
+	private Set<Command> commands;
 	
 	
 	
@@ -37,14 +39,14 @@ public class Transaction {
 	{
 		this.id = id;
 		this.collaborateable = collaborateable;
-		commands = new ArrayList<Command>();
+		commands = new LinkedHashSet<Command>();
 	}
 	
 	/**
 	 * Get the unique ID of the {@link Transaction}
 	 * @return
 	 */
-	public String getID()
+	public String getId()
 	{
 		return id;
 	}
@@ -75,17 +77,6 @@ public class Transaction {
 	public void addCommand(Command c)
 	{
 		commands.add(c);
-	}
-	
-	/**
-	 * Add a command at the specified position in the list.
-	 * @see List#add(int, Object)
-	 * @param c
-	 * @param position
-	 */
-	public void addCommand(Command c, int position)
-	{
-		commands.add(position,c);
 	}
 	
 	/**

@@ -1,10 +1,5 @@
 package org.gemsjax.shared.metamodel.exception;
 
-import java.util.List;
-
-
-
-
 /**
  * This Exception is thrown, when a new Attribute should be added to a {@link MetaClass} and there exists already
  * {@link MetaAttribute} with the same name. The {@link MetaAttribute} name must be unique within a MetaClass.

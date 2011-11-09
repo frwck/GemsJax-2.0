@@ -1,0 +1,10 @@
+package org.gemsjax.server.persistence.collaborateable;
+
+public class CollaborateableImpl{
+	
+	public CollaborateImpl()
+	{
+		
+	}
+
+}

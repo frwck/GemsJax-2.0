@@ -158,7 +158,18 @@ public class ExperimentDAOTest {
 			{
 				dao.assignExperimentAdministrator(e, u);
 				
+
 				assertTrue(e.getAdministrators().contains(u));
+				
+				// Try duplicate entry
+				try {
+					dao.assignExperimentAdministrator(e,u);
+					assertTrue(false);
+				}catch (AlreadyAssignedException ex) 
+				{
+					assertTrue(true);
+				}
+				
 			}
 	}
 	 

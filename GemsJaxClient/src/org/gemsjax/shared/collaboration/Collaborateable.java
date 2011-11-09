@@ -1,7 +1,7 @@
 package org.gemsjax.shared.collaboration;
 
-import java.util.List;
-
+import java.util.Map;
+import java.util.Set;
 import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
@@ -22,7 +22,7 @@ public interface Collaborateable{
 	 * via {@link Transaction}s
 	 * @return
 	 */
-	public String getID();
+	public int getId();
 	
 	/**
 	 * Get the Owner who has created this {@link Collaborateable}
@@ -31,27 +31,41 @@ public interface Collaborateable{
 	public RegisteredUser getOwner();
 	
 	/**
-	 * Get the namecine espanol
+	 * Get the name
 	 * @return
 	 */
 	public String getName();
+	
+	
+	/**
+	 * Set the name
+	 * @param name
+	 */
+	public void setName(String name);
 	
 	/**
 	 * Get all {@link User}s that work collaborative on this {@link Collaborateable}.
 	 * @return
 	 */
-	public List<User> getUsers();
+	public Set<User> getUsers();
 	
 	/**
-	 * Get the {@link VectorClock}
+	 * Get a map that contains the vector clock values.
+	 * <b>NOTE:</b> if a {@link User} is not present in this map, then you can assume the vector clock value is 0 (zero) 
 	 * @return
 	 */
-	public VectorClock getVectorClock();
+	public Map<User,Integer> getVectorClock();
 	
 	/**
 	 * Used for the search system
 	 * @return
 	 */
-	public String getKeyWords();
+	public String getKeywords();
+	
+	/**
+	 * Set the keywords
+	 * @param keywords
+	 */
+	public void setKeywords(String keywords);
 	
 }

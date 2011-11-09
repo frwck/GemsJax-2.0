@@ -173,7 +173,7 @@ public class AdminApplicationController {
 			
 			MetaBaseType baseType = MetaFactory.createExistingBaseType("basetypeID", "BaseType 1");
 			
-			MetaModel metaModel = MetaFactory.createMetaModel("MetaFactory Model");
+			MetaModel metaModel = MetaFactory.createMetaModel(1,"MetaFactory Model");
 			
 			
 			MetaClass c1 = MetaFactory.createClass("Class1", 50, 50);
