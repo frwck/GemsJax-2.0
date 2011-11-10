@@ -1,0 +1,84 @@
+package org.gemsjax.server.data.model;
+
+import java.util.Map;
+import java.util.Set;
+
+import org.gemsjax.shared.collaboration.Transaction;
+import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.model.Model;
+import org.gemsjax.shared.user.RegisteredUser;
+import org.gemsjax.shared.user.User;
+
+public class ModelImpl extends CollaborateableImpl implements Model{
+
+	private int id;
+	
+	private MetaModel metaModel;
+	
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public MetaModel getMetaModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setMetaModel(MetaModel metaModel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getKeywords() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public RegisteredUser getOwner() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<Transaction> getTransactions() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Set<User> getUsers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Map<User, Integer> getVectorClock() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setKeywords(String keywords) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

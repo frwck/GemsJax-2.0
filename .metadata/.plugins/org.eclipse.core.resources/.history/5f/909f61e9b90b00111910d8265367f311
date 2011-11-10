@@ -1,0 +1,13 @@
+package org.gemsjax.shared.model;
+
+import org.gemsjax.shared.metamodel.MetaModel;
+
+public interface Model {
+	
+	public int getId();
+	
+	public MetaModel getMetaModel();
+	
+	public void setMetaModel(MetaModel metaModel);
+
+}

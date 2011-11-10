@@ -1,6 +1,0 @@
-package test;
-
-public class TestC {
-
-	public String a;
-}

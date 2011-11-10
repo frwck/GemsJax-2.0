@@ -1,0 +1,30 @@
+package org.gemsjax.server.data.model;
+
+import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.model.Model;
+
+public class ModelImpl implements Model{
+
+	private int id;
+	
+	private MetaModel metaModel;
+	
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public MetaModel getMetaModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setMetaModel(MetaModel metaModel) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

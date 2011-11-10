@@ -19,7 +19,7 @@ public class CollaborateableImpl implements Collaborateable
 	private Set<User> users;
 	private Set<Transaction> transactions;
 	private Map<User, Integer> vectorClock;
-	
+	private int publicPermission;
 	
 	public CollaborateableImpl()
 	{
@@ -85,6 +85,18 @@ public class CollaborateableImpl implements Collaborateable
 	@Override
 	public Set<Transaction> getTransactions() {
 		return transactions;
+	}
+
+
+	@Override
+	public int getPublicPermission() {
+		return publicPermission;
+	}
+
+
+	@Override
+	public void setPublicPermission(int permission) {
+		publicPermission = permission;
 	}
 
 }

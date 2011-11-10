@@ -1,0 +1,7 @@
+package org.gemsjax.server.data.model;
+
+import org.gemsjax.shared.model.Model;
+
+public class ModelImpl implements Model{
+
+}

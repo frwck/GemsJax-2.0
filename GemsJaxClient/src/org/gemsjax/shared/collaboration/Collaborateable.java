@@ -2,6 +2,8 @@ package org.gemsjax.shared.collaboration;
 
 import java.util.Map;
 import java.util.Set;
+
+import org.gemsjax.shared.Constants;
 import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
@@ -16,6 +18,23 @@ import org.gemsjax.shared.user.User;
  */
 public interface Collaborateable{
 
+	
+		/**
+		 * No public access granted. That means, that only the owner and the collaborative working {@link User} (invited) have access to this {@link Collaborateable}
+		 */
+		public static int NO_PERMISSION = 0;
+		/**
+		 * Every {@link User} can access this with reading permission. Changing this {@link Collaborateable} is not possible except the owner {@link User}
+		 * and the other collaborative working {@link User} (invited).
+		 */
+		public static int READ_ONLY_PERMISSION = 1;
+		
+		/**
+		 * This means, that every user can make a copy of this {@link Collaborateable}
+		 */
+		public static int COPYABLE_PERMISSION = 2;
+	
+	
 	/**
 	 * Get the unique ID.
 	 * The ID is very important for the communication between client, server and other clients
@@ -73,5 +92,18 @@ public interface Collaborateable{
 	 * @return
 	 */
 	public Set<Transaction> getTransactions();
+	
+	/**
+	 * Get the {@link PublicPermission}
+	 * @return
+	 */
+	public int getPublicPermission();
+	
+	/**
+	 * @see #getPublicPermission()
+	 * @param permission
+	 */
+	public void setPublicPermission(int permission);
+	
 	
 }

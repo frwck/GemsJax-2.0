@@ -1,0 +1,30 @@
+package org.gemsjax.shared;
+
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.user.User;
+
+public class Constants {
+
+	/**
+	 * This constant indicates, that the multiplicity of a connection is  arbitrarily, or in UML language a "*" 
+	 */
+	public static final int MULTIPLICITY_MANY = -1;
+	
+	
+
+	/**
+	 * No public access granted. That means, that only the owner and the collaborative working {@link User} (invited) have access to this {@link Collaborateable}
+	 */
+	public static int NO_PERMISSION = 0;
+	/**
+	 * Every {@link User} can access this with reading permission. Changing this {@link Collaborateable} is not possible except the owner {@link User}
+	 * and the other collaborative working {@link User} (invited).
+	 */
+	public static int READ_ONLY_PERMISSION = 1;
+	
+	/**
+	 * This means, that every user can make a copy of this {@link Collaborateable}
+	 */
+	public static int COPYABLE_PERMISSION = 2;
+
+}

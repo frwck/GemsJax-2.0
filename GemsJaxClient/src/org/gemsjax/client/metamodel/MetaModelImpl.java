@@ -40,6 +40,8 @@ public class MetaModelImpl implements MetaModel{
 	
 	private Map<User, Integer> vectorClock;
 	
+	private int publicPermission;
+	
 	private Set<Transaction> transactions;
 	
 	// TODO how to set owner?
@@ -204,6 +206,16 @@ public class MetaModelImpl implements MetaModel{
 	public Set<Transaction> getTransactions() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getPublicPermission() {
+		return publicPermission;
+	}
+
+	@Override
+	public void setPublicPermission(int permission) {
+		this.publicPermission = permission;
 	}
 	
 }

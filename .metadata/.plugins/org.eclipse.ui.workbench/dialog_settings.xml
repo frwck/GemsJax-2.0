@@ -7,15 +7,15 @@
 	<section name="InstallationDialogSettings">
 		<item value="800" key="DIALOG_WIDTH"/>
 		<item value="-292" key="DIALOG_Y_ORIGIN"/>
-		<item value="830" key="DIALOG_HEIGHT"/>
 		<item value="-127" key="DIALOG_X_ORIGIN"/>
+		<item value="830" key="DIALOG_HEIGHT"/>
 		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="ShowViewDialog">
 		<item value="502" key="DIALOG_WIDTH"/>
 		<item value="220" key="DIALOG_Y_ORIGIN"/>
+		<item value="787" key="DIALOG_X_ORIGIN"/>
 		<item value="638" key="DIALOG_HEIGHT"/>
-		<item value="780" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="ImportExportAction">

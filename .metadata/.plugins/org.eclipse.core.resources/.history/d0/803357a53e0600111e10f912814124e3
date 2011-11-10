@@ -1,6 +1,0 @@
-package org.gemsjax.server.user;
-import org.gemsjax.shared.user.User;
-
-public class User implements User{
-
-}

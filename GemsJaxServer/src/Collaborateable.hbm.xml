@@ -12,6 +12,8 @@
     <property name="name" column="name" type="string"/>
     <property name="keywords" column="keywords" type="string"/>
     
+    <property name="publicPermission" column="publicPermission" type="int" not-null="true" />
+    
     
     <!-- Collaborateable has a Registered User as owner -->
     <many-to-one name="owner" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" fetch="select">
