@@ -1,0 +1,30 @@
+package org.gemsjax.server.persistence.collaboration.command;
+
+public class CommandImpl {
+	
+	private String id;
+	private int sequenz;
+	
+	public CommandImpl()
+	{
+		
+	}
+	
+	
+	public String getId()
+	{
+		return id;
+	}
+
+
+	public int getSequenz() {
+		return sequenz;
+	}
+
+
+	public void setSequenz(int sequenz) {
+		this.sequenz = sequenz;
+	}
+
+
+}

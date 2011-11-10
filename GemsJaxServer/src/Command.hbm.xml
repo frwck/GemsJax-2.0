@@ -4,22 +4,21 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-access="field">
-<class name="org.gemsjax.server.persistence.collaborateable.CollaborateableImpl" table="Collaborateable">
-    <id name="id" type="int" column="id">
-    	<generator class="increment" />
+<class name="org.gemsjax.server.persistence.collaboration.command.CommandImpl" table="Command">
+    <id name="id" type="string" column="id">
+    	<!-- No generator needed since id will generated on client side with uuid -->
     </id>
     
-    <property name="name" column="name" type="string"/>
-    <property name="keywords" column="keywords" type="string"/>
-    
+    <property name="sequenceNumber" column="sequenceNumber" type="int" />
+   
+   <!-- 
     <joined-subclass name="org.gemsjax.server.data.metamodel.MetaModelImpl" table="MetaModel">
         <key column="Collaborateable_id"/>
-        <property name="forExperiment" column="forExperiment" type="boolean"/>
+        <property name="forExperiment" column="forExperiment" type="boolean" />
     </joined-subclass>
     
     
     
-    <!-- 
     
     <joined-subclass name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl" table="ExperimentUser">
         <key column="user_id"/>

@@ -6,6 +6,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -38,6 +40,8 @@ public class MetaModelImpl implements MetaModel{
 	
 	private Map<User, Integer> vectorClock;
 	
+	private Set<Transaction> transactions;
+	
 	// TODO how to set owner?
 	private RegisteredUser owner;
 	
@@ -56,6 +60,7 @@ public class MetaModelImpl implements MetaModel{
 		idMap = new HashMap<String, MetaModelElement>();	
 		attributes = new ArrayList<MetaAttribute>();
 		users = new LinkedHashSet<User>();
+		transactions = new LinkedHashSet<Transaction>();
 		vectorClock = new HashMap<User, Integer>();
 	}
 	
@@ -193,6 +198,12 @@ public class MetaModelImpl implements MetaModel{
 	@Override
 	public String getKeywords() {
 		return keywords;
+	}
+
+	@Override
+	public Set<Transaction> getTransactions() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

@@ -68,4 +68,10 @@ public interface Collaborateable{
 	 */
 	public void setKeywords(String keywords);
 	
+	/**
+	 * Get all Transactions
+	 * @return
+	 */
+	public Set<Transaction> getTransactions();
+	
 }

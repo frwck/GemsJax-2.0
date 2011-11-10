@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="UserDAOTest" project="GemsJaxServer" tests="1" started="0" failures="0" errors="2" ignored="0">
+  <testsuite name="test.persistence.UserDAOTest" incomplete="true">
+    <error>java.lang.ExceptionInInitializerError
+	at org.gemsjax.server.persistence.dao.UserDAO.&lt;init&gt;(UserDAO.java:24)
+	at test.persistence.UserDAOTest.classSetup(UserDAOTest.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:46)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+Caused by: org.hibernate.MappingNotFoundException: resource: ExperimentInvitation.hbm.xml not found
+	at org.hibernate.cfg.Configuration.addResource(Configuration.java:799)
+	at org.hibernate.cfg.Configuration.parseMappingElement(Configuration.java:2344)
+	at org.hibernate.cfg.Configuration.parseSessionFactory(Configuration.java:2310)
+	at org.hibernate.cfg.Configuration.doConfigure(Configuration.java:2290)
+	at org.hibernate.cfg.Configuration.doConfigure(Configuration.java:2243)
+	at org.hibernate.cfg.Configuration.configure(Configuration.java:2158)
+	at org.hibernate.cfg.Configuration.configure(Configuration.java:2137)
+	at org.gemsjax.server.persistence.HibernateUtil.&lt;clinit&gt;(HibernateUtil.java:16)
+	... 18 more
+
+java.lang.NullPointerException
+	at test.persistence.UserDAOTest.classSetDown(UserDAOTest.java:47)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:37)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:46)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+    <testcase name="createRegisteredUser" classname="test.persistence.UserDAOTest" incomplete="true"/>
+  </testsuite>
+</testrun>

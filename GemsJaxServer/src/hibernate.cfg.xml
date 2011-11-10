@@ -25,6 +25,10 @@
     <mapping resource="User.hbm.xml"/>
     <mapping resource="Collaborateable.hbm.xml" />
     <mapping resource="Experiment.hbm.xml" />
+    <mapping resource="ExperimentGroup.hbm.xml" />
+    <mapping resource="ExperimentInvitation.hbm.xml" />
+    <mapping resource="Transaction.hbm.xml" />
+    <mapping resource="Command.hbm.xml" />
     
   </session-factory>
 </hibernate-configuration>

@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
 
@@ -16,6 +17,7 @@ public class CollaborateableImpl implements Collaborateable
 	private String name;
 	private RegisteredUser owner;
 	private Set<User> users;
+	private Set<Transaction> transactions;
 	private Map<User, Integer> vectorClock;
 	
 	
@@ -23,6 +25,7 @@ public class CollaborateableImpl implements Collaborateable
 	{
 		users = new LinkedHashSet<User>();
 		vectorClock = new HashMap<User, Integer>();
+		transactions = new LinkedHashSet<Transaction>();
 	}
 
 
@@ -76,6 +79,12 @@ public class CollaborateableImpl implements Collaborateable
 	@Override
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+	@Override
+	public Set<Transaction> getTransactions() {
+		return transactions;
 	}
 
 }

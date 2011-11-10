@@ -15,13 +15,14 @@ import org.gemsjax.shared.user.User;
  * @author Hannes Dorfmann
  *
  */
-public class TransactionImpl implements Transaction{
+public class TransactionImpl implements Transaction {
 	
 	/**
 	 * The unique ID
 	 */
 	private String id;
 
+	private int sequenceNumber;
 
 	
 	/**
@@ -35,6 +36,7 @@ public class TransactionImpl implements Transaction{
 	 * <b>NOTICE:</b> The commands are executed in the order as they are added to this list. 
 	 */
 	private Set<Command> commands;
+	
 	
 	private User user;
 	
@@ -147,6 +149,16 @@ public class TransactionImpl implements Transaction{
 	@Override
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+
+	public int getSequenceNumber() {
+		return sequenceNumber;
+	}
+
+
+	public void setSequenceNumber(int sequenceNumber) {
+		this.sequenceNumber = sequenceNumber;
 	}
 	
 	

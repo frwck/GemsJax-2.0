@@ -12,3 +12,8 @@
 1320923084184	Rename type 'Command'
 1320931287338	Rename package 'org.gemsjax.server.persistence.collaborateable'
 1320931301619	Rename package 'org.gemsjax.server.persistence.collaborateable.command'
+1320933040861	Copy file
+1320933055999	Copy file
+1320936513845	Rename resource 'ExperimentInvitaion.hbm.xml'
+1320937465835	Copy file
+1320938130267	Rename field 'sequenz'
