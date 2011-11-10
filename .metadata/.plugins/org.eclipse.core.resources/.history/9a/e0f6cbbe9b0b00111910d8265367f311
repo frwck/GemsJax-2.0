@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+<class name="org.gemsjax.server.persistence.user.UserImpl" table="User">
+    <id name="id" type="int" column="id">
+    	<generator class="increment" />
+    </id>
+    
+    <property name="displayedName" column="displayedName" type="string"/>
+    
+    <!--  The Collaborateable on which this User works -->
+    <set name="collaborateables" table="CollaborateOn" inverse="true" >        
+		 <key column="User_id" on-delete="cascade" />         
+			<many-to-many column="Collaborateable_id" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl"/>    
+	</set>
+    
+    
+    
+    <joined-subclass name="org.gemsjax.server.persistence.user.RegisteredUserImpl" table="RegisteredUser">
+        <key column="user_id" on-delete="cascade" />
+        <property name="username" column="username" type="string" />
+        <property name="passwordHash" column="password" type="string" />
+        <property name="email" column="email" type="string" />
+        
+        <set name="ownedExperiments" table="Experiment" lazy="false" fetch="select">
+            <key on-delete="cascade">
+                <column name="User_id_owner" not-null="true" />
+            </key>
+            <one-to-many class="org.gemsjax.server.persistence.experiment.ExperimentImpl" />
+    	</set>
+    	
+    	<!--  The set of Experiments that were administrated by this user -->
+    	<set name="administratedExperiments" table="AdministrateExperiment" inverse="true" >        
+			 <key column="User_id"/ on-delete="cascade">         
+				<many-to-many column="Experiment_id" class="org.gemsjax.server.persistence.experiment.ExperimentImpl"/>    
+		</set> 
+    </joined-subclass>
+    
+    
+    
+    
+    
+    <joined-subclass name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl" table="ExperimentUser">
+        <key column="user_id"/>
+        <property name="username" column="username" type="string" />
+        <property name="passwordHash" column="password" type="string" />
+        
+        <many-to-one name="experimentGroup" class="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl" fetch="select">
+            <column name="ExperimentGroup_id" not-null="true" />
+        </many-to-one>
+        
+    </joined-subclass>
+    
+    
+         
+</class>
+
+</hibernate-mapping>

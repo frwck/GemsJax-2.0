@@ -1,12 +1,12 @@
 package org.gemsjax.shared.collaboration;
-
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.gemsjax.shared.collaboration.command.Command;
+import org.gemsjax.shared.user.User;
+
+import com.google.gwt.rpc.client.impl.CommandSerializationStreamWriterBase;
 
 /**
  * A {@link Transaction} contains a list of {@link Command}s (at least one {@link Command}) that are executed within a {@link Transaction},
@@ -15,78 +15,53 @@ import org.gemsjax.shared.collaboration.command.Command;
  * @author Hannes Dorfmann
  *
  */
-public class Transaction {
+public interface Transaction {
 	
-	/**
-	 * The unique ID
-	 */
-	private String id;
-	
-	/**
-	 * The {@link Transaction} is executed ({@link #commit()}) on this {@link Collaborateable}
-	 */
-	private Collaborateable collaborateable;
-	
-	/**
-	 * The {@link Command}s that are executed within this transaction.
-	 * <b>NOTICE:</b> The commands are executed in the order as they are added to this list. 
-	 */
-	private Set<Command> commands;
-	
-	
-	
-	public Transaction(String id, Collaborateable collaborateable)
-	{
-		this.id = id;
-		this.collaborateable = collaborateable;
-		commands = new LinkedHashSet<Command>();
-	}
 	
 	/**
 	 * Get the unique ID of the {@link Transaction}
 	 * @return
 	 */
-	public String getId()
-	{
-		return id;
-	}
+	public String getId();
 	
 	/**
 	 * Calling commit will "execute" this transaction on the {@link Collaborateable}, which means, that the {@link Command}s were executed in the given order
 	 * by calling {@link Command#execute()} to manipulate data. After the commit the {@link Collaborateable} is in an atomic state.
 	 */
-	public void commit()
-	{
-		for (Command c: commands)
-			c.execute();
-	}
-	
+	public void commit();
 	/**
 	 * Calling this method will "undo" all the changes that were previously done on the {@link Collaborateable}.
 	 */
-	public void rollback()
-	{
-		for (Command c: commands)
-			c.undo();
-	}
-	
+	public void rollback();
 	/**
 	 * Add a command to this transaction by inserting the command at the last position in the command list
 	 * @param c
 	 */
-	public void addCommand(Command c)
-	{
-		commands.add(c);
-	}
+	public void addCommand(Command c);
 	
 	/**
 	 * Remove a Command from the list
 	 * @param c
 	 */
-	public void removeCommand(Command c)
-	{
-		commands.remove(c);
-	}
+	public void removeCommand(Command c);
+	
+	/**
+	 * Get a Set with all {@link Command}s that are executed whith this transaction.
+	 * <b>Notice:</b> For the implementation should be used {@link LinkedHashSet}, because {@link LinkedHashSet} contains the order.
+	 * @return
+	 */
+	public Set getCommands();
+	
+	/**
+	 * Get the {@link Collaborateable} on which this {@link Transaction} is executed
+	 */
+	public Collaborateable getCollaborateable();
+	
+	/**
+	 * Set the {@link Collaborateable} on which this {@link Transaction} is executed
+	 * @param c
+	 */
+	public void setCollaborateable(Collaborateable c);
 	
 	
 	/**
@@ -95,12 +70,20 @@ public class Transaction {
 	 * {@link TransactionParser}.
 	 * @return
 	 */
-	public String toXML()
-	{
-		//TODO implement
-		return null;
-	}
+	public String toXML();
 	
+	
+	/**
+	 * Get the {@link User} who has created this {@link Transaction}
+	 * @return
+	 */
+	public User getUser();
+	
+	/**
+	 * Set the {@link User} who has created this {@link Transaction}
+	 * @param u
+	 */
+	public void setUser(User u);
 	
 
 }

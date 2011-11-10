@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="UserDAOTest" project="GemsJaxServer" tests="1" started="0" failures="0" errors="2" ignored="0">
+  <testsuite name="test.persistence.UserDAOTest" incomplete="true">
+    <error>java.lang.ExceptionInInitializerError
+	at org.gemsjax.server.persistence.dao.UserDAO.&lt;init&gt;(UserDAO.java:24)
+	at test.persistence.UserDAOTest.classSetup(UserDAOTest.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:27)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:31)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:46)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+Caused by: org.hibernate.HibernateException: Unable to instantiate default tuplizer [org.hibernate.tuple.entity.PojoEntityTuplizer]
+	at org.hibernate.tuple.entity.EntityTuplizerFactory.constructTuplizer(EntityTuplizerFactory.java:108)
+	at org.hibernate.tuple.entity.EntityTuplizerFactory.constructDefaultTuplizer(EntityTuplizerFactory.java:133)
+	at org.hibernate.tuple.entity.EntityEntityModeToTuplizerMapping.&lt;init&gt;(EntityEntityModeToTuplizerMapping.java:80)
+	at org.hibernate.tuple.entity.EntityMetamodel.&lt;init&gt;(EntityMetamodel.java:322)
+	at org.hibernate.persister.entity.AbstractEntityPersister.&lt;init&gt;(AbstractEntityPersister.java:485)
+	at org.hibernate.persister.entity.JoinedSubclassEntityPersister.&lt;init&gt;(JoinedSubclassEntityPersister.java:126)
+	at org.hibernate.persister.PersisterFactory.createClassPersister(PersisterFactory.java:87)
+	at org.hibernate.impl.SessionFactoryImpl.&lt;init&gt;(SessionFactoryImpl.java:286)
+	at org.hibernate.cfg.Configuration.buildSessionFactory(Configuration.java:1872)
+	at org.gemsjax.server.persistence.HibernateUtil.&lt;clinit&gt;(HibernateUtil.java:16)
+	... 18 more
+Caused by: java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:532)
+	at org.hibernate.tuple.entity.EntityTuplizerFactory.constructTuplizer(EntityTuplizerFactory.java:105)
+	... 27 more
+Caused by: org.hibernate.PropertyNotFoundException: field [forExperiment] not found on org.gemsjax.server.data.metamodel.MetaModelImpl
+	at org.hibernate.property.DirectPropertyAccessor.getField(DirectPropertyAccessor.java:182)
+	at org.hibernate.property.DirectPropertyAccessor.getField(DirectPropertyAccessor.java:189)
+	at org.hibernate.property.DirectPropertyAccessor.getField(DirectPropertyAccessor.java:174)
+	at org.hibernate.property.DirectPropertyAccessor.getGetter(DirectPropertyAccessor.java:197)
+	at org.hibernate.mapping.Property.getGetter(Property.java:304)
+	at org.hibernate.tuple.entity.PojoEntityTuplizer.buildPropertyGetter(PojoEntityTuplizer.java:297)
+	at org.hibernate.tuple.entity.AbstractEntityTuplizer.&lt;init&gt;(AbstractEntityTuplizer.java:155)
+	at org.hibernate.tuple.entity.PojoEntityTuplizer.&lt;init&gt;(PojoEntityTuplizer.java:77)
+	... 32 more
+
+java.lang.NullPointerException
+	at test.persistence.UserDAOTest.classSetDown(UserDAOTest.java:47)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:616)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:44)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:15)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:41)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:37)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:236)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:46)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:467)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:683)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:390)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:197)
+
+</error>
+    <testcase name="createRegisteredUser" classname="test.persistence.UserDAOTest" incomplete="true"/>
+  </testsuite>
+</testrun>

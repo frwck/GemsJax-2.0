@@ -927,3 +927,160 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64
 
 !ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-11-09 19:18:28.469
 !MESSAGE Failed to load icon cache
+!SESSION 2011-11-10 10:03:50.422 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=de_DE
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.138
+!MESSAGE NLS unused message: missingOneOfTwoAttributes in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.155
+!MESSAGE NLS unused message: categoryNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.155
+!MESSAGE NLS unused message: actionNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.155
+!MESSAGE NLS unused message: actionAlreadyDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.155
+!MESSAGE NLS unused message: presetNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.156
+!MESSAGE NLS unused message: templateNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.156
+!MESSAGE NLS unused message: invalidActionType in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.156
+!MESSAGE NLS unused message: invalidEventHandlerType in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.156
+!MESSAGE NLS unused message: invalidRequiresConstraint in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.156
+!MESSAGE NLS unused message: invalidConflictsConstraint in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.156
+!MESSAGE NLS unused message: deprecatedRuntimeChangedAction in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.156
+!MESSAGE NLS unused message: tracingActionSorting in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.156
+!MESSAGE NLS unused message: tracingFrameworkActivationStarting in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.156
+!MESSAGE NLS unused message: tracingFrameworkActivationFinished in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.157
+!MESSAGE NLS missing message: problemCaseNotRecognized in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 10:57:26.157
+!MESSAGE NLS missing message: runtimeComponentTypeNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.wst.common.project.facet.core 4 0 2011-11-10 10:57:26.157
+!MESSAGE Project facet wst.web has not been defined. It is used in plugin org.eclipse.jst.common.project.facet.core.
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2011-11-10 13:30:17.175
+!MESSAGE Unable to load the repository http://dl.google.com/eclipse/plugin/3.4
+!STACK 1
+org.eclipse.equinox.internal.provisional.p2.core.ProvisionException: No repository found at http://dl.google.com/eclipse/plugin/3.4.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:380)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:641)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:88)
+	at org.eclipse.equinox.internal.provisional.p2.ui.operations.ProvisioningUtil.loadMetadataRepository(ProvisioningUtil.java:88)
+	at org.eclipse.equinox.internal.provisional.p2.ui.QueryableMetadataRepositoryManager.doLoadRepository(QueryableMetadataRepositoryManager.java:55)
+	at org.eclipse.equinox.internal.provisional.p2.ui.QueryableRepositoryManager.loadRepository(QueryableRepositoryManager.java:195)
+	at org.eclipse.equinox.internal.provisional.p2.ui.QueryableRepositoryManager.loadAll(QueryableRepositoryManager.java:108)
+	at org.eclipse.equinox.internal.p2.ui.sdk.PreloadingRepositoryHandler$2.run(PreloadingRepositoryHandler.java:71)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2011-11-10 13:30:17.177
+!MESSAGE No repository found at http://dl.google.com/eclipse/plugin/3.4.
+!SESSION 2011-11-10 13:32:40.817 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=de_DE
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2011-11-10 13:32:58.427
+!MESSAGE Registering: com.google.appengine.eclipse.sdkbundle_1.5.5.r35v201110112027
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2011-11-10 13:32:59.289
+!MESSAGE Registering: com.google.gwt.eclipse.sdkbundle_2.4.0.relr35v201110112027
+
+!ENTRY com.google.gdt.eclipse.core 1 0 2011-11-10 13:33:00.564
+!MESSAGE Scheduled rebuild of project GemsJaxClient because of plugin update (current version: 2.4.2.relr35v201110112027)
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.596
+!MESSAGE NLS unused message: missingOneOfTwoAttributes in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.596
+!MESSAGE NLS unused message: categoryNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.597
+!MESSAGE NLS unused message: actionNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.597
+!MESSAGE NLS unused message: actionAlreadyDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.597
+!MESSAGE NLS unused message: presetNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.597
+!MESSAGE NLS unused message: templateNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.597
+!MESSAGE NLS unused message: invalidActionType in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.605
+!MESSAGE NLS unused message: invalidEventHandlerType in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.606
+!MESSAGE NLS unused message: invalidRequiresConstraint in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.606
+!MESSAGE NLS unused message: invalidConflictsConstraint in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.606
+!MESSAGE NLS unused message: deprecatedRuntimeChangedAction in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.606
+!MESSAGE NLS unused message: tracingActionSorting in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.606
+!MESSAGE NLS unused message: tracingFrameworkActivationStarting in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.606
+!MESSAGE NLS unused message: tracingFrameworkActivationFinished in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.606
+!MESSAGE NLS missing message: problemCaseNotRecognized in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.osgi 2 1 2011-11-10 13:33:03.606
+!MESSAGE NLS missing message: runtimeComponentTypeNotDefined in: org.eclipse.wst.common.project.facet.core.internal.FacetedProjectFrameworkImpl
+
+!ENTRY org.eclipse.wst.common.project.facet.core 4 0 2011-11-10 13:33:03.607
+!MESSAGE Project facet wst.web has not been defined. It is used in plugin org.eclipse.jst.common.project.facet.core.
+
+!ENTRY org.eclipse.equinox.p2.ui 4 0 2011-11-10 13:33:58.328
+!MESSAGE Unable to load the repository http://dl.google.com/eclipse/plugin/3.4
+!STACK 1
+org.eclipse.equinox.internal.provisional.p2.core.ProvisionException: No repository found at http://dl.google.com/eclipse/plugin/3.4.
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.fail(AbstractRepositoryManager.java:380)
+	at org.eclipse.equinox.internal.p2.repository.helpers.AbstractRepositoryManager.loadRepository(AbstractRepositoryManager.java:641)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:92)
+	at org.eclipse.equinox.internal.p2.metadata.repository.MetadataRepositoryManager.loadRepository(MetadataRepositoryManager.java:88)
+	at org.eclipse.equinox.internal.provisional.p2.ui.operations.ProvisioningUtil.loadMetadataRepository(ProvisioningUtil.java:88)
+	at org.eclipse.equinox.internal.provisional.p2.ui.QueryableMetadataRepositoryManager.doLoadRepository(QueryableMetadataRepositoryManager.java:55)
+	at org.eclipse.equinox.internal.provisional.p2.ui.QueryableRepositoryManager.loadRepository(QueryableRepositoryManager.java:195)
+	at org.eclipse.equinox.internal.provisional.p2.ui.QueryableRepositoryManager.loadAll(QueryableRepositoryManager.java:108)
+	at org.eclipse.equinox.internal.p2.ui.sdk.PreloadingRepositoryHandler$2.run(PreloadingRepositoryHandler.java:71)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:55)
+!SUBENTRY 1 org.eclipse.equinox.p2.metadata.repository 4 1000 2011-11-10 13:33:58.329
+!MESSAGE No repository found at http://dl.google.com/eclipse/plugin/3.4.

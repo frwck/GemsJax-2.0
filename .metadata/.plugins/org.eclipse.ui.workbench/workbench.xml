@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="26" version="2.0">
+<workbench progressCount="25" version="2.0">
 <workbenchAdvisor/>
 <window height="768" maximized="true" width="1024" x="7" y="24">
 <fastViewData fastViewLocation="1024"/>
@@ -14,9 +14,9 @@
 <coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="120" y="30"/>
 <coolItem id="org.eclipse.jdt.ui.JavaElementCreationActionSet" itemType="typeToolBarContribution" x="104" y="30"/>
 <coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="76" y="30"/>
-<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="124" y="30"/>
+<coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="68" y="30"/>
 <coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
-<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="130" y="30"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="184" y="30"/>
 <coolItem id="group.editor" itemType="typeGroupMarker"/>
@@ -34,13 +34,104 @@
 <folder appearance="1" expanded="2">
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
 <part id="0"/>
+<part id="1"/>
+<part id="2"/>
+<part id="3"/>
+<part id="4"/>
+<part id="5"/>
+<part id="6"/>
+<part id="7"/>
+<part id="8"/>
+<part id="9"/>
+<part id="10"/>
+<part id="11"/>
+<part id="12"/>
+<part id="13"/>
+<part id="14"/>
+<part id="15"/>
+<part id="16"/>
+<part id="17"/>
+<part id="18"/>
+<part id="19"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CollaborateableImpl.java" partName="CollaborateableImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/CollaborateableImpl.java" title="CollaborateableImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/CollaborateableImpl.java" workbook="DefaultEditorWorkbook">
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CollaborateableImpl.java" partName="CollaborateableImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/CollaborateableImpl.java" title="CollaborateableImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/CollaborateableImpl.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/CollaborateableImpl.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1212" selectionTopPixel="860"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1109" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="Collaborateable.hbm.xml" partName="Collaborateable.hbm.xml" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/Collaborateable.hbm.xml" title="Collaborateable.hbm.xml" tooltip="GemsJaxServer/src/Collaborateable.hbm.xml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/Collaborateable.hbm.xml"/>
+</editor>
+<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="Collaborateable.java" partName="Collaborateable.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/collaboration/Collaborateable.java" title="Collaborateable.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/collaboration/Collaborateable.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/collaboration/Collaborateable.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1341" selectionTopPixel="579"/>
+</editor>
+<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="MetaModelImpl.java" partName="MetaModelImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/client/metamodel/MetaModelImpl.java" title="MetaModelImpl.java" tooltip="GemsJaxClient/src/org/gemsjax/client/metamodel/MetaModelImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/client/metamodel/MetaModelImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="505" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CollaborateableDAO.java" partName="CollaborateableDAO.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/dao/CollaborateableDAO.java" title="CollaborateableDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/CollaborateableDAO.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/CollaborateableDAO.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="321" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaModelImpl.java" partName="MetaModelImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaModelImpl.java" title="MetaModelImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaModelImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaModelImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1146" selectionTopPixel="348"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaClassImpl.java" partName="MetaClassImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaClassImpl.java" title="MetaClassImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaClassImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaClassImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="150" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaConnectionImpl.java" partName="MetaConnectionImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaConnectionImpl.java" title="MetaConnectionImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaConnectionImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaConnectionImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="223" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaInheritanceImpl.java" partName="MetaInheritanceImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaInheritanceImpl.java" title="MetaInheritanceImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaInheritanceImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaInheritanceImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaContainmentRelationImpl.java" partName="MetaContainmentRelationImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaContainmentRelationImpl.java" title="MetaContainmentRelationImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaContainmentRelationImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaContainmentRelationImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaBaseTypeImpl.java" partName="MetaBaseTypeImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaBaseTypeImpl.java" title="MetaBaseTypeImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaBaseTypeImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaBaseTypeImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaAttributeImpl.java" partName="MetaAttributeImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaAttributeImpl.java" title="MetaAttributeImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaAttributeImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaAttributeImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAO.java" partName="ExperimentDAO.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java" title="ExperimentDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+</editor>
+<editor activePart="true" focus="true" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="Experiment.hbm.xml" partName="Experiment.hbm.xml" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/Experiment.hbm.xml" title="Experiment.hbm.xml" tooltip="GemsJaxServer/src/Experiment.hbm.xml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/Experiment.hbm.xml"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentImpl.java" partName="ExperimentImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentImpl.java" title="ExperimentImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="539" selectionTopPixel="72"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAOTest.java" partName="ExperimentDAOTest.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java" title="ExperimentDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/ExperimentDAOTest.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="42" selectionOffset="2524" selectionTopPixel="901"/>
+</editor>
+<editor id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="hibernate.cfg.xml" partName="hibernate.cfg.xml" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/hibernate.cfg.xml" title="hibernate.cfg.xml" tooltip="GemsJaxServer/src/hibernate.cfg.xml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/hibernate.cfg.xml"/>
+</editor>
+<editor id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="User.hbm.xml" partName="User.hbm.xml" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/User.hbm.xml" title="User.hbm.xml" tooltip="GemsJaxServer/src/User.hbm.xml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/User.hbm.xml"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TransactionImpl.java" partName="TransactionImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/TransactionImpl.java" title="TransactionImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/TransactionImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/TransactionImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1581" selectionTopPixel="26"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CommandImpl.java" partName="CommandImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/command/CommandImpl.java" title="CommandImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/command/CommandImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/command/CommandImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="64" selectionTopPixel="0"/>
 </editor>
 </editors>
 <views>
@@ -62,8 +153,8 @@
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Warnings"/>
 <category IMemento.internal.id="Errors"/>
+<category IMemento.internal.id="Warnings"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="0" org.eclipse.ui.ide.markerType="0" org.eclipse.ui.ide.pathField="0" org.eclipse.ui.ide.resourceField="0" org.eclipse.ui.ide.severityAndDescriptionField="0"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -110,7 +201,7 @@
 <view id="com.google.gwt.eclipse.DevModeView" partName="Development Mode"/>
 <view id="org.eclipse.jdt.ui.JavadocView" partName="Javadoc"/>
 </views>
-<perspectives activePart="org.eclipse.jdt.ui.CompilationUnitEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
+<perspectives activePart="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.jdt.internal.ui.JavaPerspectiveFactory" id="org.eclipse.jdt.ui.JavaPerspective" label="Java"/>
 <alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
@@ -219,8 +310,8 @@
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@50c0fa32" ratio="0.6551724" ratioLeft="570" ratioRight="300" relationship="4" relative="org.eclipse.ui.editorss">
-<folder activePageID="org.eclipse.jdt.junit.ResultView" appearance="2" expanded="2">
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@4fa54171" ratio="0.7491409" ratioLeft="654" ratioRight="219" relationship="4" relative="org.eclipse.ui.editorss">
+<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
 <page content="org.eclipse.jdt.ui.SourceView" label="Declaration"/>
@@ -333,168 +424,155 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/collaboration/Collaborateable.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/client/metamodel/MetaModelImpl.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/collaboration/VectorClock.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" path="/GemsJaxServer/src/Collaborateable.hbm.xml"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/collaboration/Transaction.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/Collaborateable.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/Transaction.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/TransactionImpl.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/collaboration/command/Command.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaModelImpl.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/command/Command.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/command/CommandImpl.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/CollaborateableImpl.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/client/metamodel/factory/MetaFactory.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/client/communication/CollaborationChannel.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/client/util/RegExFactory.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/client/admin/AdminApplicationController.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" path="/GemsJaxServer/src/Experiment.hbm.xml"/>
 </editors>
-<item historyLabel="ExperimentDAOTest.java" index="0">
-<position info="not_deleted" x="4601" y="0"/>
-</item>
-<item historyLabel="ExperimentDAOTest.java" index="0">
-<position info="not_deleted" x="4362" y="0"/>
-</item>
-<item historyLabel="Collaborateable.java" index="1">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="Collaborateable.java" index="1">
-<position info="not_deleted" x="1102" y="3"/>
-</item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="4632" y="0"/>
-</item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="1229" y="0"/>
-</item>
-<item historyLabel="VectorClock.java" index="3">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="Transaction.java" index="4">
-<position info="not_deleted" x="2666" y="0"/>
-</item>
-<item historyLabel="Collaborateable.java" index="5">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="Collaborateable.java" index="5">
+<item historyLabel="Collaborateable.hbm.xml" index="0"/>
+<item historyLabel="Transaction.java" index="1">
 <position/>
 </item>
-<item historyLabel="CollaborateableImpl.java" index="6">
-<position info="not_deleted" x="320" y="15"/>
-</item>
-<item historyLabel="CollaborateableImpl.java" index="6">
-<position info="not_deleted" x="524" y="0"/>
-</item>
-<item historyLabel="CollaborateableImpl.java" index="6">
-<position info="not_deleted" x="367" y="0"/>
-</item>
-<item historyLabel="CollaborateableImpl.java" index="6">
-<position/>
-</item>
-<item historyLabel="Collaborateable.java" index="1">
-<position info="not_deleted" x="706" y="0"/>
-</item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="1427" y="0"/>
-</item>
-<item historyLabel="MetaFactory.java" index="7">
+<item historyLabel="Transaction.java" index="2">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="MetaFactory.java" index="7">
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="1294" y="0"/>
+</item>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="889" y="0"/>
+</item>
+<item historyLabel="Transaction.java" index="1">
 <position/>
 </item>
-<item historyLabel="MetaFactory.java" index="7">
-<position info="not_deleted" x="1769" y="6"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="836" y="0"/>
 </item>
-<item historyLabel="MetaFactory.java" index="7">
+<item historyLabel="Command.java" index="4">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="836" y="0"/>
+</item>
+<item historyLabel="MetaModelImpl.java" index="5">
+<position info="not_deleted" x="1146" y="0"/>
+</item>
+<item historyLabel="Transaction.java" index="1">
 <position/>
 </item>
-<item historyLabel="MetaFactory.java" index="7">
-<position info="not_deleted" x="6160" y="0"/>
+<item historyLabel="MetaModelImpl.java" index="5">
+<position info="not_deleted" x="1146" y="0"/>
 </item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="3369" y="0"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="3293" y="0"/>
 </item>
-<item historyLabel="CollaborationChannel.java" index="8">
-<position info="not_deleted" x="1415" y="0"/>
+<item historyLabel="Collaborateable.hbm.xml" index="0"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="1267" y="0"/>
 </item>
-<item historyLabel="RegExFactory.java" index="9">
-<position info="not_deleted" x="1649" y="8"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="CollaborationChannel.java" index="8">
-<position info="not_deleted" x="1435" y="0"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="2753" y="0"/>
 </item>
-<item historyLabel="AdminApplicationController.java" index="10">
-<position info="not_deleted" x="6014" y="0"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="2630" y="0"/>
 </item>
-<item historyLabel="CollaborateableImpl.java" index="6">
-<position info="not_deleted" x="398" y="0"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="2753" y="0"/>
 </item>
-<item historyLabel="Collaborateable.java" index="1">
-<position info="not_deleted" x="706" y="0"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="1267" y="0"/>
 </item>
-<item historyLabel="Collaborateable.java" index="1">
-<position info="not_deleted" x="712" y="0"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="785" y="0"/>
 </item>
-<item historyLabel="CollaborationChannel.java" index="8">
-<position info="not_deleted" x="1456" y="0"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="2556" y="0"/>
 </item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="3379" y="0"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="2753" y="0"/>
 </item>
-<item historyLabel="Transaction.java" index="4">
-<position info="not_deleted" x="2666" y="0"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="1986" y="0"/>
 </item>
-<item historyLabel="Transaction.java" index="4">
-<position info="not_deleted" x="1359" y="1"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="1990" y="0"/>
 </item>
-<item historyLabel="Transaction.java" index="4">
-<position info="not_deleted" x="1382" y="0"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="2556" y="0"/>
 </item>
-<item historyLabel="CollaborateableImpl.java" index="6">
-<position info="not_deleted" x="491" y="0"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="764" y="0"/>
 </item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="3379" y="0"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="2769" y="0"/>
 </item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="4752" y="11"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="764" y="0"/>
 </item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="4752" y="11"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="1850" y="0"/>
 </item>
-<item historyLabel="Collaborateable.java" index="1">
-<position info="not_deleted" x="486" y="0"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="1581" y="0"/>
 </item>
-<item historyLabel="CollaborateableImpl.java" index="6">
-<position info="not_deleted" x="685" y="0"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="1850" y="0"/>
 </item>
-<item historyLabel="Collaborateable.java" index="1">
-<position info="not_deleted" x="486" y="0"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="1581" y="0"/>
 </item>
-<item historyLabel="Collaborateable.java" index="1">
-<position info="not_deleted" x="1330" y="0"/>
+<item historyLabel="Transaction.java" index="1">
+<position info="not_deleted" x="1850" y="0"/>
 </item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="4752" y="11"/>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="1581" y="0"/>
 </item>
-<item historyLabel="MetaModelImpl.java" index="2">
-<position info="not_deleted" x="3843" y="0"/>
+<item historyLabel="Command.java" index="6">
+<position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="Collaborateable.java" index="1">
-<position info="not_deleted" x="1330" y="0"/>
+<item historyLabel="Command.java" index="6">
+<position/>
 </item>
-<item historyLabel="CollaborateableImpl.java" index="6">
-<position info="not_deleted" x="685" y="0"/>
+<item historyLabel="CommandImpl.java" index="7">
+<position info="not_deleted" x="78" y="7"/>
 </item>
-<item historyLabel="CollaborateableImpl.java" index="6">
-<position info="not_deleted" x="320" y="19"/>
+<item historyLabel="CommandImpl.java" index="7">
+<position info="not_deleted" x="90" y="0"/>
 </item>
-<item historyLabel="CollaborateableImpl.java" index="6">
-<position info="not_deleted" x="856" y="0"/>
+<item historyLabel="CommandImpl.java" index="7">
+<position info="not_deleted" x="78" y="10"/>
 </item>
-<item active="true" historyLabel="CollaborateableImpl.java" index="6">
+<item historyLabel="CommandImpl.java" index="7">
+<position info="not_deleted" x="136" y="0"/>
+</item>
+<item historyLabel="CommandImpl.java" index="7">
+<position info="not_deleted" x="64" y="0"/>
+</item>
+<item historyLabel="TransactionImpl.java" index="3">
+<position info="not_deleted" x="1581" y="0"/>
+</item>
+<item historyLabel="Collaborateable.hbm.xml" index="0"/>
+<item historyLabel="CollaborateableImpl.java" index="8">
 <position info="not_deleted" x="1109" y="0"/>
 </item>
+<item historyLabel="Collaborateable.hbm.xml" index="0"/>
+<item historyLabel="CollaborateableImpl.java" index="8">
+<position info="not_deleted" x="1109" y="0"/>
+</item>
+<item historyLabel="Collaborateable.hbm.xml" index="0"/>
+<item active="true" historyLabel="Experiment.hbm.xml" index="9"/>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
 </page>
@@ -513,50 +591,50 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="AdminApplicationController.java" tooltip="GemsJaxClient/src/org/gemsjax/client/admin/AdminApplicationController.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/client/admin/AdminApplicationController.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="RegExFactory.java" tooltip="GemsJaxClient/src/org/gemsjax/client/util/RegExFactory.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/client/util/RegExFactory.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="CollaborationChannel.java" tooltip="GemsJaxClient/src/org/gemsjax/client/communication/CollaborationChannel.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/client/communication/CollaborationChannel.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="MetaFactory.java" tooltip="GemsJaxClient/src/org/gemsjax/client/metamodel/factory/MetaFactory.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/client/metamodel/factory/MetaFactory.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Collaborateable.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/Collaborateable.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/Collaborateable.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Command.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/command/Command.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/command/Command.java"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="Transaction.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/collaboration/Transaction.java">
 <persistable path="/GemsJaxClient/src/org/gemsjax/shared/collaboration/Transaction.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="VectorClock.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/collaboration/VectorClock.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/collaboration/VectorClock.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="Command.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/collaboration/command/Command.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/shared/collaboration/command/Command.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="MetaModelImpl.java" tooltip="GemsJaxClient/src/org/gemsjax/client/metamodel/MetaModelImpl.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/client/metamodel/MetaModelImpl.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Transaction.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/Transaction.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaborateable/Transaction.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="Collaborateable.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/collaboration/Collaborateable.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/collaboration/Collaborateable.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="Model.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/model/Model.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/shared/model/Model.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="RegisteredUserImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/user/RegisteredUserImpl.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/user/RegisteredUserImpl.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="User.hbm.xml" tooltip="GemsJaxServer/src/User.hbm.xml">
+<persistable path="/GemsJaxServer/src/User.hbm.xml"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AlreadyAssignedException.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/AlreadyAssignedException.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/AlreadyAssignedException.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="hibernate.cfg.xml" tooltip="GemsJaxServer/src/hibernate.cfg.xml">
+<persistable path="/GemsJaxServer/src/hibernate.cfg.xml"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UserDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/UserDAOTest.java">
-<persistable path="/GemsJaxServer/src/test/persistence/UserDAOTest.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/ExperimentDAOTest.java">
+<persistable path="/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="InvitationException.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/InvitationException.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/exception/InvitationException.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentImpl.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentImpl.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAO.java" tooltip="GemsJaxServer/src/test/persistence/ExperimentDAO.java">
-<persistable path="/GemsJaxServer/src/test/persistence/ExperimentDAO.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="Experiment.hbm.xml" tooltip="GemsJaxServer/src/Experiment.hbm.xml">
+<persistable path="/GemsJaxServer/src/Experiment.hbm.xml"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UserDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/UserDAO.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/UserDAO.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaAttributeImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaAttributeImpl.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaAttributeImpl.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaBaseTypeImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaBaseTypeImpl.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaBaseTypeImpl.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaContainmentRelationImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaContainmentRelationImpl.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaContainmentRelationImpl.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MetaInheritanceImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaInheritanceImpl.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/data/metamodel/MetaInheritanceImpl.java"/>
 </file>
 </mruList>
 </workbench>

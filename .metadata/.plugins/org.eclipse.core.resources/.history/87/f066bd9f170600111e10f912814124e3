@@ -1,5 +1,0 @@
-package org.gemsjax.shared.collaboration;
-
-public class VectorClock {
-
-}

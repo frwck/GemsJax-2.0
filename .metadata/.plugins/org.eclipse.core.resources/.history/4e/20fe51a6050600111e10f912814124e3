@@ -1,5 +1,0 @@
-package org.gemsjax.shared.user;
-
-public interface RegisterdUser {
-
-}

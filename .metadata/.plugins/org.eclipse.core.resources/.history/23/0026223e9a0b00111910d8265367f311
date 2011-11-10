@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+<class name="org.gemsjax.server.persistence.collaborateable.CollaborateableImpl" table="Collaborateable">
+    <id name="id" type="int" column="id">
+    	<generator class="increment" />
+    </id>
+    
+    <property name="name" column="name" type="string"/>
+    <property name="keywords" column="keywords" type="string"/>
+    
+    
+    <!-- Collaborateable has a Registered User as owner -->
+    <many-to-one name="owner" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" fetch="select">
+            <column name="User_id_owner" not-null="true" />
+    </many-to-one>
+    
+    
+    <set name="administrators" table="AdministrateExperiment" inverse="false">        
+			 <key column="Experiment_id"/>         
+				<many-to-many column="User_id" class="org.gemsjax.server.persistence.user.RegisteredUserImpl"/>    
+	</set>
+    
+    
+    <joined-subclass name="org.gemsjax.server.data.metamodel.MetaModelImpl" table="MetaModel">
+        <key column="Collaborateable_id"/>
+        <property name="forExperiment" column="forExperiment" type="boolean"/>
+    </joined-subclass>
+    
+    
+    
+    <!-- 
+    
+    <joined-subclass name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl" table="ExperimentUser">
+        <key column="user_id"/>
+        <property name="username" column="username" type="string" />
+        <property name="passwordHash" column="password" type="string" />
+        
+        <many-to-one name="experimentGroup" class="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl" fetch="select">
+            <column name="ExperimentGroup_id" not-null="true" />
+        </many-to-one>
+        
+    </joined-subclass>
+     -->
+    
+         
+</class>
+
+
+
+
+</hibernate-mapping>

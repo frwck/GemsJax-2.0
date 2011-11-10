@@ -1,0 +1,21 @@
+package org.gemsjax.server.persistence.collaborateable.command;
+
+import org.gemsjax.shared.collaboration.command.Command;
+
+public class CommandImpl {
+	
+	private String id;
+	
+	public CommandImpl()
+	{
+		
+	}
+	
+	
+	public String getId()
+	{
+		return id;
+	}
+
+
+}

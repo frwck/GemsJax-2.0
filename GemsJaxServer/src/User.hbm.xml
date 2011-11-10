@@ -11,12 +11,16 @@
     
     <property name="displayedName" column="displayedName" type="string"/>
     
-    
+    <!--  The Collaborateable on which this User works -->
+    <set name="collaborateables" table="CollaborateOn" inverse="true" >        
+		<key column="User_id" />         
+		<many-to-many column="Collaborateable_id" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl"/>    
+	</set>
     
     
     
     <joined-subclass name="org.gemsjax.server.persistence.user.RegisteredUserImpl" table="RegisteredUser">
-        <key column="user_id"/>
+        <key column="user_id" on-delete="cascade" />
         <property name="username" column="username" type="string" />
         <property name="passwordHash" column="password" type="string" />
         <property name="email" column="email" type="string" />
@@ -28,8 +32,9 @@
             <one-to-many class="org.gemsjax.server.persistence.experiment.ExperimentImpl" />
     	</set>
     	
+    	<!--  The set of Experiments that were administrated by this user -->
     	<set name="administratedExperiments" table="AdministrateExperiment" inverse="true" >        
-			 <key column="User_id"/>         
+			 <key column="User_id" />         
 				<many-to-many column="Experiment_id" class="org.gemsjax.server.persistence.experiment.ExperimentImpl"/>    
 		</set> 
     </joined-subclass>
@@ -39,7 +44,7 @@
     
     
     <joined-subclass name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl" table="ExperimentUser">
-        <key column="user_id"/>
+        <key column="user_id" on-delete="cascade" />
         <property name="username" column="username" type="string" />
         <property name="passwordHash" column="password" type="string" />
         

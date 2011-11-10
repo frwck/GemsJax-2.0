@@ -4,7 +4,7 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-access="field">
-<class name="org.gemsjax.server.persistence.collaborateable.CollaborateableImpl" table="Collaborateable">
+<class name="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" table="Collaborateable">
     <id name="id" type="int" column="id">
     	<generator class="increment" />
     </id>
@@ -12,8 +12,22 @@
     <property name="name" column="name" type="string"/>
     <property name="keywords" column="keywords" type="string"/>
     
+    
+    <!-- Collaborateable has a Registered User as owner -->
+    <many-to-one name="owner" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" fetch="select">
+            <column name="User_id_owner" not-null="true" />
+    </many-to-one>
+    
+    <!-- Users that collaborate on this Collaborateable -->
+    <set name="users" table="CollaborateOn" inverse="false">        
+			<key column="Collaborateable_id" />         
+			<many-to-many column="User_id" class="org.gemsjax.server.persistence.user.UserImpl" />    
+	</set>
+    
+    
     <joined-subclass name="org.gemsjax.server.data.metamodel.MetaModelImpl" table="MetaModel">
-        <key column="Collaborateable"/>
+        <key column="Collaborateable_id" on-delete="cascade" />
+        <property name="forExperiment" column="forExperiment" type="boolean" />
     </joined-subclass>
     
     
@@ -34,5 +48,8 @@
     
          
 </class>
+
+
+
 
 </hibernate-mapping>

@@ -7,3 +7,8 @@
 1320838592259	Delete element
 1320844511541	Rename type 'MetaModelDAO'
 1320846093488	Encapsulate field 'metaModelTemplate'
+1320921425105	Rename type 'Transaction'
+1320921916100	Copy file
+1320923084184	Rename type 'Command'
+1320931287338	Rename package 'org.gemsjax.server.persistence.collaborateable'
+1320931301619	Rename package 'org.gemsjax.server.persistence.collaborateable.command'

@@ -1,5 +1,0 @@
-package org.gemsjax.shared.experiment;
-
-public interface ExperimentGroup {
-
-}

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.gemsjax.server.persistence.collaborateable.CollaborateableImpl;
+
+import org.gemsjax.server.persistence.collaboration.CollaborateableImpl;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -27,6 +28,11 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 	private List<MetaClass> metaClasses;
 	private List<MetaBaseType> baseTypes;
 	private List<MetaAttribute> attributes;
+	
+	/**
+	 * This field is reserved for hibernate to filter a MetaModel from a MetaModel that is part of an Experiment
+	 */
+	private boolean forExperiment;
 	
 	/**
 	 * This map provides a quick access map for getting a element by its id
@@ -138,6 +144,14 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 	@Override
 	public void removeAttribute(MetaAttribute attribute) {
 		attributes.remove(attribute);
+	}
+
+	public boolean isForExperiment() {
+		return forExperiment;
+	}
+
+	public void setForExperiment(boolean forExperiment) {
+		this.forExperiment = forExperiment;
 	}
 
 	
