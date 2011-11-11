@@ -44,27 +44,32 @@
     </set>
     
     
+    <!-- MetaModel -->
     <joined-subclass name="org.gemsjax.server.data.metamodel.MetaModelImpl" table="MetaModel">
         <key column="Collaborateable_id" on-delete="cascade" />
         <property name="forExperiment" column="forExperiment" type="boolean" />
+        
+        
+        <set name="models" table="Model" lazy="false" fetch="select">
+            <key>
+                <column name="MetaModel_id_basedOn" not-null="true" />
+            </key>
+            <one-to-many class="org.gemsjax.server.data.model.ModelImpl" />
+    	</set>
+    	
     </joined-subclass>
     
     
-    
-    
-    <!-- 
-    
-    <joined-subclass name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl" table="ExperimentUser">
-        <key column="user_id"/>
-        <property name="username" column="username" type="string" />
-        <property name="passwordHash" column="password" type="string" />
+  	<!-- Model -->
+    <joined-subclass name="org.gemsjax.server.data.model.ModelImpl" table="Model">
+        <key column="Collaborateable_id" on-delete="cascade" />
+        <property name="forExperiment" column="forExperiment" type="boolean" />
         
-        <many-to-one name="experimentGroup" class="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl" fetch="select">
-            <column name="ExperimentGroup_id" not-null="true" />
-        </many-to-one>
+        <many-to-one name="metaModel" class="org.gemsjax.server.data.metamodel.MetaModelImpl" fetch="select">
+            <column name="MetaModel_id_basedOn" not-null="true" />
+   	 	</many-to-one>
         
     </joined-subclass>
-     -->
     
          
 </class>

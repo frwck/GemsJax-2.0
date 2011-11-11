@@ -217,5 +217,10 @@ public class MetaModelImpl implements MetaModel{
 	public void setPublicPermission(int permission) {
 		this.publicPermission = permission;
 	}
+
+	@Override
+	public void setOwner(RegisteredUser owner) {
+		this.owner = owner;
+	}
 	
 }

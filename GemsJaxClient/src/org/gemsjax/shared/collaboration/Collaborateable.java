@@ -50,6 +50,12 @@ public interface Collaborateable{
 	public RegisteredUser getOwner();
 	
 	/**
+	 * Set the owner
+	 * @param owner
+	 */
+	public void setOwner(RegisteredUser owner);
+	
+	/**
 	 * Get the name
 	 * @return
 	 */

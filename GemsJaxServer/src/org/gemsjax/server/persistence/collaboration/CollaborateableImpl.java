@@ -52,6 +52,7 @@ public class CollaborateableImpl implements Collaborateable
 		return owner;
 	}
 	
+	@Override
 	public void setOwner(RegisteredUser owner)
 	{
 		this.owner = owner;

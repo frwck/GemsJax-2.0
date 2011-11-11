@@ -2,6 +2,7 @@ package org.gemsjax.server.data.metamodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.gemsjax.shared.metamodel.MetaModelElement;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
+import org.gemsjax.shared.model.Model;
 
 
 
@@ -28,6 +30,9 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 	private List<MetaClass> metaClasses;
 	private List<MetaBaseType> baseTypes;
 	private List<MetaAttribute> attributes;
+	
+	
+	private Set<Model> models;
 	
 	/**
 	 * This field is reserved for hibernate to filter a MetaModel from a MetaModel that is part of an Experiment

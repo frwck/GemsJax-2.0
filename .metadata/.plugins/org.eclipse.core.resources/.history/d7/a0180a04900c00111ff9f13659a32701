@@ -1,0 +1,69 @@
+package test.persistence;
+
+import java.util.ArrayList;
+import java.util.Set;
+
+import org.gemsjax.server.persistence.dao.CollaborateableDAO;
+import org.gemsjax.server.persistence.dao.ExperimentDAO;
+import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.exception.ArgumentException;
+import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.experiment.Experiment;
+import org.gemsjax.shared.experiment.ExperimentGroup;
+import org.gemsjax.shared.experiment.ExperimentInvitation;
+import org.gemsjax.shared.user.ExperimentUser;
+import org.gemsjax.shared.user.RegisteredUser;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+
+public class CollaborateableDAOTest {
+	
+	private static CollaborateableDAO dao;
+	private static UserDAO registeredUserDAO;
+	private static Set<Collaborateable> createdCollaborateables;
+	
+	 @BeforeClass 
+	 public static void classSetup() throws UsernameInUseException {
+
+		 dao = new CollaborateableDAO();
+		 registeredUserDAO = new UserDAO();
+		 
+		 username = "username";
+		 password = "password";
+		 experimentName = "ExperimentName";
+		 experimentDescription = "ExperimentDescription";
+		 experimentGroupName ="TestExperimentGroupName";
+		 
+		 createdExperimentUsers = new ArrayList<ExperimentUser>();
+		 createdExperiments = new ArrayList<Experiment>();
+		 createdExperimentGroups = new ArrayList<ExperimentGroup>();
+		 createdExperimentInvitations = new ArrayList<ExperimentInvitation>();
+		 
+		 
+		  owner1 = registeredUserDAO.createRegisteredUser("owner1", "passwordHash", "email"); 
+		  admins = new RegisteredUser[3];
+		  
+		  for (int i =0; i<admins.length; i++)
+			  admins[i] = registeredUserDAO.createRegisteredUser("ExperimentAdmin"+i, "passwordHash", "email"); 
+		  
+			
+	 }
+	 
+	 
+	 @AfterClass
+	 public static void classSetDown() throws ArgumentException
+	 {
+		 for (Experiment e: createdExperiments)
+		 {
+			dao.deleteExperiment(e);
+		 }
+		 
+		 
+		 registeredUserDAO.deleteRegisteredUser(owner1);
+		 for (int i =0; i<admins.length; i++)
+			 registeredUserDAO.deleteRegisteredUser(admins[i]);
+		  
+	 }
+
+}
