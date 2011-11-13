@@ -243,6 +243,7 @@ public class CollaborateableDAO {
 		{	
 			tx = session.beginTransaction();
 				c.getUsers().add(u);
+				u.getCollaborateables().add(c);
 			session.update(u);
 			tx.commit();
 			
@@ -263,7 +264,7 @@ public class CollaborateableDAO {
 	 * @param c
 	 * @param u
 	 */
-	public void addCollaborativeUser(Collaborateable c, Set<User> u )
+	public void addCollaborativeUsers(Collaborateable c, Set<User> u )
 	{
 		Transaction tx = null;
 		
@@ -292,7 +293,7 @@ public class CollaborateableDAO {
 	 * @param owner
 	 * @return
 	 */
-	public Model createModel(String name, RegisteredUser owner)
+	public Model createModel(String name, MetaModel metaModel, RegisteredUser owner)
 	{
 		
 		Transaction tx = null;
@@ -303,6 +304,7 @@ public class CollaborateableDAO {
 			ModelImpl model = new ModelImpl();
 				model.setName(name);
 				model.setOwner(owner);
+				model.setMetaModel(metaModel);
 				model.getUsers().add(owner);
 				model.setForExperiment(false);
 				model.setPublicPermission(Collaborateable.NO_PERMISSION);

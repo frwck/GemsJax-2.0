@@ -1,9 +1,0 @@
-package org.gemsjax.server.persistence.dao.exception;
-
-public class InvitationException extends Exception {
-
-	public InvitationException()
-	{
-		
-	}
-}

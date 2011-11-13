@@ -24,7 +24,7 @@ public class ModelImpl extends CollaborateableImpl implements Model {
 	}
 
 	
-	public void setMetaModel(MetaModelImpl metaModel) {
+	public void setMetaModel(MetaModel metaModel) {
 		this.metaModel = metaModel;
 	}
 

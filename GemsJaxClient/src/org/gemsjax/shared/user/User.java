@@ -1,5 +1,9 @@
 package org.gemsjax.shared.user;
 
+import java.util.Set;
+
+import org.gemsjax.shared.collaboration.Collaborateable;
+
 /**
  * This is the shared interface for User. It provides the public methods, that 
  * @author hannes
@@ -19,6 +23,12 @@ public interface User {
 	 */
 	
 	public String getDisplayedName();
+	
+	/**
+	 * Get a set with all {@link Collaborateable}s, on which this {@link User} works collaborative.
+	 * @return
+	 */
+	public Set<Collaborateable> getCollaborateables();
 	
 	/**
 	 * Get the {@link UserOnlineState}

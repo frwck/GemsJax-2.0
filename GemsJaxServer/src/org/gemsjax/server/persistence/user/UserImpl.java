@@ -34,6 +34,7 @@ public class UserImpl implements User{
 	 * Get the {@link Collaborateable}s on which this user works collaborativ with other {@link User}s
 	 * @return
 	 */
+	@Override
 	public Set<Collaborateable> getCollaborateables()
 	{
 		return collaborateables;

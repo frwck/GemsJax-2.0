@@ -1,0 +1,34 @@
+package org.gemsjax.shared.user;
+
+import java.util.Set;
+
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.experiment.Experiment;
+
+/**
+ * This is a {@link User} that represents a normal registered {@link User}
+ * @author hannes
+ *
+ */
+public interface RegisteredUser extends User{
+
+	
+	public String getUsername();
+	
+	/**
+	 * Get the email address
+	 * @return
+	 */
+	public String getEmail();
+	
+	public void setDisplayedName(String displayedName);
+	
+	/**
+	 * Get the 
+	 * @return
+	 */
+	public Set<Collaborateable> getOwnedCollaborateables();
+	
+	public Set<Experiment> getAdministratedExperiments();
+	
+}

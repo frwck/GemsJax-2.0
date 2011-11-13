@@ -1,23 +1,17 @@
 package test.persistence;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.gemsjax.server.persistence.dao.CollaborateableDAO;
-import org.gemsjax.server.persistence.dao.ExperimentDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
-import org.gemsjax.shared.experiment.Experiment;
-import org.gemsjax.shared.experiment.ExperimentGroup;
-import org.gemsjax.shared.experiment.ExperimentInvitation;
 import org.gemsjax.shared.metamodel.MetaModel;
-import org.gemsjax.shared.user.ExperimentUser;
+import org.gemsjax.shared.model.Model;
 import org.gemsjax.shared.user.RegisteredUser;
-import org.gemsjax.shared.user.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -72,6 +66,8 @@ public class CollaborateableDAOTest {
 	 public void test() throws MoreThanOneExcpetion
 	 {
 		 createMetaModel();
+		 createModel();
+		 assignCollaborativeUser();
 	 }
 	 
 	 
@@ -91,13 +87,57 @@ public class CollaborateableDAOTest {
 			assertTrue( m.getName().equals(name+i));
 			assertTrue(m.getPublicPermission() == Collaborateable.NO_PERMISSION);
 			assertTrue(m.getOwner() == owner1);
-			
+			assertTrue(owner1.get)
 			assertTrue(dao.getMetaModelById(m.getId()) == m);
 			
 		 }
 		 
+	 }
+	 
+	 
+	 private void assignCollaborativeUser()
+	 {
+		
+		 for (Collaborateable c: createdCollaborateables)
+		 {
+			 for (RegisteredUser u :collaborativeUsers)
+			 {
+				 dao.addCollaborativeUser(c, u);
+				 assertTrue(c.getUsers().contains(u));
+				 assertTrue(((RegisteredUserImpl)u).getCollaborateables().contains(c));
+			 }
+				 
+			 assertTrue (c.getUsers().containsAll(collaborativeUsers));
+			 assertTrue (c.getUsers().contains(owner1));
+			 assertTrue(c.getUsers().size()== collaborativeUsers.size()+1);
+		 }
 		 
 		 
+	 }
+	 
+	 
+	 private void createModel() throws MoreThanOneExcpetion
+	 {
+		 String name ="name";
+		 
+		 Model m;
+		 int tests = 10;
+		 
+		 MetaModel baseModel = dao.createMetaModel("TestBaseMetaModel", owner1);
+		 createdCollaborateables.add(baseModel);
+		 
+		 for (int i =0; i<tests; i++)
+		 {
+			m = dao.createModel(name+i, baseModel, owner1);
+			createdCollaborateables.add(m);
+			
+			assertTrue( m.getName().equals(name+i));
+			assertTrue(m.getPublicPermission() == Collaborateable.NO_PERMISSION);
+			assertTrue(m.getOwner() == owner1);
+			assertTrue(m.getMetaModel() == baseModel);
+			assertTrue(dao.getModelById(m.getId()) == m);
+			
+		 }
 	 }
 
 }
