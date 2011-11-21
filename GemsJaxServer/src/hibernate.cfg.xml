@@ -8,7 +8,7 @@
      org.gjt.mm.mysql.Driver
     </property>
     <property name="hibernate.connection.url">
-      jdbc:mysql://localhost:3306/gemsjax
+      jdbc:mysql://localhost:3306/gemsjax2
     </property>
     <property name="hibernate.connection.username">gemsjax</property>
     <property name="hibernate.connection.password">gemsqweasdyxc</property>

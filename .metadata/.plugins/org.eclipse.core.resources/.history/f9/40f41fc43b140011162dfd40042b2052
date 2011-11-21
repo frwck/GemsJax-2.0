@@ -1,0 +1,5 @@
+package org.gemsjax.server.persistence.dao.exception;
+
+public class DAOException {
+
+}

@@ -3,8 +3,8 @@
 	<section name="org.eclipse.debug.ui.SCOPED_SAVE_SELECTION_DIALOG">
 		<item value="350" key="DIALOG_WIDTH"/>
 		<item value="268" key="DIALOG_Y_ORIGIN"/>
+		<item value="682" key="DIALOG_X_ORIGIN"/>
 		<item value="350" key="DIALOG_HEIGHT"/>
-		<item value="675" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Ubuntu|11.0|0|GTK|1|" key="DIALOG_FONT_NAME"/>
 	</section>
 </section>

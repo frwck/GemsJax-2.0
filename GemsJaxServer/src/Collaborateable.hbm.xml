@@ -9,7 +9,7 @@
     	<generator class="increment" />
     </id>
     
-    <property name="name" column="name" type="string"/>
+    <property name="name" column="name" type="string" not-null="true" />
     <property name="keywords" column="keywords" type="string"/>
     
     <property name="publicPermission" column="publicPermission" type="int" not-null="true" />
@@ -27,7 +27,7 @@
 	</set>
 	
 	<!--  The vector clock mapping  -->
-	<map name="vectorClock" table="VectorClockEntry">
+	<map name="vectorClock" table="VectorClockEntry" cascade="delete">
 		<key column="Collaborateable_id" />
 		<index-many-to-many column="User_id" class="org.gemsjax.server.persistence.user.UserImpl" />
 		<element column="value" type="int" />
@@ -36,7 +36,7 @@
     
     
     <!--  Transactions -->
-    <set name="transactions" table="Transaction" lazy="false" fetch="select" order-by="sequenceNumber" >
+    <set name="transactions" table="Transaction" lazy="false" cascade="all-delete-orphan" inverse="true" fetch="select" order-by="sequenceNumber" >
     	<key>
         	<column name="Collaborateable_id" not-null="true" />
        </key>
@@ -50,7 +50,7 @@
         <property name="forExperiment" column="forExperiment" type="boolean" />
         
         
-        <set name="models" table="Model" lazy="false" fetch="select">
+        <set name="models" table="Model" lazy="false" fetch="select" cascade="all-delete-orphan" inverse = "true">
             <key>
                 <column name="MetaModel_id_basedOn" not-null="true" />
             </key>

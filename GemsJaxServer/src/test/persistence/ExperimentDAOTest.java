@@ -8,7 +8,10 @@ import org.gemsjax.server.persistence.dao.ExperimentDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.AlreadyAssignedException;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
+import org.gemsjax.server.persistence.dao.exception.DAOException;
+import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
+import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
@@ -46,7 +49,7 @@ public class ExperimentDAOTest {
 	
 	
 	 @BeforeClass 
-	 public static void classSetup() throws UsernameInUseException {
+	 public static void classSetup() throws UsernameInUseException, DAOException, EMailInUseExcpetion {
 
 		 dao = new ExperimentDAO();
 		 registeredUserDAO = new UserDAO();
@@ -74,7 +77,7 @@ public class ExperimentDAOTest {
 	 
 	 
 	 @AfterClass
-	 public static void classSetDown() throws ArgumentException
+	 public static void classSetDown() throws ArgumentException, DAOException
 	 {
 		 for (Experiment e: createdExperiments)
 		 {
@@ -90,7 +93,7 @@ public class ExperimentDAOTest {
 	 
 	 
 	 @Test
-	 public void experimentTests() throws ArgumentException, MoreThanOneExcpetion, AlreadyAssignedException
+	 public void experimentTests() throws ArgumentException, MoreThanOneExcpetion, AlreadyAssignedException, DAOException
 	 {
 		 
 		 createExperiments();
@@ -129,7 +132,7 @@ public class ExperimentDAOTest {
 	 }
 	 
 	 
-	private void createExperimentGroups() throws MoreThanOneExcpetion, ArgumentException
+	private void createExperimentGroups() throws MoreThanOneExcpetion, ArgumentException, NotFoundException
 	{
 		int tests = 10;
 		
@@ -149,7 +152,7 @@ public class ExperimentDAOTest {
 	}
 	
 	
-	private void createExperimentAdministrators() throws AlreadyAssignedException
+	private void createExperimentAdministrators() throws AlreadyAssignedException, DAOException
 	{
 		List<Experiment> experiments = dao.getExperimentByOwner(owner1);
 		

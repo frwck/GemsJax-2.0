@@ -9,23 +9,31 @@
     	<generator class="increment" />
     </id>
     
-    <property name="displayedName" column="displayedName" type="string"/>
+    <property name="displayedName" column="displayedName" type="string" not-null="true"  />
     
     <!--  The Collaborateable on which this User works -->
-    <set name="collaborateables" table="CollaborateOn" inverse="true" >        
+    <set name="collaborateables" table="CollaborateOn" inverse="true" cascade="save-update">        
 		<key column="User_id" />         
-		<many-to-many column="Collaborateable_id" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl"/>    
+		<many-to-many column="Collaborateable_id" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" />    
 	</set>
     
     
     
     <joined-subclass name="org.gemsjax.server.persistence.user.RegisteredUserImpl" table="RegisteredUser">
         <key column="user_id" on-delete="cascade" />
-        <property name="username" column="username" type="string" />
+        <property name="username" column="username" type="string" unique="true" not-null="true" />
         <property name="passwordHash" column="password" type="string" />
-        <property name="email" column="email" type="string" />
+        <property name="email" column="email" type="string" unique="true" not-null="true"  />
         
-        <set name="ownedExperiments" table="Experiment" lazy="false" fetch="select">
+        
+        <set name="ownedCollaborateables" table="Collaborateable" cascade="all-delete-orphan" inverse = "true" lazy="false" fetch="select" >
+            <key>
+                <column name="User_id_owner" not-null="true" />
+            </key>
+            <one-to-many class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" />
+    	</set>
+        
+        <set name="ownedExperiments" table="Experiment" cascade="all-delete-orphan" inverse = "true" lazy="true" fetch="select">
             <key>
                 <column name="User_id_owner" not-null="true" />
             </key>
@@ -33,7 +41,7 @@
     	</set>
     	
     	<!--  The set of Experiments that were administrated by this user -->
-    	<set name="administratedExperiments" table="AdministrateExperiment" inverse="true" >        
+    	<set name="administratedExperiments" table="AdministrateExperiment">        
 			 <key column="User_id" />         
 				<many-to-many column="Experiment_id" class="org.gemsjax.server.persistence.experiment.ExperimentImpl"/>    
 		</set> 

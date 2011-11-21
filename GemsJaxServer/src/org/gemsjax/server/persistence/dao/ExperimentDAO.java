@@ -8,8 +8,10 @@ import java.util.UUID;
 import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.dao.exception.AlreadyAssignedException;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
+import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.InvitationException;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
+import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
 import org.gemsjax.server.persistence.experiment.ExperimentGroupImpl;
 import org.gemsjax.server.persistence.experiment.ExperimentImpl;
@@ -22,6 +24,7 @@ import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;
 import org.gemsjax.shared.user.ExperimentUser;
 import org.gemsjax.shared.user.RegisteredUser;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -41,11 +44,9 @@ import org.hibernate.exception.ConstraintViolationException;
  */
 public class ExperimentDAO {
 
-	private Session session ;
 	
 	public ExperimentDAO()
 	{
-		session = HibernateUtil.getOpenedSession();
 	}
 	
 	
@@ -67,8 +68,11 @@ public class ExperimentDAO {
 			throw new ArgumentException("Owner is null");
 			
 		Transaction tx = null;
+		Session session = null;
 		try
 		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			
 			tx= session.beginTransaction();
 			ExperimentImpl e = new ExperimentImpl();
 			
@@ -76,16 +80,21 @@ public class ExperimentDAO {
 			e.setDescription(description);
 			e.setOwner(owner);
 			
+			owner.getOwnedExperiments().add(e);
 			
-			
-				session.save(e);
+			session.save(e);
 			tx.commit();
+			session.flush();
+			session.close();
 			
 			return e;
-		}catch (RuntimeException ex )
+		}catch (HibernateException ex )
 		{
 			if (tx != null)
 				tx.rollback();
+			
+			if (session!=null)
+				session.close();
 			
 			throw ex;
 		}
@@ -96,21 +105,19 @@ public class ExperimentDAO {
 	 * Get a {@link Experiment} by its unique id
 	 * @param id
 	 * @return
-	 * @throws MoreThanOneExcpetion
+	 * @throws NotFoundException 
 	 */
-	public Experiment getExperimentById(int id) throws MoreThanOneExcpetion
+	public Experiment getExperimentById(int id) throws NotFoundException
 	{
-		Query query = session.createQuery( "FROM ExperimentImpl WHERE id="+id );
-	      
-	    List<ExperimentImpl> result = query.list();
-	    
-	    if (result.size()>0)
-	    	if (result.size()>1)
-	    			throw new MoreThanOneExcpetion();
-	    		else
-	    			return result.get(0);
-	    else
-	    	return null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Experiment e = (ExperimentImpl) session.get(ExperimentImpl.class, id);
+			
+		session.close();
+		if (e == null)
+			throw new NotFoundException();
+		else
+			return e;
 	}
 	
 	
@@ -129,9 +136,11 @@ public class ExperimentDAO {
 		if (FieldVerifier.isEmpty(description))
 			throw new ArgumentException("Description is empty");
 		
+		Session session = null;
 		Transaction t = null;
 		try
 		{
+			session = HibernateUtil.getSessionFactory().openSession();
 			t = session.beginTransaction();
 			
 				if (!name.equals(e.getName()))
@@ -142,11 +151,16 @@ public class ExperimentDAO {
 			
 				session.update(e);
 			t.commit();
+			session.flush();
+			session.close();
 		}
-		catch (RuntimeException ex)
+		catch (HibernateException ex)
 		{
 			if (t != null)
 				t.rollback();
+			
+			if (session != null)
+				session.close();
 			
 			throw ex;
 		}
@@ -169,10 +183,11 @@ public class ExperimentDAO {
 			throw new ArgumentException("Group name is empty");
 	
 		Transaction t = null;
+		Session session = null;
 		
 		try
 		{
-			
+			session = HibernateUtil.getSessionFactory().openSession();
 			t = session.beginTransaction();
 				ExperimentGroupImpl g = new ExperimentGroupImpl();
 				g.setEndDate(endDate);
@@ -181,17 +196,23 @@ public class ExperimentDAO {
 				g.setExperiment(experiment);
 				
 				experiment.getExperimentGroups().add(g);
+				g.setExperiment(experiment);
 				
 				session.save(g);
 				session.update(experiment);
 			t.commit();
+			session.flush();
+			session.close();
 			
 			return g;
 			
-		}catch(RuntimeException e)
+		}catch(HibernateException e)
 		{
 			if (t!=null)
 				t.rollback();
+			
+			if (session!= null)
+				session.close();
 			
 			throw e;
 		}
@@ -215,9 +236,11 @@ public class ExperimentDAO {
 				throw new ArgumentException("At least one ExperimentGroup has no name set");
 		}
 		
+		Session session = null;
 		Transaction t = null;
 		try
 		{
+			session = HibernateUtil.getSessionFactory().openSession();
 			t = session.beginTransaction();
 		
 				for (ExperimentGroup g: experimentGroups)
@@ -231,37 +254,49 @@ public class ExperimentDAO {
 				session.update(experiment);
 			
 			t.commit();
+			session.flush();
+			session.close();
 		}
 		catch(RuntimeException e)
 		{
 			if (t != null)
 				t.rollback();
 			
+			if (session != null)
+				session.close();
 			throw e;
 		}
 	}
 	
 	
-	public void deleteExperimentGroup(ExperimentGroup group) throws ArgumentException
+	public void deleteExperimentGroup(ExperimentGroup group) throws ArgumentException, DAOException
 	{
 		
 		if (group == null)
 			throw new ArgumentException("Group is null");
 		
+		Session session = null;
 		Transaction t = null;
+		
 		try{
+			session = HibernateUtil.getSessionFactory().openSession();
 			t = session.beginTransaction();
 				group.getExperiment().getExperimentGroups().remove(group);
 				session.update(group.getExperiment());
 				session.delete(group);
 			t.commit();
+			session.flush();
+			session.close();
 		}
-		catch(RuntimeException e)
+		catch(HibernateException e)
 		{
 			if (t!=null)
 				t.rollback();
 			
-			throw e;
+			if (session != null)
+				session.close();
+			
+			throw new DAOException(e, "Could not delete an ExperimentGroup");
 		}
 	}
 	
@@ -270,23 +305,32 @@ public class ExperimentDAO {
 	 * Delete a {@link Experiment}. This would 
 	 * @param experiment
 	 * @throws ArgumentException
+	 * @throws DAOException 
 	 */
-	public void deleteExperiment(Experiment experiment) throws ArgumentException
+	public void deleteExperiment(Experiment experiment) throws ArgumentException, DAOException
 	{
+		
 		if (experiment == null)
 			throw new ArgumentException("Experiment is null");
 		
+		Session session = null;
 		Transaction t = null;
 		try{
+			session = HibernateUtil.getSessionFactory().openSession();
 			t = session.beginTransaction();
 				session.delete(experiment);
 			t.commit();
-		}catch (RuntimeException e)
+			session.flush();
+			session.close();
+		}catch (HibernateException e)
 		{
 			if (t != null)
 				t.rollback();
 			
-			throw e;
+			if (session != null)
+				session.close();
+			
+			throw new DAOException(e, "Could not delete Experiment");
 		}
 	}
 	
@@ -312,10 +356,12 @@ public class ExperimentDAO {
 		if (experimentGroup == null)
 			throw new ArgumentException("ExperimentGroup is null");
 		
-		Transaction t = session.beginTransaction();
+		Transaction t = null;
+		Session session = null;
 		
 		try {
-		
+			session = HibernateUtil.getSessionFactory().openSession();
+			t = session.beginTransaction();
 			
 				ExperimentUserImpl u = new ExperimentUserImpl();
 				u.setDisplayedName(username);
@@ -330,6 +376,8 @@ public class ExperimentDAO {
 				session.update(experimentGroup);
 				
 			t.commit();	
+			session.flush();
+			session.close();
 		
 			return u;
 			
@@ -339,9 +387,14 @@ public class ExperimentDAO {
 			t.rollback();
 			throw new UsernameInUseException(username, e.getMessage());
 		}
-		catch (RuntimeException e)
+		catch (HibernateException e)
 		{
-			t.rollback();
+			if (t !=null)
+				t.rollback();
+			
+			if (session != null)
+				session.close();
+			
 			throw e;
 		}
 			
@@ -350,7 +403,7 @@ public class ExperimentDAO {
 	
 	
 	
-	public ExperimentInvitation createExperimentInvitation(ExperimentGroup group, String email) throws ArgumentException, InvitationException
+	public ExperimentInvitation createExperimentInvitation(ExperimentGroup group, String email) throws ArgumentException, InvitationException, DAOException
 	{
 		
 		if (FieldVerifier.isEmpty(email))
@@ -364,10 +417,11 @@ public class ExperimentDAO {
 		if (isInvited(group.getExperiment(), email))
 			throw new InvitationException(email+" is already invited");
 		
+		Session session = null;
 		Transaction t = null;
 		try
 		{
-		
+			session = HibernateUtil.getSessionFactory().openSession();
 			t = session.beginTransaction();
 				ExperimentInvitationImpl i = new ExperimentInvitationImpl();
 				i.setEmail(email);
@@ -380,17 +434,20 @@ public class ExperimentDAO {
 				session.update(group);
 				
 			t.commit();
+			session.flush();
+			session.close();
 			
 			return i;
 		}
-		catch(RuntimeException th)
-		{
-			th.printStackTrace();
-			
+		catch(HibernateException th)
+		{	
 			if (t != null)
 				t.rollback();
 			
-			throw th;
+			if (session != null)
+				session.close();
+			
+			throw new DAOException(th, "Could not create a ExperimentInvitation");
 		}
 	}
 	
@@ -407,7 +464,7 @@ public class ExperimentDAO {
 	
 	
 	
-	public void updateExperimentGroup(ExperimentGroup group, String name, Date startDate, Date endDate) throws ArgumentException
+	public void updateExperimentGroup(ExperimentGroup group, String name, Date startDate, Date endDate) throws ArgumentException, DAOException
 	{
 		
 		if (group == null)
@@ -416,47 +473,60 @@ public class ExperimentDAO {
 		if (FieldVerifier.isEmpty(name))
 			throw new ArgumentException("Name is empty");
 		
+		Session session = null;
 		Transaction t = null;
 		
 		try
 		{
+			session = HibernateUtil.getSessionFactory().openSession();
 			t = session.beginTransaction();
 				group.setName(name);
 				group.setEndDate(endDate);
 				group.setStartDate(startDate);
 			t.commit();
+			session.flush();
+			session.close();
 		}
-		catch(RuntimeException e)
+		catch(HibernateException e)
 		{
 			if (t != null)
 				t.rollback();
 			
-			throw e;
+			if (session != null)
+				session.close();
+			
+			throw new DAOException(e, "Could not update ExperimentGroup");
 		}
 		
 	}
 	
 	
-	public void deleteExperimentInvitation(ExperimentInvitation invitation) throws ArgumentException
+	public void deleteExperimentInvitation(ExperimentInvitation invitation) throws ArgumentException, DAOException
 	{
 		if (invitation == null)
 			throw new ArgumentException("Group is null");
-		
+		Session session = null;
 		Transaction t = null;
 		try{
+			session = HibernateUtil.getSessionFactory().openSession();
 			t = session.beginTransaction();
 				ExperimentGroup group = invitation.getExperimentGroup();
 				group.getExperimentInvitations().remove(invitation);
 				session.update(group);
 				session.delete(invitation);
 			t.commit();
+			session.flush();
+			session.close();
 		}
-		catch(RuntimeException e)
+		catch(HibernateException e)
 		{
 			if (t!=null)
 				t.rollback();
 			
-			throw e;
+			if (session!= null)
+				session.close();
+			
+			throw new DAOException(e, "Could not delete an Experiment Invitation");
 		}
 	}
 	
@@ -468,10 +538,11 @@ public class ExperimentDAO {
 	 */
 	public List<Experiment> getExperimentByOwner(RegisteredUser owner)
 	{
+		Session session = HibernateUtil.getSessionFactory().openSession();
 		Query query = session.createQuery( "FROM ExperimentImpl WHERE user_id_owner = "+owner.getId() );
 	      
 	    List<Experiment> result = query.list();
-	    
+	    session.close();
 	    return result;
 	    
 	}
@@ -481,8 +552,9 @@ public class ExperimentDAO {
 	 * @param experiment
 	 * @param user
 	 * @throws AlreadyAssignedException
+	 * @throws DAOException 
 	 */
-	public void assignExperimentAdministrator(Experiment experiment, RegisteredUser user) throws AlreadyAssignedException
+	public void assignExperimentAdministrator(Experiment experiment, RegisteredUser user) throws AlreadyAssignedException, DAOException
 	{
 		
 		if (experiment.getAdministrators().contains(user))
@@ -490,19 +562,27 @@ public class ExperimentDAO {
 		
 		
 		Transaction tx = null;
+		Session session = null;
 		try
 		{
+			session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
 				experiment.getAdministrators().add(user);
+				user.getAdministratedExperiments().add(experiment);
 			tx.commit();
+			session.flush();
+			session.close();
 			
 		}
-		catch(RuntimeException e)
+		catch(HibernateException e)
 		{
 			if (tx != null)
 				tx.rollback();
 			
-			throw e;
+			if (session != null)
+				session.close();
+			
+			throw new DAOException(e, "Could not assign an ExperimentAdministrator");
 		}
 		
 	}

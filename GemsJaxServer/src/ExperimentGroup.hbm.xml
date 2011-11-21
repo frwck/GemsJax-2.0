@@ -20,7 +20,7 @@
     </many-to-one>
     
     
-    <set name="experimentInvitations" table="ExperimentInvitation" lazy="false" fetch="select">
+    <set name="experimentInvitations" table="ExperimentInvitation" cascade="all-delete-orphan" inverse = "true" lazy="false" fetch="select">
             <key>
                 <column name="ExperimentGroup_id" not-null="true" />
             </key>
@@ -28,7 +28,7 @@
     </set>
     
     
-    <set name="participants" table="ExperimentUser" lazy="false" fetch="select">
+    <set name="participants" table="ExperimentUser" cascade="all-delete-orphan" inverse = "true" lazy="false" fetch="select">
             <key>
                 <column name="ExperimentGroup_id" not-null="true" />
             </key>

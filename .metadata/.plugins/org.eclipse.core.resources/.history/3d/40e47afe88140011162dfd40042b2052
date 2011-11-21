@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+<class name="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" table="Collaborateable">
+    <id name="id" type="int" column="id">
+    	<generator class="increment" />
+    </id>
+    
+    <property name="name" column="name" type="string" not-null="true" />
+    <property name="keywords" column="keywords" type="string"/>
+    
+    <property name="publicPermission" column="publicPermission" type="int" not-null="true" />
+    
+    
+    <!-- Collaborateable has a Registered User as owner -->
+    <many-to-one name="owner" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" fetch="select">
+            <column name="User_id_owner" not-null="true" />
+    </many-to-one>
+    
+    <!-- Users that collaborate on this Collaborateable -->
+    <set name="users" table="CollaborateOn" inverse="false">        
+			<key column="Collaborateable_id" />         
+			<many-to-many column="User_id" class="org.gemsjax.server.persistence.user.UserImpl" />    
+	</set>
+	
+	<!--  The vector clock mapping  -->
+	<map name="vectorClock" table="VectorClockEntry" cascade="delete">
+		<key column="Collaborateable_id" />
+		<index-many-to-many column="User_id" class="org.gemsjax.server.persistence.user.UserImpl" />
+		<element column="value" type="int" />
+	</map>
+    
+    
+    
+    <!--  Transactions -->
+    <set name="transactions" table="Transaction" lazy="false" cascade="all-delete-orphan" inverse = "true" fetch="select" order-by="sequenceNumber" >
+    	<key>
+        	<column name="Collaborateable_id" not-null="true" />
+       </key>
+       <one-to-many class="org.gemsjax.server.persistence.collaboration.TransactionImpl" />
+    </set>
+    
+    
+    <!-- MetaModel -->
+    <joined-subclass name="org.gemsjax.server.data.metamodel.MetaModelImpl" table="MetaModel">
+        <key column="Collaborateable_id" on-delete="cascade" />
+        <property name="forExperiment" column="forExperiment" type="boolean" />
+        
+        
+        <set name="models" table="Model" lazy="false" fetch="select">
+            <key>
+                <column name="MetaModel_id_basedOn" not-null="true" />
+            </key>
+            <one-to-many class="org.gemsjax.server.data.model.ModelImpl" />
+    	</set>
+    	
+    </joined-subclass>
+    
+    
+  	<!-- Model -->
+    <joined-subclass name="org.gemsjax.server.data.model.ModelImpl" table="Model">
+        <key column="Collaborateable_id" on-delete="cascade" />
+        <property name="forExperiment" column="forExperiment" type="boolean" />
+        
+        <many-to-one name="metaModel" class="org.gemsjax.server.data.metamodel.MetaModelImpl" fetch="select">
+            <column name="MetaModel_id_basedOn" not-null="true" />
+   	 	</many-to-one>
+        
+    </joined-subclass>
+    
+         
+</class>
+
+</hibernate-mapping>

@@ -10,13 +10,13 @@
     	<generator class="increment" />
     </id>
     
-    <property name="name" column="name" type="string"/>
+    <property name="name" column="name" type="string" not-null="true"/>
     <property name="description" column="description" type="string"/>
     
     
-    <many-to-one name="metaModelTemplate" column="MetaModel_id_template" unique="true" not-null="false"/>
+    <many-to-one name="metaModelTemplate" column="MetaModel_id_template" unique="true" not-null="false" />
     
-    <set name="experimentGroups" table="ExperimentGroup" lazy="false" fetch="select">
+    <set name="experimentGroups" table="ExperimentGroup" cascade="all-delete-orphan" inverse = "true" lazy="false" fetch="select">
             <key>
                 <column name="Experiment_id" not-null="true" />
             </key>
@@ -29,8 +29,8 @@
     </many-to-one>
     
     
-    <set name="administrators" table="AdministrateExperiment" inverse="false">        
-			 <key column="Experiment_id"/>         
+    <set name="administrators" table="AdministrateExperiment" inverse="true" cascade="save-update">        
+			 <key column="Experiment_id" />         
 				<many-to-many column="User_id" class="org.gemsjax.server.persistence.user.RegisteredUserImpl"/>    
 	</set>
         

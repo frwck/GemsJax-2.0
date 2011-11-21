@@ -5,7 +5,10 @@ import java.util.Set;
 import org.gemsjax.server.persistence.dao.CollaborateableDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
+import org.gemsjax.server.persistence.dao.exception.DAOException;
+import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
+import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
@@ -27,25 +30,26 @@ public class CollaborateableDAOTest {
 	private static Set<RegisteredUser> collaborativeUsers;
 	
 	 @BeforeClass 
-	 public static void classSetup() throws UsernameInUseException {
+	 public static void classSetup() throws UsernameInUseException, DAOException, EMailInUseExcpetion {
 
 		 dao = new CollaborateableDAO();
 		 registeredUserDAO = new UserDAO();
 		 
 		 createdCollaborateables=new HashSet<Collaborateable>();
 		 
-		  owner1 = registeredUserDAO.createRegisteredUser("owner1", "passwordHash", "email"); 
+		  owner1 = registeredUserDAO.createRegisteredUser("owner1", "passwordHash", "owneremail1"); 
 		  collaborativeUsers = new HashSet<RegisteredUser>();
 		  
+		  
 		  for (int i =0; i<10; i++)
-			  collaborativeUsers.add( registeredUserDAO.createRegisteredUser("TestCollaborativeUser"+i, "passwordHash", "email") ); 
+			  collaborativeUsers.add( registeredUserDAO.createRegisteredUser("TestCollaborativeUser"+i, "passwordHash", "collaborativeemail"+i) ); 
 		  
 			
 	 }
 	 
 	 
 	 @AfterClass
-	 public static void classSetDown() throws ArgumentException
+	 public static void classSetDown() throws ArgumentException, DAOException
 	 {
 		 for (Collaborateable c: createdCollaborateables)
 		 {
@@ -63,7 +67,7 @@ public class CollaborateableDAOTest {
 	 
 	 
 	 @Test
-	 public void test() throws MoreThanOneExcpetion
+	 public void test() throws MoreThanOneExcpetion, DAOException, NotFoundException
 	 {
 		 createMetaModel();
 		 createModel();
@@ -72,7 +76,7 @@ public class CollaborateableDAOTest {
 	 
 	 
 	 
-	 private void createMetaModel() throws MoreThanOneExcpetion
+	 private void createMetaModel() throws MoreThanOneExcpetion, DAOException, NotFoundException
 	 {
 		 String name ="name";
 		 
@@ -87,15 +91,15 @@ public class CollaborateableDAOTest {
 			assertTrue( m.getName().equals(name+i));
 			assertTrue(m.getPublicPermission() == Collaborateable.NO_PERMISSION);
 			assertTrue(m.getOwner() == owner1);
-			assertTrue(owner1.get)
-			assertTrue(dao.getMetaModelById(m.getId()) == m);
+			assertTrue(owner1.getCollaborateables().contains(m));
+			//assertTrue(dao.getMetaModelById(m.getId()) == m.getId());
 			
 		 }
 		 
 	 }
 	 
-	 
-	 private void assignCollaborativeUser()
+	
+	 private void assignCollaborativeUser() throws DAOException
 	 {
 		
 		 for (Collaborateable c: createdCollaborateables)
@@ -116,7 +120,7 @@ public class CollaborateableDAOTest {
 	 }
 	 
 	 
-	 private void createModel() throws MoreThanOneExcpetion
+	 private void createModel() throws MoreThanOneExcpetion, DAOException, NotFoundException
 	 {
 		 String name ="name";
 		 
@@ -138,6 +142,17 @@ public class CollaborateableDAOTest {
 			assertTrue(dao.getModelById(m.getId()) == m);
 			
 		 }
+	 }
+	 
+	 
+	 @Test
+	 public void testDelete() throws DAOException
+	 {
+		Collaborateable c = createdCollaborateables.iterator().next();
+		RegisteredUser owner = c.getOwner();
+		dao.deleteCollaborateable(c);
+		
+		assertTrue(!owner.getOwnedCollaborateables().contains(c));
 	 }
 
 }

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename field &apos;exception&apos; in &apos;org.gemsjax.server.persistence.dao.exception.DAOException&apos; to &apos;hibernateException&apos;&#x0A;- Original project: &apos;GemsJaxServer&apos;&#x0A;- Original element: &apos;org.gemsjax.server.persistence.dao.exception.DAOException.exception&apos;&#x0A;- Renamed element: &apos;org.gemsjax.server.persistence.dao.exception.DAOException.hibernateException&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" delegate="false" deprecate="false" description="Rename field &apos;exception&apos;" flags="589826" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src&lt;org.gemsjax.server.persistence.dao.exception{DAOException.java[DAOException^exception" name="hibernateException" references="true" setter="false" stamp="1321878301046" textual="false" version="1.0"/>
+</session>

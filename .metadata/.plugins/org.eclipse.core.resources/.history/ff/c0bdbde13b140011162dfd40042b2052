@@ -1,0 +1,17 @@
+package org.gemsjax.server.persistence.dao.exception;
+
+public class DAOException extends Exception {
+	
+	private HibernateExcpetion exception;
+	
+	public DAOException(HibernateException ex, String msg)
+	{
+		super(msg);
+	}
+	
+	public DAOException(String msg)
+	{
+		super(msg);
+	}
+
+}

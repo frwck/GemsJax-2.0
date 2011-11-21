@@ -14,7 +14,6 @@ public class HibernateUtil
     static
     {
     	 sessionFactory = new Configuration().configure().buildSessionFactory();
-    	 session = sessionFactory.openSession();
     }
  
     public static SessionFactory getSessionFactory()
@@ -22,17 +21,11 @@ public class HibernateUtil
     	
         return sessionFactory;
     }
-    
-    
-    public static Session getOpenedSession()
+   
+    public static void reconnect()
     {
-    	return session;
-    }
-    
-    
-    public void closeSession()
-    {
-    	session.close();
+    	sessionFactory.close();
+    	sessionFactory = new Configuration().configure().buildSessionFactory();
     }
     
 }

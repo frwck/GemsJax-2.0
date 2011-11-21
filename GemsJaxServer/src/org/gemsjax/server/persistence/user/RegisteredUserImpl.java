@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.UserOnlineState;
@@ -16,6 +17,7 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 	private String username;
 	private String passwordHash;
 	
+	private Set<Collaborateable>ownedCollaborateables;
 	private Set<Experiment> ownedExperiments;
 	private Set<Experiment> administratedExperiments;
 	
@@ -25,6 +27,7 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 		setOnlineState( UserOnlineState.OFFLINE);
 		ownedExperiments = new LinkedHashSet<Experiment>();
 		administratedExperiments = new LinkedHashSet<Experiment>();
+		ownedCollaborateables = new LinkedHashSet<Collaborateable>();
 	}
 	
 	
@@ -59,6 +62,27 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 	@Override
 	public String getUsername() {
 		return username;
+	}
+
+
+
+	@Override
+	public Set<Experiment> getAdministratedExperiments() {
+		return administratedExperiments;
+	}
+
+
+
+	@Override
+	public Set<Collaborateable> getOwnedCollaborateables() {
+		return ownedCollaborateables;
+	}
+
+
+
+	@Override
+	public Set<Experiment> getOwnedExperiments() {
+		return ownedExperiments;
 	}
 
 

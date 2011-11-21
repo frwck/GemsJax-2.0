@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.List"/>
 <fullyQualifiedTypeName name="org.hibernate.exception.ConstraintViolationException"/>
 <fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.exception.UsernameInUseException"/>
 <fullyQualifiedTypeName name="org.junit.AfterClass"/>
@@ -56,8 +55,9 @@
 <fullyQualifiedTypeName name="org.eclipse.jdt.internal.compiler.ast.ThisReference"/>
 <fullyQualifiedTypeName name="java.lang.Override"/>
 <fullyQualifiedTypeName name="java.util.Set"/>
-<fullyQualifiedTypeName name="org.gemsjax.shared.collaboration.Collaborateable"/>
 <fullyQualifiedTypeName name="org.gemsjax.shared.user.User"/>
 <fullyQualifiedTypeName name="org.gemsjax.shared.experiment.Experiment"/>
 <fullyQualifiedTypeName name="org.gemsjax.shared.user.RegisteredUser"/>
+<fullyQualifiedTypeName name="org.gemsjax.server.persistence.HibernateUtil"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.collaboration.Collaborateable"/>
 </qualifiedTypeNameHistroy>

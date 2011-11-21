@@ -5,8 +5,12 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.exception.DAOException;
+import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
+import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.junit.AfterClass;
@@ -42,7 +46,7 @@ public class UserDAOTest {
 	 
 	 
 	 @AfterClass
-	 public static void classSetDown()
+	 public static void classSetDown() throws DAOException
 	 {
 		 for (RegisteredUser u: createdRegisteredUsers)
 		 {
@@ -52,7 +56,7 @@ public class UserDAOTest {
 	
 	
 	@Test
-	public void createRegisteredUser() throws MoreThanOneExcpetion, UsernameInUseException
+	public void createRegisteredUser() throws MoreThanOneExcpetion, UsernameInUseException, DAOException, NotFoundException, EMailInUseExcpetion
 	{
 		int createCount = 10;
 		
@@ -61,6 +65,7 @@ public class UserDAOTest {
 			RegisteredUser u = dao.createRegisteredUser(username+i, password+i, email+i);
 			createdRegisteredUsers.add(u);
 		}
+		
 		
 		for (int i =1; i<=createCount;i++)
 		{
@@ -87,7 +92,7 @@ public class UserDAOTest {
 	}
 	
 	
-	public void duplicatedUsername()
+	public void duplicatedUsername() throws DAOException
 	{
 		try{
 			RegisteredUser u = dao.createRegisteredUser("username", "passwordHash", "email");
@@ -97,6 +102,10 @@ public class UserDAOTest {
 			createdRegisteredUsers.add(uu);
 		}
 		catch(UsernameInUseException e)
+		{
+			assertTrue(true);
+		}
+		catch(EMailInUseExcpetion e)
 		{
 			assertTrue(true);
 		}

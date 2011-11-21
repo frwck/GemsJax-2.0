@@ -1,5 +1,0 @@
-package org.gemsjax.server.persistence.collaborateable;
-
-public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
-
-}
