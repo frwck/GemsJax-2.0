@@ -30,8 +30,8 @@
     
     
     <set name="administrators" table="AdministrateExperiment" inverse="true" cascade="save-update">        
-			 <key column="Experiment_id" />         
-				<many-to-many column="User_id" class="org.gemsjax.server.persistence.user.RegisteredUserImpl"/>    
+			<key column="Experiment_id" />         
+			<many-to-many column="User_id" class="org.gemsjax.server.persistence.user.RegisteredUserImpl"/>    
 	</set>
         
 </class>

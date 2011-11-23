@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="UserDAOTest" project="GemsJaxServer" tests="4" started="4" failures="0" errors="0" ignored="0">
+  <testsuite name="test.persistence.UserDAOTest" time="4.285">
+    <testcase name="createRegisteredUser" classname="test.persistence.UserDAOTest" time="3.383"/>
+    <testcase name="testPasswordChange" classname="test.persistence.UserDAOTest" time="0.535"/>
+    <testcase name="duplicatedUsername" classname="test.persistence.UserDAOTest" time="0.12"/>
+    <testcase name="duplicatedEmail" classname="test.persistence.UserDAOTest" time="0.247"/>
+  </testsuite>
+</testrun>

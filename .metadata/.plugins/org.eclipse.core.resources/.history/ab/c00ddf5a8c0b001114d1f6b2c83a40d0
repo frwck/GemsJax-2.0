@@ -1,5 +1,0 @@
-package org.gemsjax.server.persistence.collaborateable.command;
-
-public class CommandImpl implements Command{
-
-}

@@ -9,6 +9,7 @@ import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.server.persistence.experiment.ExperimentImpl;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.server.persistence.user.UserImpl;
 import org.gemsjax.shared.FieldVerifier;
@@ -69,11 +70,12 @@ public class UserDAO {
 			if (session != null)
 				session.close();
 			
-			if (e.getMessage().startsWith("Duplicate entry 'email'"))
-			throw new EMailInUseExcpetion();
+			if (e.getSQLException().getMessage().endsWith("for key 'email'"))
+				throw new EMailInUseExcpetion();
 			
-			if (e.getMessage().startsWith("Duplicate entry 'username'"))
-			throw new UsernameInUseException(username, e.getMessage());
+			if (e.getSQLException().getMessage().endsWith("for key 'username'"))
+				throw new UsernameInUseException(username, e.getMessage());
+			
 			
 			throw e;
 		}
@@ -138,7 +140,7 @@ public class UserDAO {
 			session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
 			
-			// BEGIN deleting Collaborateables
+			// BEGIN deleting connection to Collaborateables
 			 String hql = "from "+CollaborateableImpl.class.getName()+" C where :user in elements(C.users)";
 		      Query query = session.createQuery( hql );
 		      query.setEntity("user", u);
@@ -152,7 +154,26 @@ public class UserDAO {
 				
 				u.getCollaborateables().clear();
 				session.update(u);
-			// End deleting Collaboarateables
+				// End deleting Collaboarateables
+				
+				
+				// Begin deleting Experiment Administrator connection
+				hql = "from "+ExperimentImpl.class.getName()+" E where :user in elements(E.administrators)";
+			    query = session.createQuery( hql );
+			    query.setEntity("user", u);
+			    List<ExperimentImpl> experimentList = query.list();
+			      
+			    	for (ExperimentImpl e: experimentList)
+					{
+						e.getAdministrators().remove(u);
+						session.update(e);
+					}
+					
+				u.getAdministratedExperiments().clear();
+				session.update(u);
+				// End deleting Experiment Administrator connection
+				
+				
 				
 				
 				session.delete(u);
@@ -163,6 +184,7 @@ public class UserDAO {
 		}
 		catch (HibernateException e)
 		{
+			e.printStackTrace();
 			if (tx!=null)
 				tx.rollback();
 			
@@ -234,5 +256,80 @@ public class UserDAO {
 		
 	}
 	
+	
+	
+	/**
+	 * Change tha Password of an user
+	 * @param u
+	 * @param newPasswordHash
+	 * @throws DAOException
+	 */
+	public void updateRegisteredUserPassword(RegisteredUser u, String newPasswordHash) throws DAOException
+	{
+		Session session = null;
+		Transaction tx = null;
+		
+		try 
+		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+				((RegisteredUserImpl) u).setPasswordHash(newPasswordHash);
+				session.update(u);
+			tx.commit();
+			session.flush();
+			session.close();
+			
+		} catch(HibernateException e)
+		{
+			if (tx != null)
+				tx.rollback();
+			
+			if (session != null)
+				session.close();
+			throw new DAOException(e, "Could not update the password");
+		}
+	}
+	
+	
+	
+	public void updateRegisteredUserEmail(RegisteredUser u, String newEmail) throws DAOException, EMailInUseExcpetion
+	{
+		Session session = null;
+		Transaction tx = null;
+		try 
+		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+				((RegisteredUserImpl) u).setEmail(newEmail);
+				session.update(u);
+			tx.commit();
+			session.flush();
+			session.close();
+			
+			
+		}
+		catch (ConstraintViolationException e)
+		{
+			if (tx != null)
+				tx.rollback();
+				
+			if (session != null)
+				session.close();
+				
+			if (e.getSQLException().getMessage().endsWith("for key 'email'"))
+				throw new EMailInUseExcpetion();
+			
+			throw e;
+				
+		} catch(HibernateException e)
+		{
+			if (tx != null)
+				tx.rollback();
+			
+			if (session != null)
+				session.close();
+			throw new DAOException(e, "Could not update the email");
+		}
+	}
 	
 }

@@ -29,13 +29,6 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 		administratedExperiments = new LinkedHashSet<Experiment>();
 		ownedCollaborateables = new LinkedHashSet<Collaborateable>();
 	}
-	
-	
-	
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-
 
 
 	public void setPasswordHash(String passwordHash) {

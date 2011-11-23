@@ -23,7 +23,6 @@ public class UserDAOTest {
 	private static String username;
 	private static String password;
 	private static String email;
-	private static int userCounter;
 	
 	private static List<RegisteredUser> createdRegisteredUsers;
 	
@@ -38,14 +37,13 @@ public class UserDAOTest {
 		 username = "username";
 		 password = "password";
 		 email = "email";
-		 userCounter = 0;
 		 
 		 createdRegisteredUsers = new ArrayList<RegisteredUser>();
 			
 	 }
 	 
 	 
-	 @AfterClass
+	@AfterClass
 	 public static void classSetDown() throws DAOException
 	 {
 		 for (RegisteredUser u: createdRegisteredUsers)
@@ -58,7 +56,7 @@ public class UserDAOTest {
 	@Test
 	public void createRegisteredUser() throws MoreThanOneExcpetion, UsernameInUseException, DAOException, NotFoundException, EMailInUseExcpetion
 	{
-		int createCount = 10;
+		int createCount = 1;
 		
 		for (int i =1; i<=createCount;i++)
 		{
@@ -66,13 +64,23 @@ public class UserDAOTest {
 			createdRegisteredUsers.add(u);
 		}
 		
+		// DO a reconnect
+		HibernateUtil.reconnect();
 		
 		for (int i =1; i<=createCount;i++)
 		{
-			RegisteredUser u = dao.getUserByLogin(username+i, password+i);
+			RegisteredUser u=null;
+			try{
+				u = dao.getUserByLogin(username+i, password+i);
+				assertTrue(true);
+			}
+			catch(NotFoundException e)
+			{
+				assertTrue(false);
+			}
 			
 			assertTrue(u!=null);
-			assertTrue(createdRegisteredUsers.contains(u));
+			checkForContainment(u);
 			assertEquals(u.getDisplayedName(), username+i);
 			assertEquals(u.getUsername(), username+i);
 			assertEquals(u.getEmail(), email+i);
@@ -84,20 +92,76 @@ public class UserDAOTest {
 		{
 			RegisteredUser u = createdRegisteredUsers.get(0);
 			dao.deleteRegisteredUser(u);
-			assertNull(dao.getRegisteredUserById(u.getId()));
+			try
+			{
+				RegisteredUser toDel = dao.getRegisteredUserById(u.getId());
+				assertTrue(false);
+			}
+			catch(NotFoundException e)
+			{
+				assertTrue(true);
+			}
+			
 			createdRegisteredUsers.remove(u);
 		}
 		
 		
 	}
 	
+	@Test
+	public void testPasswordChange() throws UsernameInUseException, DAOException, EMailInUseExcpetion, MoreThanOneExcpetion
+	{	
+		int test = 1;
+		
+		String newPasswordHash = "newPasswordHash";
+		
+		for (int i =0;i<test; i++)
+		{
+			RegisteredUser u = dao.createRegisteredUser(username+"PasswordTest"+i, password+"set"+i, email+"set"+i);
+			createdRegisteredUsers.add(u);
+			
+			dao.updateRegisteredUserPassword(u, newPasswordHash);
+		}
+		
+		HibernateUtil.reconnect();
+		
+		for (int i =0;i<test; i++)
+		{
+			try {
+				RegisteredUser u = dao.getUserByLogin(username+"PasswordTest"+i, newPasswordHash);
+				assertTrue(true);
+			} catch (NotFoundException e) {
+				e.printStackTrace();
+				assertTrue(false);
+			}
+		}
+		
+	}
 	
+	
+	
+	
+	private void checkForContainment(RegisteredUser toCheck)
+	{
+		for (RegisteredUser u : createdRegisteredUsers)
+		{
+			if (u.getId()==toCheck.getId())
+			{
+				assertTrue(true);
+				return;
+			}
+		}	
+		
+		assertTrue(false);
+	}
+	
+	@Test
 	public void duplicatedUsername() throws DAOException
 	{
 		try{
-			RegisteredUser u = dao.createRegisteredUser("username", "passwordHash", "email");
+			RegisteredUser u = dao.createRegisteredUser("usernameDuplicateTest1", "passwordHash", "emailduplicate21");
 			createdRegisteredUsers.add(u);
-			RegisteredUser uu = dao.createRegisteredUser("username", "passwordHash", "email");
+			RegisteredUser uu = dao.createRegisteredUser("usernameDuplicateTest1", "passwordHash", "emailduplicateasdq12");
 			assertTrue(false);
 			createdRegisteredUsers.add(uu);
 		}
@@ -107,11 +171,61 @@ public class UserDAOTest {
 		}
 		catch(EMailInUseExcpetion e)
 		{
+			assertTrue(false);
+		}
+		
+	}
+	
+	
+	
+	@Test
+	public void duplicatedEmail() throws DAOException
+	{
+		try{
+			RegisteredUser u = dao.createRegisteredUser("usernameDuplicatedEmailTest1", "passwordHash", "duplicated@email.com");
+			createdRegisteredUsers.add(u);
+			RegisteredUser uu = dao.createRegisteredUser("usernameDuplicatedEmailTest2", "passwordHash", "duplicated@email.com");
+			assertTrue(false);
+			createdRegisteredUsers.add(uu);
+		}
+		catch(UsernameInUseException e)
+		{
+			assertTrue(false);
+		}
+		catch(EMailInUseExcpetion e)
+		{
 			assertTrue(true);
 		}
 		
 	}
 	
+	
+	
+	
+	@Test
+	public void changeEmail() throws DAOException
+	{
+		String email = "duplicated@email.com";
+		try{
+			RegisteredUser u = dao.createRegisteredUser("usernameDuplicatedEmailChangeTest1", "passwordHash", email);
+			createdRegisteredUsers.add(u);
+			RegisteredUser uu = dao.createRegisteredUser("usernameDuplicatedEmailChangeTest2", "passwordHash", "another2.duplicated@email.com");
+			createdRegisteredUsers.add(uu);
+			
+			assertTrue(true);
+			dao.updateRegisteredUserEmail(uu, email);
+			assertTrue(false);
+		}
+		catch(UsernameInUseException e)
+		{
+			assertTrue(false);
+		}
+		catch(EMailInUseExcpetion e)
+		{
+			assertTrue(true);
+		}
+		
+	}
 	
 	
 	

@@ -1,5 +1,0 @@
-package org.gemsjax.shared.model;
-
-public interface Model {
-
-}
