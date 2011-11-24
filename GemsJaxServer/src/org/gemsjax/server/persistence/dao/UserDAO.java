@@ -102,27 +102,39 @@ public class UserDAO {
 	 */
 	public RegisteredUser getUserByLogin(String username, String passwordHash) throws MoreThanOneExcpetion, NotFoundException
 	{
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		Query query = session.createQuery( "FROM RegisteredUserImpl WHERE username='"+username+"' AND password='"+passwordHash+"'" );
-	      
-	    List<RegisteredUserImpl> result = query.list();
-	    
-	    if (result.size()>0)
-	    	if (result.size()>1){
-	    		session.close();	
-	    		throw new MoreThanOneExcpetion();
-	    	}
-	    	else
-	    	{
-	    		session.close();
-	    		return result.get(0);
-	    	}
-	    else
-	    {
-	    	session.close();
-	    	throw new NotFoundException();
-	    }
+		Session session = null;
+		try 
+		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			Query query = session.createQuery( "FROM RegisteredUserImpl WHERE username='"+username+"' AND password='"+passwordHash+"'" );
+		      
+		    List<RegisteredUserImpl> result = query.list();
+		    
+		    if (result.size()>0)
+		    	if (result.size()>1){
+		    		session.close();	
+		    		throw new MoreThanOneExcpetion();
+		    	}
+		    	else
+		    	{
+		    		session.close();
+		    		return result.get(0);
+		    	}
+		    else
+		    {
+		    	session.close();
+		    	throw new NotFoundException();
+		    }
 	    	
+		}// End Try
+		catch(HibernateException e)
+		{
+			if (session!=null)
+				session.close();
+			
+			
+			throw e;
+		}
 	}
 	
 	
@@ -139,6 +151,8 @@ public class UserDAO {
 		{
 			session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
+			
+			u = (RegisteredUser) session.merge(u);
 			
 			// BEGIN deleting connection to Collaborateables
 			 String hql = "from "+CollaborateableImpl.class.getName()+" C where :user in elements(C.users)";
@@ -172,7 +186,6 @@ public class UserDAO {
 				u.getAdministratedExperiments().clear();
 				session.update(u);
 				// End deleting Experiment Administrator connection
-				
 				
 				
 				
@@ -223,7 +236,7 @@ public class UserDAO {
 	 * @throws ArgumentException
 	 * @throws DAOException 
 	 */
-	public void updateDisplayedName(UserImpl u, String displayedName) throws ArgumentException, DAOException
+	public void updateDisplayedName(User u, String displayedName) throws ArgumentException, DAOException
 	{
 		if (FieldVerifier.isEmpty(displayedName))
 			throw new ArgumentException("Displayed name is empty");
@@ -300,7 +313,7 @@ public class UserDAO {
 		{
 			session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
-				((RegisteredUserImpl) u).setEmail(newEmail);
+				u.setEmail(newEmail);
 				session.update(u);
 			tx.commit();
 			session.flush();

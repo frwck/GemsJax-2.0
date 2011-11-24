@@ -9,7 +9,6 @@ import org.gemsjax.shared.model.Model;
 public class ModelImpl extends CollaborateableImpl implements Model {
 
 	private MetaModel metaModel;
-	private boolean forExperiment;
 	
 	
 	public ModelImpl()
@@ -26,16 +25,6 @@ public class ModelImpl extends CollaborateableImpl implements Model {
 	
 	public void setMetaModel(MetaModel metaModel) {
 		this.metaModel = metaModel;
-	}
-
-
-	public boolean isForExperiment() {
-		return forExperiment;
-	}
-
-
-	public void setForExperiment(boolean forExperiment) {
-		this.forExperiment = forExperiment;
 	}
 
 }

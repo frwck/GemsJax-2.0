@@ -1,7 +1,10 @@
 package test.persistence;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.dao.CollaborateableDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
@@ -15,6 +18,7 @@ import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;
 import org.gemsjax.shared.user.RegisteredUser;
+import org.gemsjax.shared.user.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -29,6 +33,7 @@ public class CollaborateableDAOTest {
 	private static RegisteredUser owner1;
 	private static Set<RegisteredUser> collaborativeUsers;
 	
+	
 	 @BeforeClass 
 	 public static void classSetup() throws UsernameInUseException, DAOException, EMailInUseExcpetion {
 
@@ -37,28 +42,22 @@ public class CollaborateableDAOTest {
 		 
 		 createdCollaborateables=new HashSet<Collaborateable>();
 		 
-		  owner1 = registeredUserDAO.createRegisteredUser("owner1", "passwordHash", "owneremail1"); 
+		  owner1 = registeredUserDAO.createRegisteredUser("CollaborateTestowner1", "passwordHash", "Testowneremail1"); 
+		  
 		  collaborativeUsers = new HashSet<RegisteredUser>();
-		  
-		  
-		  for (int i =0; i<1; i++)
-			  collaborativeUsers.add( registeredUserDAO.createRegisteredUser("TestCollaborativeUser"+i, "passwordHash", "collaborativeemail"+i) ); 
-		  
 			
 	 }
 	 
 	 
-	 @AfterClass
+	// @AfterClass
 	 public static void classSetDown() throws ArgumentException, DAOException
 	 {
-		 /*
 		 for (Collaborateable c: createdCollaborateables)
 		 {
 			dao.deleteCollaborateable(c);
 		 }
-		 */
 		 
-		 registeredUserDAO.deleteRegisteredUser(owner1);
+		registeredUserDAO.deleteRegisteredUser(owner1);
 		 
 		 for (RegisteredUser u: collaborativeUsers)
 			 registeredUserDAO.deleteRegisteredUser(u);
@@ -66,18 +65,8 @@ public class CollaborateableDAOTest {
 	 }
 	 
 	 
-	 
 	 @Test
-	 public void test() throws MoreThanOneExcpetion, DAOException, NotFoundException
-	 {
-		 createMetaModel();
-		 //createModel();
-		 //assignCollaborativeUser();
-	 }
-	 
-	 
-	 
-	 private void createMetaModel() throws MoreThanOneExcpetion, DAOException, NotFoundException
+	 public void createMetaModel() throws MoreThanOneExcpetion, DAOException, NotFoundException
 	 {
 		 String name ="name";
 		 
@@ -89,20 +78,25 @@ public class CollaborateableDAOTest {
 			m = dao.createMetaModel(name+i, owner1);
 			createdCollaborateables.add(m);
 			
-			assertTrue( m.getName().equals(name+i));
+			assertTrue(m.getName().equals(name+i));
 			assertTrue(m.getPublicPermission() == Collaborateable.NO_PERMISSION);
 			assertTrue(m.getOwner() == owner1);
 			assertTrue(owner1.getCollaborateables().contains(m));
-			//assertTrue(dao.getMetaModelById(m.getId()) == m.getId());
+			assertTrue(dao.getMetaModelById(m.getId()).getId() == m.getId());
 			
 		 }
 		 
 	 }
 	 
 	
-	 private void assignCollaborativeUser() throws DAOException
-	 {
-		
+	 @Test
+	 public void assignCollaborativeUser() throws DAOException, UsernameInUseException, EMailInUseExcpetion
+	 { 
+		 
+		 for (int i =0; i<1; i++)
+			collaborativeUsers.add( registeredUserDAO.createRegisteredUser("TestCollaborativeUser"+i, "passwordHash", "collaborativeemail"+i) ); 
+		 
+		 // Test with Registered User
 		 for (Collaborateable c: createdCollaborateables)
 		 {
 			 for (RegisteredUser u :collaborativeUsers)
@@ -114,14 +108,87 @@ public class CollaborateableDAOTest {
 				 
 			 assertTrue (c.getUsers().containsAll(collaborativeUsers));
 			 assertTrue (c.getUsers().contains(owner1));
-			 assertTrue(c.getUsers().size()== collaborativeUsers.size()+1);
+			 assertTrue (c.getUsers().size() == collaborativeUsers.size()+1);
+			 
 		 }
+		 
+		 
+		 //TODO Test with ExperimentUser
+		
+		 
+		 // remove the assignment
+		 for (Collaborateable c: createdCollaborateables)
+		 {
+			 for (RegisteredUser u :collaborativeUsers)
+			 {
+				 dao.removeCollaborativeUser(c, u);
+				 assertFalse (c.getUsers().contains(u));
+				 assertFalse (((RegisteredUserImpl)u).getCollaborateables().contains(c));
+			 }
+			
+			 assertTrue (c.getUsers().contains(owner1));
+			 assertTrue (c.getUsers().size() == 1);
+			 
+			 // remove owner as collabrotive user
+			 
+			 dao.removeCollaborativeUser(c, owner1);
+			 assertFalse (c.getUsers().contains(owner1));
+			 assertTrue (c.getUsers().size() == 0);
+			 assertFalse(owner1.getCollaborateables().contains(c));
+		 }
+		 
+		 
+		 Set<User> collSet = new LinkedHashSet<User>();
+		 int count = 10;
+		 for (int i =0; i<count; i++)
+		 {
+			 RegisteredUser u = registeredUserDAO.createRegisteredUser("collaborativeUserSetAssignmentTest"+i, "passwordHash", "emailcollaborativeUserSetAssignmentTest"+i);
+			 collSet.add(u);
+			 
+			 collaborativeUsers.add(u);
+		 }
+		 
+		 
+		 
+		 // Test assigning a Set of User
+		 for (Collaborateable c: createdCollaborateables)
+		 {
+			 dao.addCollaborativeUsers(c, collSet);
+			
+			 for (User u : collSet)
+			 {
+				 assertTrue (c.getUsers().contains(u));
+				 assertTrue (u.getCollaborateables().contains(c));
+			 }
+			 
+			 assertTrue(c.getUsers().containsAll(collSet));
+			
+		 }
+		 
+		 
+		 
+		 // Test assigning a Set of User
+		 for (Collaborateable c: createdCollaborateables)
+		 {
+			 dao.removeCollaborativeUsers(c, collSet);
+			
+			 for (User u : collSet)
+			 {
+				 assertFalse (c.getUsers().contains(u));
+				 assertFalse (u.getCollaborateables().contains(c));
+			 }
+			 
+			 assertFalse (c.getUsers().containsAll(collSet));
+			
+		 }
+		 
+		 
 		 
 		 
 	 }
 	 
-	 
-	 private void createModel() throws MoreThanOneExcpetion, DAOException, NotFoundException
+	 @Test
+	 public void createModel() throws MoreThanOneExcpetion, DAOException, NotFoundException
 	 {
 		 String name ="name";
 		 
@@ -141,7 +208,6 @@ public class CollaborateableDAOTest {
 			assertTrue(m.getOwner() == owner1);
 			assertTrue(m.getMetaModel() == baseModel);
 			assertTrue(dao.getModelById(m.getId()).getId() == m.getId());
-			
 		 }
 	 }
 	 

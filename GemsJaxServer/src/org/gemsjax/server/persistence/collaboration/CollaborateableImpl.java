@@ -21,6 +21,11 @@ public class CollaborateableImpl implements Collaborateable
 	private Map<User, Integer> vectorClock;
 	private int publicPermission;
 	
+	/**
+	 * This field is reserved for hibernate to filter a MetaModel from a MetaModel that is part of an Experiment
+	 */
+	private boolean forExperiment;
+	
 	public CollaborateableImpl()
 	{
 		users = new LinkedHashSet<User>();
@@ -98,6 +103,16 @@ public class CollaborateableImpl implements Collaborateable
 	@Override
 	public void setPublicPermission(int permission) {
 		publicPermission = permission;
+	}
+
+
+	public boolean isForExperiment() {
+		return forExperiment;
+	}
+
+
+	public void setForExperiment(boolean forExperiment) {
+		this.forExperiment = forExperiment;
 	}
 
 }

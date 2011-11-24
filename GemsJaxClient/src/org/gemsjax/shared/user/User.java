@@ -25,6 +25,12 @@ public interface User {
 	public String getDisplayedName();
 	
 	/**
+	 * Set the displayedName
+	 * @param newName
+	 */
+	public void setDisplayedName(String newName);
+	
+	/**
 	 * Get a set with all {@link Collaborateable}s, on which this {@link User} works collaborative.
 	 * @return
 	 */

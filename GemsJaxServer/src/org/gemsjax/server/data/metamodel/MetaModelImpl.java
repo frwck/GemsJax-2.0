@@ -35,11 +35,6 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 	private Set<Model> models;
 	
 	/**
-	 * This field is reserved for hibernate to filter a MetaModel from a MetaModel that is part of an Experiment
-	 */
-	private boolean forExperiment;
-	
-	/**
 	 * This map provides a quick access map for getting a element by its id
 	 */
 	private Map<String, MetaModelElement> idMap;
@@ -150,14 +145,5 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 	public void removeAttribute(MetaAttribute attribute) {
 		attributes.remove(attribute);
 	}
-
-	public boolean isForExperiment() {
-		return forExperiment;
-	}
-
-	public void setForExperiment(boolean forExperiment) {
-		this.forExperiment = forExperiment;
-	}
-
 	
 }

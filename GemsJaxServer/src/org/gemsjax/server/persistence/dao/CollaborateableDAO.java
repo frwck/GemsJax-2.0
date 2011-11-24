@@ -241,9 +241,9 @@ public class CollaborateableDAO {
 	{ 
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		MetaModel m = (MetaModelImpl)session.get(MetaModelImpl.class, id);
-		
+			MetaModel m = (MetaModelImpl)session.get(MetaModelImpl.class, id);
 		session.close();
+		
 		if (m == null)
 			throw new NotFoundException();
 		
@@ -335,9 +335,11 @@ public class CollaborateableDAO {
 			tx = session.beginTransaction();
 				c.getUsers().addAll(u);
 				for (User user: u)
+				{
 					user.getCollaborateables().add(c);
+					session.update(user);
+				}
 				
-				session.update(u);
 				session.update(c);
 			tx.commit();
 			session.flush();
@@ -409,5 +411,89 @@ public class CollaborateableDAO {
 		}
 	}
 	
+	
+	
+	/**
+	 * Remove an User of the list of users that works collaborative on this {@link Collaborateable}.
+	 * That means, that this User can not work longer collaborative on this {@link Collaborateable}.
+	 * @param c
+	 * @param u
+	 * @throws DAOException
+	 */
+	public void removeCollaborativeUser(Collaborateable c, User u) throws DAOException
+	{
+		Transaction tx = null;
+		Session session = null;
+		
+		try
+		{	
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+				c.getUsers().remove(u);
+				u.getCollaborateables().remove(c);
+				session.update(c);
+				session.update(u);
+			tx.commit();
+			session.flush();
+			session.close();
+			
+		}
+		catch (HibernateException e)
+		{
+			e.printStackTrace();
+			
+			if (tx != null)
+				tx.rollback();
+			
+			if (session != null)
+				session.close();
+			
+			throw new DAOException(e, "Could not remove a collaborative User from the Collaborateable");
+		}
+	}
+	
+	
+	/**
+	 * Remove a Set of {@link User}s from this collaborateable
+	 * @see #removeCollaborativeUser(Collaborateable, User)
+	 * @param c
+	 * @param users
+	 * @throws DAOException
+	 */
+	public void removeCollaborativeUsers(Collaborateable c, Set<User> users) throws DAOException
+	{
+		Transaction tx = null;
+		Session session = null;
+		
+		try
+		{	
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+				
+				for (User u : users)
+				{
+					c.getUsers().remove(u);
+					u.getCollaborateables().remove(c);
+					session.update(c);
+					session.update(u);
+				}
+			tx.commit();
+			session.flush();
+			session.close();
+			
+		}
+		catch (HibernateException e)
+		{
+			e.printStackTrace();
+			
+			if (tx != null)
+				tx.rollback();
+			
+			if (session != null)
+				session.close();
+			
+			throw new DAOException(e, "Could not remove a collaborative User from the Collaborateable");
+		}
+	}
 	
 }

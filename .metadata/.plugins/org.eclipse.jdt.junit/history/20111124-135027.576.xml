@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testrun name="CollaborateableDAOTest" project="GemsJaxServer" tests="2" started="2" failures="0" errors="0" ignored="0">
+  <testsuite name="test.persistence.CollaborateableDAOTest" time="0.218">
+    <testcase name="createMetaModel" classname="test.persistence.CollaborateableDAOTest" time="0.104"/>
+    <testcase name="createModel" classname="test.persistence.CollaborateableDAOTest" time="0.115"/>
+  </testsuite>
+</testrun>
