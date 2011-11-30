@@ -69,6 +69,6 @@ public interface Request {
 	 */
 	public RequestState getRequestState();
 	
-	public void getRequestState(RequestState state);
+	public void setRequestState(RequestState state);
 	
 }

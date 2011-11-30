@@ -53,21 +53,19 @@ public class CollaborateableDAOTest {
 	 }
 	 
 	 
-//	 @AfterClass
+	 @AfterClass
 	 public static void classSetDown() throws ArgumentException, DAOException
 	 {
-		 /*
 		 for (Collaborateable c: createdCollaborateables)
 		 {
 			dao.deleteCollaborateable(c);
 		 }
-		 */
 		 
 		registeredUserDAO.deleteRegisteredUser(owner1);
 		 
 		 for (RegisteredUser u: collaborativeUsers)
 			 registeredUserDAO.deleteRegisteredUser(u);
-		  
+		 
 	 }
 	 
 	 

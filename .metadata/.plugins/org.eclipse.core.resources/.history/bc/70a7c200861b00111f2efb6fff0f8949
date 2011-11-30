@@ -1,0 +1,71 @@
+package org.gemsjax.server.persistence.dao.hibernate;
+
+import java.util.List;
+
+import org.gemsjax.server.persistence.HibernateUtil;
+import org.gemsjax.server.persistence.dao.RequestDAO;
+import org.gemsjax.server.persistence.experiment.ExperimentImpl;
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.request.CollaborateRequest;
+import org.gemsjax.shared.request.Request;
+import org.gemsjax.shared.user.RegisteredUser;
+import org.hibernate.HibernateException;
+import org.hibernate.LockOptions;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+
+public class HibernateRequestDAO implements RequestDAO{
+	
+	public HibernateRequestDAO()
+	{
+		
+	}
+
+	@Override
+	public CollaborateRequest createCollaborateRequest(RegisteredUser sender,
+			RegisteredUser receiver, Collaborateable c) {
+		
+		Transaction tx = null;
+		Session session = null;
+		try
+		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx= session.beginTransaction();
+			session.buildLockRequest(LockOptions.NONE).lock(sender);
+			
+			tx.commit();
+			session.flush();
+			session.close();
+			
+			return e;
+		}catch (HibernateException ex )
+		{
+			if (tx != null)
+				tx.rollback();
+			
+			if (session!=null)
+				session.close();
+			
+			throw ex;
+		}
+	}
+
+	@Override
+	public void deleteRequest(Request request) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Request> getAllRequestsBy(RegisteredUser senderUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Request> getAllRequestsFor(RegisteredUser receiverUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

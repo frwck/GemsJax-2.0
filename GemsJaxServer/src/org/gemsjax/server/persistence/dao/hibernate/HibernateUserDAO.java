@@ -25,6 +25,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
+import org.jboss.cache.commands.read.GetNodeCommand;
 
 public class HibernateUserDAO implements UserDAO {
 	
@@ -149,25 +150,25 @@ public class HibernateUserDAO implements UserDAO {
 			session.saveOrUpdate(u);
 			
 			// BEGIN deleting connection to Collaborateables
-			
+			/*
 			String hql = "from "+CollaborateableImpl.class.getName()+" C where :user in elements(C.users)";
 		      Query query = session.createQuery( hql );
 		      query.setEntity("user", u);
 		      List<CollaborateableImpl> list = query.list();
 		      
 		     
-		      
+		      */
 				System.out.println(Hibernate.isInitialized(u)+" "+ Hibernate.isInitialized(u.getCollaborateables())+" "+Hibernate.isInitialized(u.getAdministratedExperiments()));
 				Hibernate.initialize(u.getCollaborateables());
 				Hibernate.initialize(u.getAdministratedExperiments());
 				
-				System.out.println("SIZE: " + u.getCollaborateables().size() + " "+u.getAdministratedExperiments().size()+ " L "+list.size());
+				System.out.println("SIZE: " + u.getCollaborateables().size() + " "+u.getAdministratedExperiments().size()+ " L ");
 				
 		    	for (Collaborateable c: u.getCollaborateables())
 				{
-		    		System.out.println("DELETE "+c);
+		    		System.out.println("DELETE "+c+ " "+c.getName());
 					c.getUsers().remove(u);
-					session.update(c);
+					//session.update(c);
 				}
 				
 				u.getCollaborateables().clear();

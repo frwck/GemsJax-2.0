@@ -1,0 +1,7 @@
+package org.gemsjax.server.persistence.request;
+
+import org.gemsjax.shared.request.Request;
+
+public class RequestImpl implements Request {
+
+}

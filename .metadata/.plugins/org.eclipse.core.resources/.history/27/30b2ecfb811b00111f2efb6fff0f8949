@@ -1,0 +1,29 @@
+package org.gemsjax.server.persistence.dao;
+
+import java.util.List;
+
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.request.CollaborateRequest;
+import org.gemsjax.shared.request.Request;
+import org.gemsjax.shared.user.RegisteredUser;
+
+public interface RequestDAO {
+	
+	/**
+	 * Create a new {@link CollaborateRequest} to let a {@link RegisteredUser} work on a {@link Collaborateable}
+	 * @param sender
+	 * @param receiver
+	 * @param c
+	 * @return
+	 */
+	public abstract CollaborateRequest createCollaborateRequest(RegisteredUser sender, RegisteredUser receiver, Collaborateable c);
+	
+	/**
+	 * Get all {@link Request}s for a {@link RegisteredUser}.
+	 * That means that the {@link RegisteredUser} is the receiver of a {@link Request}
+	 * @param user
+	 * @return
+	 */
+	public abstract List<Request> getAllRequestsFor(RegisteredUser user);
+
+}

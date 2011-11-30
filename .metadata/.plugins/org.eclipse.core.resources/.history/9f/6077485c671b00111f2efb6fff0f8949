@@ -1,0 +1,19 @@
+package org.gemsjax.server.persistence.request;
+
+import java.util.Date;
+
+public class Request {
+
+	public enum RequestState
+	{
+		NEW,
+		ACCEPTED,
+		REJECTED
+	}
+	
+	private long id;
+	private Date date;
+	
+	private RegisteredUser sender;
+	private RegisteredUser receiver;
+}

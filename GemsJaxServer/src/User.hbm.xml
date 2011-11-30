@@ -20,7 +20,7 @@
     
     
     <joined-subclass name="org.gemsjax.server.persistence.user.RegisteredUserImpl" table="RegisteredUser">
-        <key column="user_id" on-delete="cascade" />
+        <key column="user_id" />
         <property name="username" column="username" type="string" unique="true" not-null="true" />
         <property name="passwordHash" column="password" type="string" />
         <property name="email" column="email" type="string" unique="true" not-null="true"  />
@@ -52,7 +52,7 @@
     
     
     <joined-subclass name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl" table="ExperimentUser">
-        <key column="user_id" on-delete="cascade" />
+        <key column="user_id" />
         <property name="username" column="username" type="string" />
         <property name="passwordHash" column="password" type="string" />
         

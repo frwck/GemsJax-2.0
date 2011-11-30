@@ -29,6 +29,7 @@
     <mapping resource="ExperimentInvitation.hbm.xml" />
     <mapping resource="Transaction.hbm.xml" />
     <mapping resource="Command.hbm.xml" />
+    <mapping resource="Request.hbm.xml" />
     
   </session-factory>
 </hibernate-configuration>

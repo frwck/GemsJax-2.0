@@ -1,0 +1,19 @@
+package org.gemsjax.server.persistence.dao;
+
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.request.CollaborateRequest;
+import org.gemsjax.shared.user.RegisteredUser;
+
+public interface RequestDAO {
+	
+	/**
+	 * Create a new {@link CollaborateRequest} to let a {@link RegisteredUser} work on a {@link Collaborateable}
+	 * @param sender
+	 * @param receiver
+	 * @param c
+	 * @return
+	 */
+	public abstract CollaborateRequest createCollaborateRequest(RegisteredUser sender, RegisteredUser receiver, Collaborateable c);
+	
+
+}

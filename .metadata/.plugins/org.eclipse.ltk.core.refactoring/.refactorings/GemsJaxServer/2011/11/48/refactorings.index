@@ -1,2 +1,5 @@
 1322482034467	Rename local variable 'persistentC'
 1322651733960	Rename type 'InvitationAlreadyUsed'
+1322666939054	Rename type 'CollaborateableRequestImpl'
+1322680581035	Copy compilation unit
+1322680657462	Rename field 'owner1'

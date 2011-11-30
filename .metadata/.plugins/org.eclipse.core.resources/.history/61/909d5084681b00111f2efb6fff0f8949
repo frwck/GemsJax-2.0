@@ -1,0 +1,84 @@
+package org.gemsjax.server.persistence.request;
+
+import java.util.Date;
+
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.request.CollaborateRequest;
+import org.gemsjax.shared.request.Request;
+import org.gemsjax.shared.user.RegisteredUser;
+
+public class CollaborateRequestImpl implements CollaborateRequest{
+
+
+	
+	/**
+	 * This field is used internally for hibernate, to realise a mapping between
+	 * {@link RequestState} and a database value
+	 */
+	private int requestState;
+	
+	
+	private long id;
+	private Date date;
+	private RegisteredUser sender;
+	private RegisteredUser receiver;
+	
+	private Collaborateable collaborateable;
+	
+	
+	@Override
+	public Collaborateable getCollaborateable() {
+		return collaborateable;
+	}
+	@Override
+	public void setCollaborateable(Collaborateable collaborateable) {
+		this.collaborateable = collaborateable;
+	}
+	@Override
+	public Date getDate() {
+		return date;
+	}
+	@Override
+	public long getId() {
+		return id;
+	}
+	@Override
+	public RegisteredUser getReceiver() {
+		return receiver;
+	}
+	@Override
+	public RequestState getRequestState() {
+		
+		switch(requestState)
+		{
+		case 0:	return RequestState.NEW;
+		case 1: return RequestState.ACCEPT;
+		case 2: return RequestState.REJECT;
+		}
+	}
+	@Override
+	public void getRequestState(RequestState state) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public RegisteredUser getSender() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setDate(Date date) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setReceiver(RegisteredUser receiver) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void setSender(RegisteredUser sender) {
+		// TODO Auto-generated method stub
+		
+	}
+}
