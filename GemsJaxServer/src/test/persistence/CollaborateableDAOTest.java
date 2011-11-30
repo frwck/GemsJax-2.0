@@ -2,10 +2,12 @@ package test.persistence;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
+import org.gemsjax.server.data.metamodel.MetaModelImpl;
 import org.gemsjax.server.persistence.HibernateUtil;
-import org.gemsjax.server.persistence.dao.CollaborateableDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
@@ -13,6 +15,8 @@ import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.server.persistence.dao.hibernate.HibernateCollaborateableDAO;
+import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.metamodel.MetaModel;
@@ -26,7 +30,7 @@ import static org.junit.Assert.*;
 
 public class CollaborateableDAOTest {
 	
-	private static CollaborateableDAO dao;
+	private static HibernateCollaborateableDAO dao;
 	private static UserDAO registeredUserDAO;
 	private static Set<Collaborateable> createdCollaborateables;
 	
@@ -37,8 +41,8 @@ public class CollaborateableDAOTest {
 	 @BeforeClass 
 	 public static void classSetup() throws UsernameInUseException, DAOException, EMailInUseExcpetion {
 
-		 dao = new CollaborateableDAO();
-		 registeredUserDAO = new UserDAO();
+		 dao = new HibernateCollaborateableDAO();
+		 registeredUserDAO = new HibernateUserDAO();
 		 
 		 createdCollaborateables=new HashSet<Collaborateable>();
 		 
@@ -49,13 +53,15 @@ public class CollaborateableDAOTest {
 	 }
 	 
 	 
-	// @AfterClass
+//	 @AfterClass
 	 public static void classSetDown() throws ArgumentException, DAOException
 	 {
+		 /*
 		 for (Collaborateable c: createdCollaborateables)
 		 {
 			dao.deleteCollaborateable(c);
 		 }
+		 */
 		 
 		registeredUserDAO.deleteRegisteredUser(owner1);
 		 
@@ -193,15 +199,18 @@ public class CollaborateableDAOTest {
 		 String name ="name";
 		 
 		 Model m;
-		 int tests = 1;
+		 int tests = 2;
 		 
 		 MetaModel baseModel = dao.createMetaModel("TestBaseMetaModel", owner1);
 		 createdCollaborateables.add(baseModel);
+		 
+		 List<Model> models = new LinkedList<Model>();
 		 
 		 for (int i =0; i<tests; i++)
 		 {
 			m = dao.createModel(name+i, baseModel, owner1);
 			createdCollaborateables.add(m);
+			models.add(m);
 			
 			assertTrue( m.getName().equals(name+i));
 			assertTrue(m.getPublicPermission() == Collaborateable.NO_PERMISSION);
@@ -209,16 +218,45 @@ public class CollaborateableDAOTest {
 			assertTrue(m.getMetaModel() == baseModel);
 			assertTrue(dao.getModelById(m.getId()).getId() == m.getId());
 		 }
+		 
+		 
+		 
+		 // Try delete a Model
+		 Model toDel = models.get(0);
+		 dao.deleteCollaborateable(toDel);
+		 
+		 assertTrue(!baseModel.getModels().contains(toDel));
+		 
+		 createdCollaborateables.remove(toDel);
+		 models.remove(toDel);
+		 
+		 dao.deleteCollaborateable(baseModel);
+		 createdCollaborateables.remove(baseModel);
+		 assertTrue(baseModel.getModels().isEmpty());
+		 
+
+		 createdCollaborateables.removeAll(models);
+		 
+		 
 	 }
 	 
 	 
-	 //@Test
+	 @Test
 	 public void testDelete() throws DAOException
 	 {
-		Collaborateable c = createdCollaborateables.iterator().next();
-		dao.deleteCollaborateable(c);
+		 List<Collaborateable> toDel = new LinkedList<Collaborateable>(createdCollaborateables);
+		while (!toDel.isEmpty())
+		{
+			System.out.println("List is: "+toDel.size());
+			Collaborateable c = toDel.get(0);
+			toDel.remove(0);
+			dao.deleteCollaborateable(c);
+
+			assertTrue(!owner1.getOwnedCollaborateables().contains(c));
+		}
 		
-		//assertTrue(!owner.getOwnedCollaborateables().contains(c));
+		createdCollaborateables.clear();
+		System.out.println("Size "+createdCollaborateables.size());
 	 }
 
 }

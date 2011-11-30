@@ -1,0 +1,9 @@
+package org.gemsjax.shared.request;
+
+import org.gemsjax.shared.collaboration.Collaborateable;
+
+public interface CollaborateRequest extends Request{
+	
+	public Collaborateable getCollaborateable();
+
+}

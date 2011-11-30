@@ -1,3 +1,18 @@
 1321878301046	Rename field 'exception'
 1322058997238	Delete element
 1322066484717	Rename method 'changeRegisteredUserPassword'
+1322144523625	Copy file
+1322146190460	Rename resource 'Notification.hbm.xml'
+1322151457624	Rename local variable 'c'
+1322226673495	Move compilation units
+1322226694515	Rename type 'CollaborateableDAO'
+1322226733464	Rename type 'ExperimentDAO'
+1322226742412	Rename type 'UserDAO'
+1322226754438	Rename type 'CollaborateableDAOHibernateImpl'
+1322226901462	Delete element
+1322226965315	Extract interface 'CollaborateableDAO'
+1322226977691	Move compilation unit
+1322227022532	Extract interface 'ExperimentDAO'
+1322227030707	Move compilation unit
+1322227065902	Extract interface 'UserDAO'
+1322227071998	Move compilation unit

@@ -1,0 +1,26 @@
+package org.gemsjax.shared.notification;
+
+import java.util.Date;
+
+import org.gemsjax.shared.user.RegisteredUser;
+/**
+ * This is the base inteface for notifications
+ * @author Hannes Dorfmann
+ *
+ */
+public interface Notification {
+
+	public long getId();
+	public Date getDate();
+	public void setDate(Date date);
+	
+	public RegisteredUser getSender();
+	public void setSender(RegisteredUser sender);
+	
+	public void setSystemNotification(boolean system);
+	public boolean isSystemNotification();
+	
+	public String getMessage();
+	public void setMessage(String message);
+	
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+
+<class name="org.gemsjax.server.persistence.experiment.ExperimentImpl" table="Experiment">
+    <id name="id" type="int" column="id">
+    	<generator class="increment" />
+    </id>
+    
+    <property name="name" column="name" type="string" not-null="true"/>
+    <property name="description" column="description" type="string"/>
+    
+    
+    <many-to-one name="metaModelTemplate" column="MetaModel_id_template" unique="true" not-null="false" />
+    
+    <!--  cascade="all" inverse="true"  -->
+    <set name="experimentGroups" table="ExperimentGroup" lazy="false" fetch="select">
+            <key>
+                <column name="Experiment_id" not-null="true" />
+            </key>
+            <one-to-many class="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl" />
+    </set>
+    
+    
+    <many-to-one name="owner" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" fetch="select">
+            <column name="User_id_owner" not-null="true" />
+    </many-to-one>
+    
+    
+    <set name="administrators" table="AdministrateExperiment">        
+			<key column="Experiment_id" />         
+			<many-to-many column="User_id" class="org.gemsjax.server.persistence.user.RegisteredUserImpl"/>    
+	</set>
+        
+</class>
+
+
+</hibernate-mapping>

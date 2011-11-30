@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testrun name="CollaborateableDAOTest" project="GemsJaxServer" tests="1" started="1" failures="0" errors="0" ignored="0">
-  <testsuite name="test.persistence.CollaborateableDAOTest" time="0.445">
-    <testcase name="test" classname="test.persistence.CollaborateableDAOTest" time="0.445"/>
-  </testsuite>
-</testrun>

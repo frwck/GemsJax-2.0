@@ -10,11 +10,11 @@
     	<generator class="increment" />
     </id>
     
-    <property name="verificationCode" column="verificationCode" type="string"/>
+    <property name="verificationCode" column="verificationCode" type="string" unique="true" />
     <property name="participated" column="participated" type="boolean"/>
     <property name="email" column="email" type="string"/>
     
-    <many-to-one name="experimentGroup" class="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl" fetch="select">
+    <many-to-one name="experimentGroup" class="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl" fetch="select" lazy="false">
             <column name="ExperimentGroup_id" not-null="true" />
     </many-to-one>
     

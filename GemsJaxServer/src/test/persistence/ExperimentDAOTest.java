@@ -2,17 +2,24 @@ package test.persistence;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import static org.junit.Assert.*;
+
 import org.gemsjax.server.persistence.dao.ExperimentDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.AlreadyAssignedException;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
+import org.gemsjax.server.persistence.dao.exception.InvitationAlreadyUsedException;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.server.persistence.dao.hibernate.HibernateExperimentDAO;
+import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;
@@ -43,7 +50,7 @@ public class ExperimentDAOTest {
 	private static UserDAO registeredUserDAO;
 	
 	private static RegisteredUser owner1;
-	private static RegisteredUser admins[];
+	private static Set<RegisteredUser> admins;
 	
 	
 	
@@ -51,8 +58,8 @@ public class ExperimentDAOTest {
 	 @BeforeClass 
 	 public static void classSetup() throws UsernameInUseException, DAOException, EMailInUseExcpetion {
 
-		 dao = new ExperimentDAO();
-		 registeredUserDAO = new UserDAO();
+		 dao = new HibernateExperimentDAO();
+		 registeredUserDAO = new HibernateUserDAO();
 		 
 		 username = "username";
 		 password = "password";
@@ -66,17 +73,17 @@ public class ExperimentDAOTest {
 		 createdExperimentInvitations = new ArrayList<ExperimentInvitation>();
 		 
 		 
-		  owner1 = registeredUserDAO.createRegisteredUser("owner1", "passwordHash", "email"); 
-		  admins = new RegisteredUser[3];
+		  owner1 = registeredUserDAO.createRegisteredUser("ExperimentOwner1", "passwordHash", "ExperimentEmail"); 
+		  admins = new HashSet<RegisteredUser>();
 		  
-		  for (int i =0; i<admins.length; i++)
-			  admins[i] = registeredUserDAO.createRegisteredUser("ExperimentAdmin"+i, "passwordHash", "email"); 
+		  for (int i =0; i<1; i++)
+			  admins.add(registeredUserDAO.createRegisteredUser("ExperimentAdmin"+i, "passwordHash", "ExperimentEmail"+i)); 
 		  
 			
 	 }
 	 
 	 
-	 @AfterClass
+//	 @AfterClass
 	 public static void classSetDown() throws ArgumentException, DAOException
 	 {
 		 for (Experiment e: createdExperiments)
@@ -84,31 +91,20 @@ public class ExperimentDAOTest {
 			dao.deleteExperiment(e);
 		 }
 		 
-		 
 		 registeredUserDAO.deleteRegisteredUser(owner1);
-		 for (int i =0; i<admins.length; i++)
-			 registeredUserDAO.deleteRegisteredUser(admins[i]);
+		 
+		 for (RegisteredUser a : admins)
+			 registeredUserDAO.deleteRegisteredUser(a);
 		  
 	 }
 	 
 	 
+	 
+	 
 	 @Test
-	 public void experimentTests() throws ArgumentException, MoreThanOneExcpetion, AlreadyAssignedException, DAOException
+	 public void createExperiments() throws ArgumentException
 	 {
-		 
-		 createExperiments();
-		 checkExperimentOwner(owner1);
-		 
-		 createExperimentAdministrators();
-		 //createExperimentGroups(); 
-	 }
-	 
-	 
-	 
-	 
-	 private void createExperiments() throws ArgumentException
-	 {
-		int tests = 10;
+		int tests = 1;
 				
 		 for (int i =0; i<tests; i++)
 		 {
@@ -117,8 +113,8 @@ public class ExperimentDAOTest {
 		 }
 	 }
 	 
-	 
-	 private void checkExperimentOwner(RegisteredUser owner)
+	 @Test
+	 public void checkExperimentOwner()
 	 {
 		 
 		List<Experiment> exp = dao.getExperimentByOwner(owner1);
@@ -127,21 +123,36 @@ public class ExperimentDAOTest {
 		
 		for (Experiment e: exp)
 		{
-			assertTrue(createdExperiments.contains(e));
+			boolean ok = false;
+			for(Experiment ee : createdExperiments)
+			{
+				if (ee.getId()== e.getId())
+				{
+					ok = true;
+					break;
+				}
+					
+			}
+			
+			if (ok)
+				assertTrue(true);
+			else
+				assertTrue(false);
 		}
 	 }
 	 
 	 
-	private void createExperimentGroups() throws MoreThanOneExcpetion, ArgumentException, NotFoundException
+	@Test
+	public void createExperimentGroups() throws MoreThanOneExcpetion, ArgumentException, NotFoundException
 	{
-		int tests = 10;
+		int tests = 1;
 		
 		Experiment queriedExperiment;
 		for (Experiment e : createdExperiments)
 		{
 			queriedExperiment = dao.getExperimentById(e.getId());
 			
-			assertTrue(e == queriedExperiment);
+			assertTrue(e.getId() == queriedExperiment.getId());
 			
 			for (int i =0; i<tests; i++)
 			{
@@ -151,8 +162,8 @@ public class ExperimentDAOTest {
 		}
 	}
 	
-	
-	private void createExperimentAdministrators() throws AlreadyAssignedException, DAOException
+	@Test
+	public void createExperimentAdministrators() throws AlreadyAssignedException, DAOException
 	{
 		List<Experiment> experiments = dao.getExperimentByOwner(owner1);
 		
@@ -174,6 +185,49 @@ public class ExperimentDAOTest {
 				}
 				
 			}
+	}
+	
+	
+	@Test
+	public void testExperimentInvitations() throws NotFoundException, MoreThanOneExcpetion, DAOException, InvitationAlreadyUsedException
+	{
+		String email ="inviteEmail@email.com", verificationCode = "verificationCode";
+		String exUsername = "ExperimentTestUser", exPassword ="passwordHash";
+		int i = 1;
+		
+		for (ExperimentGroup group : createdExperimentGroups)
+		{
+			ExperimentInvitation in = dao.createExperimentInvitation(group, email+i, verificationCode+i);
+			assertTrue(in.getEmail().equals(email+i));
+			assertTrue(in.getVerificationCode().equals(verificationCode+i));
+			assertTrue(in.getExperimentGroup().getId() == group.getId());
+			
+			ExperimentGroup queried = dao.getExperimentGroup(group.getId());
+			
+			for (ExperimentInvitation inv : queried.getExperimentInvitations())
+			{
+				if (inv.getId() == in.getId())
+				{
+					assertTrue(inv.getId() == in.getId());
+					assertTrue(inv.getEmail().equals(email+i));
+					assertTrue(inv.getVerificationCode().equals(verificationCode+i));
+					assertTrue(inv.getExperimentGroup().getId() == group.getId());
+					
+				}
+			}
+			
+			// CREATE ExperimentUsers
+			ExperimentUser u = dao.createExperimentUser(in.getVerificationCode(), exUsername+i, exPassword+i);
+			ExperimentUser loginUser = dao.getExperimentUserByLogin(exUsername+i, exPassword+i);
+			
+			assertTrue(u.getId() == loginUser.getId());
+			assertTrue(u.getExperimentGroup().getId() == loginUser.getExperimentGroup().getId());
+			assertTrue(u.getUsername().equals(loginUser.getUsername()));
+			assertTrue(u.getDisplayedName().equals(exUsername+i));
+			assertTrue(loginUser.getDisplayedName().equals(exUsername+i));
+			
+			i++;
+		}
 	}
 	 
 

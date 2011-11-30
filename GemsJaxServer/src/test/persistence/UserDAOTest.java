@@ -12,6 +12,7 @@ import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -32,7 +33,7 @@ public class UserDAOTest {
 	 @BeforeClass 
 	 public static void classSetup() {
 
-		 dao = new UserDAO();
+		 dao = new HibernateUserDAO();
 		 
 		 username = "username";
 		 password = "password";

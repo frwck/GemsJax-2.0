@@ -43,6 +43,12 @@ public class ExperimentInvitationImpl implements ExperimentInvitation {
 	public boolean hasParticipated() {
 		return participated;
 	}
+	
+	@Override
+	public void setParticipated(boolean participated)
+	{
+		this.participated = participated;
+	}
 
 	@Override
 	public void setEmail(String email) {

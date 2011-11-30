@@ -16,7 +16,8 @@
     
     <many-to-one name="metaModelTemplate" column="MetaModel_id_template" unique="true" not-null="false" />
     
-    <set name="experimentGroups" table="ExperimentGroup" cascade="all-delete-orphan" inverse = "true" lazy="false" fetch="select">
+    <!--  cascade="all" inverse="true"  -->
+    <set name="experimentGroups" table="ExperimentGroup" lazy="false" fetch="select" cascade="all" inverse="true">
             <key>
                 <column name="Experiment_id" not-null="true" />
             </key>

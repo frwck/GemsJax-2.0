@@ -2,6 +2,7 @@ package org.gemsjax.server.data.metamodel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,7 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 		baseTypes = new ArrayList<MetaBaseType>();
 		idMap = new HashMap<String, MetaModelElement>();	
 		attributes = new ArrayList<MetaAttribute>();
+		models = new LinkedHashSet<Model>();
 	}
 	
 	/**
@@ -144,6 +146,10 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 	@Override
 	public void removeAttribute(MetaAttribute attribute) {
 		attributes.remove(attribute);
+	}
+
+	public Set<Model> getModels() {
+		return models;
 	}
 	
 }

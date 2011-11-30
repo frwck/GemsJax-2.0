@@ -1,0 +1,5 @@
+package org.gemsjax.shared.notification;
+
+public interface Notification {
+
+}

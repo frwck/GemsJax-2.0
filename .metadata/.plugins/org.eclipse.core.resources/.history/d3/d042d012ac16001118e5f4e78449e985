@@ -1,0 +1,5 @@
+package org.gemsjax.shared.request;
+
+public interface CollaborateRequest extends Request{
+
+}

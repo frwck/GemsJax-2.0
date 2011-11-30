@@ -3,11 +3,13 @@ package org.gemsjax.shared.metamodel;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
+import org.gemsjax.shared.model.Model;
 
 
 /**
@@ -98,4 +100,9 @@ public interface MetaModel  extends Collaborateable {
 	public List<MetaAttribute> getAttributes();
 	public void removeAttribute(MetaAttribute attribute);
 	
+	/**
+	 * Get all models, which have this {@link MetaModel} as the base meta model
+	 * @return
+	 */
+	public Set<Model> getModels();
 }

@@ -38,6 +38,12 @@ public interface ExperimentInvitation {
 	public boolean hasParticipated();
 	
 	/**
+	 * @see #hasParticipated()
+	 * @param participated
+	 */
+	public void setParticipated(boolean participated);
+	
+	/**
 	 * Get the email address
 	 * @return
 	 */

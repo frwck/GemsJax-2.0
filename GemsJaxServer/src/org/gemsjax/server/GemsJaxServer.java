@@ -11,7 +11,7 @@ import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.gemsjax.server.persistence.HibernateUtil;
-import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.server.servlets.CollaborationWebSocketServlet;
 import org.gemsjax.server.servlets.IconServlet;
 

@@ -6,6 +6,8 @@
 	</section>
 	<section name="org.eclipse.ltk.ui.refactoring.settings">
 		<item value="false" key="deleteSubPackages"/>
+		<item value="*" key="patterns"/>
+		<item value="false" key="moveWizard.updateQualifiedNames"/>
 	</section>
 	<section name="InferTypeArguments">
 		<item value="true" key="leaveUnconstrainedRaw"/>

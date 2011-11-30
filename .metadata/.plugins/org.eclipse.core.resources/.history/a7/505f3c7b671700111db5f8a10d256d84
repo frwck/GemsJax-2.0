@@ -1,0 +1,10 @@
+package org.gemsjax.server.persistence.dao;
+
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.user.User;
+
+public interface CollaborateableDAO {
+
+	public void addCollaborativeUser(Collaborateable c, User u) throws DAOExcpetion;
+	
+}

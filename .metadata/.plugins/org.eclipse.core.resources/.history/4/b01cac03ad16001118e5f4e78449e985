@@ -1,0 +1,34 @@
+package org.gemsjax.shared.request;
+
+import java.util.Date;
+
+import org.gemsjax.shared.user.RegisteredUser;
+
+/**
+ * This is the base interface for {@link Request}s.
+ * A {@link Request} can be sent by another {@link RegisteredUser} user to make a request to work on something, like Experiment
+ * @author Hannes Dorfmann
+ *
+ */
+public interface Request {
+
+	public enum RequestState
+	{
+		/**
+		 * Means: A {@link Request} is new and the 
+		 */
+		NEW,
+		ACCEPT,
+		REJECT
+	}
+	
+	public long getId();
+	public Date getDate();
+	public void setDate(Date date);
+	
+	public RegisteredUser getReceiver();
+	public RegisteredUser getSender();
+	public void setReceiver();
+	public void setSender();
+	
+}

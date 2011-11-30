@@ -16,6 +16,7 @@ import org.gemsjax.shared.metamodel.MetaModelElement;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
+import org.gemsjax.shared.model.Model;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
 
@@ -44,6 +45,8 @@ public class MetaModelImpl implements MetaModel{
 	
 	private Set<Transaction> transactions;
 	
+	private Set<Model> models;
+	
 	// TODO how to set owner?
 	private RegisteredUser owner;
 	
@@ -57,6 +60,7 @@ public class MetaModelImpl implements MetaModel{
 		this.name = name;
 		this.id = id;
 		
+		models = new LinkedHashSet<Model>();
 		metaClasses = new ArrayList<MetaClass>();
 		baseTypes = new ArrayList<MetaBaseType>();
 		idMap = new HashMap<String, MetaModelElement>();	
@@ -221,6 +225,11 @@ public class MetaModelImpl implements MetaModel{
 	@Override
 	public void setOwner(RegisteredUser owner) {
 		this.owner = owner;
+	}
+
+	@Override
+	public Set<Model> getModels() {
+		return models;
 	}
 	
 }
