@@ -9,7 +9,7 @@ import org.gemsjax.shared.user.RegisteredUser;
 
 public class ExperimentImpl implements Experiment{
 	
-	private int id;
+	private Integer id;
 	private String name;
 	private String description;
 	private RegisteredUser owner;
@@ -92,6 +92,30 @@ public class ExperimentImpl implements Experiment{
 
 	public MetaModelImpl getMetaModelTemplate() {
 		return metaModelTemplate;
+	}
+	
+	
+	@Override
+	public boolean equals(Object other) {
+		
+		if (this==other) return true;
+		
+		if ( !(other instanceof ExperimentImpl) ) return false;
+		
+		final ExperimentImpl that = (ExperimentImpl) other;
+		
+		if (id != null && that.id != null)
+			return this.id.equals(that.id);
+		
+		return false;
+	}
+		
+	@Override
+	public int hashCode() {
+		if (id != null)
+			return id.hashCode();
+		else
+			return super.hashCode();
 	}
 
 }

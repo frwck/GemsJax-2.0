@@ -66,13 +66,12 @@ public class RequestDAOTest {
 		 RegisteredUser sender = registeredUserDAO.createRegisteredUser("RequestTestSender", "passwordHash", "requestTest@sender.com");
 		 RegisteredUser receiver = registeredUserDAO.createRegisteredUser("RequestTestReceiver", "passwordHash", "requestTest@receiver.com");
 		 
-		 MetaModel collaborateable = collaborateableDAO.createMetaModel("RequestTestMetaModel", sender);
-		 
-		 
-		 int tests = 1;
+		 int tests = 100;
 		 
 		 for (int i =0; i<tests; i++)
 		 {
+			 MetaModel collaborateable = collaborateableDAO.createMetaModel("RequestTestMetaModel", sender);
+			 
 			 CollaborateRequest r = dao.createCollaborateRequest(sender, receiver, collaborateable);
 			 createdRequests.add(r);
 			 System.out.println(r.getReceiver() + "  "+r.getSender() + r.getReceiver().getId());
@@ -127,13 +126,16 @@ public class RequestDAOTest {
 		 RegisteredUser sender = registeredUserDAO.createRegisteredUser("RequestTestSender", "passwordHash", "requestTest@sender.com");
 		 RegisteredUser receiver = registeredUserDAO.createRegisteredUser("RequestTestReceiver", "passwordHash", "requestTest@receiver.com");
 		 
-		 Experiment ex = experimentDAO.createExperiment("AdministrateRequestTestExperiment", "description", sender);
 		 
 
-		 int tests = 1;
+		 int tests = 100;
 		 
 		 for (int i =0; i<tests; i++)
 		 {
+			 
+			 Experiment ex = experimentDAO.createExperiment("AdministrateRequestTestExperiment", "description", sender);
+				
+			 
 			 AdministrateExperimentRequest r = dao.createAdministrateExperimentRequest(sender, receiver, ex);
 			 createdRequests.add(r);
 			 System.out.println(r.getReceiver() + "  "+r.getSender() + r.getReceiver().getId());

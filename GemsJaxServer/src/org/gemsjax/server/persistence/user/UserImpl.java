@@ -2,6 +2,7 @@ package org.gemsjax.server.persistence.user;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.gemsjax.server.persistence.collaboration.command.CommandImpl;
 import org.gemsjax.server.persistence.request.RequestImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.user.User;
@@ -14,7 +15,7 @@ import org.gemsjax.shared.user.UserOnlineState;
  */
 public class UserImpl implements User{
 
-	private int id;
+	private Integer id;
 	private String displayedName;
 	
 	/**
@@ -76,18 +77,24 @@ public class UserImpl implements User{
 	
 	@Override
 	public boolean equals(Object other) {
+		
 		if (this==other) return true;
 		
 		if ( !(other instanceof UserImpl) ) return false;
 		
 		final UserImpl that = (UserImpl) other;
-		return this.getId() == that.getId();
+		
+		if (id != null && that.id != null)
+			return this.id.equals(that.id);
+		
+		return false;
 	}
 		
 	@Override
 	public int hashCode() {
-		
-		return (int) id;
+		if (id != null)
+			return id.hashCode();
+		else
+			return super.hashCode();
 	}
-
 }

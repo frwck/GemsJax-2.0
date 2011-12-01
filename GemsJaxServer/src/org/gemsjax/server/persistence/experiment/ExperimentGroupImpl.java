@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.gemsjax.server.persistence.collaboration.command.CommandImpl;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;
@@ -11,7 +12,7 @@ import org.gemsjax.shared.user.ExperimentUser;
 
 public class ExperimentGroupImpl implements ExperimentGroup{
 
-	private int id;
+	private Integer id;
 	
 	private Date endDate;
 	private Date startDate;
@@ -96,5 +97,28 @@ public class ExperimentGroupImpl implements ExperimentGroup{
 		this.experiment = e;
 	}
 	
+	
+	@Override
+	public boolean equals(Object other) {
+		
+		if (this==other) return true;
+		
+		if ( !(other instanceof ExperimentGroupImpl) ) return false;
+		
+		final ExperimentGroupImpl that = (ExperimentGroupImpl) other;
+		
+		if (id != null && that.id != null)
+			return this.id.equals(that.id);
+		
+		return false;
+	}
+		
+	@Override
+	public int hashCode() {
+		if (id != null)
+			return id.hashCode();
+		else
+			return super.hashCode();
+	}
 	
 }

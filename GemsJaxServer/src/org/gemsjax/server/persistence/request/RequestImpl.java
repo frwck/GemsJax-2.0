@@ -2,6 +2,7 @@ package org.gemsjax.server.persistence.request;
 
 import java.util.Date;
 
+import org.gemsjax.server.persistence.collaboration.command.CommandImpl;
 import org.gemsjax.shared.request.Request;
 import org.gemsjax.shared.request.Request.RequestState;
 import org.gemsjax.shared.user.RegisteredUser;
@@ -16,7 +17,7 @@ public class RequestImpl implements Request {
 	private int requestState;
 	
 	
-	private long id;
+	private Long id;
 	private Date date;
 	private RegisteredUser sender;
 	private RegisteredUser receiver;
@@ -76,20 +77,30 @@ public class RequestImpl implements Request {
 		
 	}
 	
+	
+	
+	
 	@Override
 	public boolean equals(Object other) {
+		
 		if (this==other) return true;
 		
 		if ( !(other instanceof RequestImpl) ) return false;
 		
 		final RequestImpl that = (RequestImpl) other;
-		return this.getId() == that.getId();
+		
+		if (id != null && that.id != null)
+			return this.id.equals(that.id);
+		
+		return false;
 	}
 		
 	@Override
 	public int hashCode() {
-		
-		return (int) id;
+		if (id != null)
+			return id.hashCode();
+		else
+			return super.hashCode();
 	}
-
+	
 }

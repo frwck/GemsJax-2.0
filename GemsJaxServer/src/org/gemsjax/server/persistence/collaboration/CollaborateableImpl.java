@@ -12,7 +12,7 @@ import org.gemsjax.shared.user.User;
 public class CollaborateableImpl implements Collaborateable
 {
 	
-	public int id;
+	public Integer id;
 	private String keywords;
 	private String name;
 	private RegisteredUser owner;
@@ -113,6 +113,30 @@ public class CollaborateableImpl implements Collaborateable
 
 	public void setForExperiment(boolean forExperiment) {
 		this.forExperiment = forExperiment;
+	}
+	
+	
+	@Override
+	public boolean equals(Object other) {
+		
+		if (this==other) return true;
+		
+		if ( !(other instanceof CollaborateableImpl) ) return false;
+		
+		final CollaborateableImpl that = (CollaborateableImpl) other;
+		
+		if (id != null && that.id != null)
+			return this.id.equals(that.id);
+		
+		return false;
+	}
+		
+	@Override
+	public int hashCode() {
+		if (id != null)
+			return id.hashCode();
+		else
+			return super.hashCode();
 	}
 
 }

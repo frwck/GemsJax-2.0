@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.gemsjax.server.persistence.collaboration.command.CommandImpl;
 import org.gemsjax.server.persistence.request.RequestImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.experiment.Experiment;
@@ -80,19 +81,4 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 	}
 
 
-	@Override
-	public boolean equals(Object other) {
-		if (this==other) return true;
-		
-		if ( !(other instanceof RegisteredUserImpl) ) return false;
-		
-		final RegisteredUserImpl that = (RegisteredUserImpl) other;
-		return this.getId() == that.getId() && this.username.equals(that.getUsername());
-	}
-		
-	@Override
-	public int hashCode() {
-		
-		return getId() + username.hashCode();
-	}
 }

@@ -53,7 +53,7 @@ public class CollaborateableDAOTest {
 	 }
 	 
 	 
-	 @AfterClass
+//	 @AfterClass
 	 public static void classSetDown() throws ArgumentException, DAOException
 	 {
 		 for (Collaborateable c: createdCollaborateables)

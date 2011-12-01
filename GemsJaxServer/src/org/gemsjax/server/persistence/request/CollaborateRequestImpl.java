@@ -21,4 +21,4 @@ public class CollaborateRequestImpl extends RequestImpl implements CollaborateRe
 	public void setCollaborateable(Collaborateable collaborateable) {
 		this.collaborateable = collaborateable;
 	}
-	}
+}

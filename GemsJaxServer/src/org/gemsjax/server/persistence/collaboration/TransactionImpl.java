@@ -3,6 +3,7 @@ package org.gemsjax.server.persistence.collaboration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.eclipse.jetty.websocket.WebSocket;
+import org.gemsjax.server.persistence.user.UserImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.collaboration.command.Command;
@@ -163,4 +164,26 @@ public class TransactionImpl implements Transaction {
 	
 	
 
+	@Override
+	public boolean equals(Object other) {
+		
+		if (this==other) return true;
+		
+		if ( !(other instanceof TransactionImpl) ) return false;
+		
+		final TransactionImpl that = (TransactionImpl) other;
+		
+		if (id != null && that.id != null)
+			return this.id.equals(that.id);
+		
+		return false;
+	}
+		
+	@Override
+	public int hashCode() {
+		if (id != null)
+			return id.hashCode();
+		else
+			return super.hashCode();
+	}
 }
