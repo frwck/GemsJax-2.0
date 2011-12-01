@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename local variable &apos;hql&apos; in &apos;org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO.deleteRegisteredUser(...)&apos; to &apos;delHql&apos;&#x0A;- Original project: &apos;GemsJaxServer&apos;&#x0A;- Original element: &apos;org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO.deleteRegisteredUser(RegisteredUser).hql&apos;&#x0A;- Renamed element: &apos;hql&apos;&#x0A;- Update references to refactored element" description="Rename local variable &apos;hql&apos;" id="org.eclipse.jdt.ui.rename.local.variable" input="/src&lt;org.gemsjax.server.persistence.dao.hibernate{HibernateUserDAO.java[HibernateUserDAO~deleteRegisteredUser~QRegisteredUser;@hql!4795!4896!4802!4804!QString;" name="delHql" references="true" stamp="1322730756966" version="1.0"/>
+</session>

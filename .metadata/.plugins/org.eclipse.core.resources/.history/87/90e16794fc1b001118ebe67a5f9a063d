@@ -163,12 +163,12 @@ public class HibernateUserDAO implements UserDAO {
 			
 			
 				// DELETE Requests
-				String delHql = "DELETE from "+RequestImpl.class.getName()+" C where sender = :user OR receiver = :user";
-				Query query = session.createQuery( delHql );
+				String hql = "DELETE from "+RequestImpl.class.getName()+" C where sender = :user OR receiver = :user";
+				Query query = session.createQuery( hql );
 				query.setEntity("user", u);
 				
-				query.executeUpdate();
-				
+				int deletedRequests = query.executeUpdate();
+				System.out.println("Deleted Requests "+deletedRequests );
 			
 				// BEGIN deleting connection to Collaborateables
 				//System.out.println(Hibernate.isInitialized(u)+" "+ Hibernate.isInitialized(u.getCollaborateables())+" "+Hibernate.isInitialized(u.getAdministratedExperiments()));
