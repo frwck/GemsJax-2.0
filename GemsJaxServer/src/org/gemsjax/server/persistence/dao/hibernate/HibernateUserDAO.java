@@ -11,6 +11,7 @@ import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
 import org.gemsjax.server.persistence.experiment.ExperimentImpl;
+import org.gemsjax.server.persistence.notification.NotificationImpl;
 import org.gemsjax.server.persistence.request.RequestImpl;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.server.persistence.user.UserImpl;
@@ -169,12 +170,12 @@ public class HibernateUserDAO implements UserDAO {
 				query.executeUpdate();
 				
 			
-				// BEGIN deleting connection to Collaborateables
-				//System.out.println(Hibernate.isInitialized(u)+" "+ Hibernate.isInitialized(u.getCollaborateables())+" "+Hibernate.isInitialized(u.getAdministratedExperiments()));
-				Hibernate.initialize(u.getCollaborateables());
-				Hibernate.initialize(u.getAdministratedExperiments());
+				// DELETE Notifications
+				delHql = "DELETE from "+NotificationImpl.class.getName()+" C where receiver = :user";
+				query = session.createQuery( delHql );
+				query.setEntity("user", u);
+				query.executeUpdate();
 				
-				System.out.println("SIZE: " + u.getCollaborateables().size() + " "+u.getAdministratedExperiments().size()+ " L ");
 				
 		    	for (Collaborateable c: u.getCollaborateables())
 				{

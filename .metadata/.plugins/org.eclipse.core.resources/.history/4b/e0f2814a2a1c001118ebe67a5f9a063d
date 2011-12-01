@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+<class name="org.gemsjax.server.persistence.request.RequestImpl" table="Request">
+    <id name="id" type="long" column="id">
+    	<generator class="increment" />
+    </id>
+    
+    <property name="requestState" column="requestState" type="int" not-null="true"  />
+    <property name="date" column="date" type="timestamp" not-null="true" />
+    
+    
+    <many-to-one name="sender" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_sender" not-null="true" />
+    
+    <many-to-one name="receiver" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_receiver" not-null="true"/>
+         
+</class>
+
+</hibernate-mapping>

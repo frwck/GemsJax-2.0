@@ -1,0 +1,10 @@
+package org.gemsjax.server.persistence.dao;
+
+import org.gemsjax.shared.notification.Notification;
+
+public interface NotificationDAO {
+	
+	
+	public abstract Notification createNotification();
+
+}

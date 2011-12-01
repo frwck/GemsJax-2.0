@@ -1,0 +1,7 @@
+package org.gemsjax.server.persistence.dao.hibernate;
+
+import org.gemsjax.server.persistence.dao.NotificationDAO;
+
+public class HibernateNotificationDAO implements NotificationDAO{
+
+}

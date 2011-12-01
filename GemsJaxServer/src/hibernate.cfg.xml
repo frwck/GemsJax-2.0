@@ -30,6 +30,6 @@
     <mapping resource="Transaction.hbm.xml" />
     <mapping resource="Command.hbm.xml" />
     <mapping resource="Request.hbm.xml" />
-    
+    <mapping resource="Notification.hbm.xml" />
   </session-factory>
 </hibernate-configuration>

@@ -1,0 +1,17 @@
+package org.gemsjax.server.persistence.dao;
+
+import org.gemsjax.server.persistence.dao.exception.DAOException;
+import org.gemsjax.shared.notification.Notification;
+import org.gemsjax.shared.user.RegisteredUser;
+
+public interface NotificationDAO {
+	
+	
+	public abstract Notification createNotification(RegisteredUser receiver, int codeNumber, String optionalMessage ) throws DAOException;
+
+	
+	public abstract void setRead(Notification notification, boolean read) throws DAOException;
+	
+	
+	
+}

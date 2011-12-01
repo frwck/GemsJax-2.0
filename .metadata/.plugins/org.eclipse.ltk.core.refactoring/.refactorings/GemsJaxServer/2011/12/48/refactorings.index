@@ -1,2 +1,9 @@
 1322730756966	Rename local variable 'hql'
 1322732347870	Rename type 'AdministrateExperimentRequest'
+1322748925997	Copy file
+1322750372211	Rename type 'NotificationImplementation'
+1322751337228	Rename local variable 'user'
+1322751342731	Rename local variable 'user'
+1322752038696	Copy compilation unit
+1322752132787	Rename field 'createdRequests'
+1322752592826	Rename local variable 'recList'
