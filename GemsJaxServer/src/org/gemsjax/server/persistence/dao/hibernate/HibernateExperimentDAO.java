@@ -20,6 +20,8 @@ import org.gemsjax.server.persistence.experiment.ExperimentGroupImpl;
 import org.gemsjax.server.persistence.experiment.ExperimentImpl;
 import org.gemsjax.server.persistence.experiment.ExperimentInvitationImpl;
 import org.gemsjax.server.persistence.experiment.ExperimentUserImpl;
+import org.gemsjax.server.persistence.request.AdministrateExperimentRequestImpl;
+import org.gemsjax.server.persistence.request.RequestImpl;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.experiment.Experiment;
@@ -76,7 +78,7 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 			
 			
 			tx= session.beginTransaction();
-			session.buildLockRequest(LockOptions.NONE).lock(owner);
+			//session.buildLockRequest(LockOptions.NONE).lock(owner);
 			
 			ExperimentImpl e = new ExperimentImpl();
 			
@@ -85,6 +87,10 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 			e.setOwner(owner);
 			
 			owner.getOwnedExperiments().add(e);
+			
+			
+			e.getAdministrators().add(owner);
+			owner.getAdministratedExperiments().add(e);
 			
 			session.save(e);
 			session.update(owner);
@@ -309,8 +315,16 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 		try{
 			session = HibernateUtil.getSessionFactory().openSession();
 			t = session.beginTransaction();
-				//experiment = (Experiment) session.merge(experiment);
+			
+
 				Experiment persistentExperiment = (Experiment)session.get(ExperimentImpl.class, experiment.getId());
+				// DELETE Requests
+				String delHql = "DELETE from "+AdministrateExperimentRequestImpl.class.getName()+" C where experiment = :experiment";
+				Query query = session.createQuery( delHql );
+				query.setEntity("experiment", persistentExperiment);
+				int del = query.executeUpdate();
+				
+				//experiment = (Experiment) session.merge(experiment);
 				session.delete(persistentExperiment);
 			t.commit();
 			session.flush();

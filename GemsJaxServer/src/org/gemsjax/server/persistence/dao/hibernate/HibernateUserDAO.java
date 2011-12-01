@@ -166,7 +166,6 @@ public class HibernateUserDAO implements UserDAO {
 				String delHql = "DELETE from "+RequestImpl.class.getName()+" C where sender = :user OR receiver = :user";
 				Query query = session.createQuery( delHql );
 				query.setEntity("user", u);
-				
 				query.executeUpdate();
 				
 			

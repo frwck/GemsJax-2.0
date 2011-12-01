@@ -12,10 +12,13 @@ import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.server.persistence.request.AdministrateExperimentRequestImpl;
+import org.gemsjax.server.persistence.request.CollaborateRequestImpl;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;
+import org.gemsjax.shared.request.CollaborateRequest;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
 import org.hibernate.Hibernate;
@@ -54,7 +57,11 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 				persistent = (Collaborateable) session.load(CollaborateableImpl.class, c.getId());
 				//persistent = (Collaborateable) session.merge(c);
 				
-				System.out.println("Try to delete "+c.getId()+" "+(c==persistent)+" "+c+" "+persistent);
+				// DELETE Requests
+				String delHql = "DELETE from "+CollaborateRequestImpl.class.getName()+" C where collaborateable = :col";
+				Query query = session.createQuery( delHql );
+				query.setEntity("col", persistent);
+				int del = query.executeUpdate();
 				
 				//persistent.getOwner().getOwnedCollaborateables().remove(persistent);
 				//session.update(persistent.getOwner());

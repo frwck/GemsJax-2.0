@@ -1,6 +1,8 @@
 package org.gemsjax.server.persistence.user;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.gemsjax.server.persistence.request.RequestImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.user.User;
 import org.gemsjax.shared.user.UserOnlineState;
@@ -69,6 +71,23 @@ public class UserImpl implements User{
 	@Override
 	public UserOnlineState getOnlineState() {
 		return onlineState;
+	}
+	
+	
+	@Override
+	public boolean equals(Object other) {
+		if (this==other) return true;
+		
+		if ( !(other instanceof UserImpl) ) return false;
+		
+		final UserImpl that = (UserImpl) other;
+		return this.getId() == that.getId();
+	}
+		
+	@Override
+	public int hashCode() {
+		
+		return (int) id;
 	}
 
 }

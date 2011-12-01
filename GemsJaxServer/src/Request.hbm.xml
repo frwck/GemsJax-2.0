@@ -13,13 +13,18 @@
     <property name="date" column="date" type="timestamp" not-null="true" />
     
     
-    <many-to-one name="sender" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_sender" not-null="true" unique="true" />
+    <many-to-one name="sender" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_sender" not-null="true" />
     
-    <many-to-one name="receiver" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_receiver" not-null="true" unique="true" />
+    <many-to-one name="receiver" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_receiver" not-null="true"/>
     
     <joined-subclass name="org.gemsjax.server.persistence.request.CollaborateRequestImpl" table="CollaborateRequest">
-        <key column="request_id" />
-       	<many-to-one name="collaborateable" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" column="Collaborateable_id" not-null="true" unique="true" />
+        <key column="Request_id" />
+       	<many-to-one name="collaborateable" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" column="Collaborateable_id" not-null="true"  />
+    </joined-subclass>
+    
+     <joined-subclass name="org.gemsjax.server.persistence.request.AdministrateExperimentRequestImpl" table="AdministrateExperimentRequest">
+        <key column="Request_id" />
+       	<many-to-one name="experiment" class="org.gemsjax.server.persistence.experiment.ExperimentImpl" column="Experiment_id" not-null="true"  />
     </joined-subclass>
     
          

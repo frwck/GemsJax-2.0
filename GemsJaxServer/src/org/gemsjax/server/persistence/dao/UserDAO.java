@@ -6,6 +6,9 @@ import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.experiment.Experiment;
+import org.gemsjax.shared.request.Request;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
 
@@ -37,7 +40,12 @@ public interface UserDAO {
 			String passwordHash) throws MoreThanOneExcpetion, NotFoundException;
 
 	/**
-	 * Delete an {@link User}
+	 * Delete an {@link User} and all the other associated resources like:
+	 * <ul>
+	 * <li> {@link Request} </li>
+	 * <li> owned {@link Collaborateable}s</li>
+	 * <li> owned {@link Experiment}s</li>
+	 * </ul>
 	 * @param u
 	 * @throws DAOException 
 	 */
