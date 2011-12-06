@@ -1,0 +1,7 @@
+package org.gemsjax.server.communication;
+
+public interface Message {
+	
+	public abstract String toXml();
+
+}

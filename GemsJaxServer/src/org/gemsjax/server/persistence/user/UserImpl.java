@@ -63,7 +63,7 @@ public class UserImpl implements User{
 	
 
 	@Override
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 	

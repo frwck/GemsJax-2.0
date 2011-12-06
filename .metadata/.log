@@ -3692,3 +3692,39 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64
 
 !ENTRY org.eclipse.wst.common.project.facet.core 4 0 2011-12-01 10:40:31.530
 !MESSAGE Project facet wst.web has not been defined. It is used in plugin org.eclipse.jst.common.project.facet.core.
+!SESSION 2011-12-03 09:59:53.661 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=de_DE
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-12-03 10:00:20.251
+!MESSAGE Failed to load icon cache
+!SESSION 2011-12-03 15:42:47.574 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=de_DE
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-12-03 20:53:37.911
+!MESSAGE Failed to load icon cache
+!SESSION 2011-12-05 13:15:53.934 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=de_DE
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-12-05 16:02:05.229
+!MESSAGE Failed to load icon cache
+!SESSION 2011-12-06 12:52:53.507 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=de_DE
+Command-line arguments:  -data /home/hannes/GemsJaxWorkspace -os linux -ws gtk -arch x86_64
+
+!ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-12-06 17:19:56.929
+!MESSAGE Failed to load icon cache

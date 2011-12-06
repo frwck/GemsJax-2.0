@@ -16,7 +16,7 @@
 <coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="76" y="30"/>
 <coolItem id="org.eclipse.ui.edit.text.actionSet.presentation" itemType="typeToolBarContribution" x="124" y="30"/>
 <coolItem id="org.eclipse.wst.xml.ui.perspective.NewFileToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
-<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="130" y="30"/>
+<coolItem id="org.eclipse.wst.xml.ui.design.DesignToolBar" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="184" y="30"/>
 <coolItem id="group.editor" itemType="typeGroupMarker"/>
@@ -38,54 +38,29 @@
 <part id="1"/>
 <part id="2"/>
 <part id="3"/>
-<part id="4"/>
-<part id="5"/>
-<part id="6"/>
-<part id="7"/>
-<part id="8"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAOTest.java" partName="ExperimentDAOTest.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java" title="ExperimentDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/ExperimentDAOTest.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="6318" selectionTopPixel="3027"/>
+<editor id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="Notification.hbm.xml" partName="Notification.hbm.xml" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/Notification.hbm.xml" title="Notification.hbm.xml" tooltip="GemsJaxServer/src/Notification.hbm.xml" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/Notification.hbm.xml"/>
 </editor>
-<editor id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="ExperimentGroup.hbm.xml" partName="ExperimentGroup.hbm.xml" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/ExperimentGroup.hbm.xml" title="ExperimentGroup.hbm.xml" tooltip="GemsJaxServer/src/ExperimentGroup.hbm.xml" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/ExperimentGroup.hbm.xml"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NotificationImpl.java" partName="NotificationImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/notification/NotificationImpl.java" title="NotificationImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/notification/NotificationImpl.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/notification/NotificationImpl.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1755" selectionTopPixel="1107"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HibernateCollaborateableDAO.java" partName="HibernateCollaborateableDAO.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateCollaborateableDAO.java" title="HibernateCollaborateableDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateCollaborateableDAO.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateCollaborateableDAO.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2479" selectionTopPixel="379"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NotificationDAOTest.java" partName="NotificationDAOTest.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/test/persistence/NotificationDAOTest.java" title="NotificationDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/NotificationDAOTest.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/test/persistence/NotificationDAOTest.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="4234" selectionTopPixel="1005"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CollaborateableDAO.java" partName="CollaborateableDAO.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/dao/CollaborateableDAO.java" title="CollaborateableDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/CollaborateableDAO.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/CollaborateableDAO.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="689" selectionTopPixel="63"/>
-</editor>
-<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="ExperimentInvitation.java" partName="ExperimentInvitation.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/experiment/ExperimentInvitation.java" title="ExperimentInvitation.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/experiment/ExperimentInvitation.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/experiment/ExperimentInvitation.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1253" selectionTopPixel="341"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentUserImpl.java" partName="ExperimentUserImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentUserImpl.java" title="ExperimentUserImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentUserImpl.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/experiment/ExperimentUserImpl.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="18" selectionOffset="444" selectionTopPixel="494"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HibernateRequestDAO.java" partName="HibernateRequestDAO.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateRequestDAO.java" title="HibernateRequestDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateRequestDAO.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateRequestDAO.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1590" selectionTopPixel="464"/>
-</editor>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="RequestDAOTest.java" partName="RequestDAOTest.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/test/persistence/RequestDAOTest.java" title="RequestDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/RequestDAOTest.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/test/persistence/RequestDAOTest.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="3574" selectionTopPixel="1336"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="RequestImpl.java" partName="RequestImpl.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/persistence/request/RequestImpl.java" title="RequestImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/request/RequestImpl.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/persistence/request/RequestImpl.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1731" selectionTopPixel="1021"/>
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CollaborateableDAOTest.java" partName="CollaborateableDAOTest.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/test/persistence/CollaborateableDAOTest.java" title="CollaborateableDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/CollaborateableDAOTest.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/test/persistence/CollaborateableDAOTest.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="200"/>
 </editor>
 </editors>
 <views>
 <view id="org.eclipse.jdt.junit.ResultView" partName="JUnit">
-<viewState failuresOnly="false" layout="1" orientation="2" ratio="154" scroll="false" time="true"/>
+<viewState failuresOnly="false" layout="1" orientation="2" ratio="206" scroll="false" time="true"/>
 </view>
 <view id="org.eclipse.jdt.ui.TypeHierarchy" partName="Hierarchy">
 <viewState hidefields="false" hidelocaltypes="false" hidenonpublic="false" hidestatic="false" link_editors="0" mv_vertical_scroll="0" orientation="3" qualified_names="0" ratio="350" showinherited="false" sortbydefiningtype="false" vertical_scroll="0" view="2" workingSetName="Aggregate for window 1320175203545"/>
@@ -118,11 +93,10 @@
 </view>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
-<expanded>
+<expanded>&#x0A;<category IMemento.internal.id="Warnings"/>
 <category IMemento.internal.id="Errors"/>
-<category IMemento.internal.id="Warnings"/>
 </expanded>
-<columnWidths org.eclipse.ui.ide.locationField="73" org.eclipse.ui.ide.markerType="360" org.eclipse.ui.ide.pathField="143" org.eclipse.ui.ide.resourceField="108" org.eclipse.ui.ide.severityAndDescriptionField="350"/>
+<columnWidths org.eclipse.ui.ide.locationField="73" org.eclipse.ui.ide.markerType="600" org.eclipse.ui.ide.pathField="143" org.eclipse.ui.ide.resourceField="108" org.eclipse.ui.ide.severityAndDescriptionField="350"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.pathField"/>
@@ -283,7 +257,7 @@
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@41fc8c35" ratio="0.69425285" ratioLeft="604" ratioRight="266" relationship="4" relative="org.eclipse.ui.editorss">
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@28f463f6" ratio="0.6988889" ratioLeft="629" ratioRight="271" relationship="4" relative="org.eclipse.ui.editorss">
 <folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
@@ -400,151 +374,163 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/request/RequestImpl.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" path="/GemsJaxServer/src/Request.hbm.xml"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/RequestDAO.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateRequestDAO.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateExperimentDAO.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/persistence/RequestDAOTest.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateCollaborateableDAO.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/NotificationDAO.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateNotificationDAO.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/persistence/NotificationDAOTest.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/CollaborateableDAO.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" path="/GemsJaxServer/src/Notification.hbm.xml"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" path="/GemsJaxServer/src/hibernate.cfg.xml"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/notification/NotificationImpl.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/persistence/UserDAOTest.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateUserDAO.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/persistence/RequestDAOTest.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/persistence/CollaborateableDAOTest.java"/>
 </editors>
-<item historyLabel="HibernateRequestDAO.java" index="3">
-<position/>
+<item historyLabel="HibernateNotificationDAO.java" index="2">
+<position info="not_deleted" x="1151" y="0"/>
 </item>
-<item historyLabel="HibernateRequestDAO.java" index="3">
-<position info="not_deleted" x="1618" y="0"/>
+<item historyLabel="HibernateNotificationDAO.java" index="2">
+<position info="not_deleted" x="1150" y="0"/>
 </item>
-<item historyLabel="HibernateRequestDAO.java" index="3">
-<position info="not_deleted" x="1078" y="0"/>
-</item>
-<item historyLabel="RequestDAO.java" index="2">
-<position info="not_deleted" x="1480" y="0"/>
-</item>
-<item historyLabel="HibernateRequestDAO.java" index="3">
-<position info="not_deleted" x="1078" y="0"/>
-</item>
-<item historyLabel="HibernateRequestDAO.java" index="3">
-<position info="not_deleted" x="2518" y="0"/>
-</item>
-<item historyLabel="HibernateExperimentDAO.java" index="4">
-<position info="not_deleted" x="2662" y="660"/>
-</item>
-<item historyLabel="HibernateExperimentDAO.java" index="4">
-<position info="not_deleted" x="3463" y="17"/>
-</item>
-<item historyLabel="HibernateExperimentDAO.java" index="4">
-<position info="not_deleted" x="14462" y="260"/>
-</item>
-<item historyLabel="HibernateRequestDAO.java" index="3">
-<position info="not_deleted" x="2752" y="1"/>
-</item>
-<item historyLabel="Request.hbm.xml" index="1"/>
-<item historyLabel="HibernateRequestDAO.java" index="3">
-<position info="not_deleted" x="2752" y="1"/>
-</item>
-<item historyLabel="HibernateRequestDAO.java" index="3">
-<position info="not_deleted" x="2808" y="10"/>
-</item>
-<item historyLabel="HibernateRequestDAO.java" index="3">
-<position info="not_deleted" x="3287" y="0"/>
-</item>
-<item historyLabel="RequestDAOTest.java" index="5">
+<item historyLabel="CollaborateableDAO.java" index="4">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="2449" y="0"/>
+<item historyLabel="CollaborateableDAO.java" index="4">
+<position info="not_deleted" x="1982" y="16"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="2588" y="0"/>
+<item historyLabel="HibernateCollaborateableDAO.java" index="0">
+<position info="not_deleted" x="7895" y="232"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3855" y="0"/>
+<item historyLabel="CollaborateableDAO.java" index="4">
+<position info="not_deleted" x="1982" y="16"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="2821" y="1"/>
+<item historyLabel="HibernateNotificationDAO.java" index="2">
+<position info="not_deleted" x="1150" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="2829" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4037" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="2959" y="0"/>
+<item historyLabel="NotificationDAO.java" index="1">
+<position info="not_deleted" x="1896" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="2969" y="0"/>
+<item historyLabel="HibernateNotificationDAO.java" index="2">
+<position info="not_deleted" x="4143" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3163" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4037" y="0"/>
 </item>
-<item historyLabel="RequestImpl.java" index="0">
-<position info="not_deleted" x="1731" y="0"/>
+<item historyLabel="HibernateNotificationDAO.java" index="2">
+<position info="not_deleted" x="4143" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3163" y="0"/>
+<item historyLabel="NotificationDAO.java" index="1">
+<position info="not_deleted" x="1922" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3515" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4037" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3856" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3903" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3515" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3898" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3373" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3843" y="0"/>
 </item>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4032" y="0"/>
+</item>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4105" y="0"/>
+</item>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3204" y="0"/>
+</item>
+<item historyLabel="Notification.hbm.xml" index="5"/>
 <item historyLabel="hibernate.cfg.xml" index="6"/>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3373" y="0"/>
+<item historyLabel="Notification.hbm.xml" index="5"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3545" y="72"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="2939" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3728" y="0"/>
 </item>
-<item historyLabel="RequestDAO.java" index="2">
-<position info="not_deleted" x="614" y="24"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3809" y="55"/>
 </item>
-<item historyLabel="hibernate.cfg.xml" index="6"/>
-<item historyLabel="RequestDAO.java" index="2">
-<position info="not_deleted" x="614" y="24"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3804" y="3"/>
 </item>
-<item historyLabel="Request.hbm.xml" index="1"/>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3165" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3809" y="0"/>
 </item>
-<item historyLabel="RequestDAO.java" index="2">
-<position info="not_deleted" x="614" y="24"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4081" y="0"/>
 </item>
-<item historyLabel="HibernateRequestDAO.java" index="3">
-<position info="not_deleted" x="1590" y="0"/>
+<item historyLabel="HibernateNotificationDAO.java" index="2">
+<position info="not_deleted" x="3044" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3293" y="39"/>
+<item historyLabel="NotificationDAO.java" index="1">
+<position info="not_deleted" x="1922" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3575" y="0"/>
+<item historyLabel="HibernateNotificationDAO.java" index="2">
+<position info="not_deleted" x="3044" y="0"/>
 </item>
-<item historyLabel="Request.hbm.xml" index="1"/>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3575" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4081" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3656" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4112" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3856" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3327" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3584" y="0"/>
+<item historyLabel="HibernateNotificationDAO.java" index="2">
+<position info="not_deleted" x="3072" y="25"/>
 </item>
-<item historyLabel="RequestDAO.java" index="2">
-<position info="not_deleted" x="1429" y="13"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3327" y="0"/>
 </item>
-<item historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3528" y="0"/>
+<item historyLabel="NotificationImpl.java" index="7">
+<position info="not_deleted" x="1755" y="0"/>
 </item>
-<item historyLabel="Request.hbm.xml" index="1"/>
-<item active="true" historyLabel="RequestDAOTest.java" index="5">
-<position info="not_deleted" x="3528" y="0"/>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3385" y="0"/>
+</item>
+<item historyLabel="UserDAOTest.java" index="8">
+<position/>
+</item>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="3385" y="0"/>
+</item>
+<item historyLabel="HibernateUserDAO.java" index="9">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="HibernateUserDAO.java" index="9">
+<position info="not_deleted" x="5314" y="0"/>
+</item>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4234" y="0"/>
+</item>
+<item historyLabel="UserDAOTest.java" index="8">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="RequestDAOTest.java" index="10">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4234" y="0"/>
+</item>
+<item historyLabel="ExperimentDAOTest.java" index="11">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="NotificationDAOTest.java" index="3">
+<position info="not_deleted" x="4234" y="0"/>
+</item>
+<item active="true" historyLabel="CollaborateableDAOTest.java" index="12">
+<position info="not_deleted" x="0" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -564,50 +550,50 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="Request.hbm.xml" tooltip="GemsJaxServer/src/Request.hbm.xml">
-<persistable path="/GemsJaxServer/src/Request.hbm.xml"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CollaborateableDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/CollaborateableDAOTest.java">
+<persistable path="/GemsJaxServer/src/test/persistence/CollaborateableDAOTest.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="hibernate.cfg.xml" tooltip="GemsJaxServer/src/hibernate.cfg.xml">
-<persistable path="/GemsJaxServer/src/hibernate.cfg.xml"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="RequestImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/request/RequestImpl.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/request/RequestImpl.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/ExperimentDAOTest.java">
+<persistable path="/GemsJaxServer/src/test/persistence/ExperimentDAOTest.java"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="RequestDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/RequestDAOTest.java">
 <persistable path="/GemsJaxServer/src/test/persistence/RequestDAOTest.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HibernateRequestDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateRequestDAO.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateRequestDAO.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="Collaborateable.hbm.xml" tooltip="GemsJaxServer/src/Collaborateable.hbm.xml">
-<persistable path="/GemsJaxServer/src/Collaborateable.hbm.xml"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UserDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/UserDAOTest.java">
+<persistable path="/GemsJaxServer/src/test/persistence/UserDAOTest.java"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HibernateUserDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateUserDAO.java">
 <persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateUserDAO.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="User.hbm.xml" tooltip="GemsJaxServer/src/User.hbm.xml">
-<persistable path="/GemsJaxServer/src/User.hbm.xml"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="hibernate.cfg.xml" tooltip="GemsJaxServer/src/hibernate.cfg.xml">
+<persistable path="/GemsJaxServer/src/hibernate.cfg.xml"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="Request.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/request/Request.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/request/Request.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HibernateCollaborateableDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateCollaborateableDAO.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateCollaborateableDAO.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="AdministrateExperimentRequest.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/request/AdministrateExperimentRequest.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/request/AdministrateExperimentRequest.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CollaborateableDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/CollaborateableDAO.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/CollaborateableDAO.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="CollaborateRequest.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/request/CollaborateRequest.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/request/CollaborateRequest.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NotificationDAOTest.java" tooltip="GemsJaxServer/src/test/persistence/NotificationDAOTest.java">
+<persistable path="/GemsJaxServer/src/test/persistence/NotificationDAOTest.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Request.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/request/Request.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/request/Request.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HibernateRequestDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateRequestDAO.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateRequestDAO.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="RequestDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/RequestDAO.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/RequestDAO.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HibernateNotificationDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateNotificationDAO.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/hibernate/HibernateNotificationDAO.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.wst.xml.ui.internal.tabletree.XMLMultiPageEditorPart" name="ExperimentInvitation.hbm.xml" tooltip="GemsJaxServer/src/ExperimentInvitation.hbm.xml">
-<persistable path="/GemsJaxServer/src/ExperimentInvitation.hbm.xml"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NotificationDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/NotificationDAO.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/NotificationDAO.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="ExperimentDAO.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/dao/ExperimentDAO.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CommandImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/collaboration/command/CommandImpl.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaboration/command/CommandImpl.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NotificationImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/notification/NotificationImpl.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/notification/NotificationImpl.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="Notification.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/notification/Notification.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/shared/notification/Notification.java"/>
 </file>
 </mruList>
 </workbench>

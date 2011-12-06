@@ -1,0 +1,37 @@
+package org.gemsjax.server.communication;
+
+import org.gemsjax.shared.user.User;
+
+/**
+ * A {@link OnlineUser} wraps a simple {@link User}
+ * @author Hannes Dorfmann
+ *
+ */
+public class OnlineUser {
+	
+	private User user;
+	private OutputChannel outputChannel;
+	
+	
+	public OnlineUser(User user)
+	{
+		this.user = user;
+	}
+
+
+	public OutputChannel getOutputChannel() {
+		return outputChannel;
+	}
+
+
+	public void setOutputChannel(OutputChannel outputChannel) {
+		this.outputChannel = outputChannel;
+	}
+	
+	
+	
+
+	
+	
+
+}

@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testrun name="RequestDAOTest" project="GemsJaxServer" tests="2" started="2" failures="0" errors="0" ignored="0">
-  <testsuite name="test.persistence.RequestDAOTest" time="7.081">
-    <testcase name="testCollaborateRequests" classname="test.persistence.RequestDAOTest" time="6.584"/>
-    <testcase name="testAdministrateExperiment" classname="test.persistence.RequestDAOTest" time="0.497"/>
-  </testsuite>
-</testrun>

@@ -1,0 +1,18 @@
+package org.gemsjax.server.communication.servlet;
+
+import org.gemsjax.shared.user.User;
+
+public class OnlineUser {
+	
+	private User user;
+	
+	
+	public OnlineUser(User user)
+	{
+		
+	}
+	
+	
+	
+
+}

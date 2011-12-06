@@ -1,0 +1,16 @@
+package org.gemsjax.server.communication.messages;
+
+public class LogoutMessage implements Message{
+
+	public enum LogoutReason
+	{
+		OTHER_OUTPUT_CHANNEL
+	}
+	
+	
+	public LogoutMessage()
+	{
+		
+	}
+	
+}

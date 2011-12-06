@@ -1,0 +1,29 @@
+package org.gemsjax.server.communication.messages;
+
+import org.gemsjax.shared.CommunicationConstants;
+
+public class LogoutMessage implements Message{
+
+	public enum LogoutReason
+	{
+		/**
+		 * Is used by the server, to told the client that the reason for the logout is, that another client
+		 * has been authenticated and connected (for the same User).
+		 * This is mapped with the constant {@link CommunicationConstants.Logout#REASON_OTHER_CONNECTION}
+		 */
+		OTHER_CONNECTION
+	}
+	
+	
+	public LogoutMessage(LogoutReason reason)
+	{
+		
+	}
+
+
+	@Override
+	public String toXml() {
+		return "<logout reason=\"1\" />";
+	}
+	
+}

@@ -15,7 +15,7 @@ public interface User {
 	 * Get the users internal id
 	 * @return
 	 */
-	public int getId();
+	public Integer getId();
 	
 	/**
 	 * Get the username
