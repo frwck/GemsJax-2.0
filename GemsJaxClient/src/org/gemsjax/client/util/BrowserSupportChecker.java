@@ -1,6 +1,6 @@
 package org.gemsjax.client.util;
 
-import org.gemsjax.client.communication.WebSocket;
+import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.media.client.Audio;
@@ -33,7 +33,7 @@ public class BrowserSupportChecker {
 	 */
 	public static boolean isWebSocketSupported()
 	{
-		return WebSocket.isSupported();
+		return WebSocketCommunicationConnection.isSupported();
 	}
 	
 	

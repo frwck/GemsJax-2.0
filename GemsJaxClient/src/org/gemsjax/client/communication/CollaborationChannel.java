@@ -1,18 +1,12 @@
 package org.gemsjax.client.communication;
 
 import java.io.IOException;
-
-import org.gemsjax.client.communication.exception.WebSocketSendException;
 import org.gemsjax.client.util.RegExFactory;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
-import org.gemsjax.shared.metamodel.MetaClass;
-import org.gemsjax.shared.metamodel.MetaConnection;
-import org.gemsjax.shared.metamodel.MetaModel;
-import org.gemsjax.shared.model.Model;
-import org.gemsjax.shared.model.ModelClass;
+
 
 
 /**

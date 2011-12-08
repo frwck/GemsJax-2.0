@@ -1,6 +1,6 @@
 package org.gemsjax.client.communication.exception;
 
-import org.gemsjax.client.communication.WebSocket;
+import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 
 public class WebSocketConnectionException extends Exception{
 	

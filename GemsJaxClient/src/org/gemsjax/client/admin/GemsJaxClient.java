@@ -1,7 +1,9 @@
 package org.gemsjax.client.admin;
 
 
-import org.gemsjax.client.communication.WebSocket;
+import java.io.IOException;
+
+import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -17,46 +19,55 @@ public class GemsJaxClient implements EntryPoint {
 
 	public void onModuleLoad() {
 		
-		WebSocket webSocket = WebSocket.getInstance();
+		WebSocketCommunicationConnection webSocket = WebSocketCommunicationConnection.getInstance();
 		
-		webSocket.connect("ws://localhost:8080/servlets/collaboration");
+		//webSocket.connect("ws://localhost:8080/");
 		
-		if (!GWT.isScript()) {
-			KeyIdentifier debugKey = new KeyIdentifier();
-			//debugKey.setAltKey(true);
-			debugKey.setKeyName("Q");
-
-			Page.registerKey(debugKey, new KeyCallback() {
-				public void execute(String keyName) {
-					SC.showConsole();
-					SC.debugger();
-				}
-			});
-			
-		}
 		
-		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
-			
-			@Override
-			public void onUncaughtException(Throwable e) {
+		try {
+			webSocket.connect();
+		
+		
+			if (!GWT.isScript()) {
+				KeyIdentifier debugKey = new KeyIdentifier();
+				//debugKey.setAltKey(true);
+				debugKey.setKeyName("Q");
+	
+				Page.registerKey(debugKey, new KeyCallback() {
+					public void execute(String keyName) {
+						SC.showConsole();
+						SC.debugger();
+					}
+				});
 				
-				String msg =e.toString() + " "+e.getLocalizedMessage() +" "+ e.getMessage()+" \n";
-				
-				for (StackTraceElement el : e.getStackTrace())
-					msg += el.toString() + "\n";
-				
-				
-				e.printStackTrace();
-				SC.say(msg);
-				SC.logWarn(msg);
-
 			}
-		})
-		;
+			
+			GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+				
+				@Override
+				public void onUncaughtException(Throwable e) {
+					
+					String msg =e.toString() + " "+e.getLocalizedMessage() +" "+ e.getMessage()+" \n";
+					
+					for (StackTraceElement el : e.getStackTrace())
+						msg += el.toString() + "\n";
+					
+					
+					e.printStackTrace();
+					SC.say(msg);
+					SC.logWarn(msg);
+	
+				}
+			})
+			;
 		
 		AdminApplicationController adminApplicationcontroller = AdminApplicationController.getInstance();
 		adminApplicationcontroller.start();
 		
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
 		
 		

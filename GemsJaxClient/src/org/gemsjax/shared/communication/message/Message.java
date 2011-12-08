@@ -1,6 +1,6 @@
 package org.gemsjax.shared.communication.message;
 
-import org.gemsjax.shared.communication.channel.CommunicationConnection;
+import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.user.User;

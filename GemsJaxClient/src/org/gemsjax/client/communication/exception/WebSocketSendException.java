@@ -1,9 +1,9 @@
 package org.gemsjax.client.communication.exception;
 
-import org.gemsjax.client.communication.WebSocket;
+import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 
 /**
- * This exception is thrown, when an error occures while sending data via the {@link WebSocket} 
+ * This exception is thrown, when an error occures while sending data via the {@link WebSocketCommunicationConnection} 
  * @author Hannes Dorfmann
  *
  */

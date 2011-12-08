@@ -1,2 +1,5 @@
 1323269059382	Move compilation unit
 1323269070083	Rename type 'Channel'
+1323374825038	Rename type 'WebSocket'
+1323377727826	Move compilation unit
+1323379181216	Rename field 'ssl'
