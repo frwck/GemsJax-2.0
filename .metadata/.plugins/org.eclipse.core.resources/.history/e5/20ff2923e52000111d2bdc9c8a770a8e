@@ -1,0 +1,30 @@
+package org.gemsjax.shared.communication.channel;
+
+import java.io.IOException;
+
+public interface CommunicationConnection {
+	
+	
+	public void close() throws IOException;
+	
+	public boolean isClosed();
+	
+	public int getPort();
+	
+	/**
+	 * Returns the address of the endpoint this socket is connected to, or null if it is unconnected.
+	 * @return a SocketAddress reprensenting the remote endpoint of this socket, or null if it is not connected yet.
+	 */
+	public String getRemoteAddress();
+	
+	public String getAddress();
+	
+	
+	public boolean isConnected();
+	
+	public boolean setKeepAlive(boolean  keepAlive);
+	
+	
+	
+	
+}

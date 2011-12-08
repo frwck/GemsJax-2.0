@@ -1,8 +1,13 @@
 package org.gemsjax.client.communication;
 
+import java.io.IOException;
+
 import org.gemsjax.client.communication.exception.WebSocketSendException;
 import org.gemsjax.client.util.RegExFactory;
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.OutputChannel;
+import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModel;
@@ -11,17 +16,11 @@ import org.gemsjax.shared.model.ModelClass;
 
 
 /**
- * A {@link CollaborationChannel} is a {@link Channel} that is observing the {@link WebSocket} for incoming 
- * collaboration messages which were parsed and applied on the associated {@link Collaborateable} (like {@link MetaModel} or {@link Model}) or on
- * child elements of this {@link Collaborateable} (like {@link MetaClass}, {@link MetaConnection}, {@link ModelClass} etc. ).
- * 
- *  Messages can also be sent to the server via {@link WebSocket} by calling {@link #sendMessage(String)}
- * 
- * See the protocol paper for detailed description
+ * A {@link CollaborationChannel} is a {@link InputChannel} that receives collaboration {@link Message}
  * @author Hannes Dorfmann
  *
  */
-public class CollaborationChannel implements Channel{
+public class CollaborationChannel implements InputChannel, OutputChannel {
 	
 	/**
 	 * The {@link Collaborateable} on that this {@link CollaborationChannel} works
@@ -46,11 +45,6 @@ public class CollaborationChannel implements Channel{
 		return filterRegEx;
 	}
 
-	@Override
-	public void onError() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void onMessageReceived(String xmlMsg) {
@@ -58,8 +52,10 @@ public class CollaborationChannel implements Channel{
 		
 	}
 
+	
+
 	@Override
-	public void sendMessage(String xmlMsg) throws WebSocketSendException {
+	public void send(Message message) throws IOException {
 		// TODO Auto-generated method stub
 		
 	}

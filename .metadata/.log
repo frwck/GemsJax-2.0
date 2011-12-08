@@ -3728,3 +3728,24 @@ Command-line arguments:  -data /home/hannes/GemsJaxWorkspace -os linux -ws gtk -
 
 !ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-12-06 17:19:56.929
 !MESSAGE Failed to load icon cache
+!SESSION 2011-12-07 12:43:38.216 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=de_DE
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY org.eclipse.core.resources 2 10035 2011-12-07 12:43:43.650
+!MESSAGE The workspace exited with unsaved changes in the previous session; refreshing workspace to recover changes.
+!SESSION 2011-12-08 10:49:13.102 -----------------------------------------------
+eclipse.buildId=M20100211-1343
+java.version=1.6.0_22
+java.vendor=Sun Microsystems Inc.
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=de_DE
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-12-08 13:22:38.573
+!MESSAGE Failed to load icon cache
+
+!ENTRY com.google.gdt.eclipse.managedapis 1 0 2011-12-08 17:38:52.562
+!MESSAGE Failed to load icon cache

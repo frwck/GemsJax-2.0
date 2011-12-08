@@ -1,5 +1,0 @@
-package org.gemsjax.server.persistence.request;
-
-public class Request {
-
-}

@@ -3,6 +3,7 @@ package org.gemsjax.server.communication;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.user.User;
 
 

@@ -1,6 +1,7 @@
 package org.gemsjax.server.communication;
 
 import org.gemsjax.server.persistence.notification.NotificationImpl;
+import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.user.User;
 
 import com.mysql.jdbc.Messages;

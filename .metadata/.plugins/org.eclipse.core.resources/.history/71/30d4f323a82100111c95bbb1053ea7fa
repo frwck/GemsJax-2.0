@@ -1,0 +1,30 @@
+package org.gemsjax.shared.communication.channel;
+
+import org.gemsjax.client.communication.WebSocket;
+import org.gemsjax.client.communication.exception.WebSocketSendException;
+
+/**
+ * A {@link InputChannel} is a communication object that interacts with the an underlying communication connection, like a{@link WebSocket}.
+ * A {@link InputChannel} listens to the underlying communication connection (like a a {@link WebSocket}) for incoming messages which are
+ * filtered by the {@link WebSocket}. For the filtering the regular expression ({@link #getFilterRegEx()} ) is used.
+ * @author Hannes Dorfmann
+ *
+ */
+public interface InputChannel {
+	
+	/**
+	 * This method is called by the {@link WebSocket} (observer-pattern) to push the new incoming message to this channel.
+	 * <b>Notice:</b> This method is only called, if the incoming message matches the filer regex of this {@link InputChannel} ({@link #getFilterRegEx()})  
+	 * @param xmlMsg
+	 */
+	public void onMessageReceived(String xmlMsg);
+	
+	/**
+	 * 
+	 * @return The regular expression which is used by the {@link WebSocket} to filter incoming messages.
+	 * With this regular expression you can specify that only incoming messages are pushed to this {@link InputChannel} 
+	 * that matches this regular expression.
+	 */
+	public String getFilterRegEx();
+	
+}

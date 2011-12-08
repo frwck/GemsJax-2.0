@@ -1,0 +1,72 @@
+package org.gemsjax.shared.communication.channel;
+
+import java.io.IOException;
+
+/**
+ * Is the abstract API interface, that provides communication with the underlying socket / connection.
+ * With this additional class over the plain network communication object, the programmer gets the ability to
+ * change the underlying communication object any time (for example, from WebSocket to Comet), without have to
+ * change any other part in the application layer above.
+ * @author Hannes Dorfmann
+ *
+ */
+public interface CommunicationConnection {
+	
+	/**
+	 * Closes the connection and also the underlying connection / socket.
+	 * Once a CommunicationConnection has been closed, it is not available for further networking use (i.e. can't be reconnected or rebound). 
+	 * A new CommunicationConnection needs to be created.
+	 * @throws IOException
+	 */
+	public abstract void close() throws IOException;
+	
+	
+	public abstract boolean isClosed();
+	
+	/**
+	 * Returns the remote port to which this socket is connected.
+	 * @return the remote port number to which this socket is connected, or 0 if the socket is not connected yet.
+	 */
+	public abstract int getPort();
+	
+	/**
+	 * Returns the address of the endpoint this socket is connected to, or null if it is unconnected.
+	 * @return a SocketAddress reprensenting the remote endpoint of this socket, or null if it is not connected yet.
+	 */
+	public abstract String getRemoteAddress();
+	
+	
+	public abstract boolean isConnected();
+	
+	public abstract boolean setKeepAlive(boolean  keepAlive);
+	
+	public abstract boolean isKeepAlive();
+	
+	/**
+	 * Transform the object which should be send in a adequate format and send the data
+	 * via the underlying socket/connection.
+	 * 
+	 * @param o
+	 * @throws IOException
+	 */
+	public abstract void send(String toSend) throws IOException;
+	
+	
+	
+	/**
+	 * Register a {@link InputChannel} to this {@link CommunicationConnection}.
+	 * By registering a {@link InputChannel} to this {@link CommunicationConnection}, every incomming message
+	 * (from the underlying socket/connection) is forwarded to the {@link InputChannel}, if the {@link InputChannel#getFilterRegEx()} matches
+	 * to the incoming message.
+	 * @param c
+	 */
+	public void registerInputChannel(InputChannel c);
+	
+	/**
+	 * Deregister a {@link InputChannel}
+	 * @param c
+	 * @see #registerInputChannel(InputChannel)
+	 */
+	public void deregisterInputChannel(InputChannel c);
+	
+}

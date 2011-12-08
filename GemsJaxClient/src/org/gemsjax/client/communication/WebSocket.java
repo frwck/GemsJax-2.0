@@ -5,12 +5,14 @@ import java.util.List;
 
 import org.gemsjax.client.communication.exception.WebSocketConnectionException;
 import org.gemsjax.client.communication.exception.WebSocketSendException;
+import org.gemsjax.shared.communication.channel.InputChannel;
+
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.util.SC;
 
 /**
  * {@link WebSocket} is the way how the client communicates with the server.
- * But the client application should not use this {@link WebSocket} directly, but should use the {@link Channel}s to
+ * But the client application should not use this {@link WebSocket} directly, but should use the {@link InputChannel}s to
  * send and receive messages.<br />
  * <b>Notice:</b> This is a singleton, so use {@link #getInstance()} to access the {@link WebSocket}
  * @author Hannes Dorfmann
@@ -39,10 +41,10 @@ public class WebSocket {
 	/**
 	 * A list with all registered channels
 	 */
-	private List<Channel> channels;
+	private List<InputChannel> channels;
 	 
     private WebSocket() {
-        channels = new ArrayList<Channel>();
+        channels = new ArrayList<InputChannel>();
         SC.showConsole();
         //connect("wss://"+serverURL+webSocketServletURL);
     }
@@ -59,14 +61,14 @@ public class WebSocket {
     	return INSTANCE;
     }
     
-    public void addChannel(Channel c)
+    public void addChannel(InputChannel c)
     {
     	if (!channels.contains(c))
     		channels.add(c);
     }
     
     
-    public void removeChannel(Channel c)
+    public void removeChannel(InputChannel c)
     {
     	channels.remove(c);
     }
@@ -100,7 +102,7 @@ public class WebSocket {
     
     private void onMessage(String message) {
        
-    	for (Channel c: channels)
+    	for (InputChannel c: channels)
         {
         	if (message.matches(c.getFilterRegEx()))
         		c.onMessageReceived(message);
