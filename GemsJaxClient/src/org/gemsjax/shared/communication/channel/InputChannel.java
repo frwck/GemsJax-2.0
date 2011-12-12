@@ -34,4 +34,10 @@ public interface InputChannel {
 	 */
 	public String getFilterRegEx();
 	
+	
+	/**
+	 * Called, if the underlying {@link CommunicationConnection} has been closed
+	 */
+	public void onClose();
+	
 }

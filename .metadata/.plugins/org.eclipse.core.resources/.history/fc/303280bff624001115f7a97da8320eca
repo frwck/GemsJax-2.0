@@ -1,0 +1,22 @@
+package org.gemsjax.server.communication.parser;
+
+import org.gemsjax.shared.communication.message.LoginMessage;
+
+/**
+ * A parser to parse a {@link LoginMessage}
+ * @author Hannes Dorfmann
+ *
+ */
+public class LoginMessageParser {
+
+	public LoginMessageParser()
+	{
+		
+	}
+	
+	
+	public LoginMessage parse(String xml)
+	{
+		
+	}
+}

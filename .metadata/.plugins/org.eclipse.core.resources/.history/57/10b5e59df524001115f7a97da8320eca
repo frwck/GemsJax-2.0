@@ -1,0 +1,13 @@
+package test.communication.websocket;
+
+
+class WebSocketTestClient
+{
+	
+}
+
+
+
+public class CommunicationWebSocketTest {
+
+}

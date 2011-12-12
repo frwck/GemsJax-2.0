@@ -1,0 +1,38 @@
+package test.communication;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+import java.io.StringReader;
+
+import org.gemsjax.server.communication.parser.LoginMessageParser;
+import org.gemsjax.shared.communication.message.LoginMessage;
+import org.junit.Test;
+import org.xml.sax.SAXException;
+
+import com.mchange.util.AssertException;
+
+public class MessageParseTest {
+	
+	
+	@Test
+	public void loginMessage() throws SAXException, IOException
+	{
+		String username = "username";
+		String password = "password";
+		boolean experimentLogin = false;
+		
+		LoginMessage lm = new LoginMessage(username, password, experimentLogin);
+			
+		LoginMessageParser parser = new LoginMessageParser();
+		
+		LoginMessage m = parser.parse(lm.toXml());
+		
+		assertEquals(m.getPassword(), password);
+		
+		assertTrue(m.equals(lm));
+		
+	}
+
+}

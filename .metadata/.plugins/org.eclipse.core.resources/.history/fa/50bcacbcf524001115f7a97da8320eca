@@ -1,0 +1,22 @@
+package test.communication.websocket;
+
+import java.net.URI;
+
+import net.tootallnate.websocket.WebSocketClient;
+
+
+class WebSocketTestClient extends WebSocketClient
+{
+
+	public WebSocketTestClient(URI serverAddress) {
+		super(serverAddress);
+		
+	}
+	
+}
+
+
+
+public class CommunicationWebSocketTest {
+
+}

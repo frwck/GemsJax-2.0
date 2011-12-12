@@ -16,6 +16,7 @@
 	<inherits name="com.smartgwt.SmartGwt" />
 
 	<inherits name="com.google.gwt.i18n.I18N" />
+	<inherits name='com.google.gwt.xml.XML'/>
 
 	<!-- Development tool -->
 	<inherits name="com.smartgwt.tools.SmartGwtTools" />

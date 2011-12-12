@@ -1,5 +1,0 @@
-package org.gemsjax.server.persistence.notification;
-
-public class NotificationImplementation {
-
-}

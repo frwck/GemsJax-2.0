@@ -1,0 +1,74 @@
+package org.gemsjax.server.communication.parser;
+
+import org.gemsjax.shared.communication.message.LoginMessage;
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
+
+/**
+ * A parser to parse a {@link LoginMessage}
+ * @author Hannes Dorfmann
+ *
+ */
+public class LoginMessageParser extends AbstractContentHandler {
+	
+	private String username;
+	private String password;
+	private boolean experimentLogin;
+	
+	private boolean startSys;
+	private boolean endSys;
+	
+
+	public LoginMessageParser(){	
+		
+	}
+	
+	
+	public LoginMessage parse(String xml) throws SAXException
+	{
+		XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+	    InputSource inputSource = new InputSource(xml);
+	    
+	    
+	}
+
+
+	@Override
+	public void endElement(String uri, String localName, String qName)
+			throws SAXException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void startElement(String uri, String localName, String qName,
+			Attributes atts) throws SAXException {
+	
+	
+	}
+	
+
+
+	@Override
+	public void endDocument() throws SAXException {
+		if (!startSys)
+			throw new SAXException("Start <sys> Tag not found");
+		
+		if (!endSys)
+			throw new SAXException("End </sys> Tag not found");
+		
+	}
+
+
+	@Override
+	public void startDocument() throws SAXException {
+		startSys = false;
+		endSys = false;
+	}
+}

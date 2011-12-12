@@ -1,0 +1,83 @@
+package org.gemsjax.shared.communication.message;
+
+import org.gemsjax.shared.CommunicationConstants;
+
+/**
+ * Used to send a Logout Message to the client, to tell the client, that he was logged out by the server
+ * @author Hannes Dorfmann
+ *
+ */
+public class LogoutMessage implements Message{
+
+	public enum LogoutReason
+	{
+		/**
+		 * Is used by the server, to told the client that the reason for the logout is, that another client
+		 * has been authenticated and connected (for the same User).
+		 * This is mapped with the constant {@link CommunicationConstants.Logout#REASON_SERVER_OTHER_CONNECTION}
+		 */
+		SERVER_OTHER_CONNECTION,
+		
+		/**
+		 * The user has clicked on his client the logout button and want to be logged out right now.
+		 * This is mapped with the constant {@link CommunicationConstants.Logout#REASON_CLIENT_USER_LOGOUT}
+		 */
+		CLIENT_USER_LOGOUT
+	}
+	
+	private LogoutReason reason;
+	
+	public LogoutMessage(LogoutReason reason)
+	{
+		this.reason = reason;
+	}
+
+	
+	private Integer reasonToIn()
+	{
+		switch(reason)
+		{
+			case SERVER_OTHER_CONNECTION: return CommunicationConstants.Logout.REASON_SERVER_OTHER_CONNECTION;
+			case CLIENT_USER_LOGOUT: return CommunicationConstants.Logout.REASON_CLIENT_USER_LOGOUT;
+		}
+		
+		return null;
+	}
+
+	@Override
+	public String toXml() {
+		
+		Integer r = reasonToIn();
+		
+		return "<sys><logout reason=\""+r+"\" /></sys>";
+	}
+	
+	
+	
+	@Override
+	public boolean equals(Object other) {
+		
+		if (this==other) return true;
+		
+		if ( !(other instanceof LogoutMessage) ) return false;
+		
+		final LogoutMessage that = (LogoutMessage) other;
+		
+		
+		if (username != null && that.username != null && username.equals(that.username)
+				&& password!=null && that.password!=null && password.equals(that.password)  
+				 && experimentLogin == that.experimentLogin)
+			return true;
+		
+		return false;
+	}
+		
+	@Override
+	public int hashCode() {
+		if (username != null && password!=null)
+			return username.hashCode() + password.hashCode();
+		else
+			return super.hashCode();
+	}
+	
+}

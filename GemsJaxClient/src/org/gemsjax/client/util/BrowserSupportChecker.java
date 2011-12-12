@@ -33,7 +33,8 @@ public class BrowserSupportChecker {
 	 */
 	public static boolean isWebSocketSupported()
 	{
-		return WebSocketCommunicationConnection.isSupported();
+		// TODO rethink this
+		return WebSocketCommunicationConnection.doIsSupportedCheck();
 	}
 	
 	

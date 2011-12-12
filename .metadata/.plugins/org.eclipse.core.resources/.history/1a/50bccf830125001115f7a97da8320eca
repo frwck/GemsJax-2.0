@@ -1,0 +1,20 @@
+package test.communication;
+
+import org.gemsjax.server.communication.parser.LoginMessageParser;
+import org.junit.Test;
+
+public class MessageParseTest {
+	
+	
+	@Test
+	public void loginMessage()
+	{
+		String username = "username";
+		String password = "password";
+		
+		LoginMessageParser parser = new LoginMessageParser();
+		
+		
+	}
+
+}

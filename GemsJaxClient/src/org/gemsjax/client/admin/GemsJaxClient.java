@@ -2,7 +2,6 @@ package org.gemsjax.client.admin;
 
 
 import java.io.IOException;
-
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -21,7 +20,6 @@ public class GemsJaxClient implements EntryPoint {
 		
 		WebSocketCommunicationConnection webSocket = WebSocketCommunicationConnection.getInstance();
 		
-		//webSocket.connect("ws://localhost:8080/");
 		
 		
 		try {

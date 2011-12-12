@@ -17,7 +17,12 @@ public class CommunicationConstants {
 		 * Is used by the server, to told the client that the reason for the logout is, that another client
 		 * has been authenticated and connected (for the same User)
 		 */
-		public static final int REASON_OTHER_CONNECTION = 1;
+		public static final int REASON_SERVER_OTHER_CONNECTION = 1;
+		
+		/**
+		 * 
+		 */
+		public static final int REASON_CLIENT_USER_LOGOUT = 2;
 	}
 	
 

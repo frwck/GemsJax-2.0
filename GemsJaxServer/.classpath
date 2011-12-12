@@ -43,6 +43,7 @@
 	<classpathentry kind="lib" path="lib/hibernate/oscache-2.1.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate/proxool-0.8.3.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate/swarmcache-1.0RC2.jar"/>
+	<classpathentry kind="lib" path="lib/testing/WebSocket.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

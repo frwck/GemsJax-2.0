@@ -1,7 +1,8 @@
 package org.gemsjax.client.communication;
 
 import java.io.IOException;
-import org.gemsjax.client.util.RegExFactory;
+
+import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.OutputChannel;
@@ -29,7 +30,7 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	public CollaborationChannel(Collaborateable collaborateable)
 	{
 		this.collaborateable = collaborateable;
-		filterRegEx = RegExFactory.generate("col", "on", ""+collaborateable.getId());
+		filterRegEx = RegExFactory.startWithTagAttributeValue("col", "on", ""+collaborateable.getId());
 		
 	}
 	
@@ -50,6 +51,13 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 
 	@Override
 	public void send(Message message) throws IOException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onClose() {
 		// TODO Auto-generated method stub
 		
 	}

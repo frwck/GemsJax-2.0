@@ -1,10 +1,11 @@
 package org.gemsjax.server.communication;
 
-import org.gemsjax.server.persistence.notification.NotificationImpl;
+import java.util.HashSet;
+import java.util.Set;
+import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.user.User;
 
-import com.mysql.jdbc.Messages;
 
 /**
  * A {@link OnlineUser} wraps a simple {@link User} and his current {@link OutputChannel}.
@@ -19,13 +20,19 @@ public class OnlineUser {
 	
 	private User user;
 	private OutputChannel outputChannel;
+	private Set<InputChannel> inputChannels;
 	
 	
 	public OnlineUser(User user)
 	{
 		this.user = user;
+		inputChannels = new HashSet<InputChannel>();
 	}
 
+	public User getUser()
+	{
+		return user;
+	}
 
 	public OutputChannel getOutputChannel() {
 		return outputChannel;
@@ -34,6 +41,18 @@ public class OnlineUser {
 
 	public void setOutputChannel(OutputChannel outputChannel) {
 		this.outputChannel = outputChannel;
+	}
+	
+	
+	public void addInputChannel(InputChannel c)
+	{
+		inputChannels.add(c);
+	}
+	
+	
+	public void removeInputChannel (InputChannel c)
+	{
+		inputChannels.remove(c);
 	}
 	
 	
@@ -61,6 +80,8 @@ public class OnlineUser {
 		else
 			return super.hashCode();
 	}
+	
+	
 	
 	
 	

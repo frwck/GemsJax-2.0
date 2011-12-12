@@ -51,6 +51,12 @@ public interface CommunicationConnection {
 	public abstract int getPort();
 	
 	/**
+	 * Checks, if the browser supports the underling network object like a WebSocket
+	 * @return
+	 */
+	public abstract boolean isSupported();
+	
+	/**
 	 * Returns the address of the endpoint this socket is connected to, or null if it is unconnected.
 	 * @return a SocketAddress reprensenting the remote endpoint of this socket, or null if it is not connected yet.
 	 */
@@ -58,6 +64,7 @@ public interface CommunicationConnection {
 	
 	
 	public abstract boolean isConnected();
+	
 	
 	public abstract void setKeepAlive(boolean  keepAlive);
 	

@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="java.util.HashSet"/>
-<fullyQualifiedTypeName name="org.gemsjax.server.persistence.collaboration.CollaborateableImpl"/>
-<fullyQualifiedTypeName name="java.util.LinkedList"/>
-<fullyQualifiedTypeName name="org.gemsjax.shared.metamodel.MetaModel"/>
-<fullyQualifiedTypeName name="org.gemsjax.shared.model.Model"/>
-<fullyQualifiedTypeName name="java.util.Set"/>
 <fullyQualifiedTypeName name="org.hibernate.LockOptions"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.exception.ArgumentException"/>
-<fullyQualifiedTypeName name="java.util.LinkedHashSet"/>
 <fullyQualifiedTypeName name="org.gemsjax.shared.experiment.ExperimentGroup"/>
 <fullyQualifiedTypeName name="java.lang.Exception"/>
 <fullyQualifiedTypeName name="org.gemsjax.server.persistence.dao.exception.InvitationAlreadyUsed"/>
@@ -54,10 +47,17 @@
 <fullyQualifiedTypeName name="org.hibernate.Session"/>
 <fullyQualifiedTypeName name="org.hibernate.Hibernate"/>
 <fullyQualifiedTypeName name="org.gemsjax.server.persistence.notification.NotificationImpl"/>
-<fullyQualifiedTypeName name="org.gemsjax.shared.communication.message.Message"/>
 <fullyQualifiedTypeName name="org.gemsjax.client.communication.WebSocket"/>
 <fullyQualifiedTypeName name="java.net.Socket"/>
-<fullyQualifiedTypeName name="java.io.IOException"/>
-<fullyQualifiedTypeName name="org.gemsjax.shared.communication.channel.CommunicationConnection"/>
+<fullyQualifiedTypeName name="com.google.gwt.dev.shell.Messages"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.communication.message.Message"/>
 <fullyQualifiedTypeName name="org.gemsjax.shared.communication.channel.InputChannel"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.communication.channel.OutputChannel"/>
+<fullyQualifiedTypeName name="org.gemsjax.shared.communication.channel.CommunicationConnection"/>
+<fullyQualifiedTypeName name="java.util.LinkedHashSet"/>
+<fullyQualifiedTypeName name="java.util.Set"/>
+<fullyQualifiedTypeName name="java.io.IOException"/>
+<fullyQualifiedTypeName name="org.gemsjax.client.communication.WebSocketCommunicationConnection"/>
+<fullyQualifiedTypeName name="com.google.gwt.user.client.Timer"/>
+<fullyQualifiedTypeName name="org.gemsjax.client.communication.WebSocketCommunicationConnection.KeepAliveTimer"/>
 </qualifiedTypeNameHistroy>

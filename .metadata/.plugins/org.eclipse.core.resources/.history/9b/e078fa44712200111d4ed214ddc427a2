@@ -1,0 +1,10 @@
+package org.gemsjax.server.communication;
+
+public class UserAuthenticator{
+
+	private class AuthenticationChannel implements InputChanel
+	{
+		
+	}
+	
+}

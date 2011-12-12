@@ -1,0 +1,26 @@
+package org.gemsjax.server.communication.channel;
+
+import java.io.IOException;
+
+import org.gemsjax.shared.communication.CommunicationConnection;
+import org.gemsjax.shared.communication.channel.OutputChannel;
+import org.gemsjax.shared.communication.message.Message;
+
+public class SimpleOutputChannel implements OutputChannel{
+
+	private CommunicationConnection communicationConnection;
+	
+	public SimpleOutputChannel(CommunicationConnection connection)
+	{
+		this.communicationConnection = connection;
+	}
+	
+	
+	@Override
+	public void send(Message message) throws IOException {
+		
+		communicationConnection.send(message.toXml());
+	
+	}
+
+}

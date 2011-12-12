@@ -1,0 +1,28 @@
+package org.gemsjax.shared.communication.message;
+
+/**
+ * The {@link Message} which is sent, to do a login
+ * @author Hannes Dorfmann
+ *
+ */
+public class LoginMessage implements Message{
+
+	private String username;
+	private String password;
+	private boolean experimentUser;
+	
+	public LoginMessage(String username, String password, boolean experimentUser)
+	{
+		this.username = username;
+		this.password = password;
+		this.experimentUser = experimentUser;
+	}
+	
+	
+	
+	@Override
+	public String toXml() {
+		return "<sys> <login username=\""+username+"\" password=\""+password+"\" exp=\""+(experimentUser?"true":"false")+"\"/> </sys>";
+	}
+
+}

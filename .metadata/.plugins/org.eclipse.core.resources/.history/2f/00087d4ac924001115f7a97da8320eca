@@ -1,0 +1,30 @@
+package org.gemsjax.server.communication;
+
+import org.gemsjax.shared.RegExFactory;
+import org.gemsjax.shared.communication.channel.InputChannel;
+
+public class UserAuthenticator{
+
+	private class AuthenticationChannel implements InputChannel
+	{
+		private String filterRegEx;
+		
+		public AuthenticationChannel()
+		{
+			filterRegEx = RegExFactory.generate("sys", attributeToLook, attributeToLookValue)
+		}
+		
+		@Override
+		public String getFilterRegEx() {
+			
+		}
+
+		@Override
+		public void onMessageReceived(String msg) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+	
+}

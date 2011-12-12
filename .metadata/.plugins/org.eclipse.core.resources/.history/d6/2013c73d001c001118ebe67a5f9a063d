@@ -1,7 +1,0 @@
-package org.gemsjax.server.persistence.request;
-
-import org.gemsjax.shared.request.AdministrateExperimentRequest;
-
-public class AdministrateExperimentRequest extends RequestImpl implements AdministrateExperimentRequest{
-
-}

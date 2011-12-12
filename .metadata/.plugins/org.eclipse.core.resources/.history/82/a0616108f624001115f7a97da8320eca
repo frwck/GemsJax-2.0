@@ -1,0 +1,5 @@
+package org.gemsjax.server.communication.parser;
+
+public class LoginMessageParser {
+
+}
