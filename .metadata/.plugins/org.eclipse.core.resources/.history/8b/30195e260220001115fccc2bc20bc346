@@ -1,7 +1,0 @@
-package org.gemsjax.server.communication;
-
-public interface OutputChannel {
-
-	public abstract void send(Message message);
-	
-}

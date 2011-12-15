@@ -1,7 +1,5 @@
 package org.gemsjax.shared.metamodel.exception;
 
-import org.gemsjax.client.metamodel.MetaClassImpl;
-import org.gemsjax.client.metamodel.MetaModelImpl;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaModel;
 

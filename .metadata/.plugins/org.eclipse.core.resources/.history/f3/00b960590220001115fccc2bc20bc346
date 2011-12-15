@@ -1,5 +1,0 @@
-package org.gemsjax.server.communication.servlet;
-
-public class OnlineUser {
-
-}

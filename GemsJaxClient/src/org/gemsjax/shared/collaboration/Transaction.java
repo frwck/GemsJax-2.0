@@ -2,11 +2,9 @@ package org.gemsjax.shared.collaboration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.eclipse.jetty.websocket.WebSocket;
 import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.user.User;
 
-import com.google.gwt.rpc.client.impl.CommandSerializationStreamWriterBase;
 
 /**
  * A {@link Transaction} contains a list of {@link Command}s (at least one {@link Command}) that are executed within a {@link Transaction},
@@ -50,7 +48,7 @@ public interface Transaction {
 	 * <b>Notice:</b> For the implementation should be used {@link LinkedHashSet}, because {@link LinkedHashSet} contains the order.
 	 * @return
 	 */
-	public Set getCommands();
+	public Set<Command> getCommands();
 	
 	/**
 	 * Get the {@link Collaborateable} on which this {@link Transaction} is executed

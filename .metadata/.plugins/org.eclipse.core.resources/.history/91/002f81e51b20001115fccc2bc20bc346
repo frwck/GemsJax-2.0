@@ -1,9 +1,0 @@
-package org.gemsjax.shared;
-
-public class CommunicationConstants {
-	
-	public class Logout{
-		public static final int REASON_OTHER_CLIENT = 1;
-	}
-
-}

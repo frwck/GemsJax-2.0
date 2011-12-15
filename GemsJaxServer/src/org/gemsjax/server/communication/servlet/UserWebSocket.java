@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 import org.eclipse.jetty.websocket.WebSocket;
-import org.gemsjax.server.communication.UserAuthenticationChannel;
+import org.gemsjax.server.communication.channel.UserAuthenticationChannel;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 

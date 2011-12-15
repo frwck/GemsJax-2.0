@@ -1,7 +1,6 @@
 package org.gemsjax.shared.experiment;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 import org.gemsjax.shared.user.ExperimentUser;

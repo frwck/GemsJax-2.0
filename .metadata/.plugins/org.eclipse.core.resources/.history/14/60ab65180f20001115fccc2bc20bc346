@@ -1,5 +1,0 @@
-package org.gemsjax.server.communication.messages;
-
-public class LogoutMessage {
-
-}

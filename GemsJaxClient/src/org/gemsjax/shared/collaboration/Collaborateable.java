@@ -3,7 +3,6 @@ package org.gemsjax.shared.collaboration;
 import java.util.Map;
 import java.util.Set;
 
-import org.gemsjax.shared.Constants;
 import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;

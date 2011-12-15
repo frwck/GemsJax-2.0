@@ -1,5 +1,0 @@
-package org.gemsjax.shared.communication.channel;
-
-public interface CommunicationConnection {
-
-}

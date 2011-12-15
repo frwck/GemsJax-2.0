@@ -1,0 +1,33 @@
+<project default="buildGemsJaxShared">
+ 
+<target name="init" description="Project">
+    <property environment="env" />
+    <property name="src" value="." />
+    <property name="build" value="/tmp/GemsJaxShared" />
+    <property name="jarDest" value="../../../../../GemsJaxServer/lib/GemsJaxShared.jar" />
+  </target>
+
+
+ <target name="clean" description="build" depends="init">
+    <delete dir="${build}" />
+    <mkdir dir="${build}" />
+  </target>
+
+
+<target name="compile" description="compile" depends="clean">
+    <javac srcdir="${src}" destdir="${build}" />
+  </target>
+
+
+  
+  <target name="jar" depends="compile">
+    <jar destfile="${jarDest}"
+         basedir="${build}"
+         includes="**/*.class"
+         />
+    <delete dir="${build}" />
+</target>
+  
+<target name="buildGemsJaxShared" depends="compile,jar" />
+
+</project>

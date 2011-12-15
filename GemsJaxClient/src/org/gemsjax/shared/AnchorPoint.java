@@ -1,6 +1,5 @@
 package org.gemsjax.shared;
 
-import com.google.gwt.user.client.ui.Anchor;
 
 /**
  * 

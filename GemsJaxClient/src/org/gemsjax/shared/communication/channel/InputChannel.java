@@ -1,7 +1,6 @@
 package org.gemsjax.shared.communication.channel;
 
-import org.gemsjax.client.communication.WebSocketCommunicationConnection;
-import org.gemsjax.client.communication.exception.WebSocketSendException;
+
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.message.Message;
 

@@ -3,7 +3,7 @@ package test.communication.websocket;
 import java.io.IOException;
 import java.net.URI;
 
-import org.gemsjax.server.communication.parser.LoginMessageParser;
+import org.gemsjax.server.communication.parser.SystemMessageParser;
 import org.junit.Test;
 
 import net.tootallnate.websocket.WebSocketClient;

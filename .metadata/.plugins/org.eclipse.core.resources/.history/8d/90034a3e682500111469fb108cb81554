@@ -1,0 +1,12 @@
+package org.gemsjax.shared.communication.message.system;
+
+import org.gemsjax.shared.communication.message.Message;
+
+/**
+ * This is the common super class for system {@link Message}s
+ * @author Hannes Dorfmann
+ *
+ */
+public abstract class SystemMessage  implements Message{
+
+}

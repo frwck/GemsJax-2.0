@@ -1,7 +1,0 @@
-package org.gemsjax.shared.communication.channel;
-
-public interface CommunicationConnection {
-	
-	public void close() throws IOExcpetion;
-
-}
