@@ -1,0 +1,44 @@
+package org.gemsjax.server.communication;
+
+import org.gemsjax.server.communication.channel.SimpleOutputChannel;
+import org.gemsjax.shared.communication.CommunicationConnection;
+import org.gemsjax.shared.communication.channel.OutputChannel;
+import org.gemsjax.shared.user.User;
+
+/**
+ * This is a factory, that creates a {@link OnlineUser} with all needed parameters,
+ * like {@link User}, {@link OutputChannel} and all the needed InputChannels
+ * @author Hannes Dorfmann
+ *
+ */
+public class OnlineUserFactory {
+	
+	
+	
+	public OnlineUser createOnlineUser(User user, CommunicationConnection connection)
+	{
+		OnlineUser u = new OnlineUser(user);
+		
+		// Set the output Channels
+		u.setOutputChannel(new SimpleOutputChannel(connection));
+		
+		// Set the input Channels
+		
+		return u;
+	}
+	
+	
+	
+	public OnlineUser createExperimentOnlineUser(User u, Communication connection)
+	{
+		OnlineUser u = new OnlineUser(user);
+		
+		// Set the output Channels
+		u.setOutputChannel(new SimpleOutputChannel(connection));
+		
+		// Set the input Channels
+		
+		return u;
+	}
+
+}

@@ -2,18 +2,24 @@ package org.gemsjax.server.communication;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
+import org.gemsjax.server.communication.channel.SimpleOutputChannel;
+import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.user.User;
 
 
 /**
- * A {@link OnlineUser} wraps a simple {@link User} and his current {@link OutputChannel}.
- * In other words: A {@link OnlineUser} maps a {@link User} to an {@link OutputChannel}.
- * So the only job this class has to do is to provide a {@link OutputChannel} to this {@link User}, which is already
- * authenticated and reside on the other end of the connection (with a browser), 
- * ready to get {@link Messages} from the server (via an {@link OutputChannel}).
- * @author Hannes Dorfmann
+ *  A {@link OnlineUser} is the server side representation of an authenticated {@link User}, which resides on the other end of the connection (with a browser).
+ *  <br /><br />More detail: A {@link OnlineUser} is authenticated, has a valid {@link HttpSession} object and has a working {@link CommunicationConnection} (which is accessible via {@link OutputChannel} and {@link InputChannel}). 
+ * <br /> <br />
+ * A {@link OnlineUser} wraps a {@link User} and his current {@link OutputChannel} and {@link InputChannel}s.
+ * In other words: A {@link OnlineUser} maps a {@link User} to his {@link OutputChannel} and his {@link InputChannel}s.
+ * 
+ *@author Hannes Dorfmann
  *
  */
 public class OnlineUser {
@@ -22,11 +28,14 @@ public class OnlineUser {
 	private OutputChannel outputChannel;
 	private Set<InputChannel> inputChannels;
 	
+	private HttpSession httpSession;
 	
-	public OnlineUser(User user)
+	
+	private OnlineUser(User user, HttpSession httpSession)
 	{
 		this.user = user;
 		inputChannels = new HashSet<InputChannel>();
+		this.httpSession = httpSession;
 	}
 
 	public User getUser()
@@ -57,6 +66,22 @@ public class OnlineUser {
 	
 	
 	
+	/**
+	 * Get the unique {@link User} id by calling {@link User#getId()}
+	 * @return
+	 */
+	public Integer getId()
+	{
+		return user.getId();
+	}
+	
+	
+	public HttpSession getHttpSession()
+	{
+		return httpSession;
+	}
+	
+	
 	
 	@Override
 	public boolean equals(Object other) {
@@ -81,11 +106,51 @@ public class OnlineUser {
 			return super.hashCode();
 	}
 	
-	
-	
-	
+		
 	
 
+	/**
+	 * Create a {@link OnlineUser} with a {@link SimpleOutputChannel} and all needed {@link InputChannel}s:
+	 * <ul>
+	 * <li> </li>
+	 * </ul>
+	 * @param user
+	 * @param connection
+	 * @return
+	 */
+	public static OnlineUser create(User user, CommunicationConnection connection, HttpSession httpSession)
+	{
+		OnlineUser u = new OnlineUser(user, httpSession);
+		
+		// Set the output Channels
+		u.setOutputChannel(new SimpleOutputChannel(connection));
+		
+		// Set the input Channels
+		
+		return u;
+	}
+	
+	
+	/**
+	 * Create a {@link OnlineUser} for an experiment participant with a {@link SimpleOutputChannel} and  for the Experiment needed {@link InputChannel}s:
+	 * <ul>
+	 * <li> </li>
+	 * </ul>
+	 * @param user The authenticated {@link User}
+	 * @param connection The {@link CommunicationConnection}
+	 * @return The {@link OnlineUser} with all needed {@link InputChannel}s and a {@link OutputChannel}
+	 */
+	public static OnlineUser createForExperiment(User user, CommunicationConnection connection, HttpSession httpSession)
+	{
+		OnlineUser u = new OnlineUser(user, httpSession);
+		
+		// Set the output Channels
+		u.setOutputChannel(new SimpleOutputChannel(connection));
+		
+		// Set the input Channels
+		
+		return u;
+	}
 	
 	
 

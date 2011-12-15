@@ -1,0 +1,16 @@
+package org.gemsjax.shared.communication;
+
+/**
+ * A simple listener, that listens to the {@link CommunicationConnection} and get a info (by calling {@link #onEstablished()}),
+ * when the connection is established correctly and ready to use
+ * @author Hannes Dorfmann
+ *
+ */
+public interface CommunicationConnectionEstablishedListener {
+	
+	/**
+	 * 
+	 */
+	public void onEstablished();
+
+}

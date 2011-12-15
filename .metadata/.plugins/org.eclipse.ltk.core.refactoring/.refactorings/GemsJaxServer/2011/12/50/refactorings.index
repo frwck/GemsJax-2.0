@@ -1,3 +1,8 @@
 1323722311766	Delete element
 1323766093145	Move compilation unit
 1323766821284	Rename type 'LoginMessageParser'
+1323947200717	Delete element
+1323948427908	Rename field 'onlineUserMap'
+1323959901030	Rename type 'CollaborationWebSocketServlet'
+1323959930603	Rename type 'CommunicationWebSocketServlet'
+1323960716534	Rename type 'Test'

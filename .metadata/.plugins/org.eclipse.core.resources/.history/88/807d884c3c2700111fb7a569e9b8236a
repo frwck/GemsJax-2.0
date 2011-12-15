@@ -1,0 +1,10 @@
+package org.gemsjax.shared.communication;
+
+public interface CommunicationConnectionestablishedListener {
+	
+	/**
+	 * 
+	 */
+	public void onEstablished();
+
+}

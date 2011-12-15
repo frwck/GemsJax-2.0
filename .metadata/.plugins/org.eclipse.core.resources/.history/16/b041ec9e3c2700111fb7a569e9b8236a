@@ -1,0 +1,15 @@
+package org.gemsjax.shared.communication;
+
+/**
+ * 
+ * @author Hannes Dorfmann
+ *
+ */
+public interface CommunicationConnectionEstablishedListener {
+	
+	/**
+	 * 
+	 */
+	public void onEstablished();
+
+}

@@ -2,52 +2,39 @@ package test.communication.websocket;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
-import org.gemsjax.server.communication.parser.SystemMessageParser;
+import org.gemsjax.shared.communication.message.system.LoginMessage;
+import org.junit.BeforeClass;
 import org.junit.Test;
-
-import net.tootallnate.websocket.WebSocketClient;
-
-
-class WebSocketTestClient extends WebSocketClient
-{
-
-	public WebSocketTestClient(URI serverAddress) {
-		super(serverAddress);
-		
-	}
-
-	@Override
-	public void onClose() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onIOError(IOException arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onMessage(String arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onOpen() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-}
 
 
 
 public class CommunicationWebSocketTest {
 	
 	
+	private static WebSocketTestClient client;
 	
-
+	@BeforeClass
+	public static void initClass() throws URISyntaxException
+	{
+		client = new WebSocketTestClient(new URI("ws://127.0.0.1:8080/servlets/liveCommunication"));
+		client.connect();
+	}
+	
+	
+	@Test
+	public void loginTest() throws IOException
+	{
+		
+		LoginMessage m = new LoginMessage("username", "password", false);
+		
+		client.send(m.toXml());
+		
+		
+	}
+	
+	
+	
+	
 }

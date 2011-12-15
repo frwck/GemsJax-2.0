@@ -10,7 +10,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.gemsjax.server.communication.servlet.CollaborationWebSocketServlet;
+import org.gemsjax.server.communication.servlet.LiveCommunicationWebSocketServlet;
 import org.gemsjax.server.communication.servlet.IconServlet;
 import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
@@ -42,7 +42,7 @@ public class GemsJaxServer {
 	        // Add the GemsJaxServlet (WebSocket Communication)
 	        ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
 	        servletContext.setContextPath("/servlets");
-	        servletContext.addServlet(new ServletHolder( new CollaborationWebSocketServlet()),"/collaboration");
+	        servletContext.addServlet(new ServletHolder( new LiveCommunicationWebSocketServlet()),"/liveCommunication");
 	        servletContext.addServlet(new ServletHolder( new IconServlet()),"/icon");
 	        
 	        

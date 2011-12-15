@@ -1,0 +1,73 @@
+package org.gemsjax.shared.communication.message;
+
+import org.gemsjax.shared.communication.CommunicationConstants;
+
+public class UnexpectedErrorMessage implements Message{
+
+	
+	public enum ErrorType
+	{
+		/**
+		 * The XML protocol message could not be parsed.
+		 * Mapped by {@link CommunicationConstants.Error#PARSE}.
+		 */
+		PARSE,
+		
+		/**
+		 * An unexpected Database error has occurred.
+		 * Mapped by {@link CommunicationConstants.Error#DATABASE}.
+		 */
+		DATABASE
+	}
+	
+	private ErrorType type;
+	
+	private String additionalInfo;
+	
+	public UnexpectedErrorMessage(ErrorType type)
+	{
+		this.type = type;
+		additionalInfo = null;
+	}
+	
+	public UnexpectedErrorMessage(ErrorType type, String additionalInfo)
+	{
+		this.type = type;
+		this.additionalInfo = additionalInfo;
+	}
+	
+	
+	public ErrorType getErrorType()
+	{
+		return type;
+	}
+	
+	
+	public String getAdditionalInfo()
+	{
+		return additionalInfo;
+	}
+	
+	
+	private Integer errorTypeToInt()
+	{
+		switch (type)
+		{
+		case PARSE: return CommunicationConstants.UnexpectedError.PARSE;
+		case DATABASE: return CommunicationConstants.UnexpectedError.DATABASE;
+		}
+		
+		return null;
+	}
+	
+	
+	
+	@Override
+	public String toXml() {
+		if (additionalInfo== null)
+			return "<error type=\""+errorTypeToInt()+"\" >";
+		else
+			return "error type=\""+errorTypeToInt()+"\">"+additionalInfo+"</error>";
+	}
+
+}

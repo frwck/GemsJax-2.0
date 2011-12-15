@@ -30,6 +30,46 @@ import org.gemsjax.shared.communication.message.Message;
  */
 public interface CommunicationConnection {
 	
+	
+	
+	
+	/**
+	 * A simple listener, that listens to the {@link CommunicationConnection} and get a info (by calling {@link #onEstablished()}),
+	 * when the connection is established correctly and ready to use
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	public interface EstablishedListener {
+		
+		/**
+		 * Called, if the CommunicationConnection has been established completely and is from now on ready to use
+		 */
+		public void onEstablished();
+
+	}
+	
+	
+	
+	/**
+	 * This is a simple Listener, that listen on a {@link CommunicationConnection} for close events.
+	 * This close events are thrown by 
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	public interface ClosedListener {
+		
+		/**
+		 * Is called, if the {@link CommunicationConnection} has been closed
+		 */
+		public void onClose();
+		
+
+	}
+	
+	
+	
+	
+	
 	/**
 	 * Closes the connection and also the underlying network object like a socket.
 	 * Once a {@link CommunicationConnection} has been closed, it is not available for further networking use (i.e. can't be reconnected or rebound). 
@@ -97,5 +137,31 @@ public interface CommunicationConnection {
 	 * @see #registerInputChannel(InputChannel)
 	 */
 	public void deregisterInputChannel(InputChannel c);
+	
+	
+	/**
+	 * Add a {@link ClosedListener} to deliver close events by calling {@link ClosedListener#onClose()}
+	 * @param listener
+	 */
+	public void addCloseListener(ClosedListener listener);
+	
+	/**
+	 * @see #addCloseListener(ClosedListener)
+	 * @param listener
+	 */
+	public void removeCloseListener(ClosedListener listener);
+	
+	
+	/**
+	 * Add a {@link EstablishedListener} to deliver established events by calling {@link EstablishedListener#onEstablished()}
+	 * @param listener
+	 */
+	public void addEstablishedListener(EstablishedListener listener);
+	
+	/**
+	 * @see #addEstablishedListener(EstablishedListener)
+	 * @param listener
+	 */
+	public void removeEstablishedListener(EstablishedListener listener);
 	
 }

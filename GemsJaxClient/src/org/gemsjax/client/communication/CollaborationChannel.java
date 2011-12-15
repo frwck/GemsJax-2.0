@@ -56,10 +56,4 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	}
 
 
-	@Override
-	public void onClose() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

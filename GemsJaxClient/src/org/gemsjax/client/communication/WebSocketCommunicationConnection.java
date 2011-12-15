@@ -10,6 +10,7 @@ import org.gemsjax.client.communication.exception.WebSocketConnectionException;
 import org.gemsjax.client.communication.exception.WebSocketSendException;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.message.system.LoginMessage;
 
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.util.SC;
@@ -65,7 +66,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	 * <br/><br />
 	 * <b>Notice</b> The url is not needed, the server url is stored in {@link #serverURL}
 	 */
-	private static final String webSocketServletURL = "/servlets/collaboration";
+	private static final String webSocketServletURL = "/servlets/liveCommunication";
 	
 	
 	private final int port = 8080;
@@ -74,6 +75,8 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	private final boolean useSsl = false;
 	
 	private Set<InputChannel> inputChannels;
+	private Set<ClosedListener> closedListenres;
+	private Set<EstablishedListener> establishedListers;
 	
 	private KeepAliveTimer keepAliveTimer = null;
 	
@@ -98,11 +101,16 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
     
     private void onOpen() {
     	
+    	for (EstablishedListener e : establishedListers)
+    		e.onEstablished();
+    
+    	
     }
 
     
     private void onClose() {
-    	
+    	for (ClosedListener c: closedListenres)
+    		c.onClose();
     }
 
     
@@ -337,6 +345,38 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	@Override
 	public boolean isSupported() {
 		return doIsSupportedCheck();
+	}
+
+
+
+
+	@Override
+	public void addCloseListener(ClosedListener listener) {
+		closedListenres.add(listener);
+	}
+
+
+
+
+	@Override
+	public void addEstablishedListener(EstablishedListener listener) {
+		establishedListers.add(listener);
+	}
+
+
+
+
+	@Override
+	public void removeCloseListener(ClosedListener listener) {
+		closedListenres.remove(listener);
+	}
+
+
+
+
+	@Override
+	public void removeEstablishedListener(EstablishedListener listener) {
+		establishedListers.remove(listener);
 	}
 
 }

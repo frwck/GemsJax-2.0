@@ -1,7 +1,5 @@
 package org.gemsjax.shared;
 
-import org.gemsjax.shared.collaboration.Collaborateable;
-import org.gemsjax.shared.user.User;
 
 public class Constants {
 

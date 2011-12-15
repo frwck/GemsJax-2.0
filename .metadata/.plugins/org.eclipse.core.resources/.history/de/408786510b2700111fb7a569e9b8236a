@@ -1,0 +1,23 @@
+package org.gemsjax.server.communication;
+
+import org.gemsjax.server.communication.channel.SimpleOutputChannel;
+import org.gemsjax.shared.communication.CommunicationConnection;
+import org.gemsjax.shared.user.User;
+
+public class OnlineUserFactory {
+	
+	
+	
+	public OnlineUser createOnlineUser(User user, CommunicationConnection connection)
+	{
+		OnlineUser u = new OnlineUser(user);
+		
+		// Set the output Channels
+		u.setOutputChannel(new SimpleOutputChannel(connection));
+		
+		// Set the input Channels
+		
+		return u;
+	}
+
+}

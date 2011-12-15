@@ -1,5 +1,7 @@
 package org.gemsjax.shared.communication;
 
+import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
+
 /**
  * This class contains constants (grouped in subclasses) that were used for the xml communication between server and client and vice versa 
  * @author Hannes Dorfmann
@@ -30,6 +32,11 @@ public class CommunicationConstants {
 	}
 	
 	
+	/**
+	 * Constants got the login tag
+	 * @author Hannes Dorfmann
+	 *
+	 */
 	public class Login{
 		
 		private Login(){}
@@ -43,6 +50,29 @@ public class CommunicationConstants {
 		 * Used to tell, that the login has failed, because username or password is wrong
 		 */
 		public static final String FAIL = "fail";
+		
+	}
+	
+	
+	/**
+	 * Used by {@link UnexpectedErrorMessage}
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	public class UnexpectedError{
+		
+		private UnexpectedError(){}
+		
+		/**
+		 * To indicate that a parser could not parse the message.
+		 * Mapped to {@link UnexpectedErrorMessage.ErrorType}
+		 */
+		public static final int PARSE = 1;
+		
+		/**
+		 * 
+		 */
+		public static final int DATABASE = 2;
 		
 	}
 

@@ -1,0 +1,61 @@
+package org.gemsjax.server.communication;
+
+import org.gemsjax.server.communication.channel.SimpleOutputChannel;
+import org.gemsjax.shared.communication.CommunicationConnection;
+import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.OutputChannel;
+import org.gemsjax.shared.user.User;
+
+/**
+ * This is a factory, that creates a {@link OnlineUser} with all needed parameters,
+ * like {@link User}, {@link OutputChannel} and all the needed InputChannels
+ * @author Hannes Dorfmann
+ *
+ */
+public class OnlineUserFactory {
+	
+	
+	/**
+	 * Create a {@link OnlineUser} with a {@link SimpleOutputChannel} and all needed {@link InputChannel}s:
+	 * <ul>
+	 * <li> </li>
+	 * </ul>
+	 * @param user
+	 * @param connection
+	 * @return
+	 */
+	public OnlineUser createOnlineUser(User user, CommunicationConnection connection)
+	{
+		OnlineUser u = new OnlineUser(user);
+		
+		// Set the output Channels
+		u.setOutputChannel(new SimpleOutputChannel(connection));
+		
+		// Set the input Channels
+		
+		return u;
+	}
+	
+	
+	/**
+	 * Create a {@link OnlineUser} for an experiment participant with a {@link SimpleOutputChannel} and  for the Experiment needed {@link InputChannel}s:
+	 * <ul>
+	 * <li> </li>
+	 * </ul>
+	 * @param user The authenticated {@link User}
+	 * @param connection
+	 * @return
+	 */
+	public OnlineUser createExperimentOnlineUser(User user, CommunicationConnection connection)
+	{
+		OnlineUser u = new OnlineUser(user);
+		
+		// Set the output Channels
+		u.setOutputChannel(new SimpleOutputChannel(connection));
+		
+		// Set the input Channels
+		
+		return u;
+	}
+
+}

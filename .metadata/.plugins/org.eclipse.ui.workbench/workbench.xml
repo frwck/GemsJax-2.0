@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<workbench progressCount="38" version="2.0">
+<workbench progressCount="33" version="2.0">
 <workbenchAdvisor/>
 <window height="1001" maximized="true" width="844" x="557" y="24">
 <fastViewData fastViewLocation="1024"/>
@@ -46,62 +46,57 @@
 <part id="9"/>
 <part id="10"/>
 <part id="11"/>
-<part id="12"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="SystemChannel.java" partName="SystemChannel.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/client/communication/SystemChannel.java" title="SystemChannel.java" tooltip="GemsJaxClient/src/org/gemsjax/client/communication/SystemChannel.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/client/communication/SystemChannel.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="OnlineUser.java" partName="OnlineUser.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/communication/OnlineUser.java" title="OnlineUser.java" tooltip="GemsJaxServer/src/org/gemsjax/server/communication/OnlineUser.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/communication/OnlineUser.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1029" selectionTopPixel="0"/>
-</editor>
-<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="RegExFactory.java" partName="RegExFactory.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/RegExFactory.java" title="RegExFactory.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/RegExFactory.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/RegExFactory.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2227" selectionTopPixel="327"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="RegExTest.java" partName="RegExTest.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/test/regex/RegExTest.java" title="RegExTest.java" tooltip="GemsJaxServer/src/test/regex/RegExTest.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/test/regex/RegExTest.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="773" selectionTopPixel="0"/>
-</editor>
-<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="InputChannel.java" partName="InputChannel.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/communication/channel/InputChannel.java" title="InputChannel.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/channel/InputChannel.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/communication/channel/InputChannel.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2062" selectionTopPixel="72"/>
-</editor>
-<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="WebSocketCommunicationConnection.java" partName="WebSocketCommunicationConnection.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/client/communication/WebSocketCommunicationConnection.java" title="WebSocketCommunicationConnection.java" tooltip="GemsJaxClient/src/org/gemsjax/client/communication/WebSocketCommunicationConnection.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocketCommunicationConnection.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="8032" selectionTopPixel="5036"/>
-</editor>
-<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="OutputChannel.java" partName="OutputChannel.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/communication/channel/OutputChannel.java" title="OutputChannel.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/channel/OutputChannel.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/communication/channel/OutputChannel.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CommunicationWebSocketTest.java" partName="CommunicationWebSocketTest.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/test/communication/websocket/CommunicationWebSocketTest.java" title="CommunicationWebSocketTest.java" tooltip="GemsJaxServer/src/test/communication/websocket/CommunicationWebSocketTest.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/test/communication/websocket/CommunicationWebSocketTest.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="767" selectionTopPixel="154"/>
-</editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SystemMessageParser.java" partName="SystemMessageParser.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/communication/parser/SystemMessageParser.java" title="SystemMessageParser.java" tooltip="GemsJaxServer/src/org/gemsjax/server/communication/parser/SystemMessageParser.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/communication/parser/SystemMessageParser.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1573" selectionTopPixel="1496"/>
-</editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MessageParseTest.java" partName="MessageParseTest.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/test/communication/MessageParseTest.java" title="MessageParseTest.java" tooltip="GemsJaxServer/src/test/communication/MessageParseTest.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/test/communication/MessageParseTest.java"/>
 <editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1447" selectionTopPixel="498"/>
 </editor>
 <editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UserAuthenticationChannel.java" partName="UserAuthenticationChannel.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/communication/channel/UserAuthenticationChannel.java" title="UserAuthenticationChannel.java" tooltip="GemsJaxServer/src/org/gemsjax/server/communication/channel/UserAuthenticationChannel.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/communication/channel/UserAuthenticationChannel.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1783" selectionTopPixel="469"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5238" selectionTopPixel="1780"/>
 </editor>
-<editor activePart="true" focus="true" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="LoginAnswereMessage.java" partName="LoginAnswereMessage.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginAnswereMessage.java" title="LoginAnswereMessage.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginAnswereMessage.java" workbook="DefaultEditorWorkbook">
+<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="LoginAnswereMessage.java" partName="LoginAnswereMessage.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginAnswereMessage.java" title="LoginAnswereMessage.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginAnswereMessage.java" workbook="DefaultEditorWorkbook">
 <input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginAnswereMessage.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="762" selectionTopPixel="281"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="805" selectionTopPixel="280"/>
 </editor>
-<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="CommunicationConstants.java" partName="CommunicationConstants.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConstants.java" title="CommunicationConstants.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConstants.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConstants.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1153" selectionTopPixel="341"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="OnlineUserManager.java" partName="OnlineUserManager.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/communication/OnlineUserManager.java" title="OnlineUserManager.java" tooltip="GemsJaxServer/src/org/gemsjax/server/communication/OnlineUserManager.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/communication/OnlineUserManager.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1477" selectionTopPixel="400"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UserWebSocket.java" partName="UserWebSocket.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/org/gemsjax/server/communication/servlet/UserWebSocket.java" title="UserWebSocket.java" tooltip="GemsJaxServer/src/org/gemsjax/server/communication/servlet/UserWebSocket.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/org/gemsjax/server/communication/servlet/UserWebSocket.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1479" selectionTopPixel="395"/>
+</editor>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="WebSocketTestClient.java" partName="WebSocketTestClient.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxServer/src/test/communication/websocket/WebSocketTestClient.java" title="WebSocketTestClient.java" tooltip="GemsJaxServer/src/test/communication/websocket/WebSocketTestClient.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxServer/src/test/communication/websocket/WebSocketTestClient.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="415" selectionTopPixel="0"/>
+</editor>
+<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="GemsJaxClient.java" partName="GemsJaxClient.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/client/admin/GemsJaxClient.java" title="GemsJaxClient.java" tooltip="GemsJaxClient/src/org/gemsjax/client/admin/GemsJaxClient.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/client/admin/GemsJaxClient.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="805" selectionTopPixel="69"/>
+</editor>
+<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="LoginPresenter.java" partName="LoginPresenter.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoginPresenter.java" title="LoginPresenter.java" tooltip="GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoginPresenter.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoginPresenter.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1155" selectionTopPixel="0"/>
+</editor>
+<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="LoadingPresenter.java" partName="LoadingPresenter.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoadingPresenter.java" title="LoadingPresenter.java" tooltip="GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoadingPresenter.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoadingPresenter.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="560"/>
+</editor>
+<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="SystemChannel.java" partName="SystemChannel.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/client/communication/SystemChannel.java" title="SystemChannel.java" tooltip="GemsJaxClient/src/org/gemsjax/client/communication/SystemChannel.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/client/communication/SystemChannel.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="642" selectionTopPixel="165"/>
+</editor>
+<editor id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="InputChannel.java" partName="InputChannel.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/shared/communication/channel/InputChannel.java" title="InputChannel.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/channel/InputChannel.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/shared/communication/channel/InputChannel.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1829" selectionTopPixel="29"/>
+</editor>
+<editor activePart="true" focus="true" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="CollaborationChannel.java" partName="CollaborationChannel.java" path="/home/hannes/GemsJaxWorkspace/GemsJaxClient/src/org/gemsjax/client/communication/CollaborationChannel.java" title="CollaborationChannel.java" tooltip="GemsJaxClient/src/org/gemsjax/client/communication/CollaborationChannel.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/GemsJaxClient/src/org/gemsjax/client/communication/CollaborationChannel.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1260" selectionTopPixel="335"/>
 </editor>
 </editors>
 <views>
@@ -139,8 +134,9 @@
 </view>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
-<expanded>&#x0A;<category IMemento.internal.id="Warnings"/>
+<expanded>
 <category IMemento.internal.id="Errors"/>
+<category IMemento.internal.id="Warnings"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="0" org.eclipse.ui.ide.markerType="0" org.eclipse.ui.ide.pathField="0" org.eclipse.ui.ide.resourceField="0" org.eclipse.ui.ide.severityAndDescriptionField="0"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -193,7 +189,7 @@
 <viewState/>
 </view>
 </views>
-<perspectives activePart="org.eclipse.ui.views.ContentOutline" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
+<perspectives activePart="com.google.gwt.eclipse.core.editors.gwtJavaEditor" activePerspective="org.eclipse.jdt.ui.JavaPerspective">
 <perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
 <descriptor class="org.eclipse.jdt.internal.ui.JavaPerspectiveFactory" id="org.eclipse.jdt.ui.JavaPerspective" label="Java"/>
 <alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
@@ -284,7 +280,7 @@
 <presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
 </folder>
 </info>
-<info part="org.eclipse.ui.editorss" ratio="0.1605752" ratioLeft="268" ratioRight="1401" relationship="2" relative="left"/>
+<info part="org.eclipse.ui.editorss" ratio="0.20272394" ratioLeft="387" ratioRight="1522" relationship="2" relative="left"/>
 <info folder="true" part="bottom" ratio="0.81" ratioLeft="729" ratioRight="171" relationship="4" relative="org.eclipse.ui.editorss">
 <folder appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.BookmarkView" label="LabelNotFound"/>
@@ -305,8 +301,8 @@
 </presentation>
 </folder>
 </info>
-<info folder="true" part="org.eclipse.ui.internal.ViewStack@28f463f6" ratio="0.645977" ratioLeft="562" ratioRight="308" relationship="4" relative="org.eclipse.ui.editorss">
-<folder activePageID="org.eclipse.jdt.junit.ResultView" appearance="2" expanded="2">
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@28f463f6" ratio="0.70666665" ratioLeft="636" ratioRight="264" relationship="4" relative="org.eclipse.ui.editorss">
+<folder activePageID="org.eclipse.ui.console.ConsoleView" appearance="2" expanded="2">
 <page content="org.eclipse.ui.views.ProblemView" label="Problems"/>
 <page content="org.eclipse.ui.console.ConsoleView" label="Console"/>
 <page content="org.eclipse.jdt.ui.SourceView" label="Declaration"/>
@@ -422,173 +418,172 @@
 <workingSets/>
 <navigationHistory>
 <editors>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/communication/websocket/CommunicationWebSocketTest.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocketCommunicationConnection.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/communication/channel/UserAuthenticationChannel.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/SystemMessage.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginMessage.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LogoutMessage.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/communication/MessageParseTest.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/communication/parser/SystemMessageParser.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/communication/servlet/UserWebSocket.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/communication/OnlineUserManager.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/SHA.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoginPresenter.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoadingPresenter.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/client/communication/SystemChannel.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/org/gemsjax/server/communication/UserAuthenticationChannel.java"/>
-<editor factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" org.eclipse.jdt.ui.ClassFileIdentifier="=GemsJaxServer/lib\/GemsJaxShared.jar&lt;org.gemsjax.shared.communication.message.system(LogoutMessage.class"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginResultMessage.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginAnswereMessage.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConnectionCloseListener.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConnectionOpenListener.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConnectionEstablishedListener.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConnection.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/CommunicationConstants.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConstants.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConstants.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginMessage.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LogoutMessage.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/shared/communication/channel/InputChannel.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/GemsJaxServer/src/test/communication/websocket/WebSocketTestClient.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" path="/GemsJaxClient/src/org/gemsjax/client/communication/CollaborationChannel.java"/>
 </editors>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="2930" y="0"/>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="1885" y="0"/>
 </item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="2907" y="0"/>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="1863" y="0"/>
 </item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="1763" y="0"/>
+<item historyLabel="CommunicationWebSocketTest.java" index="0">
+<position info="not_deleted" x="692" y="0"/>
 </item>
-<item historyLabel="MessageParseTest.java" index="4">
-<position info="not_deleted" x="841" y="0"/>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="1863" y="0"/>
 </item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="1763" y="0"/>
+<item historyLabel="OnlineUserManager.java" index="4">
+<position info="not_deleted" x="1477" y="0"/>
 </item>
-<item historyLabel="SystemMessageParser.java" index="5">
+<item historyLabel="UserAuthenticationChannel.java" index="2">
+<position info="not_deleted" x="5237" y="0"/>
+</item>
+<item historyLabel="SHA.java" index="5">
+<position info="not_deleted" x="1163" y="0"/>
+</item>
+<item historyLabel="UserAuthenticationChannel.java" index="2">
+<position info="not_deleted" x="5237" y="0"/>
+</item>
+<item historyLabel="LoginPresenter.java" index="6">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="LoadingPresenter.java" index="7">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="LoginPresenter.java" index="6">
+<position info="not_deleted" x="1155" y="0"/>
+</item>
+<item historyLabel="SystemChannel.java" index="8">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="SystemChannel.java" index="8">
+<position info="not_deleted" x="385" y="0"/>
+</item>
+<item historyLabel="SystemChannel.java" index="8">
+<position info="not_deleted" x="400" y="23"/>
+</item>
+<item historyLabel="CommunicationConnectionCloseListener.java" index="9">
+<position info="not_deleted" x="0" y="0"/>
+</item>
+<item historyLabel="CommunicationConnectionCloseListener.java" index="9">
 <position/>
 </item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="2158" y="0"/>
-</item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="2196" y="12"/>
-</item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="2737" y="0"/>
-</item>
-<item historyLabel="LoginMessage.java" index="2">
-<position info="not_deleted" x="326" y="21"/>
-</item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="2737" y="0"/>
-</item>
-<item historyLabel="SystemChannel.java" index="6">
+<item historyLabel="CommunicationConnectionOpenListener.java" index="10">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="UserAuthenticationChannel.java" index="7">
+<item historyLabel="CommunicationConnectionOpenListener.java" index="10">
+<position info="not_deleted" x="149" y="0"/>
+</item>
+<item historyLabel="CommunicationConnectionEstablishedListener.java" index="11">
+<position info="not_deleted" x="449" y="0"/>
+</item>
+<item historyLabel="CommunicationConnection.java" index="12">
 <position info="not_deleted" x="0" y="0"/>
 </item>
-<item historyLabel="SystemChannel.java" index="6">
+<item historyLabel="CommunicationConnection.java" index="12">
+<position info="not_deleted" x="5656" y="0"/>
+</item>
+<item historyLabel="CommunicationConnectionEstablishedListener.java" index="11">
+<position info="not_deleted" x="43" y="0"/>
+</item>
+<item historyLabel="CommunicationConnection.java" index="12">
+<position info="not_deleted" x="5656" y="0"/>
+</item>
+<item historyLabel="CommunicationConnection.java" index="12">
+<position info="not_deleted" x="2213" y="0"/>
+</item>
+<item historyLabel="CommunicationConnectionCloseListener.java" index="9">
+<position info="not_deleted" x="44" y="0"/>
+</item>
+<item historyLabel="CommunicationConnection.java" index="12">
+<position info="not_deleted" x="2213" y="0"/>
+</item>
+<item historyLabel="CommunicationConnection.java" index="12">
+<position info="not_deleted" x="5500" y="0"/>
+</item>
+<item historyLabel="WebSocketCommunicationConnection.java" index="1">
+<position/>
+</item>
+<item historyLabel="WebSocketCommunicationConnection.java" index="1">
+<position info="not_deleted" x="1087" y="32"/>
+</item>
+<item historyLabel="CommunicationConnection.java" index="12">
+<position info="not_deleted" x="5500" y="0"/>
+</item>
+<item historyLabel="WebSocketCommunicationConnection.java" index="1">
+<position info="not_deleted" x="1087" y="32"/>
+</item>
+<item historyLabel="WebSocketCommunicationConnection.java" index="1">
+<position info="not_deleted" x="8564" y="0"/>
+</item>
+<item historyLabel="WebSocketCommunicationConnection.java" index="1">
+<position info="not_deleted" x="8943" y="0"/>
+</item>
+<item historyLabel="SystemChannel.java" index="8">
+<position info="not_deleted" x="400" y="23"/>
+</item>
+<item historyLabel="InputChannel.java" index="13">
+<position info="not_deleted" x="1829" y="0"/>
+</item>
+<item historyLabel="SystemChannel.java" index="8">
+<position info="not_deleted" x="642" y="0"/>
+</item>
+<item historyLabel="UserAuthenticationChannel.java" index="2">
+<position info="not_deleted" x="5238" y="0"/>
+</item>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="1863" y="0"/>
+</item>
+<item historyLabel="UserWebSocket.java" index="3">
+<position/>
+</item>
+<item historyLabel="UserWebSocket.java" index="3">
+<position/>
+</item>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="615" y="13"/>
+</item>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="916" y="0"/>
+</item>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="1123" y="0"/>
+</item>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="3273" y="0"/>
+</item>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="3395" y="0"/>
+</item>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="3509" y="0"/>
+</item>
+<item historyLabel="UserWebSocket.java" index="3">
+<position info="not_deleted" x="1479" y="0"/>
+</item>
+<item historyLabel="WebSocketTestClient.java" index="14">
+<position info="not_deleted" x="359" y="0"/>
+</item>
+<item historyLabel="WebSocketTestClient.java" index="14">
+<position info="not_deleted" x="415" y="0"/>
+</item>
+<item active="true" historyLabel="CollaborationChannel.java" index="15">
 <position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="2737" y="0"/>
-</item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="3623" y="116"/>
-</item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="1573" y="0"/>
-</item>
-<item historyLabel="SystemMessage.java" index="1">
-<position info="not_deleted" x="234" y="0"/>
-</item>
-<item historyLabel="SystemMessageParser.java" index="5">
-<position info="not_deleted" x="1573" y="0"/>
-</item>
-<item historyLabel="MessageParseTest.java" index="4">
-<position info="not_deleted" x="841" y="0"/>
-</item>
-<item historyLabel="MessageParseTest.java" index="4">
-<position info="not_deleted" x="1257" y="0"/>
-</item>
-<item historyLabel="LogoutMessage.class" index="8">
-<position info="not_deleted" x="1031" y="13"/>
-</item>
-<item historyLabel="MessageParseTest.java" index="4">
-<position info="not_deleted" x="1504" y="0"/>
-</item>
-<item historyLabel="LogoutMessage.java" index="3">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="LogoutMessage.java" index="3">
-<position info="not_deleted" x="1909" y="0"/>
-</item>
-<item historyLabel="MessageParseTest.java" index="4">
-<position info="not_deleted" x="1504" y="0"/>
-</item>
-<item historyLabel="MessageParseTest.java" index="4">
-<position info="not_deleted" x="1447" y="0"/>
-</item>
-<item historyLabel="UserAuthenticationChannel.java" index="0">
-<position info="not_deleted" x="1485" y="0"/>
-</item>
-<item historyLabel="UserAuthenticationChannel.java" index="0">
-<position info="not_deleted" x="1783" y="0"/>
-</item>
-<item historyLabel="LoginResultMessage.java" index="9">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="LoginAnswereMessage.java" index="10">
-<position info="not_deleted" x="190" y="0"/>
-</item>
-<item historyLabel="LoginAnswereMessage.java" index="10">
-<position info="not_deleted" x="397" y="0"/>
-</item>
-<item historyLabel="CommunicationConnection.java" index="11">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="LoginAnswereMessage.java" index="10">
-<position info="not_deleted" x="397" y="0"/>
-</item>
-<item historyLabel="CommunicationConstants.java" index="12">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="CommunicationConstants.java" index="13">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="CommunicationConstants.java" index="13">
-<position info="not_deleted" x="421" y="0"/>
-</item>
-<item historyLabel="CommunicationConstants.java" index="13">
-<position info="not_deleted" x="293" y="0"/>
-</item>
-<item historyLabel="CommunicationConstants.java" index="13">
-<position info="not_deleted" x="1097" y="0"/>
-</item>
-<item historyLabel="LoginAnswereMessage.java" index="10">
-<position info="not_deleted" x="397" y="0"/>
-</item>
-<item historyLabel="LoginAnswereMessage.java" index="10">
-<position info="not_deleted" x="736" y="0"/>
-</item>
-<item historyLabel="CommunicationConstants.java" index="14">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="CommunicationConstants.java" index="14">
-<position info="not_deleted" x="1153" y="0"/>
-</item>
-<item historyLabel="LoginAnswereMessage.java" index="10">
-<position info="not_deleted" x="1606" y="0"/>
-</item>
-<item historyLabel="LoginMessage.java" index="15">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="LoginMessage.java" index="15">
-<position info="not_deleted" x="929" y="5"/>
-</item>
-<item historyLabel="LogoutMessage.java" index="16">
-<position info="not_deleted" x="0" y="0"/>
-</item>
-<item historyLabel="LoginMessage.java" index="15">
-<position info="not_deleted" x="929" y="5"/>
-</item>
-<item historyLabel="LoginAnswereMessage.java" index="10">
-<position info="not_deleted" x="1606" y="0"/>
-</item>
-<item active="true" historyLabel="LoginAnswereMessage.java" index="10">
-<position info="not_deleted" x="1452" y="0"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -608,50 +603,50 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="LogoutMessage.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LogoutMessage.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LogoutMessage.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="CollaborationChannel.java" tooltip="GemsJaxClient/src/org/gemsjax/client/communication/CollaborationChannel.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/client/communication/CollaborationChannel.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="LoginMessage.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginMessage.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginMessage.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="CommunicationConstants.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConstants.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConstants.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="CommunicationConstants.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/CommunicationConstants.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/CommunicationConstants.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="InputChannel.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/channel/InputChannel.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/shared/communication/channel/InputChannel.java"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="CommunicationConnection.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConnection.java">
 <persistable path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConnection.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="LoginResultMessage.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginResultMessage.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/LoginResultMessage.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="CommunicationConnectionOpenListener.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConnectionOpenListener.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConnectionOpenListener.java"/>
 </file>
-<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="LogoutMessage.class" tooltip="org.gemsjax.shared.communication.message.system.LogoutMessage">
-<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=GemsJaxServer/lib\/GemsJaxShared.jar&lt;org.gemsjax.shared.communication.message.system(LogoutMessage.class"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="CommunicationConnectionCloseListener.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConnectionCloseListener.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/shared/communication/CommunicationConnectionCloseListener.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="SystemMessage.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/message/system/SystemMessage.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/system/SystemMessage.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="SystemChannel.java" tooltip="GemsJaxClient/src/org/gemsjax/client/communication/SystemChannel.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/client/communication/SystemChannel.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="UserAuthenticationChannel.java" tooltip="GemsJaxServer/src/org/gemsjax/server/communication/channel/UserAuthenticationChannel.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/communication/channel/UserAuthenticationChannel.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="LoadingPresenter.java" tooltip="GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoadingPresenter.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoadingPresenter.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="LogoutMessage.java" tooltip="GemsJaxClient/src/org/gemsjax/shared/communication/message/LogoutMessage.java">
-<persistable path="/GemsJaxClient/src/org/gemsjax/shared/communication/message/LogoutMessage.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="LoginPresenter.java" tooltip="GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoginPresenter.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/client/admin/presenter/LoginPresenter.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TransactionImpl.java" tooltip="GemsJaxServer/src/org/gemsjax/server/persistence/collaboration/TransactionImpl.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/persistence/collaboration/TransactionImpl.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SHA.java" tooltip="GemsJaxServer/src/org/gemsjax/server/SHA.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/SHA.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MessageParseTest.java" tooltip="GemsJaxServer/src/test/communication/MessageParseTest.java">
-<persistable path="/GemsJaxServer/src/test/communication/MessageParseTest.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="WebSocketCommunicationConnection.java" tooltip="GemsJaxClient/src/org/gemsjax/client/communication/WebSocketCommunicationConnection.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/client/communication/WebSocketCommunicationConnection.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AbstractContentHandler.java" tooltip="GemsJaxServer/src/org/gemsjax/server/communication/parser/AbstractContentHandler.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/communication/parser/AbstractContentHandler.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Test.java" tooltip="GemsJaxServer/src/test/communication/websocket/Test.java">
+<persistable path="/GemsJaxServer/src/test/communication/websocket/Test.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="LoginMessageParser.java" tooltip="GemsJaxServer/src/org/gemsjax/server/communication/parser/LoginMessageParser.java">
-<persistable path="/GemsJaxServer/src/org/gemsjax/server/communication/parser/LoginMessageParser.java"/>
+<file factoryID="org.eclipse.jdt.ui.ClassFileEditorInputFactory" id="org.eclipse.jdt.ui.ClassFileEditor" name="WebSocketClient.class" tooltip="net.tootallnate.websocket.WebSocketClient">
+<persistable org.eclipse.jdt.ui.ClassFileIdentifier="=GemsJaxServer/lib\/testing\/WebSocket.jar&lt;net.tootallnate.websocket(WebSocketClient.class"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CommunicationWebSocketTest.java" tooltip="GemsJaxServer/src/test/communication/websocket/CommunicationWebSocketTest.java">
-<persistable path="/GemsJaxServer/src/test/communication/websocket/CommunicationWebSocketTest.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="CollaborationWebSocketServlet.java" tooltip="GemsJaxServer/src/org/gemsjax/server/communication/servlet/CollaborationWebSocketServlet.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/communication/servlet/CollaborationWebSocketServlet.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="GemsJaxServer.java" tooltip="GemsJaxServer/src/org/gemsjax/server/GemsJaxServer.java">
+<persistable path="/GemsJaxServer/src/org/gemsjax/server/GemsJaxServer.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="com.google.gwt.eclipse.core.editors.gwtJavaEditor" name="GemsJaxClient.java" tooltip="GemsJaxClient/src/org/gemsjax/client/admin/GemsJaxClient.java">
+<persistable path="/GemsJaxClient/src/org/gemsjax/client/admin/GemsJaxClient.java"/>
 </file>
 </mruList>
 </workbench>

@@ -1,0 +1,21 @@
+package org.gemsjax.server.logger;
+
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
+
+public class UnexpectedErrorLogger {
+	
+	private static Logger logger = Logger.getLogger(UnexpectedErrorLogger.class.getName());
+	
+	private static Handler handler;
+	
+	
+	private UnexpectedErrorLogger()
+	{
+		Logger.getLogger("LoggingA");
+	}
+	
+	
+
+}

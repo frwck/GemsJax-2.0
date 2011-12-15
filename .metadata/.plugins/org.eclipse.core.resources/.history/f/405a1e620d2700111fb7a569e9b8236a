@@ -1,0 +1,146 @@
+package org.gemsjax.server.communication;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.gemsjax.server.communication.channel.SimpleOutputChannel;
+import org.gemsjax.shared.communication.CommunicationConnection;
+import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.OutputChannel;
+import org.gemsjax.shared.user.User;
+
+
+/**
+ * A {@link OnlineUser} wraps a simple {@link User} and his current {@link OutputChannel}.
+ * In other words: A {@link OnlineUser} maps a {@link User} to an {@link OutputChannel}.
+ * So the only job this class has to do is to provide a {@link OutputChannel} to this {@link User}, which is already
+ * authenticated and reside on the other end of the connection (with a browser), 
+ * ready to get {@link Messages} from the server (via an {@link OutputChannel}).
+ * @author Hannes Dorfmann
+ *
+ */
+public class OnlineUser {
+	
+	private User user;
+	private OutputChannel outputChannel;
+	private Set<InputChannel> inputChannels;
+	
+	
+	private OnlineUser(User user)
+	{
+		this.user = user;
+		inputChannels = new HashSet<InputChannel>();
+	}
+
+	public User getUser()
+	{
+		return user;
+	}
+
+	public OutputChannel getOutputChannel() {
+		return outputChannel;
+	}
+
+
+	public void setOutputChannel(OutputChannel outputChannel) {
+		this.outputChannel = outputChannel;
+	}
+	
+	
+	public void addInputChannel(InputChannel c)
+	{
+		inputChannels.add(c);
+	}
+	
+	
+	public void removeInputChannel (InputChannel c)
+	{
+		inputChannels.remove(c);
+	}
+	
+	
+	
+	/**
+	 * Get the {@link User} id by calling {@link User#getId()}
+	 * @return
+	 */
+	public Integer getId()
+	{
+		return user.getId();
+	}
+	
+	
+	
+	
+	@Override
+	public boolean equals(Object other) {
+		
+		if (this==other) return true;
+		
+		if ( !(other instanceof OnlineUser) ) return false;
+		
+		final OnlineUser that = (OnlineUser) other;
+		
+		if (user.getId()!= null && that.user.getId() != null)
+			return this.user.getId().equals(that.user.getId());
+		
+		return false;
+	}
+		
+	@Override
+	public int hashCode() {
+		if (user.getId() != null)
+			return user.getId().hashCode();
+		else
+			return super.hashCode();
+	}
+	
+		
+	
+
+	/**
+	 * Create a {@link OnlineUser} with a {@link SimpleOutputChannel} and all needed {@link InputChannel}s:
+	 * <ul>
+	 * <li> </li>
+	 * </ul>
+	 * @param user
+	 * @param connection
+	 * @return
+	 */
+	public static OnlineUser create(User user, CommunicationConnection connection)
+	{
+		OnlineUser u = new OnlineUser(user);
+		
+		// Set the output Channels
+		u.setOutputChannel(new SimpleOutputChannel(connection));
+		
+		// Set the input Channels
+		
+		return u;
+	}
+	
+	
+	/**
+	 * Create a {@link OnlineUser} for an experiment participant with a {@link SimpleOutputChannel} and  for the Experiment needed {@link InputChannel}s:
+	 * <ul>
+	 * <li> </li>
+	 * </ul>
+	 * @param user The authenticated {@link User}
+	 * @param connection The {@link CommunicationConnection}
+	 * @return The {@link OnlineUser} with all needed {@link InputChannel}s and a {@link OutputChannel}
+	 */
+	public static OnlineUser createForExperiment(User user, CommunicationConnection connection)
+	{
+		OnlineUser u = new OnlineUser(user);
+		
+		// Set the output Channels
+		u.setOutputChannel(new SimpleOutputChannel(connection));
+		
+		// Set the input Channels
+		
+		return u;
+	}
+	
+	
+
+}

@@ -1,0 +1,19 @@
+package org.gemsjax.shared.communication.message;
+
+public class UnexpectedErrorMessage implements Message{
+
+	
+	public enum UnexpectedError
+	{
+		PARSE_ERROR
+	}
+	
+	
+	
+	@Override
+	public String toXml() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

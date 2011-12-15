@@ -3,6 +3,8 @@ package org.gemsjax.client.admin;
 
 import java.io.IOException;
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
+import org.gemsjax.shared.communication.message.system.LoginMessage;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
@@ -24,8 +26,7 @@ public class GemsJaxClient implements EntryPoint {
 		
 		try {
 			webSocket.connect();
-		
-		
+					
 			if (!GWT.isScript()) {
 				KeyIdentifier debugKey = new KeyIdentifier();
 				//debugKey.setAltKey(true);

@@ -3,6 +3,8 @@ package org.gemsjax.server.communication;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.user.User;
 
@@ -26,7 +28,12 @@ public class OnlineUserManager {
 	/**
 	 * This Map maps the {@link User} id ({@link User#getId()}) to his {@link OnlineUser} Wrapper, which contains the {@link OutputChannel}
 	 */
-	private Map<Integer, OnlineUser> onlineUserMap;
+	private Map<Integer, OnlineUser> onlineUserIdMap;
+	
+	/**
+	 * This Map maps a HttpSession id ({@link HttpSession#getId()}) to his {@link OnlineUser}  
+	 */
+	private Map<String, OnlineUser > onlineUserSessionMap;
 	
 	
 	/**
@@ -34,11 +41,13 @@ public class OnlineUserManager {
 	 */
 	private OnlineUserManager()
 	{
-		onlineUserMap = new HashMap<Integer, OnlineUser>();
+		onlineUserIdMap = new HashMap<Integer, OnlineUser>();
+		onlineUserSessionMap = new HashMap<String, OnlineUser>();
 	}
 	
 	
-	public OnlineUserManager getInstance()
+
+	public static OnlineUserManager getInstance()
 	{
 		return INSTANCE;
 	}
@@ -51,7 +60,7 @@ public class OnlineUserManager {
 	 */
 	public OutputChannel getOutputChannel(User u)
 	{
-		OnlineUser o = onlineUserMap.get(u.getId());
+		OnlineUser o = onlineUserIdMap.get(u.getId());
 		if (o == null) 
 			return null;
 	
@@ -65,18 +74,40 @@ public class OnlineUserManager {
 	 */
 	public OnlineUser getOnlineUser( User u)
 	{
-		return onlineUserMap.get(u.getId());
+		return onlineUserIdMap.get(u.getId());
+	}
+	
+	/**
+	 * Get a {@link OnlineUser} by his {@link HttpSession}
+	 * @param httpSession
+	 * @return
+	 */
+	public OnlineUser getOnlineUser(HttpSession httpSession)
+	{
+		return onlineUserSessionMap.get(httpSession.getId());
 	}
 	
 	
-	public void addOnlineUser(User u, OutputChannel o)
+	public void addOnlineUser(OnlineUser user)
 	{
-		OnlineUser ou = new OnlineUser(u);
 		
-		if (onlineUserMap.containsKey(u.getId()))
+		OnlineUser existingOnlineUser = onlineUserIdMap.get(user.getId());
+		
+		if (existingOnlineUser != null)
 		{
+			// The User is already logged in with another connection, so logout and close the old connection
+			// and use the new connection
+			
+			//TODO write LogoutMessage and close CommunicationConnection
 			
 		}
+		
+		
+		onlineUserIdMap.put(user.getId(), user);
+		onlineUserSessionMap.put(user.getHttpSession().getId(), user);
+		
 	}
+	
+	
 	
 }

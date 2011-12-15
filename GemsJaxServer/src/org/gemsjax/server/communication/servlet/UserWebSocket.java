@@ -27,6 +27,9 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 		private HttpSession session;
 		
 		private Set<InputChannel> inputChannels;
+		
+		private Set<ClosedListener> closedListeners;
+		private Set<EstablishedListener> establishedListeners;
 
 		
 		public UserWebSocket(HttpSession session)
@@ -34,26 +37,29 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 			this.session = session;
 			connection = null;
 			inputChannels = new HashSet<InputChannel>();
+			closedListeners = new HashSet<ClosedListener>();
+			establishedListeners = new HashSet<EstablishedListener>();
 		}
 		
-		@Override
-		public void onClose(int arg0, String arg1) {
-			for (InputChannel c: inputChannels)
-				c.onClose();
-			
-		}
-
 		@Override
 		public void onOpen(Connection con) {
 			this.connection = con;
 			
-			UserAuthenticationChannel u = new UserAuthenticationChannel(this);
+			UserAuthenticationChannel u = new UserAuthenticationChannel(this, session);
 			this.registerInputChannel(u);
+			
+			for (EstablishedListener e: establishedListeners)
+				e.onEstablished();
 		}
 
 		@Override
 		public void onMessage(String data) {
 		
+			
+			System.out.println("Received: "+data);
+			
+			
+			
 	    	for (InputChannel c: inputChannels)
 	        {
 	        	if (data.matches(c.getFilterRegEx()))
@@ -65,6 +71,7 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 		
 		public void send(String message) throws IOException
 		{
+			System.out.println("Sending: "+message);
 			connection.sendMessage(message);
 		}
 
@@ -125,7 +132,34 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 			throw new UnsupportedOperationException();
 		}
 
-}
+		@Override
+		public void addCloseListener(ClosedListener arg0) {
+			closedListeners.add(arg0);
+		}
+
+		@Override
+		public void addEstablishedListener(EstablishedListener arg0) {
+			establishedListeners.add(arg0);
+		}
+
+		@Override
+		public void removeCloseListener(ClosedListener arg0) {
+			closedListeners.remove(arg0);
+		}
+
+		@Override
+		public void removeEstablishedListener(EstablishedListener arg0) {
+			establishedListeners.remove(arg0);
+		}
+		
+		@Override
+		public void onClose(int arg0, String arg1) {
+			
+			for (ClosedListener c: closedListeners)
+				c.onClose();
+		}
+
+	}
 
 	
 

@@ -1,0 +1,5 @@
+package org.gemsjax.shared.communication;
+
+public interface CommunicationConnectionCloseListener {
+
+}

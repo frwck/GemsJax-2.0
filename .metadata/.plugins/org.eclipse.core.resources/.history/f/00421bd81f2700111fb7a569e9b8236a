@@ -1,0 +1,5 @@
+package org.gemsjax.server.logger;
+
+public class UnexpectedErrorLogger {
+
+}
