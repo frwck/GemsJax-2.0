@@ -160,7 +160,7 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 
 	@Override
 	public void send(Message message) throws IOException {
-		communicationConnection.send(message.toXml());
+		communicationConnection.send(message);
 	}
 	
 	

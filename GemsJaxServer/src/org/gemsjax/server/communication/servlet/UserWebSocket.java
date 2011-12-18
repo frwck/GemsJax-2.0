@@ -12,6 +12,7 @@ import org.eclipse.jetty.websocket.WebSocket;
 import org.gemsjax.server.communication.channel.UserAuthenticationChannel;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.message.Message;
 
 
 
@@ -69,10 +70,10 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 		}
 		
 		
-		public void send(String message) throws IOException
+		public void send(Message message) throws IOException
 		{
 			System.out.println("Sending: "+message);
-			connection.sendMessage(message);
+			connection.sendMessage(message.toXml());
 		}
 
 		@Override

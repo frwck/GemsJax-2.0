@@ -55,5 +55,4 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 		
 	}
 
-
 }

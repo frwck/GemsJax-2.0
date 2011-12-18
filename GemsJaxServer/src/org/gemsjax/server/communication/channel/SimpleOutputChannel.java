@@ -24,7 +24,7 @@ public class SimpleOutputChannel implements OutputChannel{
 	@Override
 	public void send(Message message) throws IOException {
 		
-		communicationConnection.send(message.toXml());
+		communicationConnection.send(message);
 	
 	}
 

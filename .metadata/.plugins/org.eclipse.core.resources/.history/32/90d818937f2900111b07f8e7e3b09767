@@ -1,0 +1,11 @@
+package org.gemsjax.shared.communication.message.system;
+
+public class KeepAliveMessage extends SystemMessage{
+
+	@Override
+	public String toXml() {
+		return "<ping />";
+	}
+	
+
+}

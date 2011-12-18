@@ -7,6 +7,7 @@ import net.tootallnate.websocket.WebSocketClient;
 
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.message.Message;
 
 public class WebSocketTestClient extends WebSocketClient implements CommunicationConnection
 {
@@ -115,6 +116,12 @@ public class WebSocketTestClient extends WebSocketClient implements Communicatio
 
 	@Override
 	public void removeEstablishedListener(EstablishedListener arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void send(Message arg0) throws IOException {
 		// TODO Auto-generated method stub
 		
 	}

@@ -10,10 +10,8 @@ import org.gemsjax.client.admin.handler.LoginHandler;
 import org.gemsjax.client.admin.handler.LogoutHandler;
 import org.gemsjax.client.admin.view.LoginView;
 import org.gemsjax.shared.FieldVerifier;
-
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Timer;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;

@@ -111,13 +111,13 @@ public interface CommunicationConnection {
 	public abstract boolean isKeepAlive();
 	
 	/**
-	 * Transform the object which should be send in a adequate format and send the data
+	 * Transform the {@link Message} which should be send in a adequate format and send the data
 	 * via the underlying socket/connection.
 	 * 
-	 * @param o
+	 * @param message The message which should be send
 	 * @throws IOException
 	 */
-	public abstract void send(String toSend) throws IOException;
+	public abstract void send(Message message) throws IOException;
 	
 	
 	

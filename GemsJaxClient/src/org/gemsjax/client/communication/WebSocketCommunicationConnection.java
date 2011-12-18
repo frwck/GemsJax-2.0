@@ -10,6 +10,8 @@ import org.gemsjax.client.communication.exception.WebSocketConnectionException;
 import org.gemsjax.client.communication.exception.WebSocketSendException;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.system.KeepAliveMessage;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
 
 import com.google.gwt.user.client.Timer;
@@ -35,13 +37,13 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	private class KeepAliveTimer extends Timer
 	{
 		private int timeout = 20*1000;
-		private final String keepAliveProtokoll = "<ping />";
+		private final KeepAliveMessage keepAliveMessage= new KeepAliveMessage();
 
 		@Override
 		public void run() {
 			
 			try {
-				WebSocketCommunicationConnection.this.send("<ping />");
+				WebSocketCommunicationConnection.this.send(keepAliveMessage);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -335,8 +337,8 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
 
 	@Override
-	public void send(String toSend) throws IOException {
-		doSend(toSend);
+	public void send(Message message) throws IOException {
+		doSend(message.toXml());
 	}
 
 
