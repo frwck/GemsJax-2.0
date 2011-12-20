@@ -1,5 +1,0 @@
-package org.gemsjax.server.communication.parser;
-
-public class AbstractContentHandler implements ContentHandler{
-
-}

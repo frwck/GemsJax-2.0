@@ -1,5 +1,0 @@
-package org.gemsjax.shared.communication.message.system;
-
-public abstract class SystemMessage {
-
-}

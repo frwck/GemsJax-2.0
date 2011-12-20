@@ -1,5 +1,0 @@
-package org.gemsjax.shared.communication.message;
-
-public class UnexpectedErrorMessage implements Message{
-
-}

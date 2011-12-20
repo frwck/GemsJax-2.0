@@ -81,7 +81,7 @@ public class TipNotification extends Notification implements ResizeHandler{
 					case 'B':
 					case 'M':	
 					case 'O':
-					case 'Ã–': width+=26; break;
+					case 'Ö': width+=26; break;
 						 
 					case 'S':
 					case 'A':
@@ -118,7 +118,7 @@ public class TipNotification extends Notification implements ResizeHandler{
 					case 'B':
 					case 'M':	
 					case 'O':
-					case 'Ã–': width+=18; break;
+					case 'Ö': width+=18; break;
 						 
 					case 'S':
 					case 'A':
