@@ -2,7 +2,6 @@ package org.gemsjax.shared.communication.message.system;
 
 import org.gemsjax.shared.user.RegisteredUser;
 
-import com.google.gwt.http.client.URL;
 
 /**
  * Sent from Client to Server, to register a new {@link RegisteredUser}
@@ -35,11 +34,11 @@ public class NewRegistrationMessage extends SystemMessage {
 		StringBuffer postData = new StringBuffer();
 		// note param pairs are separated by a '&' 
 		// and each key-value pair is separated by a '='
-		postData.append(URL.encode("username")).append("=").append(URL.encode(username));
+		postData.append("username").append("=").append(username);
 		postData.append("&");
-		postData.append(URL.encode("password")).append("=").append(URL.encode(password));
+		postData.append("password").append("=").append(password);
 		postData.append("&");
-		postData.append(URL.encode("email")).append("=").append(URL.encode(email));
+		postData.append("email").append("=").append(email);
 		
 		return postData.toString();
 	}

@@ -1,4 +1,4 @@
-package org.gemsjax.server;
+package org.gemsjax.server.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

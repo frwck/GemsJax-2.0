@@ -2,6 +2,10 @@ package org.gemsjax.server.communication.parser;
 
 import java.io.IOException;
 import java.io.StringReader;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.gemsjax.server.communication.servlet.post.NewRegistrationServlet;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
 import org.gemsjax.shared.communication.message.system.LogoutMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
@@ -64,6 +68,29 @@ public class SystemMessageParser extends AbstractContentHandler {
 	    throw new SAXException("Unexcpected Parse error: Could not determine, if the Message is a Login or Logout Message");
 	}
 
+	
+	/**
+	 * Parse a HTTP POST request to a {@link SystemMessage}
+	 * @param request
+	 * @return
+	 */
+	public SystemMessage parse(HttpServletRequest request)
+	{
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String email = request.getParameter("email");
+		
+		/*
+		if (username != null && password!= null && email != null)
+			return new NewRegistrationMessage();
+		*/
+		
+		return null;
+	}
+	
+	
+	
+	
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {

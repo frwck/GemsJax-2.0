@@ -23,8 +23,13 @@
   <target name="jar" depends="compile">
     <jar destfile="${jarDest}"
          basedir="${build}"
-         includes="**/*.class"
-         />
+         includes="**/*.class">
+	
+    <!--	<lib>
+    	   <fileset dir="${external.lib.dir}" />
+    	</lib>
+	-->
+	</jar>
     <delete dir="${build}" />
 </target>
   

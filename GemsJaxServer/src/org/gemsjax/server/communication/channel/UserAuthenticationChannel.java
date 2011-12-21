@@ -5,7 +5,6 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.HttpSession;
 
-import org.gemsjax.server.SHA;
 import org.gemsjax.server.communication.OnlineUser;
 import org.gemsjax.server.communication.OnlineUserManager;
 import org.gemsjax.server.communication.parser.SystemMessageParser;
@@ -17,6 +16,7 @@ import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateExperimentDAO;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
+import org.gemsjax.server.util.SHA;
 import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
