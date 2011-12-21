@@ -1,6 +1,8 @@
 package org.gemsjax.server;
 
 
+import java.io.File;
+
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
@@ -23,7 +25,18 @@ public class GemsJaxServer {
 	public static void main(String[] args) {
 
 	     Server server = new Server(8080);
-       
+         
+	     if (args.length !=1 )
+	     {
+	    	 System.out.println("Wrong argument count ("+args.length+"): \nThe first parameter is the path to the war folder");
+	    	 return;
+	     }
+	     
+	     String warUrl = args[0];
+	     if (!warUrl.endsWith(""+File.separatorChar))
+	    	 warUrl+=File.separatorChar;
+	     
+	     System.out.println(warUrl);
 	    //SSL    
 	    /* SslSelectChannelConnector sslConnector = new SslSelectChannelConnector();
 	        sslConnector.setPort(8443);
@@ -51,8 +64,8 @@ public class GemsJaxServer {
 	        resourceHandler.setDirectoriesListed(true);
 	        resourceHandler.setWelcomeFiles(new String[]{ "GemsJax.html" });
 	        
-	        
-	        resourceHandler.setResourceBase("/home/hannes/GemsJaxWorkspace/GemsJaxClient/war/");
+	        // linux dir  "/home/hannes/GemsJaxWorkspace/GemsJaxClient/war/"
+	        resourceHandler.setResourceBase(warUrl);
 	        
 	        
 	        ContextHandler resourceContext = new ContextHandler();
