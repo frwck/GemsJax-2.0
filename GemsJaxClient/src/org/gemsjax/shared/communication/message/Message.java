@@ -28,5 +28,19 @@ public interface Message {
 	 * @return
 	 */
 	public abstract String toXml();
+	
+	/**
+	 * Generates an String in form of HTTP GET parameters that reprensents this {@link Message}
+	 * and can be send via HTTP GET to a Servlet
+	 * @return
+	 */
+	public abstract String toHttpGet();
+	
+	/**
+	 * Generates an String in form of HTTP POST parameters that represents this {@link Message}
+	 * and can be send via an HTTP POST to a Servlet
+	 * @return
+	 */
+	public abstract String toHttpPost();
 
 }

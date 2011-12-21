@@ -1,6 +1,8 @@
 package org.gemsjax.shared.communication;
 
 import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
+import org.gemsjax.shared.communication.message.system.RegistrationAnswereMessage;
+import org.gemsjax.shared.communication.message.system.RegistrationAnswereMessage.RegistrationAnswereStatus;
 
 /**
  * This class contains constants (grouped in subclasses) that were used for the xml communication between server and client and vice versa 
@@ -67,13 +69,39 @@ public class CommunicationConstants {
 		 * To indicate that a parser could not parse the message.
 		 * Mapped to {@link UnexpectedErrorMessage.ErrorType}
 		 */
-		public static final int PARSE = 1;
+		public static final int PARSE = 3;
 		
 		/**
 		 * 
 		 */
-		public static final int DATABASE = 2;
+		public static final int DATABASE = 4;
 		
+	}
+	
+	
+	/**
+	 * Constants that are used durring a registration
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	public class Registration{
+		private Registration(){}
+		
+		/**
+		 * The registration was successful.
+		 * Mapped to {@link RegistrationAnswereMessage.RegistrationAnswereStatus#OK}.
+		 */
+		public static final String OK = "ok";
+		
+		/**
+		 * Mapped to {@link RegistrationAnswereMessage.RegistrationAnswereStatus#FAIL_USERNAME}.
+		 */
+		public static final String FAIL_USERNAME = "fail_username";
+		
+		/**
+		 * Mapped to {@link RegistrationAnswereMessage.RegistrationAnswereStatus#FAIL_EMAIL}. 
+		 */
+		public static final String FAIL_EMAIL = "fail_email";
 	}
 
 }

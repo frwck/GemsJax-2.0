@@ -1,8 +1,0 @@
-package org.gemsjax.client.communication;
-
-import org.gemsjax.shared.communication.channel.InputChannel;
-import org.gemsjax.shared.communication.channel.OutputChannel;
-
-public class SystemChannel implements InputChannel, OutputChannel{
-
-}

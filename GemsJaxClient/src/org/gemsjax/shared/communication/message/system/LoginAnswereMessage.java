@@ -78,4 +78,18 @@ public class LoginAnswereMessage extends SystemMessage{
 		return answer;
 	}
 
+
+	@Override
+	public String toHttpGet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public String toHttpPost() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

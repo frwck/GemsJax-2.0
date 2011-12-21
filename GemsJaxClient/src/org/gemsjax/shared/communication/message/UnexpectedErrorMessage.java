@@ -99,4 +99,16 @@ public class UnexpectedErrorMessage implements Message{
 		
 		return null;
 	}
+
+	@Override
+	public String toHttpGet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String toHttpPost() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

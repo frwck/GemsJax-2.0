@@ -1,5 +1,0 @@
-package org.gemsjax.server.communication.channel;
-
-public class SimpleOutputChannel implements OutputChannel{
-
-}

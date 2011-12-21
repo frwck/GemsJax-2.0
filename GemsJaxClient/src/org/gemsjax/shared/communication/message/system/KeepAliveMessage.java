@@ -15,6 +15,18 @@ public class KeepAliveMessage extends SystemMessage{
 	public String toXml() {
 		return "<ping />";
 	}
+
+	@Override
+	public String toHttpGet() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String toHttpPost() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }
