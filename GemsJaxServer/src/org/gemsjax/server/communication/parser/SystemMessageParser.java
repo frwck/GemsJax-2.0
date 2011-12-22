@@ -3,7 +3,7 @@ package org.gemsjax.server.communication.parser;
 import java.io.IOException;
 import java.io.StringReader;
 import javax.servlet.http.HttpServletRequest;
-
+import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
 import org.gemsjax.shared.communication.message.system.LogoutMessage;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
@@ -73,20 +73,57 @@ public class SystemMessageParser extends AbstractContentHandler {
 	 * @param request
 	 * @return the parsed {@link SystemMessage} or null if its not parseable
 	 */
-	public SystemMessage parse(HttpServletRequest request)
+	public SystemMessage parse(HttpServletRequest request) throws HttpParseException
 	{
-		// DECODE is done automatically by calling getParameter
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		String email = request.getParameter("email");
 		
-		if (username != null && password!= null && email != null)
-			return new NewRegistrationMessage(username, password, email);
+		String messageClass = request.getParameter(Message.CLASS_NAME_PARAMETER);
+		
+		if (messageClass== null || messageClass.isEmpty())
+			throw new HttpParseException("Could not determine the MESSAGE_CLASS. Parsing is not possible without this parameter");
+		
+
+		
+		if (messageClass.equals(NewRegistrationMessage.class.getName()))
+			return parseNewRegistrationMessage(request);
 		
 		
 		return null;
 	}
 	
+	
+	
+	/**
+	 * Parse a {@link NewRegistrationMessage}
+	 * @param request
+	 * @return
+	 * @throws HttpParseException
+	 */
+	private NewRegistrationMessage parseNewRegistrationMessage(HttpServletRequest request) throws HttpParseException
+	{
+		
+		if (! request.getParameter(Message.CLASS_NAME_PARAMETER).equals(NewRegistrationMessage.class.getName()))
+			throw new HttpParseException("Not able to parse a NewRegistrationMessage, which is not claimed as this in the required POST parameter \""+Message.CLASS_NAME_PARAMETER+"\"\n"+
+					"Do you forget to send the required parameter "+Message.CLASS_NAME_PARAMETER);
+	
+		// DECODE is done automatically by calling getParameter
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		String email = request.getParameter("email");
+		
+		if (username == null  || username.isEmpty())
+			throw new HttpParseException("Username is empty");
+		
+		if (password!= null || password.isEmpty())
+			throw new HttpParseException("Password is empty");
+		
+		if (email != null || email.isEmpty())
+			throw new HttpParseException("E-Mail address is empty");
+			
+			
+		return new NewRegistrationMessage(username, password, email);
+		
+		
+	}
 	
 	
 	

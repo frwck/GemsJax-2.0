@@ -20,7 +20,7 @@ public class UnexpectedErrorMessage implements Message{
 	public enum ErrorType
 	{
 		/**
-		 * The XML protocol message could not be parsed.
+		 * The protocol message (xml or http post/get) could not be parsed.
 		 * Mapped by {@link CommunicationConstants.Error#PARSE}.
 		 */
 		PARSE,
