@@ -11,9 +11,13 @@ import org.gemsjax.shared.communication.message.Message;
  */
 public class KeepAliveMessage extends SystemMessage{
 
+	
+	public static final String TAG = "ping";
+	
+	
 	@Override
 	public String toXml() {
-		return "<ping />";
+		return "<"+TAG+" />";
 	}
 
 	@Override

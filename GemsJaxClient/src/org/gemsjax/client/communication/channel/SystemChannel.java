@@ -1,4 +1,4 @@
-package org.gemsjax.client.communication;
+package org.gemsjax.client.communication.channel;
 
 import java.io.IOException;
 

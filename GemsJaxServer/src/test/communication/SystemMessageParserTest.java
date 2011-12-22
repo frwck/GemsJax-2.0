@@ -13,7 +13,7 @@ import org.gemsjax.shared.communication.message.system.LogoutMessage.LogoutReaso
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
-public class MessageParseTest {
+public class SystemMessageParserTest {
 
 	
 	@Test
@@ -32,7 +32,7 @@ public class MessageParseTest {
 		
 		assertEquals(m.getUsername(), username);
 		assertEquals(m.getPassword(), password);
-		assertEquals(m.isExperimentLogin(), experimentLogin);
+		assertTrue(m.isExperimentLogin() == experimentLogin);
 		
 		assertTrue(m.equals(lm));
 	}

@@ -27,6 +27,12 @@ public class LogoutMessage extends SystemMessage{
 		CLIENT_USER_LOGOUT
 	}
 	
+	/**
+	 * The {@link LogoutMessage} is embarked in this tag
+	 */
+	public static final String TAG = "logout";
+	public static final String REASON_ATTRIBUTE="reason";
+	
 	private LogoutReason reason;
 	
 	public LogoutMessage(LogoutReason reason)
@@ -74,7 +80,7 @@ public class LogoutMessage extends SystemMessage{
 		
 		Integer r = reasonToInt();
 		
-		return "<sys><logout reason=\""+r+"\" /></sys>";
+		return "<"+SystemMessage.TAG+"><"+TAG+" "+REASON_ATTRIBUTE+"=\""+r+"\" /></"+SystemMessage.TAG+">";
 	}
 	
 	
@@ -106,15 +112,13 @@ public class LogoutMessage extends SystemMessage{
 
 	@Override
 	public String toHttpGet() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 
 	@Override
 	public String toHttpPost() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 	
 }

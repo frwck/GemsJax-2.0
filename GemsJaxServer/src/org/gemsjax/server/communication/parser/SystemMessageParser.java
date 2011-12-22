@@ -2,12 +2,11 @@ package org.gemsjax.server.communication.parser;
 
 import java.io.IOException;
 import java.io.StringReader;
-
 import javax.servlet.http.HttpServletRequest;
 
-import org.gemsjax.server.communication.servlet.post.NewRegistrationServlet;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
 import org.gemsjax.shared.communication.message.system.LogoutMessage;
+import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -72,18 +71,18 @@ public class SystemMessageParser extends AbstractContentHandler {
 	/**
 	 * Parse a HTTP POST request to a {@link SystemMessage}
 	 * @param request
-	 * @return
+	 * @return the parsed {@link SystemMessage} or null if its not parseable
 	 */
 	public SystemMessage parse(HttpServletRequest request)
 	{
+		// DECODE is done automatically by calling getParameter
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String email = request.getParameter("email");
 		
-		/*
 		if (username != null && password!= null && email != null)
-			return new NewRegistrationMessage();
-		*/
+			return new NewRegistrationMessage(username, password, email);
+		
 		
 		return null;
 	}
@@ -96,13 +95,13 @@ public class SystemMessageParser extends AbstractContentHandler {
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		
 		
-		if (localName.equals("sys"))
+		if (localName.equals(SystemMessage.TAG))
 			endSys = true;
 		
-		if (localName.equals("login"))
+		if (localName.equals(LoginMessage.TAG))
 			endLogin = true;
 		
-		if (localName.equals("logout"))
+		if (localName.equals(LogoutMessage.TAG))
 			endLogout = true;
 	}
 
@@ -110,30 +109,30 @@ public class SystemMessageParser extends AbstractContentHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
 		
-		if (localName.equals("sys"))
+		if (localName.equals(SystemMessage.TAG))
 			startSys = true;
 		
-		if (localName.equals("login"))
+		if (localName.equals(LoginMessage.TAG))
 		{
 			startLogin = true;
 			
-			username = atts.getValue("username");
-			password = atts.getValue("password");
+			username = atts.getValue(LoginMessage.USERNAME_ATRRIBUTE);
+			password = atts.getValue(LoginMessage.PASSWORD_ATTRIBUTE);
 			
 			try{
-				experimentLogin = Boolean.parseBoolean(atts.getValue("exp"));
+				experimentLogin = Boolean.parseBoolean(atts.getValue(LoginMessage.FOR_EXPERIMENT_ATTRIBUTE));
 			}catch(Exception e)
 			{
-				throw new SAXException("exp is not set to a valid boolean");
+				throw new SAXException(LoginMessage.FOR_EXPERIMENT_ATTRIBUTE+" attribute is not set to a valid boolean");
 			}
 		}
 		
-		if (localName.equals("logout"))
+		if (localName.equals(LogoutMessage.TAG))
 		{
 			startLogout = true;
 			
 			try{
-				logoutReason = Integer.parseInt(atts.getValue("reason"));
+				logoutReason = Integer.parseInt(atts.getValue(LogoutMessage.REASON_ATTRIBUTE));
 			} catch (Exception e)
 			{
 				throw new SAXException("Could not convert the reason to int: "+e.getMessage());
@@ -148,23 +147,23 @@ public class SystemMessageParser extends AbstractContentHandler {
 	public void endDocument() throws SAXException {
 		
 		if (!startSys)
-			throw new SAXException("Start <sys> Tag not found");
+			throw new SAXException("Start <"+SystemMessage.TAG+"> Tag not found");
 		
 		if (!endSys)
-			throw new SAXException("End </sys> Tag not found");
+			throw new SAXException("End </"+SystemMessage.TAG+"> Tag not found");
 		
 		if ( (!startLogin && !endLogin) && (!startLogout && !endLogout))
-			throw new SAXException("Found a valid <sys>, but no child <login> or >logout>");
+			throw new SAXException("Found a valid <"+SystemMessage.TAG+">, but no child tag");
 			
 		if (startLogin != endLogin)
-			throw new SAXException("<login> missmatch: An opening or closing <login> is missing");
+			throw new SAXException("<"+LoginMessage.TAG+"> missmatch: An opening or closing tag is missing");
 		
 		if (startLogout != endLogout)
-			throw new SAXException("<logout> missmatch: An opening or closing <logout> is missing");
+			throw new SAXException("<"+LogoutMessage.TAG+"> missmatch: An opening or closing tag is missing");
 		
 		
 		if (startLogin && endLogin && startLogout && endLogout)
-			throw new SAXException("The message is a <login> and a <logout> message at the same time. That's not allowed.");
+			throw new SAXException("The message is a <"+LoginMessage.TAG+"> and a <"+LogoutMessage.TAG+"> message at the same time. That's not allowed.");
 		
 	}
 

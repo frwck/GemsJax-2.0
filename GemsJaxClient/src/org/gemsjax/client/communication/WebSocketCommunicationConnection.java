@@ -1,19 +1,12 @@
 package org.gemsjax.client.communication;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
-
-import org.gemsjax.client.communication.exception.WebSocketConnectionException;
-import org.gemsjax.client.communication.exception.WebSocketSendException;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.system.KeepAliveMessage;
-import org.gemsjax.shared.communication.message.system.LoginMessage;
-
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.util.SC;
 
@@ -156,11 +149,11 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	}-*/;
     
     
-    private void checkConnection(int readyState) throws WebSocketConnectionException
+    private void checkConnection(int readyState) throws IOException
     {
     	if (readyState == 0 || readyState == 2 || readyState == 3)
     	{
-    		throw new WebSocketConnectionException(readyState);
+    		throw new IOException("Connection not established");
     	}
     	
     }

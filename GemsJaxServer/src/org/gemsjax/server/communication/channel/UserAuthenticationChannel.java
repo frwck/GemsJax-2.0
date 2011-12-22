@@ -24,10 +24,10 @@ import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
 import org.gemsjax.shared.communication.message.UnexpectedErrorMessage.ErrorType;
-import org.gemsjax.shared.communication.message.system.LoginAnswereMessage;
+import org.gemsjax.shared.communication.message.system.LoginAnswerMessage;
+import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
-import org.gemsjax.shared.communication.message.system.LoginAnswereMessage.LoginAnswerStatus;
 import org.gemsjax.shared.user.User;
 import org.xml.sax.SAXException;
 
@@ -50,7 +50,7 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 	{
 		this.communicationConnection = connection;
 		this.httpSession = httpSession;
-		filterRegEx = RegExFactory.startWithTag("sys");
+		filterRegEx = RegExFactory.startWithTag(SystemMessage.TAG);
 		userDAO = new HibernateUserDAO();
 		experimentDAO = new HibernateExperimentDAO();
 	}
@@ -92,13 +92,13 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 				if (ou == null)
 				{  // should never be reached
 					UnexpectedErrorLogger.severe("- Could not create a OnlineUser (is null): \n\t"+msg+"\n");
-					send(new LoginAnswereMessage(LoginAnswerStatus.FAIL));
+					send(new LoginAnswerMessage(LoginAnswerStatus.FAIL));
 				}
 				else
 				{
 					OnlineUserManager.getInstance().addOnlineUser(ou);
 					
-					send(new LoginAnswereMessage(LoginAnswerStatus.OK));
+					send(new LoginAnswerMessage(LoginAnswerStatus.OK));
 					communicationConnection.deregisterInputChannel(this);
 				}
 				
@@ -107,7 +107,7 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 			
 		}catch (NotFoundException e) {
 			try {
-				send(new LoginAnswereMessage(LoginAnswerStatus.FAIL));
+				send(new LoginAnswerMessage(LoginAnswerStatus.FAIL));
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();

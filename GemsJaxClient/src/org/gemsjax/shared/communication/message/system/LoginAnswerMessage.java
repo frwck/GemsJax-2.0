@@ -7,7 +7,7 @@ import org.gemsjax.shared.communication.CommunicationConstants;
  * @author Hannes Dorfmann
  *
  */
-public class LoginAnswereMessage extends SystemMessage{
+public class LoginAnswerMessage extends SystemMessage{
 
 	public enum LoginAnswerStatus
 	{
@@ -23,19 +23,42 @@ public class LoginAnswereMessage extends SystemMessage{
 		FAIL
 	}
 	
+	/**
+	 * The {@link LoginAnswerMessage} is embarked in this tag
+	 */
+	public static final String TAG = "login";
+	
+	
+	public static final String STATUS_ATTRIBUTE="status";
+	public static final String EXPERIMENT_GROUP_ATTRIBUTE="exp-group";
+	
 	
 	private LoginAnswerStatus answer;
+	private Integer experimentGroupId;
 	
-	public LoginAnswereMessage(LoginAnswerStatus answer)
+	public LoginAnswerMessage(LoginAnswerStatus answer)
 	{
 		this.answer = answer;
+		experimentGroupId = null;
 	}
+	
+	
+	
+	public LoginAnswerMessage(LoginAnswerStatus answer, Integer experimentGroupId)
+	{
+		this.answer = answer;
+		this.experimentGroupId = experimentGroupId;
+	}
+	
 	
 	
 	@Override
 	public String toXml() {
-		String ret ="<sys><login status=\""+answerStatusToString(answer)+"\" /></sys>";
-		return ret;
+		if (experimentGroupId==null)
+			return "<"+SystemMessage.TAG+"><"+TAG+" "+STATUS_ATTRIBUTE+"=\""+answerStatusToString(answer)+"\" /></"+SystemMessage.TAG+">";
+		else
+			return "<"+SystemMessage.TAG+"><"+TAG+" "+STATUS_ATTRIBUTE+"=\""+answerStatusToString(answer)+"\" "+EXPERIMENT_GROUP_ATTRIBUTE+"=\""+experimentGroupId+"\" /></"+SystemMessage.TAG+">";
+			
 	}
 	
 	
@@ -78,18 +101,21 @@ public class LoginAnswereMessage extends SystemMessage{
 		return answer;
 	}
 
+	
+	public Integer getExperimentGroupId()
+	{
+		return experimentGroupId;
+	}
 
 	@Override
 	public String toHttpGet() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 
 	@Override
 	public String toHttpPost() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 }

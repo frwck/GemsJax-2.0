@@ -1,8 +1,8 @@
 package org.gemsjax.shared.communication;
 
 import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
-import org.gemsjax.shared.communication.message.system.RegistrationAnswereMessage;
-import org.gemsjax.shared.communication.message.system.RegistrationAnswereMessage.RegistrationAnswereStatus;
+import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
+import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 
 /**
  * This class contains constants (grouped in subclasses) that were used for the xml communication between server and client and vice versa 
@@ -89,17 +89,17 @@ public class CommunicationConstants {
 		
 		/**
 		 * The registration was successful.
-		 * Mapped to {@link RegistrationAnswereMessage.RegistrationAnswereStatus#OK}.
+		 * Mapped to {@link RegistrationAnswerMessage.RegistrationAnswerStatus#OK}.
 		 */
 		public static final String OK = "ok";
 		
 		/**
-		 * Mapped to {@link RegistrationAnswereMessage.RegistrationAnswereStatus#FAIL_USERNAME}.
+		 * Mapped to {@link RegistrationAnswerMessage.RegistrationAnswerStatus#FAIL_USERNAME}.
 		 */
 		public static final String FAIL_USERNAME = "fail_username";
 		
 		/**
-		 * Mapped to {@link RegistrationAnswereMessage.RegistrationAnswereStatus#FAIL_EMAIL}. 
+		 * Mapped to {@link RegistrationAnswerMessage.RegistrationAnswerStatus#FAIL_EMAIL}. 
 		 */
 		public static final String FAIL_EMAIL = "fail_email";
 	}

@@ -1,11 +1,10 @@
 package org.gemsjax.shared.communication.message.system;
 
-import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.user.ExperimentUser;
 import org.gemsjax.shared.user.RegisteredUser;
 
 /**
- * The {@link Message} which is sent, to do a login
+ * The {@link SystemMessage} which is sent, to do a login
  * @author Hannes Dorfmann
  *
  */
@@ -14,6 +13,26 @@ public class LoginMessage extends SystemMessage{
 	private String username;
 	private String password;
 	private boolean experimentLogin;
+	
+	/**
+	 * The {@link LoginMessage} is embarked in this tag
+	 */
+	public static final String TAG = "login";
+	
+	/**
+	 * The xml tag attribute name for the username
+	 */
+	public static final String USERNAME_ATRRIBUTE ="username";
+	/**
+	 * The xml tag attribute name for the password
+	 */
+	public static final String PASSWORD_ATTRIBUTE ="password";
+	
+	/**
+	 * The xml tag attribute name for the experiment login (boolean) attribute
+	 */
+	public static final String FOR_EXPERIMENT_ATTRIBUTE="exp";
+	
 	
 	/**
 	 * 
@@ -31,9 +50,11 @@ public class LoginMessage extends SystemMessage{
 	
 	
 	
+	
+	
 	@Override
 	public String toXml() {
-		return "<sys> <login username=\""+username+"\" password=\""+password+"\" exp=\""+(experimentLogin?"true":"false")+"\"/> </sys>";
+		return "<"+SystemMessage.TAG+"><"+TAG+" "+USERNAME_ATRRIBUTE+"=\""+username+"\" "+PASSWORD_ATTRIBUTE+"=\""+password+"\" "+FOR_EXPERIMENT_ATTRIBUTE+"=\""+(experimentLogin?"true":"false")+"\"/> </"+SystemMessage.TAG+">";
 	}
 
 
@@ -85,16 +106,14 @@ public class LoginMessage extends SystemMessage{
 
 	@Override
 	public String toHttpGet() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 
 
 	@Override
 	public String toHttpPost() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 }
