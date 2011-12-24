@@ -113,10 +113,10 @@ public class SystemMessageParser extends AbstractContentHandler {
 		if (username == null  || username.isEmpty())
 			throw new HttpParseException("Username is empty");
 		
-		if (password!= null || password.isEmpty())
+		if (password== null || password.isEmpty())
 			throw new HttpParseException("Password is empty");
 		
-		if (email != null || email.isEmpty())
+		if (email == null || email.isEmpty())
 			throw new HttpParseException("E-Mail address is empty");
 			
 			

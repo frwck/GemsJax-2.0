@@ -14,6 +14,7 @@ import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.gemsjax.server.communication.servlet.LiveCommunicationWebSocketServlet;
 import org.gemsjax.server.communication.servlet.IconServlet;
+import org.gemsjax.server.communication.servlet.post.RegistrationServlet;
 import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 
@@ -56,7 +57,7 @@ public class GemsJaxServer {
 	        ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
 	        servletContext.setContextPath("/servlets");
 	        servletContext.addServlet(new ServletHolder( new LiveCommunicationWebSocketServlet()),"/liveCommunication");
-	        servletContext.addServlet(new ServletHolder( new IconServlet()),"/icon");
+	        servletContext.addServlet(new ServletHolder( new RegistrationServlet()),"/registration");
 	        
 	        
 	        // The ResourceHandler to handle static web content

@@ -38,13 +38,13 @@ import org.gemsjax.shared.user.RegisteredUser;
  * @author Hannes Dorfmann
  *
  */
-public class NewRegistrationServlet extends PostServlet{
+public class RegistrationServlet extends PostServlet{
 	
 	
 	private UserDAO userDAO;
 	private SystemMessageParser parser;
 	
-	public NewRegistrationServlet()
+	public RegistrationServlet()
 	{
 		userDAO = new HibernateUserDAO();
 		parser = new SystemMessageParser();
