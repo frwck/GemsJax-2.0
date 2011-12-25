@@ -102,6 +102,16 @@ public class CommunicationConstants {
 		 * Mapped to {@link RegistrationAnswerMessage.RegistrationAnswerStatus#FAIL_EMAIL}. 
 		 */
 		public static final String FAIL_EMAIL = "fail_email";
+		
+		/**
+		 * Mapped to {@link RegistrationAnswerMessage.RegistrationAnswerStatus#FAIL_INVALID_USERNAME}
+		 */
+		public static final String FAIL_INVALID_USERNAME = "fail_invalid_username";
+
+		/**
+		 * Mapped to {@link RegistrationAnswerMessage.RegistrationAnswerStatus#FAIL_INVALID_EMAIL}
+		 */
+		public static final String FAIL_INVALID_EMAIL = "fail_invalid_email";
 	}
 
 }

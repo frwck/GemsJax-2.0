@@ -22,14 +22,12 @@ package org.gemsjax.shared;
  */
 public class FieldVerifier {
 
+	
 	/**
 	 * Verifies that the specified name is valid for our service.
 	 * 
-	 * In this example, we only require that the name is at least four
-	 * characters. In your application, you can use more complex checks to ensure
-	 * that usernames, passwords, email addresses, URLs, and other fields have the
-	 * proper syntax.
-	 * 
+	 * We require that the name is at least 3
+	 * characters and matches the regular expression [a-zA-Z_0-9]+ 
 	 * @param name the name to validate
 	 * @return true if valid, false if invalid
 	 */
@@ -37,7 +35,36 @@ public class FieldVerifier {
 		if (name == null || name.equals("")) {
 			return false;
 		}
-		return name.length() >= 3;
+		
+	
+		if (name.length() < 3)
+			return  false;
+		
+		String validNameRegEx = "\\w+";
+	
+		if (!name.matches(validNameRegEx))
+			return false;
+		
+		return true;
+	}
+	
+	
+	/**
+	 * Checks, if a email address is valid
+	 * @param email
+	 * @return
+	 */
+	public static boolean isValidEmail(String email)
+	{
+		
+		if (isEmpty(email))
+			return false;
+		
+		String specialChars = "!#\\$%&'*\\+-/=\\?\\^_`{\\|}~";
+		
+		String regex = "^[\\w"+specialChars+"]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+		
+		return email.matches(regex);
 	}
 	
 	

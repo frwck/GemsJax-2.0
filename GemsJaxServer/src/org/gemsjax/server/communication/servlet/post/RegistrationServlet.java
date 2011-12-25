@@ -17,6 +17,7 @@ import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.server.util.SHA;
+import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.communication.CommunicationConstants.UnexpectedError;
 import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
@@ -63,16 +64,34 @@ public class RegistrationServlet extends PostServlet{
 			username = m.getUsername();
 			email = m.getEmail();
 			
-			userDAO.createRegisteredUser(m.getUsername(), SHA.generate256(m.getPassword()),m.getEmail());
-		
-			// if it was successfull
-			RegistrationAnswerMessage am = new RegistrationAnswerMessage(RegistrationAnswerStatus.OK);
+			RegistrationAnswerMessage am;
+			
+			if (!FieldVerifier.isValidUsername(username))
+			{
+				// Username is not valid
+				am = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_INVALID_USERNAME, username);
+			}
+			else
+			if(!FieldVerifier.isValidEmail(email))
+			{
+				// Email is not Valid
+				am = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_INVALID_EMAIL, email);
+			}
+			else
+			{
+				// username and email is valid, so register Username and Password by saving into the database
+				userDAO.createRegisteredUser(m.getUsername(), SHA.generate256(m.getPassword()),m.getEmail());
+				
+				// if it was successful
+				am = new RegistrationAnswerMessage(RegistrationAnswerStatus.OK);
+			}
+			
 			resp.setContentType("text/xml;charset=UTF-8");
 			resp.setStatus(200);
 		    PrintWriter out = resp.getWriter();
 		    out.println(am.toXml());
 		    out.close();
-		
+				
 		} catch (HttpParseException e) {
 			e.printStackTrace();
 		

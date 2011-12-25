@@ -1,5 +1,6 @@
 package org.gemsjax.shared.communication.message.system;
 
+import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.communication.CommunicationConstants;
 
 /**
@@ -27,7 +28,21 @@ public class RegistrationAnswerMessage extends SystemMessage {
 		 * Registration failed, because the email is already used by another user for his registration.
 		 * This is mapped to {@link CommunicationConstants.Registration#FAIL_EMAIL}.
 		 */
-		FAIL_EMAIL
+		FAIL_EMAIL,
+		
+		/**
+		 * Registration failed, because the passed username is invalid.
+		 * That means, that the username failed the {@link FieldVerifier#isValidUsername(String)} check.
+		 * This is mapped to {@link CommunicationConstants.Registration#FAIL_INVALID_USERNAME}
+		 */
+		FAIL_INVALID_USERNAME,
+		
+		/**
+		 * Registration failed, because the passed email is invalid.
+		 * That means, that the email failed the {@link FieldVerifier#isValidEmail(String)} check.
+		 * This is mapped to {@link CommunicationConstants.Registration#FAIL_INVALID_EMAIL}
+		 */
+		FAIL_INVALID_EMAIL
 	}
 	
 	
@@ -71,7 +86,11 @@ public class RegistrationAnswerMessage extends SystemMessage {
 		if (answereStatusAsString.equals(CommunicationConstants.Registration.FAIL_USERNAME))
 			return RegistrationAnswerStatus.FAIL_USERNAME;
 		
+		if (answereStatusAsString.equals(CommunicationConstants.Registration.FAIL_INVALID_USERNAME))
+			return RegistrationAnswerStatus.FAIL_INVALID_USERNAME;
 		
+		if (answereStatusAsString.equals(CommunicationConstants.Registration.FAIL_INVALID_EMAIL))
+			return RegistrationAnswerStatus.FAIL_INVALID_EMAIL;
 		
 		return null;
 	}
@@ -81,9 +100,11 @@ public class RegistrationAnswerMessage extends SystemMessage {
 	{
 		switch(status)
 		{
-		case OK: return CommunicationConstants.Registration.OK;
-		case FAIL_EMAIL: return CommunicationConstants.Registration.FAIL_EMAIL;
-		case FAIL_USERNAME: return CommunicationConstants.Registration.FAIL_USERNAME;
+			case OK: return CommunicationConstants.Registration.OK;
+			case FAIL_EMAIL: return CommunicationConstants.Registration.FAIL_EMAIL;
+			case FAIL_USERNAME: return CommunicationConstants.Registration.FAIL_USERNAME;
+			case FAIL_INVALID_EMAIL: return CommunicationConstants.Registration.FAIL_INVALID_EMAIL;
+			case FAIL_INVALID_USERNAME: return CommunicationConstants.Registration.FAIL_INVALID_USERNAME;
 		}
 		
 		return null;
