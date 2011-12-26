@@ -2,110 +2,135 @@ package org.gemsjax.client.admin.view.implementation;
 
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.view.RegistrationView;
+import org.gemsjax.shared.FieldVerifier;
 
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Window;
-import com.smartgwt.client.widgets.events.HasClickHandlers;
+import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.ButtonItem;
+import com.smartgwt.client.widgets.form.fields.PasswordItem;
+import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.validator.MatchesFieldValidator;
+import com.smartgwt.client.widgets.form.validator.RegExpValidator;
+import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
+/**
+ * The implementation as modal window
+ * @author Hannes Dorfmann
+ *
+ */
 public class RegistrationViewImpl extends Window implements RegistrationView {
 
 	
+	private ButtonItem createButton;
+	private PasswordItem password, password2;
+	private TextItem username, email;
 	
+	private DynamicForm form;
 
 	
 	public RegistrationViewImpl(UserLanguage language)
 	{
+		generateForm(language);
 		
+		this.setWidth(300);
+		this.setHeight(100);
+		
+		this.setModalMaskOpacity(70);
+		this.setTitle(language.RegistrationTitle());  
+		this.setShowMinimizeButton(false);  
+		this.setIsModal(true);  
+		this.setShowModalMask(true);  
+		this.centerInPage(); 
+		this.show();
 	}
 	
 	
-	private void generateForm(UserLanguage language)
+	private void generateForm(UserLanguage lang)
 	{
 		
-		/*
-		 * 
-		 * final DynamicForm form = new DynamicForm();  
+		form = new DynamicForm();  
         form.setWidth(250);  
   
-        TextItem username = new TextItem();  
+        RegExpValidator usernameValidator = new RegExpValidator();
+        usernameValidator.setExpression(FieldVerifier.USERNAME_REGEX);
+        
+        RegExpValidator emailValidator = new RegExpValidator();
+        emailValidator.setExpression(FieldVerifier.EMAIL_REGEX);
+        
+        username = new TextItem();  
         username.setName("username");  
-        username.setTitle("Username");  
+        username.setTitle(lang.RegistrationUsername());  
         username.setRequired(true);  
-        username.setDefaultValue("bob");  
+        username.setDefaultValue(""); 
+        username.setValidators(usernameValidator);
+        username.setValidateOnChange(true);
   
-        TextItem email = new TextItem();  
+        email = new TextItem();  
         email.setName("email");  
-        email.setTitle("Email");  
+        email.setTitle(lang.RegistrationInvalidEmail());  
         email.setRequired(true);  
-        email.setDefaultValue("bob@isomorphic.com");  
-        Something like this email.setValidator();
-  
+        email.setDefaultValue("");  
+        email.setValidateOnChange(true);
+        email.setValidators(emailValidator);
+        
         MatchesFieldValidator validator = new MatchesFieldValidator();  
         validator.setOtherField("password2");  
-        validator.setErrorMessage("Passwords do not match");  
+        validator.setErrorMessage(lang.RegistrationPasswordMismatch());  
           
         PasswordItem password = new PasswordItem();  
         password.setName("password");  
-        password.setTitle("Password");  
+        password.setTitle(lang.RegistrationPassword());  
         password.setRequired(true);  
         password.setValidators(validator);  
   
         PasswordItem password2 = new PasswordItem();  
         password2.setName("password2");  
-        password2.setTitle("Password again");  
+        password2.setTitle(lang.RegistrationPasswordRepeated());  
         password2.setRequired(true);  
   
-        final ButtonItem createAccount = new ButtonItem();  
-        createAccount.setName("createAccount");  
-        createAccount.setTitle("Create Account");  
-        createAccount.addClickHandler(new ClickHandler() {  
-            public void onClick(ClickEvent event) {  
-                form.validate();  
-            }  
-        });  
-          
-        form.setFields(username, email, password, password2, createAccount);  
-  
+        createButton = new ButtonItem();  
+        createButton.setName("createAccount");  
+        createButton.setTitle(lang.RegistrationSubmit());  
+        
+        form.setFields(username, email, password, password2, createButton);  
+       
         form.draw();  
     }
     
-		 */
-		
-	}
+	
 
 	@Override
 	public String getEmail() {
-		// TODO Auto-generated method stub
-		return null;
+		return email.getValueAsString();
 	}
 
 	@Override
 	public String getPassword() {
-		// TODO Auto-generated method stub
-		return null;
+		return password.getValueAsString();
 	}
 
 	@Override
 	public String getPasswordRepeated() {
-		// TODO Auto-generated method stub
-		return null;
+		return password2.getValueAsString();
 	}
 
-	@Override
-	public HasClickHandlers getRegisterButton() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
-		return null;
+		return username.getValueAsString();
 	}
 
 	@Override
 	public void showErrorMessage(String msg) {
-		// TODO Auto-generated method stub
-		
+		SC.warn(msg);
+	}
+
+
+	@Override
+	public HasClickHandlers getSubmitButton() {
+		return createButton;
 	}
 	
 	

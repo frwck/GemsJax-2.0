@@ -6,7 +6,17 @@ import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
+import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
+import org.gemsjax.shared.user.RegisteredUser;
 
+/**
+ * A {@link RegistrationChannel} interacts with the server by sending {@link NewRegistrationMessage}s and receiving
+ * {@link RegistrationAnswerMessage}s from the server
+ * to create a new {@link RegisteredUser} account.
+ * @author Hannes Dorfmann
+ *
+ */
 public class RegistrationChannel implements InputChannel, OutputChannel{
 
 	
@@ -24,7 +34,6 @@ public class RegistrationChannel implements InputChannel, OutputChannel{
 	
 	@Override
 	public String getFilterRegEx() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

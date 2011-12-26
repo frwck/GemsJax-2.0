@@ -52,4 +52,9 @@ public class RegExFactory {
 		return "\\A( )*\\<( )*(("+xmlRootTag+")|("+xmlRootTag+")/|("+xmlRootTag+" .*))>.*";
 	}
 
+	
+	public static String startWithTagSubTag(String xmlRootTag, String subTag)
+	{
+		return "\\A( )*\\<( )*(("+xmlRootTag+")|("+xmlRootTag+")/|("+xmlRootTag+" .*))>( )*\\<( )*(("+subTag+")|("+subTag+")/|("+subTag+" .*))>";
+	}
 }

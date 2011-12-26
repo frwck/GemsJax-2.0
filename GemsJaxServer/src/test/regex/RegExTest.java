@@ -28,5 +28,19 @@ public class RegExTest {
 		assertFalse("<sys".matches(filter));
 		assertFalse("sys>".matches(filter));
 	}
+	
+	@Test
+	public void startWithTagSubTag()
+	{
+		String filter = RegExFactory.startWithTagSubTag("sys", "reg");
+		
+		assertTrue("<sys><reg>".matches(filter));
+		assertTrue("<sys> <reg>".matches(filter));
+		assertTrue("<sys><reg/>".matches(filter));
+		assertTrue("<sys><reg bla=\"foo\">".matches(filter));
+		assertTrue("<sys> <reg />".matches(filter));
+		assertTrue("<sys> <reg bla=\"foo\" bla=\"foo2\" /> </sys>".matches(filter));
+		
+	}
 
 }

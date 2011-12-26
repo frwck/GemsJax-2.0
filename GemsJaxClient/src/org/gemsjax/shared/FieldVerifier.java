@@ -22,6 +22,15 @@ package org.gemsjax.shared;
  */
 public class FieldVerifier {
 
+	/**
+	 * The regular expression to check a email address
+	 */
+	public static final String EMAIL_REGEX =  "^[\\w"+  "!#\\$%&'*\\+-/=\\?\\^_`{\\|}~"  +"]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+	
+	/**
+	 * The regular expression to check usernames
+	 */
+	public static final String USERNAME_REGEX = "\\w+";
 	
 	/**
 	 * Verifies that the specified name is valid for our service.
@@ -39,10 +48,8 @@ public class FieldVerifier {
 	
 		if (name.length() < 3)
 			return  false;
-		
-		String validNameRegEx = "\\w+";
 	
-		if (!name.matches(validNameRegEx))
+		if (!name.matches(USERNAME_REGEX))
 			return false;
 		
 		return true;
@@ -60,11 +67,7 @@ public class FieldVerifier {
 		if (isEmpty(email))
 			return false;
 		
-		String specialChars = "!#\\$%&'*\\+-/=\\?\\^_`{\\|}~";
-		
-		String regex = "^[\\w"+specialChars+"]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-		
-		return email.matches(regex);
+		return email.matches(EMAIL_REGEX);
 	}
 	
 	

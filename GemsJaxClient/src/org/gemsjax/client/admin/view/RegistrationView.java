@@ -1,7 +1,7 @@
 package org.gemsjax.client.admin.view;
 
 
-import com.smartgwt.client.widgets.events.HasClickHandlers;
+import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 
 /**
@@ -11,7 +11,7 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
  */
 public interface RegistrationView {
 	
-	public abstract HasClickHandlers getRegisterButton();
+	public abstract HasClickHandlers getSubmitButton();
 	
 	public abstract String getUsername();
 	
@@ -23,5 +23,5 @@ public interface RegistrationView {
 	
 	public abstract void showErrorMessage(String msg);
 	
-
+	
 }

@@ -108,4 +108,34 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("The anchor must be placed in the corresponding area")
 	  String MetaModelAnchorPlaceNotAllowedText();
 	  
+	  
+	  
+	  @DefaultStringValue("Passwords do not match")
+	  String RegistrationPasswordMismatch();
+	  
+	  @DefaultStringValue("The username is not valid. Allowed characters: A-Z 0-9")
+	  String RegistrationInvalidUsername();
+	  
+	  @DefaultStringValue("The email address is not valid")
+	  String RegistrationInvalidEmail();
+
+	  @DefaultStringValue("Username")
+	  String RegistrationUsername();
+	  
+	  @DefaultStringValue("Password")
+	  String RegistrationPassword();
+	  
+	  @DefaultStringValue("Password again")
+	  String RegistrationPasswordRepeated();
+	  
+	  @DefaultStringValue("E-Mail")
+	  String RegistrationEmail();
+	  
+	  @DefaultStringValue("Create account")
+	  String RegistrationSubmit();
+	  
+	  @DefaultStringValue("Create new account")
+	  String RegistrationTitle();
+	  
+	  
 }
