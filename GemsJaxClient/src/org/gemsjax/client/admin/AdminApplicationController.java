@@ -1,12 +1,12 @@
 package org.gemsjax.client.admin;
 
 import org.eclipse.jetty.websocket.WebSocket;
-import org.gemsjax.client.admin.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
 import org.gemsjax.client.admin.presenter.LoginPresenter;
 import org.gemsjax.client.admin.presenter.MetaModelPresenter;
 import org.gemsjax.client.admin.presenter.Presenter;
+import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;

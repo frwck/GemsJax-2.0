@@ -1,7 +1,7 @@
 package org.gemsjax.client.admin.presenter;
 
-import org.gemsjax.client.admin.event.LoginEvent;
 import org.gemsjax.client.admin.handler.LoginHandler;
+import org.gemsjax.client.admin.presenter.event.LoginEvent;
 import org.gemsjax.client.admin.view.AdminUIView;
 
 import com.google.gwt.event.shared.EventBus;

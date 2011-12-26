@@ -1,4 +1,4 @@
-package org.gemsjax.client.admin.event;
+package org.gemsjax.client.admin.presenter.event;
 
 public class ResourceLoaderEvent {
 

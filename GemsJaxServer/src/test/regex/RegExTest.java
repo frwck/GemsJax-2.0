@@ -38,8 +38,8 @@ public class RegExTest {
 		assertTrue("<sys> <reg>".matches(filter));
 		assertTrue("<sys><reg/>".matches(filter));
 		assertTrue("<sys><reg bla=\"foo\">".matches(filter));
-		assertTrue("<sys> <reg />".matches(filter));
-		assertTrue("<sys> <reg bla=\"foo\" bla=\"foo2\" /> </sys>".matches(filter));
+		assertTrue("  <sys> <reg />".matches(filter));
+		assertTrue("   <sys> <reg bla=\"foo\" bla=\"foo2\" ></reg> </sys>".matches(filter));
 		
 	}
 

@@ -3,9 +3,9 @@ package org.gemsjax.client.admin.presenter;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.gemsjax.client.admin.event.LoadingAnimationEvent;
-import org.gemsjax.client.admin.event.LoadingAnimationEvent.LoadingAnimationEventType;
 import org.gemsjax.client.admin.handler.LoadingAnimationEventHandler;
+import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
+import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent.LoadingAnimationEventType;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.util.preloader.ResourceLoaderEvent;
 import org.gemsjax.client.util.preloader.ResourceLoaderEvent.ResourceLoaderEventType;

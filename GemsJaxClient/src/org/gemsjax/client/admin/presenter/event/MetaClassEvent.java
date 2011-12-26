@@ -1,4 +1,4 @@
-package org.gemsjax.client.admin.event.metamodel;
+package org.gemsjax.client.admin.presenter.event;
 
 import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.client.metamodel.MetaModelImpl;

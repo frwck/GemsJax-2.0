@@ -1,6 +1,6 @@
 package org.gemsjax.client.admin.handler;
 
-import org.gemsjax.client.admin.event.LogoutEvent;
+import org.gemsjax.client.admin.presenter.event.LogoutEvent;
 
 import com.google.gwt.event.shared.EventHandler;
 
