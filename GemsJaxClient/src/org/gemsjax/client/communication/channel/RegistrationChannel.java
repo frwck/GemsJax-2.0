@@ -23,9 +23,10 @@ public class RegistrationChannel implements InputChannel, OutputChannel{
 	private CommunicationConnection connection;
 	
 	
-	public RegistrationChannel(CommunicationConnection connection)
+	public RegistrationChannel(CommunicationConnection connection) throws IOException
 	{
 		this.connection = connection;
+		this.connection.connect();
 	}
 	
 	

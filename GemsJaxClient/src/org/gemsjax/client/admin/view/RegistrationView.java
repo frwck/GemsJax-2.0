@@ -1,6 +1,8 @@
 package org.gemsjax.client.admin.view;
 
 
+import org.gemsjax.client.admin.UserLanguage;
+
 import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 
 
@@ -22,6 +24,12 @@ public interface RegistrationView {
 	public abstract String getEmail();
 	
 	public abstract void showErrorMessage(String msg);
+	
+	public void show();
+	
+	public void bringToFront();
+	
+	public UserLanguage getCurrentLanguage();
 	
 	
 }

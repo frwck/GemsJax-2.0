@@ -1,6 +1,6 @@
 package org.gemsjax.client.admin.presenter.event;
 
-import org.gemsjax.client.admin.handler.LoadingAnimationEventHandler;
+import org.gemsjax.client.admin.presenter.handler.LoadingAnimationEventHandler;
 
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;

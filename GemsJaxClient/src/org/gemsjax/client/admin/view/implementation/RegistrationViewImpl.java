@@ -27,10 +27,13 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 	private TextItem username, email;
 	
 	private DynamicForm form;
+	
+	private UserLanguage language;
 
 	
 	public RegistrationViewImpl(UserLanguage language)
 	{
+		this.language = language;
 		generateForm(language);
 		
 		this.setWidth(300);
@@ -42,7 +45,7 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 		this.setIsModal(true);  
 		this.setShowModalMask(true);  
 		this.centerInPage(); 
-		this.show();
+		
 	}
 	
 	
@@ -131,6 +134,12 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 	@Override
 	public HasClickHandlers getSubmitButton() {
 		return createButton;
+	}
+
+
+	@Override
+	public UserLanguage getCurrentLanguage() {
+		return language;
 	}
 	
 	

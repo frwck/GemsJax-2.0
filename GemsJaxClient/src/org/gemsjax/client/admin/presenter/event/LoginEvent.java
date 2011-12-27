@@ -1,6 +1,6 @@
 package org.gemsjax.client.admin.presenter.event;
 
-import org.gemsjax.client.admin.handler.LoginHandler;
+import org.gemsjax.client.admin.presenter.handler.LoginHandler;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -23,6 +23,7 @@ public class LoginEvent extends GwtEvent<LoginHandler>{
 		 */
 		FAIL
 	}
+	
 	public static Type<LoginHandler>TYPE = new Type<LoginHandler>();
 	
 	private LoginEventType eventType;

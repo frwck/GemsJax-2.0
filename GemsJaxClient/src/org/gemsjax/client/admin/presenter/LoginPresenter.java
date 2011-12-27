@@ -1,13 +1,14 @@
 package org.gemsjax.client.admin.presenter;
 
 import org.gemsjax.client.admin.AdminApplicationController;
-import org.gemsjax.client.admin.handler.LoginHandler;
-import org.gemsjax.client.admin.handler.LogoutHandler;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.event.LoginEvent;
 import org.gemsjax.client.admin.presenter.event.LogoutEvent;
+import org.gemsjax.client.admin.presenter.event.ShowRegistrationEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent.LoadingAnimationEventType;
 import org.gemsjax.client.admin.presenter.event.LoginEvent.LoginEventType;
+import org.gemsjax.client.admin.presenter.handler.LoginHandler;
+import org.gemsjax.client.admin.presenter.handler.LogoutHandler;
 import org.gemsjax.client.admin.view.LoginView;
 import org.gemsjax.shared.FieldVerifier;
 import com.google.gwt.event.shared.EventBus;
@@ -76,7 +77,7 @@ public class LoginPresenter extends Presenter implements LogoutHandler, LoginHan
 	
 	private void onNewRegistrationClicked()
 	{
-		
+		eventBus.fireEvent(new ShowRegistrationEvent());
 	}
 	
 	private void onForgotPasswordClicked()
