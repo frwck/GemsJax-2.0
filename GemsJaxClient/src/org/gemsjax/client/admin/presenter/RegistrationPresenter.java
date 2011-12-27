@@ -11,6 +11,7 @@ import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 
 import com.google.gwt.event.shared.EventBus;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.fields.events.ClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
 
@@ -78,6 +79,7 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 
 	@Override
 	public void onShowRegistrationEvent(ShowRegistrationEvent event) {
+		SC.logWarn("ShowRegistrationEvent received");
 		view.show();
 		view.bringToFront();
 	}

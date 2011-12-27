@@ -45,7 +45,6 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 		this.setIsModal(true);  
 		this.setShowModalMask(true);  
 		this.centerInPage(); 
-		
 	}
 	
 	
@@ -97,8 +96,9 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
         createButton.setTitle(lang.RegistrationSubmit());  
         
         form.setFields(username, email, password, password2, createButton);  
-       
-        form.draw();  
+
+		this.addMember(form);
+         
     }
     
 	
