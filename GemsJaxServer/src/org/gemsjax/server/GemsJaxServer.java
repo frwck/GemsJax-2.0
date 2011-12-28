@@ -7,16 +7,12 @@ import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.ResourceHandler;
-import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.gemsjax.server.communication.servlet.LiveCommunicationWebSocketServlet;
-import org.gemsjax.server.communication.servlet.IconServlet;
 import org.gemsjax.server.communication.servlet.post.RegistrationServlet;
-import org.gemsjax.server.persistence.HibernateUtil;
-import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
+
 
 
 
@@ -25,13 +21,15 @@ public class GemsJaxServer {
 	
 	public static void main(String[] args) {
 
-	     Server server = new Server(8080);
+	     Server server = new Server(8081);
          
 	     if (args.length !=1 )
 	     {
 	    	 System.out.println("Wrong argument count ("+args.length+"): \nThe first parameter is the path to the war folder");
 	    	 return;
 	     }
+	     
+	     
 	     
 	     String warUrl = args[0];
 	     if (!warUrl.endsWith(""+File.separatorChar))
