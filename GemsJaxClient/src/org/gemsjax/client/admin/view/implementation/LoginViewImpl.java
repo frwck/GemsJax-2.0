@@ -148,7 +148,7 @@ public class LoginViewImpl extends VLayout implements LoginView{
 		forgotPasswordLabel.setStyleName("loginLinkLabel");
 		
 		// new Registration
-		newRegistrationLabel = new Label("<a href=\"#\">"+Language.NewUser()+"</a>");
+		newRegistrationLabel = new Label(Language.NewUser());
 		newRegistrationLabel.setStyleName("loginLinkLabel");
 		
 		HStack bottomLabels = new HStack();

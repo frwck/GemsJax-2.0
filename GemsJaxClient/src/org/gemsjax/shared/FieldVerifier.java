@@ -25,7 +25,7 @@ public class FieldVerifier {
 	/**
 	 * The regular expression to check a email address
 	 */
-	public static final String EMAIL_REGEX =  "^[\\w"+  "!#\\$%&'*\\+-/=\\?\\^_`{\\|}~"  +"]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+	public static final String EMAIL_REGEX = "^([a-zA-Z0-9_.\\-+])+@(([a-zA-Z0-9\\-])+\\.)+[a-zA-Z0-9]{2,4}$"; //  "|!|#|\\$|%|&|'|*|\\+|-|/|=|\\?|\\^|_|`|{|\\||}|~"
 	
 	/**
 	 * The regular expression to check usernames

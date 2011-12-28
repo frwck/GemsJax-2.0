@@ -37,11 +37,12 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 		generateForm(language);
 		
 		this.setWidth(300);
-		this.setHeight(100);
+		this.setHeight(200);
 		
 		this.setModalMaskOpacity(70);
 		this.setTitle(language.RegistrationTitle());  
 		this.setShowMinimizeButton(false);  
+		this.setModalMaskStyle("loadingViewBackground");
 		this.setIsModal(true);  
 		this.setShowModalMask(true);  
 		this.centerInPage(); 
@@ -52,13 +53,16 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 	{
 		
 		form = new DynamicForm();  
-        form.setWidth(250);  
-  
+		form.setWidth100();
+		form.setHeight100();
+        
         RegExpValidator usernameValidator = new RegExpValidator();
         usernameValidator.setExpression(FieldVerifier.USERNAME_REGEX);
+        usernameValidator.setErrorMessage(lang.RegistrationInvalidUsername());
         
         RegExpValidator emailValidator = new RegExpValidator();
         emailValidator.setExpression(FieldVerifier.EMAIL_REGEX);
+        emailValidator.setErrorMessage(lang.RegistrationInvalidEmail());
         
         username = new TextItem();  
         username.setName("username");  
@@ -66,41 +70,46 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
         username.setRequired(true);  
         username.setDefaultValue(""); 
         username.setValidators(usernameValidator);
-        username.setValidateOnChange(true);
-  
+        
+        
+        
         email = new TextItem();  
         email.setName("email");  
-        email.setTitle(lang.RegistrationInvalidEmail());  
+        email.setTitle(lang.RegistrationEmail());  
         email.setRequired(true);  
         email.setDefaultValue("");  
-        email.setValidateOnChange(true);
         email.setValidators(emailValidator);
+        //email.validate();
         
         MatchesFieldValidator validator = new MatchesFieldValidator();  
-        validator.setOtherField("password2");  
+        validator.setOtherField("password");  
         validator.setErrorMessage(lang.RegistrationPasswordMismatch());  
           
         PasswordItem password = new PasswordItem();  
         password.setName("password");  
         password.setTitle(lang.RegistrationPassword());  
         password.setRequired(true);  
-        password.setValidators(validator);  
-  
+        
         PasswordItem password2 = new PasswordItem();  
         password2.setName("password2");  
         password2.setTitle(lang.RegistrationPasswordRepeated());  
         password2.setRequired(true);  
-  
+        password2.setValidators(validator);  
+        
+        
         createButton = new ButtonItem();  
         createButton.setName("createAccount");  
         createButton.setTitle(lang.RegistrationSubmit());  
         
         form.setFields(username, email, password, password2, createButton);  
 
-		this.addMember(form);
+		this.addItem(form);
+		
          
     }
     
+	
+	
 	
 
 	@Override
@@ -140,6 +149,12 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 	@Override
 	public UserLanguage getCurrentLanguage() {
 		return language;
+	}
+
+
+	@Override
+	public boolean doGuiValidate() {
+		return form.validate();
 	}
 	
 	

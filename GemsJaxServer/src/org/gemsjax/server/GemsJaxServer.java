@@ -21,14 +21,15 @@ public class GemsJaxServer {
 	
 	public static void main(String[] args) {
 
-	     Server server = new Server(8081);
-         
+	     
 	     if (args.length !=1 )
 	     {
 	    	 System.out.println("Wrong argument count ("+args.length+"): \nThe first parameter is the path to the war folder");
 	    	 return;
 	     }
 	     
+	     Server server = new Server(8081);
+         
 	     
 	     
 	     String warUrl = args[0];

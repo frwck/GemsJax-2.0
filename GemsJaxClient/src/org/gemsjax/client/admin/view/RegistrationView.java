@@ -31,5 +31,11 @@ public interface RegistrationView {
 	
 	public UserLanguage getCurrentLanguage();
 	
+	/**
+	 * Validate the input form with GUI feedback
+	 * @return
+	 */
+	public boolean doGuiValidate();
+	
 	
 }

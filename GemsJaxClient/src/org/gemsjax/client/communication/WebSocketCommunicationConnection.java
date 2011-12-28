@@ -70,16 +70,18 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	private final boolean useSsl = false;
 	
 	private Set<InputChannel> inputChannels;
-	private Set<ClosedListener> closedListenres;
-	private Set<EstablishedListener> establishedListers;
+	private Set<ClosedListener> closedListeners;
+	private Set<EstablishedListener> establishedListeners;
 	
 	private KeepAliveTimer keepAliveTimer = null;
 	
 	private boolean keepAlive = true;
 	 
     private WebSocketCommunicationConnection() {
-        SC.showConsole();
+        SC.showConsole(); // TODO remove
         inputChannels = new LinkedHashSet<InputChannel>();
+        establishedListeners = new LinkedHashSet<EstablishedListener>();
+        closedListeners = new LinkedHashSet<ClosedListener>();
     }
     
    
@@ -96,7 +98,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
     
     private void onOpen() {
     	
-    	for (EstablishedListener e : establishedListers)
+    	for (EstablishedListener e : establishedListeners)
     		e.onEstablished();
     
     	
@@ -104,7 +106,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
     
     private void onClose() {
-    	for (ClosedListener c: closedListenres)
+    	for (ClosedListener c: closedListeners)
     		c.onClose();
     }
 
@@ -347,7 +349,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
 	@Override
 	public void addCloseListener(ClosedListener listener) {
-		closedListenres.add(listener);
+		closedListeners.add(listener);
 	}
 
 
@@ -355,7 +357,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
 	@Override
 	public void addEstablishedListener(EstablishedListener listener) {
-		establishedListers.add(listener);
+		establishedListeners.add(listener);
 	}
 
 
@@ -363,7 +365,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
 	@Override
 	public void removeCloseListener(ClosedListener listener) {
-		closedListenres.remove(listener);
+		closedListeners.remove(listener);
 	}
 
 
@@ -371,7 +373,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
 	@Override
 	public void removeEstablishedListener(EstablishedListener listener) {
-		establishedListers.remove(listener);
+		establishedListeners.remove(listener);
 	}
 
 }

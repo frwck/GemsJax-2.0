@@ -49,6 +49,7 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 	
 	private void onSubmitClicked()
 	{
+		view.doGuiValidate();
 		
 		if (!FieldVerifier.isValidUsername(view.getUsername()))
 		{
