@@ -111,7 +111,16 @@ public class RegistrationAnswerMessage extends SystemMessage {
 	}
 	
 	
+	public String getFailString()
+	{
+		return failString;
+	}
 	
+	
+	public RegistrationAnswerStatus getAnswerStatus()
+	{
+		return status;
+	}
 	
 	
 	@Override

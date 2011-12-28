@@ -2,28 +2,18 @@ package org.gemsjax.client.admin.view.implementation;
 
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.view.LoginView;
-
-import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
-import com.smartgwt.client.widgets.events.MouseOutEvent;
-import com.smartgwt.client.widgets.events.MouseOutHandler;
-import com.smartgwt.client.widgets.events.MouseOverEvent;
-import com.smartgwt.client.widgets.events.MouseOverHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.fields.PasswordItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.form.fields.events.KeyDownEvent;
-import com.smartgwt.client.widgets.form.fields.events.KeyDownHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -144,7 +134,7 @@ public class LoginViewImpl extends VLayout implements LoginView{
 		
 		
 		// Forgot password
-		forgotPasswordLabel = new Label("<a href=\"#\">"+Language.ForgetPassword()+"</a>");
+		forgotPasswordLabel = new Label(Language.ForgetPassword());
 		forgotPasswordLabel.setStyleName("loginLinkLabel");
 		
 		// new Registration
@@ -250,6 +240,7 @@ public class LoginViewImpl extends VLayout implements LoginView{
 	@Override
 	public void setFocusOnUsernameField() {
 		//TODO implement that the username field get the focus
+		
 	}
 
 

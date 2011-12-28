@@ -4,6 +4,7 @@ import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.view.RegistrationView;
 import org.gemsjax.shared.FieldVerifier;
 
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -114,24 +115,24 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 
 	@Override
 	public String getEmail() {
-		return email.getValueAsString();
+		return (String)email.getValue();
 	}
 
 	@Override
 	public String getPassword() {
-		return password.getValueAsString();
+		return (String)password.getValue();
 	}
 
 	@Override
 	public String getPasswordRepeated() {
-		return password2.getValueAsString();
+		return (String)password2.getValue();
 	}
 
 	
 
 	@Override
 	public String getUsername() {
-		return username.getValueAsString();
+		return (String)username.getValue();
 	}
 
 	@Override
@@ -155,6 +156,33 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 	@Override
 	public boolean doGuiValidate() {
 		return form.validate();
+	}
+
+
+	@Override
+	public void clearForm() {
+		username.clearValue();
+		email.clearValue();
+		password.clearValue();
+		password2.clearValue();
+	}
+
+
+	@Override
+	public void hideIt() {
+		this.hide();
+	}
+
+
+	@Override
+	public void showSuccessfulRegistrationMessage() {
+		SC.confirm(language.RegistrationSuccessful(), new BooleanCallback() {
+			
+			@Override
+			public void execute(Boolean value) {
+				
+			}
+		});
 	}
 	
 	

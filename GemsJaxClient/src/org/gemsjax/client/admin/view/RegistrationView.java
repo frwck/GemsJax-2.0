@@ -27,15 +27,25 @@ public interface RegistrationView {
 	
 	public void show();
 	
-	public void bringToFront();
+	public void hideIt();
 	
-	public UserLanguage getCurrentLanguage();
+	/**
+	 * Clears the form, that means, that the input fields will be set to there default value (normally empty).
+	 */
+	public abstract void clearForm();
+	
+	public abstract void bringToFront();
+	
+	public abstract UserLanguage getCurrentLanguage();
 	
 	/**
 	 * Validate the input form with GUI feedback
 	 * @return
 	 */
-	public boolean doGuiValidate();
+	public abstract boolean doGuiValidate();
+	
+	public abstract void showSuccessfulRegistrationMessage();
+	
 	
 	
 }

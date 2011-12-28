@@ -2,20 +2,24 @@ package org.gemsjax.client.admin.presenter;
 
 import java.io.IOException;
 
+import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.event.ShowRegistrationEvent;
+import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent.LoadingAnimationEventType;
 import org.gemsjax.client.admin.presenter.handler.ShowRegistrationHandler;
 import org.gemsjax.client.admin.view.RegistrationView;
 import org.gemsjax.client.communication.HttpPostCommunicationConnection;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
+import org.gemsjax.client.communication.channel.handler.RegistrationChannelHandler;
 import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
+import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 
 import com.google.gwt.event.shared.EventBus;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.form.fields.events.ClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
 
-public class RegistrationPresenter extends Presenter implements ShowRegistrationHandler{
+public class RegistrationPresenter extends Presenter implements ShowRegistrationHandler, RegistrationChannelHandler{
 
 	private RegistrationView view;
 	private RegistrationChannel channel;
@@ -63,18 +67,24 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 			return;
 		}
 		
-		if (FieldVerifier.isEmpty(view.getPassword()) || !view.getPassword().equals(view.getPasswordRepeated()))
+		//SC.warn("Passwords: "+view.getPassword() + " "+ view.getPasswordRepeated());
+		
+		
+		if (FieldVerifier.isEmpty(view.getPassword()) || FieldVerifier.isEmpty(view.getPasswordRepeated()) || !view.getPassword().equals(view.getPasswordRepeated()))
 		{
 			view.showErrorMessage(view.getCurrentLanguage().RegistrationPasswordMismatch());
 			return;
 		}
-		
+		/*
 		try {
+			
 			channel.send(new NewRegistrationMessage(view.getUsername(), view.getPassword(), view.getEmail()));
+			eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.SHOW, this));
+			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 	}
 
 
@@ -83,6 +93,46 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 		SC.logWarn("ShowRegistrationEvent received");
 		view.show();
 		view.bringToFront();
+	}
+
+
+	@Override
+	public void onRegistrationFailed(RegistrationAnswerStatus status, String fail) {
+		
+		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
+		
+		switch (status)
+		{
+			case FAIL_EMAIL: 	view.bringToFront();
+								view.showErrorMessage(view.getCurrentLanguage().RegistrationFailEmail());
+								break;
+								
+			case FAIL_INVALID_EMAIL: 	view.bringToFront();
+										view.showErrorMessage(view.getCurrentLanguage().RegistrationFailInvalidEmail());
+										break;
+			
+			case FAIL_USERNAME:	view.bringToFront();
+								view.showErrorMessage(view.getCurrentLanguage().RegistrationFailInvalidEmail());
+								break;
+								
+			case FAIL_INVALID_USERNAME:	view.bringToFront();
+										view.showErrorMessage(view.getCurrentLanguage().RegistrationFailInvalidUsername());
+										break;
+						
+		
+						
+			default:	view.showErrorMessage("Unexpected Error. Please retry.");
+						break;
+		}
+	}
+
+
+	@Override
+	public void onRegistrationSuccessful() {
+		
+		view.hideIt();
+		view.showSuccessfulRegistrationMessage();
+		
 	}
 
 }

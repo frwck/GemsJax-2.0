@@ -137,5 +137,28 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Create new account")
 	  String RegistrationTitle();
 	  
+	  @DefaultStringValue("Registration failed ")
+	  String RegistrationTitleFail();
+	  
+	  @DefaultStringValue("Registration successful ")
+	  String RegistrationTitleSuccessful();
+	  
+	  @DefaultStringValue("Registration was successful")
+	  String RegistrationSuccessful();
+	  
+	  
+	  @DefaultStringValue("The submitted e-mail address is already used by another user")
+	  String RegistrationFailEmail();
+	  
+
+	  @DefaultStringValue("The submitted e-mail address is not valid")
+	  String RegistrationFailInvalidEmail();
+	  
+	  
+	  @DefaultStringValue("The submitted username is already used by another user")
+	  String RegistrationFailUsername();
+	  
+	  @DefaultStringValue("The submitted username is not valid")
+	  String RegistrationFailInvalidUsername();
 	  
 }
