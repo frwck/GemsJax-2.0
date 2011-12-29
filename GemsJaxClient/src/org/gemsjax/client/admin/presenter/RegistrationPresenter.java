@@ -53,8 +53,10 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 	
 	private void onSubmitClicked()
 	{
-		view.doGuiValidate();
+		//view.doGuiValidate();
 		
+		SC.warn("Username " + view.getUsername());
+		/*
 		if (!FieldVerifier.isValidUsername(view.getUsername()))
 		{
 			view.showErrorMessage(view.getCurrentLanguage().RegistrationInvalidUsername());
