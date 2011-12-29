@@ -92,7 +92,7 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 		form = new DynamicForm();  
 		form.setWidth100();
 		form.setHeight100();
-        /*
+        
         RegExpValidator usernameValidator = new RegExpValidator();
         usernameValidator.setExpression(FieldVerifier.USERNAME_REGEX);
         usernameValidator.setErrorMessage(lang.RegistrationInvalidUsername());
@@ -121,12 +121,12 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
         validator.setOtherField("password");  
         validator.setErrorMessage(lang.RegistrationPasswordMismatch());  
           
-        PasswordItem password = new PasswordItem();  
+        password = new PasswordItem();  
         password.setName("password");  
         password.setTitle(lang.RegistrationPassword());  
         password.setRequired(true);  
         
-        PasswordItem password2 = new PasswordItem();  
+        password2 = new PasswordItem();  
         password2.setName("password2");  
         password2.setTitle(lang.RegistrationPasswordRepeated());  
         password2.setRequired(true);  
@@ -137,7 +137,7 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
         createButton.setWidth100();
         
         form.setFields(username, email, password, password2);  
-        */
+        
         
         Label titleLabel = new Label(lang.RegistrationTitle());
 		titleLabel.setAlign(Alignment.CENTER);

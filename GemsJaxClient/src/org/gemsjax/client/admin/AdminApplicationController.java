@@ -1,6 +1,5 @@
 package org.gemsjax.client.admin;
 
-import org.eclipse.jetty.websocket.WebSocket;
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
 import org.gemsjax.client.admin.presenter.LoginPresenter;
@@ -15,9 +14,6 @@ import org.gemsjax.client.admin.view.implementation.LoginViewImpl;
 import org.gemsjax.client.admin.view.implementation.MetaModelViewImpl;
 import org.gemsjax.client.admin.view.implementation.RegistrationViewImpl;
 import org.gemsjax.client.canvas.CanvasSupportException;
-import org.gemsjax.client.metamodel.MetaBaseTypeImpl;
-import org.gemsjax.client.metamodel.MetaClassImpl;
-import org.gemsjax.client.metamodel.MetaModelImpl;
 import org.gemsjax.client.metamodel.factory.MetaFactory;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -25,7 +21,6 @@ import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
-import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
 import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
 import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion;
