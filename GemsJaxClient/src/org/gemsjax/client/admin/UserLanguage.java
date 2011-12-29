@@ -109,6 +109,11 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  String MetaModelAnchorPlaceNotAllowedText();
 	  
 	  
+	  // Registration
+	  
+	  @DefaultStringValue("Sign Up")
+	  String RegistrationTitle();
+	  
 	  
 	  @DefaultStringValue("Passwords do not match")
 	  String RegistrationPasswordMismatch();
@@ -134,8 +139,6 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Create account")
 	  String RegistrationSubmit();
 	  
-	  @DefaultStringValue("Create new account")
-	  String RegistrationTitle();
 	  
 	  @DefaultStringValue("Registration failed ")
 	  String RegistrationTitleFail();
@@ -160,5 +163,9 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  
 	  @DefaultStringValue("The submitted username is not valid")
 	  String RegistrationFailInvalidUsername();
+	  
+	  @DefaultStringValue("An unexcected error has occurred. Please retry.")
+	  String RegistrationUnexpectedError();
+	  
 	  
 }

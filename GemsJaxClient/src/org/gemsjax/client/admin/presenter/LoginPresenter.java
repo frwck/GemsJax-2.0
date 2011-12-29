@@ -77,7 +77,6 @@ public class LoginPresenter extends Presenter implements LogoutHandler, LoginHan
 	
 	private void onNewRegistrationClicked()
 	{
-		SC.logWarn("New Registration clicked");
 		eventBus.fireEvent(new ShowRegistrationEvent());
 	}
 	

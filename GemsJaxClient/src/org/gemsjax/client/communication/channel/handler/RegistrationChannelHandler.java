@@ -22,4 +22,10 @@ public interface RegistrationChannelHandler {
 	 */
 	public abstract void onRegistrationFailed(RegistrationAnswerStatus status, String fail);
 	
+	/**
+	 * Called by the underlying {@link RegistrationChannel} to inform, that an unexpected error has occurred
+	 * @param t {@link Throwable}
+	 */
+	public abstract void onError(Throwable t);
+	
 }

@@ -2,6 +2,7 @@ package org.gemsjax.server.communication.servlet.post;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.ServletException;
@@ -18,7 +19,6 @@ import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.server.util.SHA;
 import org.gemsjax.shared.FieldVerifier;
-import org.gemsjax.shared.communication.CommunicationConstants.UnexpectedError;
 import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
@@ -55,13 +55,15 @@ public class RegistrationServlet extends PostServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
+		System.out.println("Registration Request "+request); // TODO remove
+		
 		String username ="";
 		String email ="";
 		
 		try {
 			NewRegistrationMessage m = (NewRegistrationMessage) parser.parse(request);
 		
-			username = m.getUsername();
+			username =  m.getUsername();
 			email = m.getEmail();
 			
 			RegistrationAnswerMessage am;

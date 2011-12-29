@@ -5,7 +5,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.gemsjax.shared.communication.CommunicationConnection;
+import org.gemsjax.shared.communication.CommunicationConnection.ErrorListener;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
 
 import com.google.gwt.http.client.Request;
@@ -33,7 +35,7 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 	private Set<InputChannel> inputChannels;
 	private Set<ClosedListener> closedListeners;
 	private Set<EstablishedListener> establishedListeners;
-	
+	private Set<ErrorListener> errorListeners;
 	
 	public HttpPostCommunicationConnection(String serverUrl)
 	{
@@ -42,6 +44,7 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 		inputChannels = new LinkedHashSet<InputChannel>();
 		closedListeners = new LinkedHashSet<ClosedListener>();
 		establishedListeners = new LinkedHashSet<EstablishedListener>();
+		errorListeners = new LinkedHashSet<CommunicationConnection.ErrorListener>();
 	}
 	
 	@Override
@@ -68,6 +71,7 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 	@Override
 	public void connect() throws IOException {
 		builder = new RequestBuilder(RequestBuilder.POST, URL.encode(serverUrl));
+		builder.setHeader("Content-type", "application/x-www-form-urlencoded");
 	}
 
 	@Override
@@ -140,24 +144,23 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 	public void send(Message message) throws IOException {
 		
 		
-		RequestBuilder builder = new RequestBuilder(RequestBuilder.POST, "/yourserver/formprocessor");
-		builder.setHeader("Content-type", "application/x-www-form-urlencoded");
 		try {
 		  builder.sendRequest(message.toHttpPost(), new RequestCallback() {
 			
 			@Override
 			public void onResponseReceived(Request request, Response response) {
-				// TODO Auto-generated method stub
 				
+				onRequestResponseReceived(request, response);
 			}
 			
 			@Override
 			public void onError(Request request, Throwable exception) {
-				
+				onRequestError(request, exception);
 			}
 		  });
 		} catch (RequestException e) {
-		  // handle this
+		  
+			throw new IOException(e.getMessage());
 		}
 		
 	}
@@ -166,5 +169,37 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 	public void setKeepAlive(boolean keepAlive) {
 		throw new UnsupportedOperationException();
 	}
+	
+	
+	private void onRequestError(Request request, Throwable exception)
+	{
+		for (ErrorListener e : errorListeners)
+			e.onError(exception);
+	}
+	
+	
+	private void onRequestResponseReceived(Request request, Response response)
+	{
+		InputMessage im = new InputMessage(response.getStatusCode(), response.getText());
+		
+		for (InputChannel i: inputChannels)
+			if (i.getFilterRegEx()==null)
+				i.onMessageReceived(im);
+			else
+			if (response.getText().matches(i.getFilterRegEx()))
+				i.onMessageReceived(im);
+		
+	}
 
+
+	@Override
+	public void addErrorListener(ErrorListener listener) {
+		errorListeners.add(listener);
+	}
+
+
+	@Override
+	public void removeErrorListener(ErrorListener listener) {
+		errorListeners.remove(listener);
+	}
 }

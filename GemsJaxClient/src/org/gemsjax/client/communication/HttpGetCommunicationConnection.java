@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
 
 import com.google.gwt.http.client.Request;
@@ -34,7 +35,7 @@ public class HttpGetCommunicationConnection implements CommunicationConnection {
 	private Set<InputChannel> inputChannels;
 	private Set<ClosedListener> closedListeners;
 	private Set<EstablishedListener> establishedListeners;
-	
+	private Set<ErrorListener> errorListeners;
 	
 	public HttpGetCommunicationConnection(String serverUrl)
 	{
@@ -42,6 +43,7 @@ public class HttpGetCommunicationConnection implements CommunicationConnection {
 		inputChannels = new LinkedHashSet<InputChannel>();
 		closedListeners = new LinkedHashSet<ClosedListener>();
 		establishedListeners = new LinkedHashSet<EstablishedListener>();
+		errorListeners = new LinkedHashSet<CommunicationConnection.ErrorListener>();
 	}
 
 
@@ -150,16 +152,13 @@ public class HttpGetCommunicationConnection implements CommunicationConnection {
 			    }
 			
 			    public void onResponseReceived(Request request, Response response) {
-			      if (200 == response.getStatusCode()) {
-			    	  onRequestResponseReceived(request, response);
-			      } else {
-			        // Handle the error.  Can get the status text from response.getStatusText()
-			      }
+			     
+			    	onRequestResponseReceived(request, response);
 			    }
      
 			});
 		} catch (RequestException e) {
-		  // Couldn't connect to server        
+		  throw new IOException(e);        
 		}
 	}
 
@@ -173,13 +172,34 @@ public class HttpGetCommunicationConnection implements CommunicationConnection {
 	
 	private void onRequestError(Request request, Throwable exception)
 	{
-		
+		for (ErrorListener e : errorListeners)
+			e.onError(exception);
 	}
 	
 	
 	private void onRequestResponseReceived(Request request, Response response)
 	{
+		InputMessage im = new InputMessage(response.getStatusCode(), response.getText());
 		
+		for (InputChannel i: inputChannels)
+			if (i.getFilterRegEx() == null)
+				i.onMessageReceived(im);
+			else
+			if (response.getText().matches(i.getFilterRegEx()))
+				i.onMessageReceived(im);
+		
+	}
+
+
+	@Override
+	public void addErrorListener(ErrorListener listener) {
+		errorListeners.add(listener);
+	}
+
+
+	@Override
+	public void removeErrorListener(ErrorListener listener) {
+		errorListeners.remove(listener);
 	}
 
 }

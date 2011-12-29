@@ -6,13 +6,17 @@ import java.util.Set;
 
 import org.gemsjax.client.communication.channel.handler.RegistrationChannelHandler;
 import org.gemsjax.client.communication.parser.SystemMessageParser;
+import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.communication.CommunicationConnection;
+import org.gemsjax.shared.communication.CommunicationConnection.ErrorListener;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
+import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.gemsjax.shared.user.RegisteredUser;
 
 import com.smartgwt.client.util.SC;
@@ -24,16 +28,21 @@ import com.smartgwt.client.util.SC;
  * @author Hannes Dorfmann
  *
  */
-public class RegistrationChannel implements InputChannel, OutputChannel{
+public class RegistrationChannel implements InputChannel, OutputChannel, ErrorListener{
 
 	
 	private CommunicationConnection connection;
 	private Set<RegistrationChannelHandler> handlers;
 	private SystemMessageParser parser;
 	
+	private String filterRegEx;
+	
 	
 	public RegistrationChannel(CommunicationConnection connection) throws IOException
 	{
+		
+		filterRegEx = RegExFactory.startWithTagSubTag(SystemMessage.TAG, RegistrationAnswerMessage.TAG);
+		
 		this.connection = connection;
 		this.connection.registerInputChannel(this);
 		
@@ -57,15 +66,15 @@ public class RegistrationChannel implements InputChannel, OutputChannel{
 	
 	@Override
 	public String getFilterRegEx() {
-		return null;
+		return filterRegEx;
 	}
 
 	@Override
-	public void onMessageReceived(String msg) {
+	public void onMessageReceived(InputMessage msg) {
 		
 		SC.logWarn("Received "+msg); // TODO remove
 		
-		RegistrationAnswerMessage m = (RegistrationAnswerMessage) parser.parseMessage(msg);
+		RegistrationAnswerMessage m = (RegistrationAnswerMessage) parser.parseMessage(msg.getText());
 		
 		if (m.getAnswerStatus() == RegistrationAnswerStatus.OK)
 			fireSuccessful();
@@ -99,6 +108,14 @@ public class RegistrationChannel implements InputChannel, OutputChannel{
 	@Override
 	public void send(Message message) throws IOException {
 		connection.send(message);
+		SC.warn("sending message : "+message.toHttpPost()); // TODO remove
+	}
+
+
+	@Override
+	public void onError(Throwable t) {
+		for (RegistrationChannelHandler h : handlers)
+			h.onError(t);
 	}
 
 	

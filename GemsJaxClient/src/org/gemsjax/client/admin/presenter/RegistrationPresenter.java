@@ -11,13 +11,16 @@ import org.gemsjax.client.communication.HttpPostCommunicationConnection;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
 import org.gemsjax.client.communication.channel.handler.RegistrationChannelHandler;
 import org.gemsjax.shared.FieldVerifier;
+import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.http.client.URL;
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.form.fields.events.ClickEvent;
-import com.smartgwt.client.widgets.form.fields.events.ClickHandler;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
+
 
 public class RegistrationPresenter extends Presenter implements ShowRegistrationHandler, RegistrationChannelHandler{
 
@@ -30,7 +33,7 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 		
 		this.view = view;
 		try {
-			this.channel = new RegistrationChannel(new HttpPostCommunicationConnection("/servlets/registration"));
+			this.channel = new RegistrationChannel(new HttpPostCommunicationConnection(ServletPaths.REGISTRATION));
 		} catch (IOException e) {
 			
 		}
@@ -51,12 +54,14 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 		});
 	}
 	
+	
+	
 	private void onSubmitClicked()
 	{
-		//view.doGuiValidate();
+		view.doGuiValidate();
 		
-		SC.warn("Username " + view.getUsername());
-		/*
+		SC.warn("Username " + view.getUsername() +" Password " + view.getPassword());
+		
 		if (!FieldVerifier.isValidUsername(view.getUsername()))
 		{
 			view.showErrorMessage(view.getCurrentLanguage().RegistrationInvalidUsername());
@@ -69,30 +74,31 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 			return;
 		}
 		
-		//SC.warn("Passwords: "+view.getPassword() + " "+ view.getPasswordRepeated());
-		
+	
 		
 		if (FieldVerifier.isEmpty(view.getPassword()) || FieldVerifier.isEmpty(view.getPasswordRepeated()) || !view.getPassword().equals(view.getPasswordRepeated()))
 		{
 			view.showErrorMessage(view.getCurrentLanguage().RegistrationPasswordMismatch());
 			return;
 		}
-		/*
+		
+		
 		try {
 			
-			channel.send(new NewRegistrationMessage(view.getUsername(), view.getPassword(), view.getEmail()));
 			eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.SHOW, this));
+			channel.send(new NewRegistrationMessage(URL.encode(view.getUsername()), URL.encode(view.getPassword()), URL.encode(view.getEmail())));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
+			eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
+			view.showUnexpectedError(e);
 		}
-		*/
 	}
 
 
 	@Override
 	public void onShowRegistrationEvent(ShowRegistrationEvent event) {
-		SC.logWarn("ShowRegistrationEvent received");
+		view.clearForm();
 		view.show();
 		view.bringToFront();
 	}
@@ -131,9 +137,20 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 
 	@Override
 	public void onRegistrationSuccessful() {
+		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
 		
 		view.hideIt();
+		view.clearForm();
 		view.showSuccessfulRegistrationMessage();
+		
+	}
+
+
+	@Override
+	public void onError(Throwable t) {
+		
+		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
+		view.showUnexpectedError(t);
 		
 	}
 

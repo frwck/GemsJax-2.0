@@ -67,6 +67,17 @@ public interface CommunicationConnection {
 	}
 	
 	
+	/**
+	 * This is a listener, that listens on sending/receiving errors events on a {@link CommunicationConnection}
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	public interface ErrorListener
+	{
+		public void onError(Throwable t);
+	}
+	
+	
 	
 	
 	
@@ -163,5 +174,19 @@ public interface CommunicationConnection {
 	 * @param listener
 	 */
 	public void removeEstablishedListener(EstablishedListener listener);
+	
+	
+	/**
+	 * Add a {@link ErrorListener}.
+	 * So every with this method registered {@link ErrorListener} will be informed by calling {@link ErrorListener#onError(Throwable)} every time a unexpected error has occurred.
+	 * @param listener
+	 */
+	public void addErrorListener(ErrorListener listener);
+	
+	/**
+	 * @see #addErrorListener(ErrorListener)
+	 * @param listener
+	 */
+	public void removeErrorListener(ErrorListener listener);
 	
 }

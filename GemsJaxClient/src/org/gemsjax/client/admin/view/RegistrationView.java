@@ -3,7 +3,7 @@ package org.gemsjax.client.admin.view;
 
 import org.gemsjax.client.admin.UserLanguage;
 
-import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
+import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 
 /**
@@ -45,6 +45,12 @@ public interface RegistrationView {
 	public abstract boolean doGuiValidate();
 	
 	public abstract void showSuccessfulRegistrationMessage();
+	
+	/**
+	 * Show an error message
+	 * @param t
+	 */
+	public abstract void showUnexpectedError(Throwable t);
 	
 	
 	

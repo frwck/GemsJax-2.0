@@ -3,17 +3,20 @@ package org.gemsjax.client.admin.view.implementation;
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.view.RegistrationView;
 import org.gemsjax.shared.FieldVerifier;
-
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Button;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
+import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.DynamicForm;
-import com.smartgwt.client.widgets.form.fields.ButtonItem;
 import com.smartgwt.client.widgets.form.fields.PasswordItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.form.validator.MatchesFieldValidator;
 import com.smartgwt.client.widgets.form.validator.RegExpValidator;
-import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
+
 
 /**
  * The implementation as modal window
@@ -23,14 +26,19 @@ import com.smartgwt.client.widgets.form.fields.events.HasClickHandlers;
 public class RegistrationViewImpl extends Window implements RegistrationView {
 
 	
-	private ButtonItem createButton;
+	private Button createButton;
 	private PasswordItem password, password2;
 	private TextItem username, email;
 	
 	private DynamicForm form;
 	
 	private UserLanguage language;
-
+	
+	/*
+	private TextBox usernameBox, emailBox;
+	private PasswordTextBox passwordBox, password2Box;
+	*/
+	
 	
 	public RegistrationViewImpl(UserLanguage language)
 	{
@@ -38,10 +46,11 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 		generateForm(language);
 		
 		this.setWidth(300);
-		this.setHeight(200);
+		this.setHeight(400);
 		
 		this.setModalMaskOpacity(70);
 		this.setTitle(language.RegistrationTitle());  
+		this.setShowTitle(false);
 		this.setShowMinimizeButton(false);  
 		this.setModalMaskStyle("loadingViewBackground");
 		this.setIsModal(true);  
@@ -50,13 +59,40 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 	}
 	
 	
+	/*
+	private Widget genereateStack(UserLanguage lang)
+	{
+		usernameBox = new TextBox();
+		emailBox = new TextBox();
+		passwordBox = new PasswordTextBox();
+		password2Box = new PasswordTextBox();
+		
+		
+		Grid grid = new Grid(4,2);
+		
+		grid.add(new Label(lang.RegistrationUsername()));
+		grid.add(usernameBox);
+		
+		grid.add(new Label(lang.RegistrationEmail()));
+		grid.add(emailBox);
+		
+		grid.add(new Label(lang.RegistrationPassword()));
+		grid.add(passwordBox);
+		
+		grid.add(new Label(lang.RegistrationPasswordRepeated()));
+		gird
+		
+		return grid;
+	}
+	*/
+	
 	private void generateForm(UserLanguage lang)
 	{
 		
 		form = new DynamicForm();  
 		form.setWidth100();
 		form.setHeight100();
-        
+        /*
         RegExpValidator usernameValidator = new RegExpValidator();
         usernameValidator.setExpression(FieldVerifier.USERNAME_REGEX);
         usernameValidator.setErrorMessage(lang.RegistrationInvalidUsername());
@@ -80,8 +116,7 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
         email.setRequired(true);  
         email.setDefaultValue("");  
         email.setValidators(emailValidator);
-        //email.validate();
-        
+           
         MatchesFieldValidator validator = new MatchesFieldValidator();  
         validator.setOtherField("password");  
         validator.setErrorMessage(lang.RegistrationPasswordMismatch());  
@@ -98,15 +133,21 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
         password2.setValidators(validator);  
         
         
-        createButton = new ButtonItem();  
-        createButton.setName("createAccount");  
-        createButton.setTitle(lang.RegistrationSubmit());  
+        createButton = new Button(lang.RegistrationSubmit());  
+        createButton.setWidth100();
         
-        form.setFields(username, email, password, password2, createButton);  
-
+        form.setFields(username, email, password, password2);  
+        */
+        
+        Label titleLabel = new Label(lang.RegistrationTitle());
+		titleLabel.setAlign(Alignment.CENTER);
+		titleLabel.setValign(VerticalAlignment.CENTER);
+		titleLabel.setStyleName("loginWelcomeLabel");
+        
+        this.addItem(titleLabel);
 		this.addItem(form);
-		
-         
+		this.addItem(createButton);
+		   
     }
     
 	
@@ -120,12 +161,12 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 
 	@Override
 	public String getPassword() {
-		return (String)password.getValue();
+		return (String) form.getValue("password");
 	}
 
 	@Override
 	public String getPasswordRepeated() {
-		return (String)password2.getValue();
+		return (String) form.getValue("password2");
 	}
 
 	
@@ -180,9 +221,15 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 			
 			@Override
 			public void execute(Boolean value) {
-				
+				// Nothing to do
 			}
 		});
+	}
+
+
+	@Override
+	public void showUnexpectedError(Throwable t) {
+			SC.warn(language.RegistrationUnexpectedError()+"<br /><br />"+t.getMessage());
 	}
 	
 	

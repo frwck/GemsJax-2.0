@@ -3,8 +3,11 @@ package org.gemsjax.client.communication;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.system.KeepAliveMessage;
 import com.google.gwt.user.client.Timer;
@@ -38,8 +41,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 			try {
 				WebSocketCommunicationConnection.this.send(keepAliveMessage);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				onError(e);
 			}
 		}
 		
@@ -61,7 +63,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	 * <br/><br />
 	 * <b>Notice</b> The url is not needed, the server url is stored in {@link #serverURL}
 	 */
-	private static final String webSocketServletURL = "/servlets/liveCommunication";
+	private static final String webSocketServletURL = ServletPaths.LIVE_WEBSOCKET;
 	
 	
 	private final int port = 8080;
@@ -72,16 +74,19 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	private Set<InputChannel> inputChannels;
 	private Set<ClosedListener> closedListeners;
 	private Set<EstablishedListener> establishedListeners;
+	private Set<ErrorListener> errorListeners;
 	
 	private KeepAliveTimer keepAliveTimer = null;
 	
 	private boolean keepAlive = true;
+	private boolean isConnected = false;
 	 
     private WebSocketCommunicationConnection() {
         SC.showConsole(); // TODO remove
         inputChannels = new LinkedHashSet<InputChannel>();
         establishedListeners = new LinkedHashSet<EstablishedListener>();
         closedListeners = new LinkedHashSet<ClosedListener>();
+        errorListeners = new LinkedHashSet<CommunicationConnection.ErrorListener>();
     }
     
    
@@ -98,6 +103,8 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
     
     private void onOpen() {
     	
+    	isConnected = true;
+    	
     	for (EstablishedListener e : establishedListeners)
     		e.onEstablished();
     
@@ -106,6 +113,8 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
     
     private void onClose() {
+    	isConnected = false;
+    	
     	for (ClosedListener c: closedListeners)
     		c.onClose();
     }
@@ -113,14 +122,19 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
     
     private void onMessage(String message) {
        
+    	InputMessage im = new InputMessage(200, message);
+    	
     	for (InputChannel c: inputChannels)
         {
+    		if (c.getFilterRegEx() == null )
+    			c.onMessageReceived(im);
+    		else
         	if (message.matches(c.getFilterRegEx()))
-        		c.onMessageReceived(message);
+        		c.onMessageReceived(im);
         }
     	
 
-    	SC.logWarn("Message: "+message);
+    	SC.logWarn("Message: "+message); // TODO remove
     }
     
     private void onWebSocketNotSupported() throws IOException
@@ -140,11 +154,19 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
     
     private void onError()
     {
-
-    	SC.logWarn("Error");
-    	System.out.println("An Error occurred");
+    	Throwable t = new Throwable("WebSocket onError() is called");
+    	
+    	for (ErrorListener l : errorListeners)
+    		l.onError(t);
     }
 
+    
+    private void onError(Throwable e)
+    {
+    
+    	for (ErrorListener l : errorListeners)
+    		l.onError(e);
+    }
     
     public static native boolean doIsSupportedCheck() /*-{
 	   return window.WebSocket;
@@ -266,8 +288,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
 	@Override
 	public boolean isClosed() {
-		// TODO Auto-generated method stub
-		return false;
+		return !isConnected;
 	}
 
 
@@ -275,8 +296,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
 	@Override
 	public boolean isConnected() {
-		// TODO Auto-generated method stub
-		return false;
+		return isConnected;
 	}
 
 
@@ -374,6 +394,22 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	@Override
 	public void removeEstablishedListener(EstablishedListener listener) {
 		establishedListeners.remove(listener);
+	}
+
+
+
+
+	@Override
+	public void addErrorListener(ErrorListener listener) {
+		errorListeners.add(listener);
+	}
+
+
+
+
+	@Override
+	public void removeErrorListener(ErrorListener listener) {
+		errorListeners.remove(listener);
 	}
 
 }

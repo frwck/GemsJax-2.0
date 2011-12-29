@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
 
@@ -42,7 +43,7 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 
 
 	@Override
-	public void onMessageReceived(String xmlMsg) {
+	public void onMessageReceived(InputMessage msg) {
 		// TODO Auto-generated method stub
 		
 	}
