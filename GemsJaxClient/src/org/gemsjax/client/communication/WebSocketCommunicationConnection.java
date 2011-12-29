@@ -66,7 +66,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	private static final String webSocketServletURL = ServletPaths.LIVE_WEBSOCKET;
 	
 	
-	private final int port = 8080;
+	private final int port = 8081;
 	private final int sslPort=8443;
 	
 	private final boolean useSsl = false;

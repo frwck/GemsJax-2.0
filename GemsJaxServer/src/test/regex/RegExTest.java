@@ -4,6 +4,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.gemsjax.shared.RegExFactory;
+import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
+import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.junit.Test;
 
 
@@ -32,15 +34,18 @@ public class RegExTest {
 	@Test
 	public void startWithTagSubTag()
 	{
-		String filter = RegExFactory.startWithTagSubTag("sys", "reg");
-		
+		String filter = RegExFactory.startWithTagSubTag(SystemMessage.TAG, RegistrationAnswerMessage.TAG);
+		/*
 		assertTrue("<sys><reg>".matches(filter));
 		assertTrue("<sys> <reg>".matches(filter));
 		assertTrue("<sys><reg/>".matches(filter));
 		assertTrue("<sys><reg bla=\"foo\">".matches(filter));
 		assertTrue("  <sys> <reg />".matches(filter));
 		assertTrue("   <sys> <reg bla=\"foo\" bla=\"foo2\" ></reg> </sys>".matches(filter));
+			*/
 		
+		String test = "<sys> <registration status=\"Status\"  fail-string=\"DesiredUsername | UserEmail\" /></sys>";
+		assertTrue(test.matches(filter));
 	}
 
 }

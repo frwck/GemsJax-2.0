@@ -138,7 +138,7 @@ public class RegistrationAnswerMessage extends SystemMessage {
 	public String toXml() {
 	
 		if (status == RegistrationAnswerStatus.OK)
-			return "<"+SystemMessage.TAG+"><"+TAG+" state=\"" + answerStatusToString() + "\" /></"+SystemMessage.TAG+">";
+			return "<"+SystemMessage.TAG+"><"+TAG+" "+STATUS_ATTRIBUTE+"=\"" + answerStatusToString() + "\" /></"+SystemMessage.TAG+">";
 		else
 			return "<"+SystemMessage.TAG+"><"+TAG+" "+STATUS_ATTRIBUTE+"=\"" + answerStatusToString() + "\" "+FAIL_STRING_ATTRIBUTE+"=\""+failString+"\" /></"+SystemMessage.TAG+">";
 		

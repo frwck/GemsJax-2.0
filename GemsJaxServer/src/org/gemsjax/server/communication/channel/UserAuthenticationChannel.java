@@ -20,6 +20,7 @@ import org.gemsjax.server.util.SHA;
 import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
@@ -61,13 +62,13 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 	}
 
 	@Override
-	public void onMessageReceived(String msg) {
+	public void onMessageReceived(InputMessage msg) {
 		
 		SystemMessageParser parser = new SystemMessageParser();
 		
 		try {
 			
-			SystemMessage m = parser.parse(msg);
+			SystemMessage m = parser.parse(msg.getText());
 			
 			if (m instanceof LoginMessage)
 			{

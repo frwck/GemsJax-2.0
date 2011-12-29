@@ -55,8 +55,6 @@ public class RegistrationServlet extends PostServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		System.out.println("Registration Request "+request); // TODO remove
-		
 		String username ="";
 		String email ="";
 		

@@ -30,6 +30,7 @@ import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.server.util.SHA;
+import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
@@ -71,7 +72,7 @@ public class RegistrationTest {
     @Test
     public void successRegistration() throws SAXException, IOException
     {
-	    String url = "http://localhost:8080/servlets/registration";
+	    String url = "http://localhost:8081"+ServletPaths.REGISTRATION;
 	    
 	    HttpClient httpclient = new DefaultHttpClient();
 	    HttpContext localContext = new BasicHttpContext();

@@ -4,6 +4,7 @@ package org.gemsjax.server.communication.servlet;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -12,6 +13,7 @@ import org.eclipse.jetty.websocket.WebSocket;
 import org.gemsjax.server.communication.channel.UserAuthenticationChannel;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
 
 
@@ -31,15 +33,17 @@ import org.gemsjax.shared.communication.message.Message;
 		
 		private Set<ClosedListener> closedListeners;
 		private Set<EstablishedListener> establishedListeners;
+		private Set<ErrorListener> errorListeners;
 
 		
 		public UserWebSocket(HttpSession session)
 		{
 			this.session = session;
 			connection = null;
-			inputChannels = new HashSet<InputChannel>();
-			closedListeners = new HashSet<ClosedListener>();
-			establishedListeners = new HashSet<EstablishedListener>();
+			inputChannels = new LinkedHashSet<InputChannel>();
+			closedListeners = new LinkedHashSet<ClosedListener>();
+			establishedListeners = new LinkedHashSet<EstablishedListener>();
+			errorListeners = new LinkedHashSet<CommunicationConnection.ErrorListener>();
 		}
 		
 		@Override
@@ -59,12 +63,12 @@ import org.gemsjax.shared.communication.message.Message;
 			
 			System.out.println("Received: "+data);
 			
-			
+			InputMessage im = new InputMessage(200, data);
 			
 	    	for (InputChannel c: inputChannels)
 	        {
 	        	if (data.matches(c.getFilterRegEx()))
-	        		c.onMessageReceived(data);
+	        		c.onMessageReceived(im);
 	        }
 	    	
 		}
@@ -158,6 +162,16 @@ import org.gemsjax.shared.communication.message.Message;
 			
 			for (ClosedListener c: closedListeners)
 				c.onClose();
+		}
+
+		@Override
+		public void addErrorListener(ErrorListener arg0) {
+			errorListeners.add(arg0);
+		}
+
+		@Override
+		public void removeErrorListener(ErrorListener arg0) {
+			errorListeners.remove(arg0);
 		}
 
 	}

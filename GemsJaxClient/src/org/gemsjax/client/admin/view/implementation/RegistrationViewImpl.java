@@ -46,7 +46,7 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 		generateForm(language);
 		
 		this.setWidth(300);
-		this.setHeight(400);
+		this.setHeight(300);
 		
 		this.setModalMaskOpacity(70);
 		this.setTitle(language.RegistrationTitle());  

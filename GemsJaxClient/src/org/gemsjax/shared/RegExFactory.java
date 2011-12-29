@@ -35,7 +35,7 @@ public class RegExFactory {
 	 */
 	public static String startWithTagAttributeValue(String xmlRootTag, String attributeToLook, String attributeToLookValue)
 	{
-		return "\\A\\<(" +xmlRootTag+ " " +attributeToLook+ "|" +xmlRootTag+ " .* " +attributeToLook+ ") ( )*=( )*\"" + attributeToLookValue +"\"( |.*)\\>.*";
+		return "^\\<(" +xmlRootTag+ " " +attributeToLook+ "|" +xmlRootTag+ " .* " +attributeToLook+ ") ( )*=( )*\"" + attributeToLookValue +"\"( |.*)\\>.*";
 	}
 	
 	
@@ -49,12 +49,12 @@ public class RegExFactory {
 	 */
 	public static String startWithTag(String xmlRootTag)
 	{
-		return "\\A( )*\\<( )*(("+xmlRootTag+")|("+xmlRootTag+")/|("+xmlRootTag+" .*))>.*";
+		return "^( )*\\<( )*(("+xmlRootTag+")|("+xmlRootTag+")/|("+xmlRootTag+" .*))>.*";
 	}
 
 	
 	public static String startWithTagSubTag(String xmlRootTag, String subTag)
 	{
-		return "\\A( )*\\<( )*(("+xmlRootTag+")|("+xmlRootTag+")/|("+xmlRootTag+" .*))>( )*\\<( )*(("+subTag+")|("+subTag+")/|("+subTag+" .*))>";
+		return "^( )*\\<( )*(("+xmlRootTag+")|("+xmlRootTag+")/|("+xmlRootTag+" .*))>( )*\\<( )*(("+subTag+")|("+subTag+")/|("+subTag+" .*))>";
 	}
 }
