@@ -126,14 +126,10 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
     	
     	for (InputChannel c: inputChannels)
         {
-    		if (c.getFilterRegEx() == null )
+    		if (c.isMatchingFilter(message))
     			c.onMessageReceived(im);
-    		else
-        	if (message.matches(c.getFilterRegEx()))
-        		c.onMessageReceived(im);
         }
     	
-
     	SC.logWarn("Message: "+message); // TODO remove
     }
     

@@ -182,12 +182,9 @@ public class HttpGetCommunicationConnection implements CommunicationConnection {
 		InputMessage im = new InputMessage(response.getStatusCode(), response.getText());
 		
 		for (InputChannel i: inputChannels)
-			if (i.getFilterRegEx() == null)
+			if (i.isMatchingFilter(response.getText()) )
 				i.onMessageReceived(im);
-			else
-			if (response.getText().matches(i.getFilterRegEx()))
-				i.onMessageReceived(im);
-		
+			
 	}
 
 

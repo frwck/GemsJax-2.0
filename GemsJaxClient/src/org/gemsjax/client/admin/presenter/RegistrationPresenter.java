@@ -34,8 +34,9 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 		this.view = view;
 		try {
 			this.channel = new RegistrationChannel(new HttpPostCommunicationConnection(ServletPaths.REGISTRATION));
+			this.channel.addRegistrationChannelHandler(this);
 		} catch (IOException e) {
-			
+			e.printStackTrace(); // Should never be reached
 		}
 		bind();
 	}
@@ -120,7 +121,7 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 										break;
 			
 			case FAIL_USERNAME:	view.bringToFront();
-								view.showErrorMessage(view.getCurrentLanguage().RegistrationFailInvalidEmail());
+								view.showErrorMessage(view.getCurrentLanguage().RegistrationFailUsername());
 								break;
 								
 			case FAIL_INVALID_USERNAME:	view.bringToFront();

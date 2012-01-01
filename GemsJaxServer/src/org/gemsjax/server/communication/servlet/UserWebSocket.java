@@ -67,7 +67,7 @@ import org.gemsjax.shared.communication.message.Message;
 			
 	    	for (InputChannel c: inputChannels)
 	        {
-	        	if (data.matches(c.getFilterRegEx()))
+	        	if (c.isMatchingFilter(data))
 	        		c.onMessageReceived(im);
 	        }
 	    	

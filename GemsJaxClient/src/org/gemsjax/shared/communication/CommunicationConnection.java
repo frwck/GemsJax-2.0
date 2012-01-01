@@ -21,7 +21,7 @@ import org.gemsjax.shared.communication.message.Message;
  * 
  * <li>
  * <u>To receive data:</u> Data can only be received by registering a {@link InputChannel}. <b>Note that "data" means</b> in this case a <b>string representation of a {@link Message} specified by the communication protocol</b>
- * The incomming data-sting is forwarded to every registered {@link InputChannel}, which matches the {@link InputChannel#getFilterRegEx()}.
+ * The incomming data-sting is forwarded to every registered {@link InputChannel}, which matches the {@link InputChannel#isMatchingFilter()}.
  * Then the {@link InputChannel} is responsible to parse the incoming data-string {@link InputChannel#onMessageReceived(String)} into a {@link Message} object.
  * </li>
  * </ul>
@@ -135,7 +135,7 @@ public interface CommunicationConnection {
 	/**
 	 * Register a {@link InputChannel} to this {@link CommunicationConnection}.
 	 * By registering a {@link InputChannel} to this {@link CommunicationConnection}, every incomming message
-	 * (from the underlying netwórk object like a socket) is forwarded to the {@link InputChannel}, if the {@link InputChannel#getFilterRegEx()} matches
+	 * (from the underlying netwórk object like a socket) is forwarded to the {@link InputChannel}, if the {@link InputChannel#isMatchingFilter()} matches
 	 * to the incoming message.<br />
 	 * <b>So registering a {@link InputChannel} to a {@link CommunicationConnection} is the only way to receive {@link Message}s</b>
 	 * @param c

@@ -19,6 +19,7 @@ import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage
 import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.gemsjax.shared.user.RegisteredUser;
 
+import com.google.gwt.regexp.shared.RegExp;
 import com.smartgwt.client.util.SC;
 
 /**
@@ -35,13 +36,12 @@ public class RegistrationChannel implements InputChannel, OutputChannel, ErrorLi
 	private Set<RegistrationChannelHandler> handlers;
 	private SystemMessageParser parser;
 	
-	private String filterRegEx;
-	
+	private RegExp regEx;
 	
 	public RegistrationChannel(CommunicationConnection connection) throws IOException
 	{
+		regEx = RegExp.compile(RegExFactory.startWithTagSubTag(SystemMessage.TAG, RegistrationAnswerMessage.TAG));
 		
-		filterRegEx = RegExFactory.startWithTagSubTag(SystemMessage.TAG, RegistrationAnswerMessage.TAG);
 		
 		this.connection = connection;
 		this.connection.registerInputChannel(this);
@@ -65,14 +65,12 @@ public class RegistrationChannel implements InputChannel, OutputChannel, ErrorLi
 	
 	
 	@Override
-	public String getFilterRegEx() {
-		return filterRegEx;
+	public boolean isMatchingFilter(String msg) {
+		return regEx.test(msg);
 	}
 
 	@Override
 	public void onMessageReceived(InputMessage msg) {
-		
-		SC.logWarn("Received "+msg); // TODO remove
 		
 		RegistrationAnswerMessage m = (RegistrationAnswerMessage) parser.parseMessage(msg.getText());
 		
@@ -108,7 +106,6 @@ public class RegistrationChannel implements InputChannel, OutputChannel, ErrorLi
 	@Override
 	public void send(Message message) throws IOException {
 		connection.send(message);
-		SC.warn("sending message : "+message.toHttpPost()); // TODO remove
 	}
 
 

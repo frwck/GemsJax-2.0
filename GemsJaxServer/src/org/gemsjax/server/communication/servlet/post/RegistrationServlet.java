@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.gemsjax.server.communication.parser.HttpParseException;
 import org.gemsjax.server.communication.parser.SystemMessageParser;
-import org.gemsjax.server.communication.servlet.PostServlet;
+import org.gemsjax.server.communication.servlet.HttpPostCommunicationConnection;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
@@ -19,6 +19,7 @@ import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.server.util.SHA;
 import org.gemsjax.shared.FieldVerifier;
+import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
@@ -39,7 +40,7 @@ import org.gemsjax.shared.user.RegisteredUser;
  * @author Hannes Dorfmann
  *
  */
-public class RegistrationServlet extends PostServlet{
+public class RegistrationServlet extends HttpPostCommunicationConnection{
 	
 	
 	private UserDAO userDAO;
@@ -54,7 +55,7 @@ public class RegistrationServlet extends PostServlet{
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+	
 		String username ="";
 		String email ="";
 		
@@ -148,6 +149,12 @@ public class RegistrationServlet extends PostServlet{
 		    out.close();
 		}
 		
+		
+	}
+
+	@Override
+	public void send(Message message) throws IOException {
+		// TODO Auto-generated method stub
 		
 	}
 	

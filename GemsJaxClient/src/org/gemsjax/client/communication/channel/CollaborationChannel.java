@@ -37,8 +37,8 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	
 
 	@Override
-	public String getFilterRegEx() {
-		return filterRegEx;
+	public boolean isMatchingFilter(String msg) {
+		return true;
 	}
 
 

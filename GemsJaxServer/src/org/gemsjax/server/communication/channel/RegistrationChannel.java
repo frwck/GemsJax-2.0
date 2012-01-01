@@ -1,4 +1,4 @@
-package org.gemsjax.client.communication.channel;
+package org.gemsjax.server.communication.channel;
 
 import java.io.IOException;
 
@@ -8,35 +8,28 @@ import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
 
-public class SystemChannel implements InputChannel, OutputChannel{
-	
-	
-	private CommunicationConnection connection;
-	
-	
-	public SystemChannel(CommunicationConnection connection)
+public class RegistrationChannel implements InputChannel, OutputChannel{
+
+	public RegistrationChannel(CommunicationConnection connection)
 	{
-		this.connection = connection;
-	
+		
 	}
 	
 	
-
 	@Override
-	public boolean isMatchingFilter(String msg) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	
-	@Override
-	public void onMessageReceived(InputMessage msg) {
+	public void send(Message arg0) throws IOException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void send(Message message) throws IOException {
+	public boolean isMatchingFilter(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void onMessageReceived(InputMessage arg0) {
 		// TODO Auto-generated method stub
 		
 	}

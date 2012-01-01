@@ -29,16 +29,8 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 	private Button createButton;
 	private PasswordItem password, password2;
 	private TextItem username, email;
-	
 	private DynamicForm form;
-	
 	private UserLanguage language;
-	
-	/*
-	private TextBox usernameBox, emailBox;
-	private PasswordTextBox passwordBox, password2Box;
-	*/
-	
 	
 	public RegistrationViewImpl(UserLanguage language)
 	{
@@ -46,7 +38,7 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 		generateForm(language);
 		
 		this.setWidth(300);
-		this.setHeight(300);
+		this.setHeight(260);
 		
 		this.setModalMaskOpacity(70);
 		this.setTitle(language.RegistrationTitle());  
@@ -58,33 +50,6 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 		this.centerInPage(); 
 	}
 	
-	
-	/*
-	private Widget genereateStack(UserLanguage lang)
-	{
-		usernameBox = new TextBox();
-		emailBox = new TextBox();
-		passwordBox = new PasswordTextBox();
-		password2Box = new PasswordTextBox();
-		
-		
-		Grid grid = new Grid(4,2);
-		
-		grid.add(new Label(lang.RegistrationUsername()));
-		grid.add(usernameBox);
-		
-		grid.add(new Label(lang.RegistrationEmail()));
-		grid.add(emailBox);
-		
-		grid.add(new Label(lang.RegistrationPassword()));
-		grid.add(passwordBox);
-		
-		grid.add(new Label(lang.RegistrationPasswordRepeated()));
-		gird
-		
-		return grid;
-	}
-	*/
 	
 	private void generateForm(UserLanguage lang)
 	{
@@ -217,13 +182,7 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 
 	@Override
 	public void showSuccessfulRegistrationMessage() {
-		SC.confirm(language.RegistrationSuccessful(), new BooleanCallback() {
-			
-			@Override
-			public void execute(Boolean value) {
-				// Nothing to do
-			}
-		});
+		SC.say(language.RegistrationSuccessful());
 	}
 
 

@@ -2,6 +2,7 @@ package org.gemsjax.server.communication.channel;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
@@ -57,8 +58,8 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 	}
 		
 		@Override
-	public String getFilterRegEx() {
-		return filterRegEx;
+	public boolean isMatchingFilter(String msg) {
+		return Pattern.matches(filterRegEx, msg);
 	}
 
 	@Override
