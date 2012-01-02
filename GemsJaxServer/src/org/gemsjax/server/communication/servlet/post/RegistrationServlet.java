@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.gemsjax.server.communication.parser.HttpParseException;
 import org.gemsjax.server.communication.parser.SystemMessageParser;
-import org.gemsjax.server.communication.servlet.HttpPostCommunicationConnection;
+import org.gemsjax.server.communication.servlet.HttpPostServlet;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
@@ -40,7 +40,7 @@ import org.gemsjax.shared.user.RegisteredUser;
  * @author Hannes Dorfmann
  *
  */
-public class RegistrationServlet extends HttpPostCommunicationConnection{
+public class RegistrationServlet extends HttpPostServlet{
 	
 	
 	private UserDAO userDAO;
@@ -152,12 +152,7 @@ public class RegistrationServlet extends HttpPostCommunicationConnection{
 		
 	}
 
-	@Override
-	public void send(Message message) throws IOException {
-		// TODO Auto-generated method stub
-		
-	}
-	
+
 	
 	
 
