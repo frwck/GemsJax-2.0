@@ -30,7 +30,7 @@ public class FieldVerifier {
 	/**
 	 * The regular expression to check usernames
 	 */
-	public static final String USERNAME_REGEX = "\\w+";
+	public static final String USERNAME_REGEX = "\\w{3,}";
 	
 	/**
 	 * Verifies that the specified name is valid for our service.

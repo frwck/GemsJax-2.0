@@ -118,10 +118,10 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Passwords do not match")
 	  String RegistrationPasswordMismatch();
 	  
-	  @DefaultStringValue("The username is not valid. Allowed characters: A-Z 0-9")
+	  @DefaultStringValue("The username is not valid. A Username must have at least 3 characters and cosnsist of this kind of characters: A-Z a-z 0-9")
 	  String RegistrationInvalidUsername();
 	  
-	  @DefaultStringValue("The email address is not valid")
+	  @DefaultStringValue("The e-mail address is not valid")
 	  String RegistrationInvalidEmail();
 
 	  @DefaultStringValue("Username")
@@ -153,16 +153,11 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("The submitted e-mail address is already used by another user")
 	  String RegistrationFailEmail();
 	  
-
-	  @DefaultStringValue("The submitted e-mail address is not valid")
-	  String RegistrationFailInvalidEmail();
 	  
 	  
 	  @DefaultStringValue("The submitted username is already used by another user")
 	  String RegistrationFailUsername();
-	  
-	  @DefaultStringValue("The submitted username is not valid")
-	  String RegistrationFailInvalidUsername();
+	
 	  
 	  @DefaultStringValue("An unexcected error has occurred. Please retry.")
 	  String RegistrationUnexpectedError();

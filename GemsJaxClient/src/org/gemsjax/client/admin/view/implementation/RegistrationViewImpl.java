@@ -14,8 +14,11 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.PasswordItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.KeyUpEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyUpHandler;
 import com.smartgwt.client.widgets.form.validator.MatchesFieldValidator;
 import com.smartgwt.client.widgets.form.validator.RegExpValidator;
+import com.smartgwt.client.widgets.events.ClickEvent;
 
 
 /**
@@ -32,10 +35,13 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 	private DynamicForm form;
 	private UserLanguage language;
 	
+	private boolean isShowingPrompt;
+	
 	public RegistrationViewImpl(UserLanguage language)
 	{
 		this.language = language;
 		generateForm(language);
+		this.isShowingPrompt = false;
 		
 		this.setWidth(300);
 		this.setHeight(260);
@@ -72,6 +78,13 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
         username.setRequired(true);  
         username.setDefaultValue(""); 
         username.setValidators(usernameValidator);
+        username.addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				simulateButtonClickByEnterKey(event);
+			}
+		});
         
         
         
@@ -81,6 +94,13 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
         email.setRequired(true);  
         email.setDefaultValue("");  
         email.setValidators(emailValidator);
+        email.addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				simulateButtonClickByEnterKey(event);
+			}
+		});
            
         MatchesFieldValidator validator = new MatchesFieldValidator();  
         validator.setOtherField("password");  
@@ -90,12 +110,26 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
         password.setName("password");  
         password.setTitle(lang.RegistrationPassword());  
         password.setRequired(true);  
+        password.addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				simulateButtonClickByEnterKey(event);
+			}
+		});
         
         password2 = new PasswordItem();  
         password2.setName("password2");  
         password2.setTitle(lang.RegistrationPasswordRepeated());  
         password2.setRequired(true);  
         password2.setValidators(validator);  
+        password2.addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				simulateButtonClickByEnterKey(event);
+			}
+		});
         
         
         createButton = new Button(lang.RegistrationSubmit());  
@@ -115,6 +149,13 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 		   
     }
     
+	
+	private void simulateButtonClickByEnterKey(KeyUpEvent e)
+	{
+		if (e.getKeyName().equals("Enter") && !isShowingPrompt)  // TODO BUG need fixed, if user click on enter, the focus is still on the field who has fired this
+			createButton.fireEvent(new ClickEvent(createButton.getJsObj()));
+		
+	}
 	
 	
 	
@@ -143,7 +184,14 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 
 	@Override
 	public void showErrorMessage(String msg) {
-		SC.warn(msg);
+		isShowingPrompt = true;
+		SC.warn(msg, new BooleanCallback() {
+			
+			@Override
+			public void execute(Boolean value) {
+				isShowingPrompt = false;
+			}
+		});
 	}
 
 
@@ -182,14 +230,30 @@ public class RegistrationViewImpl extends Window implements RegistrationView {
 
 	@Override
 	public void showSuccessfulRegistrationMessage() {
-		SC.say(language.RegistrationSuccessful());
+		isShowingPrompt = true;
+		SC.say(language.RegistrationSuccessful(), new BooleanCallback() {
+			
+			@Override
+			public void execute(Boolean value) {
+				isShowingPrompt = false;
+			}
+		});
 	}
 
 
 	@Override
 	public void showUnexpectedError(Throwable t) {
-			SC.warn(language.RegistrationUnexpectedError()+"<br /><br />"+t.getMessage());
+		isShowingPrompt = true;	
+		SC.warn(language.RegistrationUnexpectedError()+"<br /><br />"+t.getMessage(), new BooleanCallback() {
+				
+				@Override
+				public void execute(Boolean value) {
+					isShowingPrompt = false;
+				}
+			});
 	}
+	
+	
 	
 	
 

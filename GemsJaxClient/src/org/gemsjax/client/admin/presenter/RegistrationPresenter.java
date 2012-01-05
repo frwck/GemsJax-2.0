@@ -117,7 +117,7 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 								break;
 								
 			case FAIL_INVALID_EMAIL: 	view.bringToFront();
-										view.showErrorMessage(view.getCurrentLanguage().RegistrationFailInvalidEmail());
+										view.showErrorMessage(view.getCurrentLanguage().RegistrationInvalidEmail());
 										break;
 			
 			case FAIL_USERNAME:	view.bringToFront();
@@ -125,7 +125,7 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 								break;
 								
 			case FAIL_INVALID_USERNAME:	view.bringToFront();
-										view.showErrorMessage(view.getCurrentLanguage().RegistrationFailInvalidUsername());
+										view.showErrorMessage(view.getCurrentLanguage().RegistrationInvalidUsername());
 										break;
 						
 		

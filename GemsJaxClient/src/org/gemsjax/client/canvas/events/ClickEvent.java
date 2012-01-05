@@ -1,7 +1,6 @@
 package org.gemsjax.client.canvas.events;
 
 import org.gemsjax.client.canvas.Clickable;
-import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 
 /**
