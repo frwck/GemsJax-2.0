@@ -52,6 +52,7 @@ public class HttpCommunicationConnection implements CommunicationConnection{
 		this.response = response;
 		isClosed = true;
 		response.setStatus(200);
+		response.setContentType("text/xml;charset=UTF-8");
 		
 		inputChannels = new LinkedHashSet<InputChannel>();
 		establishedListeners = new LinkedHashSet<CommunicationConnection.EstablishedListener>();
@@ -100,11 +101,9 @@ public class HttpCommunicationConnection implements CommunicationConnection{
 			e.onEstablished();
 		
 		
-		InputMessage im = new InputMessage(request.getParameterMap());
+		InputMessage im = new InputMessage(request.getParameter(Message.POST_PARAMETER_NAME));
+		fireInputChannelMessage(im);
 		
-		
-		for (InputChannel i : inputChannels)
-			i.onMessageReceived(im);
 		
 	}
 	
@@ -140,11 +139,16 @@ public class HttpCommunicationConnection implements CommunicationConnection{
 		return false;
 	}
 	
+	/**
+	 * Send a message to the other end of this {@link CommunicationConnection}.
+	 * <b>The connection will be closed after this</b>
+	 */
 	@Override
 	public void send(Message message) throws IOException{
 		
 		writer.write(message.toXml());
-		writer.close();
+		writer.flush();
+		close();
 	}
 	
 	/**
@@ -156,6 +160,7 @@ public class HttpCommunicationConnection implements CommunicationConnection{
 		for (InputChannel i : inputChannels)
 			if (i.isMatchingFilter(message.getText()))
 				i.onMessageReceived(message);
+			
 	}
 	
 	

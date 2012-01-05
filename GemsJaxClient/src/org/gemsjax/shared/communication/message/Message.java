@@ -22,12 +22,11 @@ import org.gemsjax.shared.user.User;
 public interface Message {
 	
 	/**
-	 * This is sent as POST or GET parameter with every {@link Message} which is sent via HTTP POST or GET to a Servlet.
-	 * With this parameter the Servlet can determine which kind of {@link Message} is the received request and can 
-	 * parse it to the right {@link Message}. So this parameter must have the name of the message subclass as parameter, which is accessible by SubClass.getClass().getName()
-	 * 
+	 * By using HTTP POST as underlying {@link CommunicationConnection}, this message object will be formed to a default
+	 * POST parametername and parametervalue pair and sent to the server as follows:<br />
+	 * POST_PARAMETER=message.toXml()
 	 */
-	public static final String CLASS_NAME_PARAMETER = "message_class";
+	public static final String POST_PARAMETER_NAME = "msg";
 	
 	
 	/**
@@ -37,18 +36,5 @@ public interface Message {
 	 */
 	public abstract String toXml();
 	
-	/**
-	 * Generates an String in form of HTTP GET parameters that reprensents this {@link Message}
-	 * and can be send via HTTP GET to a Servlet
-	 * @return
-	 */
-	public abstract String toHttpGet();
-	
-	/**
-	 * Generates an String in form of HTTP POST parameters that represents this {@link Message}
-	 * and can be send via an HTTP POST to a Servlet
-	 * @return
-	 */
-	public abstract String toHttpPost();
 
 }

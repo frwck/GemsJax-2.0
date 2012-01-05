@@ -37,7 +37,9 @@ import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 import junit.framework.*;
@@ -45,22 +47,25 @@ import junit.framework.*;
 
 public class RegistrationTest {
 
-	private UserDAO userDAO;
+	private static UserDAO userDAO;
 	
-	private String successUsername = "UsernameTest1";
-	private String successPassword = "PasswordTes11";
+	private static String url = "http://localhost:8081"+ServletPaths.REGISTRATION;
+	
+	private static String username = "UsernameSucTest1";
+	private static String password = "PasswordSucTes11";
+	private static String email = "SucEmail1@mail.me";
 	
 	
-    @Before
-    public void prepare() {
+    @BeforeClass
+    public static void prepare() {
     	userDAO = new HibernateUserDAO();
     }
     
     
-    @After
-    public void databaeCleanUp() throws NoSuchAlgorithmException, MoreThanOneExcpetion, NotFoundException, DAOException
+    @AfterClass
+    public static void databaeCleanUp() throws NoSuchAlgorithmException, MoreThanOneExcpetion, NotFoundException, DAOException
     {
-    	RegisteredUser u = userDAO.getUserByLogin(successUsername, SHA.generate256(successPassword));
+    	RegisteredUser u = userDAO.getUserByLogin(username, SHA.generate256(password));
     	userDAO.deleteRegisteredUser(u);
     }
     
@@ -72,12 +77,11 @@ public class RegistrationTest {
     @Test
     public void successRegistration() throws SAXException, IOException
     {
-	    String url = "http://localhost:8081"+ServletPaths.REGISTRATION;
 	    
 	    HttpClient httpclient = new DefaultHttpClient();
 	    HttpContext localContext = new BasicHttpContext();
 	  
-	    NewRegistrationMessage rm  = new NewRegistrationMessage(successUsername, successPassword, "EmailSuccessServletTest");
+	    NewRegistrationMessage rm  = new NewRegistrationMessage(username, password, email);
 	    
 	    HttpPost httpPost = new HttpPost(url);
 	    UrlEncodedFormEntity entity = setParametersOf(rm);
@@ -102,13 +106,132 @@ public class RegistrationTest {
      * @throws SAXException
      * @throws IOException
      */
-    
-    public void failUsernameRegistration() throws SAXException, IOException
+    @Test
+    public void failDuplicateUsernameRegistration() throws SAXException, IOException
     {
+    	HttpClient httpclient = new DefaultHttpClient();
+ 	    HttpContext localContext = new BasicHttpContext();
+ 	  
+ 	    NewRegistrationMessage rm  = new NewRegistrationMessage(username, password, email);
+ 	    
+ 	    HttpPost httpPost = new HttpPost(url);
+ 	    UrlEncodedFormEntity entity = setParametersOf(rm);
+ 	    
+ 	    httpPost.setEntity(entity);
+ 	    
+ 	    HttpResponse response = httpclient.execute(httpPost, localContext);
+ 	    String responseContent = getResponseContent(response);
+ 	    System.out.println(responseContent);
+ 	    
+ 	    RegistrationAnswerMessage expectedResponseMsg = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_USERNAME, username);
+ 	    
+ 	    assertTrue(checkStatusCode(response, 200));
+ 	    assertEquals(expectedResponseMsg.toXml(), responseContent);
 	    
+	}
+    
+    
+    
+    /**
+     * The registration should fail, because the Email is not available
+     * @throws SAXException
+     * @throws IOException
+     */
+    @Test
+    public void failDuplicateEmailRegistration() throws SAXException, IOException
+    {
+    	HttpClient httpclient = new DefaultHttpClient();
+ 	    HttpContext localContext = new BasicHttpContext();
+ 	  
+ 	    NewRegistrationMessage rm  = new NewRegistrationMessage(username+"123other", password, email);
+ 	    
+ 	    HttpPost httpPost = new HttpPost(url);
+ 	    UrlEncodedFormEntity entity = setParametersOf(rm);
+ 	    
+ 	    httpPost.setEntity(entity);
+ 	    
+ 	    HttpResponse response = httpclient.execute(httpPost, localContext);
+ 	    String responseContent = getResponseContent(response);
+ 	    System.out.println(responseContent);
+ 	    
+ 	    RegistrationAnswerMessage expectedResponseMsg = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_EMAIL, email);
+ 	    
+ 	    assertTrue(checkStatusCode(response, 200));
+ 	    assertEquals(expectedResponseMsg.toXml(), responseContent);
+	    
+	}
+    
+    
+    
+    /**
+     * The registration should fail, because the Email is not valid
+     * @throws SAXException
+     * @throws IOException
+     */
+    @Test
+    public void failInvalidEmailRegistration() throws SAXException, IOException
+    {
+    	
+    	String invalidEmail ="Test@not";
+    	
+    	HttpClient httpclient = new DefaultHttpClient();
+ 	    HttpContext localContext = new BasicHttpContext();
+ 	  
+ 	    NewRegistrationMessage rm  = new NewRegistrationMessage(username+"123", password, invalidEmail);
+ 	    
+ 	    HttpPost httpPost = new HttpPost(url);
+ 	    UrlEncodedFormEntity entity = setParametersOf(rm);
+ 	    
+ 	    httpPost.setEntity(entity);
+ 	    
+ 	    HttpResponse response = httpclient.execute(httpPost, localContext);
+ 	    String responseContent = getResponseContent(response);
+ 	    System.out.println(responseContent);
+ 	    
+ 	    RegistrationAnswerMessage expectedResponseMsg = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_INVALID_EMAIL, invalidEmail);
+ 	    
+ 	    assertTrue(checkStatusCode(response, 200));
+ 	    assertEquals(expectedResponseMsg.toXml(), responseContent);
 	    
 	}
  
+    
+    
+    
+    /**
+     * The registration should fail, because the username is not valid
+     * @throws SAXException
+     * @throws IOException
+     */
+    @Test
+    public void failInvalidUsernameRegistration() throws SAXException, IOException
+    {
+    	
+    	String invalidUsername ="q";
+    	
+    	HttpClient httpclient = new DefaultHttpClient();
+ 	    HttpContext localContext = new BasicHttpContext();
+ 	  
+ 	    NewRegistrationMessage rm  = new NewRegistrationMessage(invalidUsername, password, "123"+email);
+ 	    
+ 	    HttpPost httpPost = new HttpPost(url);
+ 	    UrlEncodedFormEntity entity = setParametersOf(rm);
+ 	    
+ 	    httpPost.setEntity(entity);
+ 	    
+ 	    HttpResponse response = httpclient.execute(httpPost, localContext);
+ 	    String responseContent = getResponseContent(response);
+ 	    System.out.println(responseContent);
+ 	    
+ 	    RegistrationAnswerMessage expectedResponseMsg = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_INVALID_USERNAME, invalidUsername);
+ 	    
+ 	    assertTrue(checkStatusCode(response, 200));
+ 	    assertEquals(expectedResponseMsg.toXml(), responseContent);
+	    
+	}
+    
+    
+    
     
     private boolean checkStatusCode(HttpResponse r, int expectedCode)
     {
@@ -136,21 +259,8 @@ public class RegistrationTest {
     private UrlEncodedFormEntity setParametersOf(Message m) throws UnsupportedEncodingException
     {
     	List<NameValuePair> parms = new ArrayList<NameValuePair>();
+    	parms.add(new BasicNameValuePair(Message.POST_PARAMETER_NAME, m.toXml()));
     	
-    	String postPar = m.toHttpPost();
-    	
-    	String nameValueTuple [] = postPar.split("&");
-    	
-    	String data[];
-    	
-    	for (String tuple : nameValueTuple)
-    	{
-    		data = tuple.split("=");
-    		// data[0] is the parameter name
-    		// data[1] is the value
-    		//System.out.println("Setting "+data[0]+" = "+data[1]);
-    		parms.add(new BasicNameValuePair(data[0], data[1]));
-    	}
     	
     	UrlEncodedFormEntity ret = new UrlEncodedFormEntity(parms, "UTF-8");
     	

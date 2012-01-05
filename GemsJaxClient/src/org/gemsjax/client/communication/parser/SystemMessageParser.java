@@ -80,7 +80,7 @@ public class SystemMessageParser {
 	private LoginAnswerMessage parseLoginAnswer(Element e) throws DOMException
 	{
 		
-		String statusAttribute  = e.getAttribute(LoginAnswerMessage.STATUS_ATTRIBUTE);
+		String statusAttribute  = e.getAttribute(LoginAnswerMessage.ATTRIBUTE_STATUS);
 		
 		LoginAnswerStatus status = LoginAnswerMessage.stringToAnswerStatus(statusAttribute);
 		
@@ -88,7 +88,7 @@ public class SystemMessageParser {
 		 	throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the status of the LoginAnswerMessage");
 		
 		
-		String experimentGroup = e.getAttribute(LoginAnswerMessage.EXPERIMENT_GROUP_ATTRIBUTE);
+		String experimentGroup = e.getAttribute(LoginAnswerMessage.ATTRIBUTE_EXPERIMENT_GROUP);
 		if(experimentGroup!=null && !experimentGroup.isEmpty())
 		{
 			try{
@@ -115,7 +115,7 @@ public class SystemMessageParser {
 	 */
 	private RegistrationAnswerMessage parseRegistrationAnswerMessage(Element e) throws DOMException
 	{
-		String statusAttribute  = e.getAttribute(RegistrationAnswerMessage.STATUS_ATTRIBUTE);
+		String statusAttribute  = e.getAttribute(RegistrationAnswerMessage.ATTRIBUTE_STATUS);
 		
 		RegistrationAnswerStatus status = RegistrationAnswerMessage.answereStatusFromString(statusAttribute);
 		
@@ -123,7 +123,7 @@ public class SystemMessageParser {
 		 	throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the status of the RegistartaionAnswerMessage");
 		
 		
-		String failString = e.getAttribute(RegistrationAnswerMessage.FAIL_STRING_ATTRIBUTE);
+		String failString = e.getAttribute(RegistrationAnswerMessage.ATTRIBUTE_FAIL_STRING);
 		
 		if(failString!=null && !failString.isEmpty())
 			return new RegistrationAnswerMessage(status, failString);

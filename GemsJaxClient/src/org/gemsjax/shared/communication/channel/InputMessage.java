@@ -41,11 +41,6 @@ public class InputMessage {
 	private String message;
 	
 	/**
-	 * Used to map parameters name to parameters value
-	 */
-	private Map<String, String[]> parametersMap;
-	
-	/**
 	 * Create a new {@link InputMessage}. This is the constructor, the client should use, to wrap received messages from the server.
 	 * @param message
 	 */
@@ -53,7 +48,6 @@ public class InputMessage {
 	{
 		this.message = message;
 		this.statusCode = null;
-		this.parametersMap = null;
 	}
 	
 	/**
@@ -66,58 +60,6 @@ public class InputMessage {
 	{
 		this.statusCode = statusCode;
 		this.message = message;
-		this.parametersMap = null;
-	}
-	
-	/**
-	 * Create a InputMessage with a {@link Map} containing the parameter as key and the parameter values as value.
-	 * <b>Note</b> that a value in this map is an Array of Strings. So a parameter key, can have more than one then one values.
-	 * That is not the normal way (normally you simply have one key mapped to one value), but however javax.servlets support this
-	 * multiple value per key. 
-	 * 
-	 * @param parametersMap
-	 */
-	public InputMessage(Map<String, String[]> parametersMap)
-	{
-		this.parametersMap = parametersMap;
-		this.statusCode = null;
-		this.message = null;
-	}
-	
-	/**
-	 * Get the associated parameter value for the passed parameters name.
-	 * This method is normally used only on server side to work with {@link HttpServletRequest}s in a more comfortable way.
-	 * @param parameterName
-	 * @return The associated value or null, if no value is set for this parameterName
-	 * @throws RuntimeException if more than one value is found for the passed parameterName
-	 */
-	public String getParameter(String parameterName) throws RuntimeException
-	{
-		if (parametersMap == null)
-			return null;
-		
-		String[] values = parametersMap.get(parameterName);
-		
-		if (values == null || values.length==0)
-			return null;
-		
-		
-		if (values.length>1)
-			throw new RuntimeException("The parameterName \""+parameterName+"\" is not unique, because there are more than one values");
-		
-		return values[0];
-	}
-	
-	/**
-	 * Get a {@link Map} containing the parameter as key and the parameter values as value.
-	 * <b>Note</b> that a value in this map is an Array of Strings. So a parameter key, can have more than one then one values.
-	 * That is not the normal way (normally you simply have one key mapped to one value), but however javax.servlets support this
-	 * multiple value per key. 
-	 * @return The {@link Map}&lt;String, String[]&gt; or null, if the {@link #parametersMap} is not set
-	 */
-	public Map<String, String[]> getParametersMap()
-	{
-		return parametersMap;
 	}
 	
 	

@@ -22,16 +22,16 @@ public class LoginMessage extends SystemMessage{
 	/**
 	 * The xml tag attribute name for the username
 	 */
-	public static final String USERNAME_ATRRIBUTE ="username";
+	public static final String ATTRIBUTE_USERNAME ="username";
 	/**
 	 * The xml tag attribute name for the password
 	 */
-	public static final String PASSWORD_ATTRIBUTE ="password";
+	public static final String ATTRIBUTE_PASSWORD ="password";
 	
 	/**
 	 * The xml tag attribute name for the experiment login (boolean) attribute
 	 */
-	public static final String FOR_EXPERIMENT_ATTRIBUTE="exp";
+	public static final String ATTRIBUTE_FOR_EXPERIMENT="exp";
 	
 	
 	/**
@@ -54,7 +54,7 @@ public class LoginMessage extends SystemMessage{
 	
 	@Override
 	public String toXml() {
-		return "<"+SystemMessage.TAG+"><"+TAG+" "+USERNAME_ATRRIBUTE+"=\""+username+"\" "+PASSWORD_ATTRIBUTE+"=\""+password+"\" "+FOR_EXPERIMENT_ATTRIBUTE+"=\""+(experimentLogin?"true":"false")+"\"/> </"+SystemMessage.TAG+">";
+		return "<"+SystemMessage.TAG+"><"+TAG+" "+ATTRIBUTE_USERNAME+"=\""+username+"\" "+ATTRIBUTE_PASSWORD+"=\""+password+"\" "+ATTRIBUTE_FOR_EXPERIMENT+"=\""+(experimentLogin?"true":"false")+"\"/> </"+SystemMessage.TAG+">";
 	}
 
 
@@ -103,17 +103,5 @@ public class LoginMessage extends SystemMessage{
 	}
 
 
-
-	@Override
-	public String toHttpGet() {
-		throw new UnsupportedOperationException();
-	}
-
-
-
-	@Override
-	public String toHttpPost() {
-		throw new UnsupportedOperationException();
-	}
 
 }

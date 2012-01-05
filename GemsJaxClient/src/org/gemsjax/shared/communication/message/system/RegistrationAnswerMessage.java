@@ -50,8 +50,8 @@ public class RegistrationAnswerMessage extends SystemMessage {
 	 * The {@link RegistrationAnswerMessage} is embarked in this tag
 	 */
 	public static final String TAG = "registration";
-	public static final String STATUS_ATTRIBUTE="status";
-	public static final String FAIL_STRING_ATTRIBUTE="fail-string";
+	public static final String ATTRIBUTE_STATUS="status";
+	public static final String ATTRIBUTE_FAIL_STRING="fail-string";
 	
 	
 	private RegistrationAnswerStatus status;
@@ -121,26 +121,15 @@ public class RegistrationAnswerMessage extends SystemMessage {
 	{
 		return status;
 	}
-	
-	
-	@Override
-	public String toHttpGet() {
-		throw new UnsupportedOperationException();
-		
-	}
 
-	@Override
-	public String toHttpPost() {
-		throw new UnsupportedOperationException();
-	}
 
 	@Override
 	public String toXml() {
 	
 		if (status == RegistrationAnswerStatus.OK)
-			return "<"+SystemMessage.TAG+"><"+TAG+" "+STATUS_ATTRIBUTE+"=\"" + answerStatusToString() + "\" /></"+SystemMessage.TAG+">";
+			return "<"+SystemMessage.TAG+"><"+TAG+" "+ATTRIBUTE_STATUS+"=\"" + answerStatusToString() + "\" /></"+SystemMessage.TAG+">";
 		else
-			return "<"+SystemMessage.TAG+"><"+TAG+" "+STATUS_ATTRIBUTE+"=\"" + answerStatusToString() + "\" "+FAIL_STRING_ATTRIBUTE+"=\""+failString+"\" /></"+SystemMessage.TAG+">";
+			return "<"+SystemMessage.TAG+"><"+TAG+" "+ATTRIBUTE_STATUS+"=\"" + answerStatusToString() + "\" "+ATTRIBUTE_FAIL_STRING+"=\""+failString+"\" /></"+SystemMessage.TAG+">";
 		
 	}
 

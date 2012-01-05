@@ -5,7 +5,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.gemsjax.shared.communication.CommunicationConnection;
-import org.gemsjax.shared.communication.CommunicationConnection.ErrorListener;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
@@ -19,9 +18,14 @@ import com.google.gwt.http.client.URL;
 
 /**
  * This is a {@link CommunicationConnection} to interact with the server via HTTP POST.
- * So data can be posted by via HTTP to the server by calling {@link #send(Message)} which will call
- * {@link Message#toHttpPost()}
+ * So a {@link Message} can be posted by via HTTP to the server by calling {@link #send(Message)} which will 
+ * transform the passed {@link Message} to a HTTP POST expected paramatername-parametervalue pair which looks as follows:
+ * <br />
+ * {@link Message#POST_PARAMETER_NAME}={@link Message#toXml()}
+ * <br /><br />
  * 
+ * The server can simply reach the xml representation of the sent message by retrieving the sent POST parameter with the name
+ * {@link Message#POST_PARAMETER_NAME} containing {@link Message#toXml()} as value (for this parameter name).
  * @author Hannes Dorfmann
  *
  */
@@ -145,7 +149,9 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 		
 		
 		try {
-		  builder.sendRequest(message.toHttpPost(), new RequestCallback() {
+		  String postParameter=Message.POST_PARAMETER_NAME+"="+URL.encode(message.toXml());
+		  
+		  builder.sendRequest(postParameter, new RequestCallback() {
 			
 			@Override
 			public void onResponseReceived(Request request, Response response) {

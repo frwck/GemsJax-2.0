@@ -23,6 +23,7 @@ public class SystemMessageParser extends AbstractContentHandler {
 	
 	private String username;
 	private String password;
+	private String email; 
 	private boolean experimentLogin;
 	
 	
@@ -35,6 +36,7 @@ public class SystemMessageParser extends AbstractContentHandler {
 	private boolean startLogout;
 	private boolean endLogin;
 	private boolean endLogout;
+	private boolean startNewRegistration, endNewRegistration;
 	
 
 	public SystemMessageParser(){	
@@ -64,67 +66,12 @@ public class SystemMessageParser extends AbstractContentHandler {
 	    if (startLogout && endLogout)
 	    	return new LogoutMessage(LogoutMessage.intToLogoutReason(logoutReason));
 	    
-	    throw new SAXException("Unexcpected Parse error: Could not determine, if the Message is a Login or Logout Message");
+	    if (startNewRegistration && endNewRegistration)
+	    	return new NewRegistrationMessage(username, password, email);
+	    
+	    throw new SAXException("Unexcpected Parse error: Could not determine, if the Message is a Login or LogoutMessage or NewRegistrationMessage");
 	}
 
-	
-	/**
-	 * Parse a HTTP POST request to a {@link SystemMessage}
-	 * @param request
-	 * @return the parsed {@link SystemMessage} or null if its not parseable
-	 */
-	public SystemMessage parse(HttpServletRequest request) throws HttpParseException
-	{
-		
-		String messageClass = request.getParameter(Message.CLASS_NAME_PARAMETER);
-		
-		if (messageClass== null || messageClass.isEmpty())
-			throw new HttpParseException("Could not determine the MESSAGE_CLASS. Parsing is not possible without this parameter");
-		
-
-		
-		if (messageClass.equals(NewRegistrationMessage.class.getName()))
-			return parseNewRegistrationMessage(request);
-		
-		
-		return null;
-	}
-	
-	
-	
-	/**
-	 * Parse a {@link NewRegistrationMessage}
-	 * @param request
-	 * @return
-	 * @throws HttpParseException
-	 */
-	private NewRegistrationMessage parseNewRegistrationMessage(HttpServletRequest request) throws HttpParseException
-	{
-		
-		if (! request.getParameter(Message.CLASS_NAME_PARAMETER).equals(NewRegistrationMessage.class.getName()))
-			throw new HttpParseException("Not able to parse a NewRegistrationMessage, which is not claimed as this in the required POST parameter \""+Message.CLASS_NAME_PARAMETER+"\"\n"+
-					"Do you forget to send the required parameter "+Message.CLASS_NAME_PARAMETER);
-	
-		// DECODE is done automatically by calling getParameter
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		String email = request.getParameter("email");
-		
-		if (username == null  || username.isEmpty())
-			throw new HttpParseException("Username is empty");
-		
-		if (password== null || password.isEmpty())
-			throw new HttpParseException("Password is empty");
-		
-		if (email == null || email.isEmpty())
-			throw new HttpParseException("E-Mail address is empty");
-			
-			
-		return new NewRegistrationMessage(username, password, email);
-		
-		
-	}
-	
 	
 	
 
@@ -134,12 +81,15 @@ public class SystemMessageParser extends AbstractContentHandler {
 		
 		if (localName.equals(SystemMessage.TAG))
 			endSys = true;
-		
+		else
 		if (localName.equals(LoginMessage.TAG))
 			endLogin = true;
-		
+		else
 		if (localName.equals(LogoutMessage.TAG))
 			endLogout = true;
+		else
+		if (localName.equals(NewRegistrationMessage.TAG))
+			endNewRegistration = true;
 	}
 
 
@@ -148,34 +98,42 @@ public class SystemMessageParser extends AbstractContentHandler {
 		
 		if (localName.equals(SystemMessage.TAG))
 			startSys = true;
-		
+		else
 		if (localName.equals(LoginMessage.TAG))
 		{
 			startLogin = true;
 			
-			username = atts.getValue(LoginMessage.USERNAME_ATRRIBUTE);
-			password = atts.getValue(LoginMessage.PASSWORD_ATTRIBUTE);
+			username = atts.getValue(LoginMessage.ATTRIBUTE_USERNAME);
+			password = atts.getValue(LoginMessage.ATTRIBUTE_PASSWORD);
 			
 			try{
-				experimentLogin = Boolean.parseBoolean(atts.getValue(LoginMessage.FOR_EXPERIMENT_ATTRIBUTE));
+				experimentLogin = Boolean.parseBoolean(atts.getValue(LoginMessage.ATTRIBUTE_FOR_EXPERIMENT));
 			}catch(Exception e)
 			{
-				throw new SAXException(LoginMessage.FOR_EXPERIMENT_ATTRIBUTE+" attribute is not set to a valid boolean");
+				throw new SAXException(LoginMessage.ATTRIBUTE_FOR_EXPERIMENT+" attribute is not set to a valid boolean");
 			}
 		}
-		
+		else
 		if (localName.equals(LogoutMessage.TAG))
 		{
 			startLogout = true;
 			
 			try{
-				logoutReason = Integer.parseInt(atts.getValue(LogoutMessage.REASON_ATTRIBUTE));
+				logoutReason = Integer.parseInt(atts.getValue(LogoutMessage.ATTRIBUTE_REASON));
 			} catch (Exception e)
 			{
 				throw new SAXException("Could not convert the reason to int: "+e.getMessage());
 			}
 		}
 		
+		else
+		if (localName.equals(NewRegistrationMessage.TAG))
+		{
+			startNewRegistration = true;
+			username = atts.getValue(NewRegistrationMessage.ATTRIBUTE_USERNAME);
+			password = atts.getValue(LoginMessage.ATTRIBUTE_PASSWORD);
+			email = atts.getValue(NewRegistrationMessage.ATTRIBUTE_EMAIL);
+		}
 	}
 	
 
@@ -189,7 +147,7 @@ public class SystemMessageParser extends AbstractContentHandler {
 		if (!endSys)
 			throw new SAXException("End </"+SystemMessage.TAG+"> Tag not found");
 		
-		if ( (!startLogin && !endLogin) && (!startLogout && !endLogout))
+		if ( (!startLogin && !endLogin) && (!startLogout && !endLogout) && (!startNewRegistration && !endNewRegistration))
 			throw new SAXException("Found a valid <"+SystemMessage.TAG+">, but no child tag");
 			
 		if (startLogin != endLogin)
@@ -198,8 +156,11 @@ public class SystemMessageParser extends AbstractContentHandler {
 		if (startLogout != endLogout)
 			throw new SAXException("<"+LogoutMessage.TAG+"> missmatch: An opening or closing tag is missing");
 		
+		if (startNewRegistration!=endNewRegistration)
+			throw new SAXException("<"+NewRegistrationMessage.TAG+"> missmatch: AN opening or closing tag is missing");
 		
-		if (startLogin && endLogin && startLogout && endLogout)
+		
+		if (startLogin && endLogin && startLogout && endLogout && startNewRegistration && endNewRegistration)
 			throw new SAXException("The message is a <"+LoginMessage.TAG+"> and a <"+LogoutMessage.TAG+"> message at the same time. That's not allowed.");
 		
 	}

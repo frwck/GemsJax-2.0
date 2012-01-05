@@ -29,8 +29,8 @@ public class LoginAnswerMessage extends SystemMessage{
 	public static final String TAG = "login";
 	
 	
-	public static final String STATUS_ATTRIBUTE="status";
-	public static final String EXPERIMENT_GROUP_ATTRIBUTE="exp-group";
+	public static final String ATTRIBUTE_STATUS="status";
+	public static final String ATTRIBUTE_EXPERIMENT_GROUP="exp-group";
 	
 	
 	private LoginAnswerStatus answer;
@@ -55,9 +55,9 @@ public class LoginAnswerMessage extends SystemMessage{
 	@Override
 	public String toXml() {
 		if (experimentGroupId==null)
-			return "<"+SystemMessage.TAG+"><"+TAG+" "+STATUS_ATTRIBUTE+"=\""+answerStatusToString(answer)+"\" /></"+SystemMessage.TAG+">";
+			return "<"+SystemMessage.TAG+"><"+TAG+" "+ATTRIBUTE_STATUS+"=\""+answerStatusToString(answer)+"\" /></"+SystemMessage.TAG+">";
 		else
-			return "<"+SystemMessage.TAG+"><"+TAG+" "+STATUS_ATTRIBUTE+"=\""+answerStatusToString(answer)+"\" "+EXPERIMENT_GROUP_ATTRIBUTE+"=\""+experimentGroupId+"\" /></"+SystemMessage.TAG+">";
+			return "<"+SystemMessage.TAG+"><"+TAG+" "+ATTRIBUTE_STATUS+"=\""+answerStatusToString(answer)+"\" "+ATTRIBUTE_EXPERIMENT_GROUP+"=\""+experimentGroupId+"\" /></"+SystemMessage.TAG+">";
 			
 	}
 	
@@ -107,15 +107,5 @@ public class LoginAnswerMessage extends SystemMessage{
 		return experimentGroupId;
 	}
 
-	@Override
-	public String toHttpGet() {
-		throw new UnsupportedOperationException();
-	}
-
-
-	@Override
-	public String toHttpPost() {
-		throw new UnsupportedOperationException();
-	}
 
 }
