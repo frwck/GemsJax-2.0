@@ -39,13 +39,24 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 	private RegExp regEx;
 	private Set<AuthenticationChannelHandler> handlers;
 	
-	
+	/**
+	 * Creates a new {@link AuthenticationChannel} and register this {@link AuthenticationChannel}
+	 * as {@link InputChannel} on the passed {@link CommunicationConnection}
+	 * @param connection
+	 */
 	public AuthenticationChannel(CommunicationConnection connection)
 	{
 		this.connection = connection;
 		handlers = new LinkedHashSet<AuthenticationChannelHandler>();
 		parser = new SystemMessageParser();
-		regEx = RegExp.compile("("+RegExFactory.startWithTagSubTag(SystemMessage.TAG, RegistrationAnswerMessage.TAG)+")|("+RegExFactory.startWithTagSubTag(SystemMessage.TAG, LogoutMessage.TAG)+")");
+		
+		String regEx1 = RegExFactory.startWithTagSubTag(SystemMessage.TAG, LoginAnswerMessage.TAG);
+		String regEx2 = RegExFactory.startWithTagSubTag(SystemMessage.TAG, LogoutMessage.TAG);
+		
+		String regExFilter = RegExFactory.createOr(regEx1, regEx2);
+		
+		regEx = RegExp.compile(regExFilter);
+		connection.registerInputChannel(this);
 	}
 	
 	public void addAuthenticationChannelHandler(AuthenticationChannelHandler h)
@@ -135,5 +146,25 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 	}
 	
 	
+	/**
+	 * Do a login by sending a {@link LoginMessage} to the server
+	 * @param username
+	 * @param password
+	 * @throws IOException
+	 */
+	public void doLogin(String username, String password) throws IOException
+	{
+		send(new LoginMessage(username, password, false));
+	}
+	
+	
+	/**
+	 * Do a logout by sending a {@link LogoutMessage} with {@link LogoutReason#CLIENT_USER_LOGOUT} to the server
+	 * @throws IOException
+	 */
+	public void doLogout() throws IOException
+	{
+		send(new LogoutMessage(LogoutReason.CLIENT_USER_LOGOUT));
+	}
 
 }

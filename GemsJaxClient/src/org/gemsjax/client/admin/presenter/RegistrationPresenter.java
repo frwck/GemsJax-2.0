@@ -3,9 +3,9 @@ package org.gemsjax.client.admin.presenter;
 import java.io.IOException;
 
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
-import org.gemsjax.client.admin.presenter.event.DoNewRegistrationEvent;
+import org.gemsjax.client.admin.presenter.event.NewRegistrationRequiredEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent.LoadingAnimationEventType;
-import org.gemsjax.client.admin.presenter.handler.DoNewRegistrationHandler;
+import org.gemsjax.client.admin.presenter.handler.NewRegistrationRequiredHandler;
 import org.gemsjax.client.admin.view.RegistrationView;
 import org.gemsjax.client.communication.HttpPostCommunicationConnection;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
@@ -23,7 +23,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 
 
-public class RegistrationPresenter extends Presenter implements DoNewRegistrationHandler, RegistrationChannelHandler{
+public class RegistrationPresenter extends Presenter implements NewRegistrationRequiredHandler, RegistrationChannelHandler{
 
 	private RegistrationView view;
 	private RegistrationChannel channel;
@@ -45,7 +45,7 @@ public class RegistrationPresenter extends Presenter implements DoNewRegistratio
 	
 	private void bind()
 	{
-		eventBus.addHandler(DoNewRegistrationEvent.TYPE, this);
+		eventBus.addHandler(NewRegistrationRequiredEvent.TYPE, this);
 		
 		view.getSubmitButton().addClickHandler(new ClickHandler() {
 			
@@ -99,7 +99,7 @@ public class RegistrationPresenter extends Presenter implements DoNewRegistratio
 
 
 	@Override
-	public void onShowRegistrationEvent(DoNewRegistrationEvent event) {
+	public void onShowRegistrationEvent(NewRegistrationRequiredEvent event) {
 		view.clearForm();
 		view.show();
 		view.bringToFront();

@@ -55,6 +55,12 @@ public class RegExFactory {
 	
 	public static String startWithTagSubTag(String xmlRootTag, String subTag)
 	{
-		return "^( )*\\<( )*(("+xmlRootTag+")|("+xmlRootTag+")/|("+xmlRootTag+" .*))>( )*\\<( )*(("+subTag+")|("+subTag+")/|("+subTag+" .*))>";
+		return "^( )*\\<( )*(("+xmlRootTag+")|("+xmlRootTag+")/|("+xmlRootTag+" .*))>( )*\\<( )*(("+subTag+")|("+subTag+")/|("+subTag+" .*))>.*";
+	}
+	
+	
+	public static String createOr(String firstRegEx, String secondRegex)
+	{
+		return "("+firstRegEx+")|("+secondRegex+")";
 	}
 }

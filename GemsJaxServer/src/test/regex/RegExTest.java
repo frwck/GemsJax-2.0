@@ -3,6 +3,8 @@ package test.regex;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.regex.Pattern;
+
 import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
@@ -50,17 +52,26 @@ public class RegExTest {
 		
 		String test = "<sys> <registration status=\"Status\"  fail-string=\"DesiredUsername | UserEmail\" /></sys>";
 		assertTrue(test.matches(filter));
+
+		
+		filter = RegExFactory.startWithTagSubTag(SystemMessage.TAG, LoginAnswerMessage.TAG);
+		LoginAnswerMessage failMessage = new LoginAnswerMessage(LoginAnswerStatus.FAIL);
+		
+		assertTrue(Pattern.matches(filter, failMessage.toXml()));
 	}
 
 	@Test
 	public void orTest()
 	{
-		String regEx = (""+RegExFactory.startWithTagSubTag(SystemMessage.TAG, RegistrationAnswerMessage.TAG)+")|("+RegExFactory.startWithTagSubTag(SystemMessage.TAG, LogoutMessage.TAG)+"");
+		String regEx1 = RegExFactory.startWithTagSubTag(SystemMessage.TAG, LoginAnswerMessage.TAG);
+		String regEx2 = RegExFactory.startWithTagSubTag(SystemMessage.TAG, LogoutMessage.TAG);
+		
+		String regEx = RegExFactory.createOr(regEx1, regEx2);
 		
 		System.out.println(regEx);
 		
 		LoginAnswerMessage failMessage = new LoginAnswerMessage(LoginAnswerStatus.FAIL);
 		
-		assertTrue(regEx.matches(failMessage.toXml()));
+		assertTrue(Pattern.matches(regEx, failMessage.toXml()));
 	}
 }

@@ -6,7 +6,7 @@ import org.gemsjax.client.admin.AdminApplicationController;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
 import org.gemsjax.client.admin.presenter.event.LogoutRequiredEvent;
-import org.gemsjax.client.admin.presenter.event.DoNewRegistrationEvent;
+import org.gemsjax.client.admin.presenter.event.NewRegistrationRequiredEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent.LoadingAnimationEventType;
 import org.gemsjax.client.admin.presenter.handler.LogoutRequiredHandler;
 import org.gemsjax.client.admin.view.LoginView;
@@ -92,7 +92,7 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 	
 	private void onNewRegistrationClicked()
 	{
-		eventBus.fireEvent(new DoNewRegistrationEvent());
+		eventBus.fireEvent(new NewRegistrationRequiredEvent());
 	}
 	
 	private void onForgotPasswordClicked()
@@ -137,9 +137,8 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 			{
 				// Fields are valid, do the login
 				eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.SHOW, this));
-				LoginMessage message = new LoginMessage(loginView.getUsername(), loginView.getPassword(),false);
 				try {
-					authenticationChannel.send(message);
+					authenticationChannel.doLogin(loginView.getUsername(), loginView.getPassword());
 				} catch (IOException e) {
 					loginView.showSendError();
 					e.printStackTrace();
@@ -153,9 +152,17 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 
 	@Override
 	public void onLogoutRequired(LogoutRequiredEvent event) {
-		loginView.bringToFront();
-		loginView.setUsername(event.getLastLogedInUsername());
-		//TODO maybe display somewhere the reason for the logout
+		loginView.resetView();
+		
+		
+		try {
+			authenticationChannel.doLogout();
+			loginView.bringToFront();
+		} catch (IOException e) {
+			
+			loginView.bringToFront();
+			loginView.showSendError();
+		}
 	}
 	
 
@@ -164,7 +171,8 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 
 	@Override
 	public void onLogout(LogoutReason reason) {
-		
+		loginView.resetView();
+		loginView.bringToFront();
 		logoutView.show(reason);
 	}
 
@@ -172,6 +180,7 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 	@Override
 	public void onLoginAnswer(LoginAnswerStatus answerStatus, RegisteredUser authenticatedUser) {
 		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
+		loginView.setLoginButtonEnabled(true);
 		
 		if (answerStatus==LoginAnswerStatus.FAIL)
 		{
@@ -191,6 +200,7 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 	public void onParseError(Exception e) {
 		//eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
 		loginView.showUnexpectedError();
+		loginView.setLoginButtonEnabled(true);
 	}
 	
 	
