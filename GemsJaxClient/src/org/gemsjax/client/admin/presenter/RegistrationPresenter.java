@@ -10,6 +10,8 @@ import org.gemsjax.client.admin.view.RegistrationView;
 import org.gemsjax.client.communication.HttpPostCommunicationConnection;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
 import org.gemsjax.client.communication.channel.handler.RegistrationChannelHandler;
+import org.gemsjax.client.module.RegistrationModule;
+import org.gemsjax.client.module.handler.RegistrationModuleHandler;
 import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.communication.CommunicationConnection;
@@ -23,22 +25,19 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 
 
-public class RegistrationPresenter extends Presenter implements NewRegistrationRequiredHandler, RegistrationChannelHandler{
+public class RegistrationPresenter extends Presenter implements NewRegistrationRequiredHandler, RegistrationModuleHandler{
 
 	private RegistrationView view;
-	private RegistrationChannel channel;
+	private RegistrationModule module;
 	
 	
-	public RegistrationPresenter(RegistrationView view, EventBus eventBus, CommunicationConnection connection) {
+	public RegistrationPresenter(RegistrationView view, EventBus eventBus, RegistrationModule module) {
 		super(eventBus);
 		
 		this.view = view;
-		try {
-			this.channel = new RegistrationChannel(connection);
-			this.channel.addRegistrationChannelHandler(this);
-		} catch (IOException e) {
-			e.printStackTrace(); // Should never be reached
-		}
+		this.module = module;
+		this.module.addRegistrationModuleHandler(this);
+		
 		bind();
 	}
 	
@@ -88,7 +87,7 @@ public class RegistrationPresenter extends Presenter implements NewRegistrationR
 		try {
 			
 			eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.SHOW, this));
-			channel.send(new NewRegistrationMessage(URL.encode(view.getUsername()), URL.encode(view.getPassword()), URL.encode(view.getEmail())));
+			module.doRegisttraion(URL.encode(view.getUsername()), URL.encode(view.getPassword()), URL.encode(view.getEmail()));
 			
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -13,9 +13,10 @@ import org.gemsjax.client.admin.view.LoginView;
 import org.gemsjax.client.admin.view.LogoutView;
 import org.gemsjax.client.communication.channel.AuthenticationChannel;
 import org.gemsjax.client.communication.channel.handler.AuthenticationChannelHandler;
+import org.gemsjax.client.module.AuthenticationModule;
+import org.gemsjax.client.module.handler.AuthenticationModuleHandler;
 import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.communication.CommunicationConnection;
-import org.gemsjax.shared.communication.message.system.LoginMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
 import org.gemsjax.shared.communication.message.system.LogoutMessage.LogoutReason;
 import org.gemsjax.shared.user.RegisteredUser;
@@ -31,22 +32,23 @@ import com.smartgwt.client.widgets.events.ClickHandler;
  * @author Hannes Dorfmann
  *
  */
-public class AuthenticationPresenter extends Presenter implements LogoutRequiredHandler, AuthenticationChannelHandler{
+public class AuthenticationPresenter extends Presenter implements LogoutRequiredHandler, AuthenticationModuleHandler {
 
 	private LoginView loginView;
 	private LogoutView logoutView;
+	private AuthenticationModule authenticationModule;
 	
-	private AuthenticationChannel authenticationChannel;
-	
-	public AuthenticationPresenter(EventBus eventBus, LoginView loginView, LogoutView logoutView, HasWidgets container, CommunicationConnection connection)
+	public AuthenticationPresenter(EventBus eventBus, LoginView loginView, LogoutView logoutView, AuthenticationModule authenticationModule)
 	{
 		super(eventBus);
-		authenticationChannel = new AuthenticationChannel(connection);
-		authenticationChannel.addAuthenticationChannelHandler(this);
+		this.authenticationModule = authenticationModule;
+		authenticationModule.addAuthenticationModuleHandler(this);
+		
+		
 		eventBus.addHandler(LogoutRequiredEvent.TYPE, this);
 		this.loginView = loginView;
 		this.logoutView = logoutView;
-		container.add(loginView.asWidget());
+		//container.add(loginView.asWidget());
 		bind();
 		loginView.resetView();
 		// We start by displaying the login form
@@ -138,7 +140,7 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 				// Fields are valid, do the login
 				eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.SHOW, this));
 				try {
-					authenticationChannel.doLogin(loginView.getUsername(), loginView.getPassword());
+					authenticationModule.doLogin(loginView.getUsername(), loginView.getPassword());
 				} catch (IOException e) {
 					loginView.showSendError();
 					e.printStackTrace();
@@ -156,7 +158,7 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 		
 		
 		try {
-			authenticationChannel.doLogout();
+			authenticationModule.doLogout();
 			loginView.bringToFront();
 		} catch (IOException e) {
 			
@@ -177,23 +179,6 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 	}
 
 
-	@Override
-	public void onLoginAnswer(LoginAnswerStatus answerStatus, RegisteredUser authenticatedUser) {
-		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
-		loginView.setLoginButtonEnabled(true);
-		
-		if (answerStatus==LoginAnswerStatus.FAIL)
-		{
-			loginView.showLoginFailed();
-		}
-		else
-		if (answerStatus==LoginAnswerStatus.OK)
-		{
-			eventBus.fireEvent(new LoginSuccessfulEvent(authenticatedUser));
-		}
-		
-		
-	}
 
 
 	@Override
@@ -201,6 +186,24 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 		//eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
 		loginView.showUnexpectedError();
 		loginView.setLoginButtonEnabled(true);
+	}
+
+
+	@Override
+	public void onLoginSuccessful(RegisteredUser authenticatedUser) {
+		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
+		loginView.setLoginButtonEnabled(true);
+		loginView.hide();
+		eventBus.fireEvent(new LoginSuccessfulEvent(authenticatedUser));
+		
+	}
+
+
+	@Override
+	public void onLoginFailed() {
+		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
+		loginView.setLoginButtonEnabled(true);
+		loginView.showLoginFailed();
 	}
 	
 	

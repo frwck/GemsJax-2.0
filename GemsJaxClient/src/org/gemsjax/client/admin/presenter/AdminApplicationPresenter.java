@@ -46,7 +46,7 @@ public class AdminApplicationPresenter extends Presenter implements LoginSuccess
 	@Override
 	public void onLoginSuccessful(LoginSuccessfulEvent event) {
 		authenticatedUser = event.getAuthenticatedUser();
-		view.show();	
+		view.show();
 	}
 	
 

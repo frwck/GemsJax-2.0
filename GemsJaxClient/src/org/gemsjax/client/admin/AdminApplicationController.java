@@ -1,5 +1,7 @@
 package org.gemsjax.client.admin;
 
+import java.io.IOException;
+
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
 import org.gemsjax.client.admin.presenter.AuthenticationPresenter;
@@ -17,7 +19,11 @@ import org.gemsjax.client.admin.view.implementation.RegistrationViewImpl;
 import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.communication.HttpPostCommunicationConnection;
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
+import org.gemsjax.client.communication.channel.AuthenticationChannel;
+import org.gemsjax.client.communication.channel.RegistrationChannel;
 import org.gemsjax.client.metamodel.factory.MetaFactory;
+import org.gemsjax.client.module.AuthenticationModule;
+import org.gemsjax.client.module.RegistrationModule;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -68,7 +74,7 @@ public class AdminApplicationController  {
 	/**
 	 * A LoginView is always open in the background and show a simple login view 
 	 */
-	private AuthenticationPresenter loginPresenter;
+	private AuthenticationPresenter authenticationPresenter;
 	
 	/**
 	 * The {@link RegistrationPresenter} to register a new {@link RegisteredUser}
@@ -77,6 +83,9 @@ public class AdminApplicationController  {
 	
 	
 	private AdminApplicationPresenter applicationPresenter;
+	
+	private AuthenticationModule authenticationModule;
+	
 	
 	private AdminApplicationController()
 	{
@@ -123,12 +132,27 @@ public class AdminApplicationController  {
 		
 		loadingPresenter = new LoadingPresenter(eventBus, new LoadingViewImpl());
 		
-		registrationPresenter = new RegistrationPresenter(new RegistrationViewImpl(language), eventBus, new HttpPostCommunicationConnection(ServletPaths.REGISTRATION));
-		// Important: first create the loginPresenter and than the AdminApplicationPresenter: So the LoginPresenter will receive LoginEvents as the first
-		loginPresenter = new AuthenticationPresenter(eventBus, new LoginViewImpl(language), new LogoutViewImpl(language),  RootPanel.get(), WebSocketCommunicationConnection.getInstance());
-		applicationPresenter = new AdminApplicationPresenter(eventBus, new AdminApplicationViewImpl(language));
+		
+	
+		
+		try {
+		
+			RegistrationModule registrationModule = new RegistrationModule( new RegistrationChannel(new HttpPostCommunicationConnection(ServletPaths.REGISTRATION)));
+			
+			registrationPresenter = new RegistrationPresenter(new RegistrationViewImpl(language), eventBus,  registrationModule);
+			// Important: first create the authenticationPresenter and than the AdminApplicationPresenter: So the LoginPresenter will receive LoginEvents as the first
+			
+			authenticationModule = new AuthenticationModule(new AuthenticationChannel(WebSocketCommunicationConnection.getInstance()));
+			authenticationPresenter = new AuthenticationPresenter(eventBus, new LoginViewImpl(language), new LogoutViewImpl(language), authenticationModule);
+			applicationPresenter = new AdminApplicationPresenter(eventBus, new AdminApplicationViewImpl(language));
 
 		
+		
+		
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		try {
 			
 			/*
