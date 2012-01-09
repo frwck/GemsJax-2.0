@@ -3,15 +3,16 @@ package org.gemsjax.client.admin.presenter;
 import java.io.IOException;
 
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
-import org.gemsjax.client.admin.presenter.event.ShowRegistrationEvent;
+import org.gemsjax.client.admin.presenter.event.DoNewRegistrationEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent.LoadingAnimationEventType;
-import org.gemsjax.client.admin.presenter.handler.ShowRegistrationHandler;
+import org.gemsjax.client.admin.presenter.handler.DoNewRegistrationHandler;
 import org.gemsjax.client.admin.view.RegistrationView;
 import org.gemsjax.client.communication.HttpPostCommunicationConnection;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
 import org.gemsjax.client.communication.channel.handler.RegistrationChannelHandler;
 import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.ServletPaths;
+import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 
@@ -22,18 +23,18 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 
 
-public class RegistrationPresenter extends Presenter implements ShowRegistrationHandler, RegistrationChannelHandler{
+public class RegistrationPresenter extends Presenter implements DoNewRegistrationHandler, RegistrationChannelHandler{
 
 	private RegistrationView view;
 	private RegistrationChannel channel;
 	
 	
-	public RegistrationPresenter(RegistrationView view, EventBus eventBus) {
+	public RegistrationPresenter(RegistrationView view, EventBus eventBus, CommunicationConnection connection) {
 		super(eventBus);
 		
 		this.view = view;
 		try {
-			this.channel = new RegistrationChannel(new HttpPostCommunicationConnection(ServletPaths.REGISTRATION));
+			this.channel = new RegistrationChannel(connection);
 			this.channel.addRegistrationChannelHandler(this);
 		} catch (IOException e) {
 			e.printStackTrace(); // Should never be reached
@@ -44,7 +45,7 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 	
 	private void bind()
 	{
-		eventBus.addHandler(ShowRegistrationEvent.TYPE, this);
+		eventBus.addHandler(DoNewRegistrationEvent.TYPE, this);
 		
 		view.getSubmitButton().addClickHandler(new ClickHandler() {
 			
@@ -98,7 +99,7 @@ public class RegistrationPresenter extends Presenter implements ShowRegistration
 
 
 	@Override
-	public void onShowRegistrationEvent(ShowRegistrationEvent event) {
+	public void onShowRegistrationEvent(DoNewRegistrationEvent event) {
 		view.clearForm();
 		view.show();
 		view.bringToFront();

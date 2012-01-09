@@ -2,7 +2,7 @@ package org.gemsjax.client.admin;
 
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
-import org.gemsjax.client.admin.presenter.LoginPresenter;
+import org.gemsjax.client.admin.presenter.AuthenticationPresenter;
 import org.gemsjax.client.admin.presenter.MetaModelPresenter;
 import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.admin.presenter.RegistrationPresenter;
@@ -11,10 +11,14 @@ import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoginViewImpl;
+import org.gemsjax.client.admin.view.implementation.LogoutViewImpl;
 import org.gemsjax.client.admin.view.implementation.MetaModelViewImpl;
 import org.gemsjax.client.admin.view.implementation.RegistrationViewImpl;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.communication.HttpPostCommunicationConnection;
+import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 import org.gemsjax.client.metamodel.factory.MetaFactory;
+import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
@@ -64,7 +68,7 @@ public class AdminApplicationController  {
 	/**
 	 * A LoginView is always open in the background and show a simple login view 
 	 */
-	private LoginPresenter loginPresenter;
+	private AuthenticationPresenter loginPresenter;
 	
 	/**
 	 * The {@link RegistrationPresenter} to register a new {@link RegisteredUser}
@@ -119,9 +123,9 @@ public class AdminApplicationController  {
 		
 		loadingPresenter = new LoadingPresenter(eventBus, new LoadingViewImpl());
 		
-		registrationPresenter = new RegistrationPresenter(new RegistrationViewImpl(language), eventBus);
+		registrationPresenter = new RegistrationPresenter(new RegistrationViewImpl(language), eventBus, new HttpPostCommunicationConnection(ServletPaths.REGISTRATION));
 		// Important: first create the loginPresenter and than the AdminApplicationPresenter: So the LoginPresenter will receive LoginEvents as the first
-		loginPresenter = new LoginPresenter(eventBus, new LoginViewImpl(language), RootPanel.get());
+		loginPresenter = new AuthenticationPresenter(eventBus, new LoginViewImpl(language), new LogoutViewImpl(language),  RootPanel.get(), WebSocketCommunicationConnection.getInstance());
 		applicationPresenter = new AdminApplicationPresenter(eventBus, new AdminApplicationViewImpl(language));
 
 		

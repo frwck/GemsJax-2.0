@@ -4,9 +4,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.gemsjax.shared.RegExFactory;
+import org.gemsjax.shared.communication.message.system.LoginAnswerMessage;
+import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
+import org.gemsjax.shared.communication.message.system.LogoutMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.junit.Test;
+
 
 
 public class RegExTest {
@@ -48,4 +52,15 @@ public class RegExTest {
 		assertTrue(test.matches(filter));
 	}
 
+	@Test
+	public void orTest()
+	{
+		String regEx = (""+RegExFactory.startWithTagSubTag(SystemMessage.TAG, RegistrationAnswerMessage.TAG)+")|("+RegExFactory.startWithTagSubTag(SystemMessage.TAG, LogoutMessage.TAG)+"");
+		
+		System.out.println(regEx);
+		
+		LoginAnswerMessage failMessage = new LoginAnswerMessage(LoginAnswerStatus.FAIL);
+		
+		assertTrue(regEx.matches(failMessage.toXml()));
+	}
 }

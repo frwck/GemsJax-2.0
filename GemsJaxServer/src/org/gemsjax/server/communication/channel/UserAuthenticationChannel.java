@@ -30,6 +30,8 @@ import org.gemsjax.shared.communication.message.system.LoginAnswerMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
+import org.gemsjax.shared.user.ExperimentUser;
+import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
 import org.xml.sax.SAXException;
 
@@ -77,31 +79,44 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 				
 				OnlineUser ou = null;
 				
+				
 				if (lm.isExperimentLogin())
 				{	
-						User u = experimentDAO.getExperimentUserByLogin(lm.getUsername(), SHA.generate256(lm.getPassword()) );
+						ExperimentUser u = experimentDAO.getExperimentUserByLogin(lm.getUsername(), SHA.generate256(lm.getPassword()) );
 						ou = OnlineUser.createForExperiment(u, communicationConnection, httpSession);
+						
+						if (ou == null)
+						{  // should never be reached
+							UnexpectedErrorLogger.severe("- Could not create a OnlineUser (is null): \n\t"+msg+"\n");
+							send(new LoginAnswerMessage(LoginAnswerStatus.FAIL));
+						}
+						else
+						{
+							OnlineUserManager.getInstance().addOnlineUser(ou);
+							
+							send(new LoginAnswerMessage(ou.getId(), u.getExperimentGroup().getId(), u.getDisplayedName())); 
+							communicationConnection.deregisterInputChannel(this);
+						}
 					
 				} // ende if experiment
 				else
 				{
-					User u = userDAO.getUserByLogin(lm.getUsername(), SHA.generate256(lm.getPassword()));
+					RegisteredUser u = userDAO.getUserByLogin(lm.getUsername(), SHA.generate256(lm.getPassword()));
 					ou = OnlineUser.create(u, communicationConnection, httpSession);
-				}
-			
-				
-				
-				if (ou == null)
-				{  // should never be reached
-					UnexpectedErrorLogger.severe("- Could not create a OnlineUser (is null): \n\t"+msg+"\n");
-					send(new LoginAnswerMessage(LoginAnswerStatus.FAIL));
-				}
-				else
-				{
-					OnlineUserManager.getInstance().addOnlineUser(ou);
 					
-					send(new LoginAnswerMessage(LoginAnswerStatus.OK));
-					communicationConnection.deregisterInputChannel(this);
+					if (ou == null)
+					{  // should never be reached
+						UnexpectedErrorLogger.severe("- Could not create a OnlineUser (is null): \n\t"+msg+"\n");
+						send(new LoginAnswerMessage(LoginAnswerStatus.FAIL));
+					}
+					else
+					{
+						OnlineUserManager.getInstance().addOnlineUser(ou);
+						
+						// TODO determine unread message
+						send(new LoginAnswerMessage(ou.getId(), u.getDisplayedName() , 0)); 
+						communicationConnection.deregisterInputChannel(this);
+					}
 				}
 				
 			}

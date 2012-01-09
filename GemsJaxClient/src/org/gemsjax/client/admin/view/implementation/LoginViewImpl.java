@@ -5,6 +5,7 @@ import org.gemsjax.client.admin.view.LoginView;
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
@@ -33,9 +34,12 @@ public class LoginViewImpl extends VLayout implements LoginView{
 	private Label forgotPasswordLabel;
 	private Label newRegistrationLabel;
 
+	private UserLanguage language;
+	
 	public LoginViewImpl(UserLanguage Language)
 	{
 		super();
+		this.language = Language;
 		
 		  /* 
          this.setTitle("Login");  
@@ -269,6 +273,27 @@ public class LoginViewImpl extends VLayout implements LoginView{
 		usernameField.clearValue();
 		passwordField.clearValue();
 		loginButton.enable();
+	}
+
+
+
+	@Override
+	public void showSendError() {
+		SC.warn(language.LoginSentFail());
+	}
+
+
+
+	@Override
+	public void showLoginFailed() {
+		SC.warn(language.LoginFailed());
+	}
+
+
+
+	@Override
+	public void showUnexpectedError() {
+		SC.warn(language.UnexpectedErrorOccurred());
 	}
 	
 	

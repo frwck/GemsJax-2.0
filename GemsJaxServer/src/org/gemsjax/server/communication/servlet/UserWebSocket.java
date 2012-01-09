@@ -76,7 +76,7 @@ import org.gemsjax.shared.communication.message.Message;
 		
 		public void send(Message message) throws IOException
 		{
-			System.out.println("Sending: "+message);
+			System.out.println("Sending: "+message.toXml());
 			connection.sendMessage(message.toXml());
 		}
 

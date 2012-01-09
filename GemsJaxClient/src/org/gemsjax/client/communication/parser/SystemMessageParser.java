@@ -81,29 +81,65 @@ public class SystemMessageParser {
 	{
 		
 		String statusAttribute  = e.getAttribute(LoginAnswerMessage.ATTRIBUTE_STATUS);
+		String uidAttribute = e.getAttribute(LoginAnswerMessage.ATTRIBUTE_USER_ID);
+		String displayNameAttribute = e.getAttribute(LoginAnswerMessage.ATTRIBUTE_DISPLAYED_NAME);
+		String notiAttribute = e.getAttribute(LoginAnswerMessage.ATTRUBUTE_UNREAD_NOTIFICATION_COUNT);
+		String experimentGroupAttribute = e.getAttribute(LoginAnswerMessage.ATTRIBUTE_EXPERIMENT_GROUP);
 		
 		LoginAnswerStatus status = LoginAnswerMessage.stringToAnswerStatus(statusAttribute);
 		
 		if (status== null)
 		 	throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the status of the LoginAnswerMessage");
 		
-		
-		String experimentGroup = e.getAttribute(LoginAnswerMessage.ATTRIBUTE_EXPERIMENT_GROUP);
-		if(experimentGroup!=null && !experimentGroup.isEmpty())
+		// If Login successful
+		if (status==LoginAnswerStatus.OK)
 		{
+			int userId;
+			// Check if all needed attributes are set:
+			if (uidAttribute==null  || uidAttribute.isEmpty())
+				throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse a LoginAnswerMessage, because the unique user id is not set or missing \""+LoginAnswerMessage.ATTRIBUTE_USER_ID+"\"");
+			
+			if (displayNameAttribute==null  || displayNameAttribute.isEmpty())
+				throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse a LoginAnswerMessage, because the display name is not set or missing \""+LoginAnswerMessage.ATTRIBUTE_DISPLAYED_NAME+"\"");
+			
 			try{
-				Integer exGrId = Integer.parseInt(experimentGroup);
-				return new LoginAnswerMessage(status, exGrId);
-
+				userId = Integer.parseInt(uidAttribute);
 			}catch(NumberFormatException ex)
 			{
-				throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the ExperimentGroupId to a Integer. Value: "+experimentGroup);
+				throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the unique user id to a Integer. Value: "+uidAttribute);
 			}
 			
-		}
-		
+			// Check if its a Experiment Login
+			if(experimentGroupAttribute!=null && !experimentGroupAttribute.isEmpty())
+			{
+				try{
+					int exGrId = Integer.parseInt(experimentGroupAttribute);
+					return new LoginAnswerMessage(userId, exGrId, displayNameAttribute);
+				}catch(NumberFormatException ex)
+				{
+					throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the ExperimentGroupId to a Integer. Value: "+experimentGroupAttribute);
+				}
+				
+			}
+			else { // its a normal Login (not experiment)
+				
+				// check if notification count is set
+				if (notiAttribute==null  || notiAttribute.isEmpty())
+					throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse a LoginAnswerMessage, because the unread notification count is not set or missing: \""+LoginAnswerMessage.ATTRUBUTE_UNREAD_NOTIFICATION_COUNT+"\"");
+				
+				try{
+					int notiCount = Integer.parseInt(notiAttribute);
+					return new LoginAnswerMessage(userId, displayNameAttribute, notiCount);
+				}catch(NumberFormatException ex)
+				{
+					throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the unread notification count to a Integer. Value: "+notiAttribute);
+				}
+			}
+				
+			
+		} // End if login sucessful
 		else
-			return new LoginAnswerMessage(status);
+			return new LoginAnswerMessage(LoginAnswerStatus.FAIL); // login fail
 	}
 	
 	

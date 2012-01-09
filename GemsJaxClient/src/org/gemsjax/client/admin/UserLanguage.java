@@ -11,6 +11,16 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Logout")
 	  String Logout(); 
 	  
+	  @DefaultStringValue("Logout successful")
+	  String LogoutReasonClientUser();
+	  
+	  @DefaultStringValue("An unexpected error has occurred. Please reload.")
+	  String UnexpectedErrorOccurred();
+	  
+	  @DefaultStringValue("You were loged out by the server, because the server has accepted another connection with your user authentication data")
+	  String LogoutReasonServerOtherConnection();
+	  
+	  
 	  @DefaultStringValue("Username")
 	  String Username();  
 	  
@@ -29,6 +39,12 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  
 	  @DefaultStringValue("Login. Please wait.")
 	  String WaitWhileLoginIn();
+	  
+	  @DefaultStringValue("A connection error has occurred. Please retry.")
+	  String LoginSentFail();
+	  
+	  @DefaultStringValue("Login failed. Username or password is not correct.")
+	  String LoginFailed();
 	  
 	  /**
 	   * If you try to login, but the password field was empty

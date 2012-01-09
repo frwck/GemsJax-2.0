@@ -1,6 +1,7 @@
 package org.gemsjax.client.admin.view;
 
-import org.gemsjax.client.admin.presenter.LoginPresenter;
+import org.gemsjax.client.admin.presenter.AuthenticationPresenter;
+import org.gemsjax.shared.communication.message.system.LoginMessage;
 
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -16,19 +17,19 @@ public interface LoginView {
 	
 
 	/**
-	 * Get the Login button, where the {@link LoginPresenter} can register an {@link ClickHandler} for it.
+	 * Get the Login button, where the {@link AuthenticationPresenter} can register an {@link ClickHandler} for it.
 	 * @return
 	 */
 	public HasClickHandlers getLoginButton();
 	
 	/**
-	 * Get the new registration button, where the {@link LoginPresenter} can register an {@link ClickHandler} for it.
+	 * Get the new registration button, where the {@link AuthenticationPresenter} can register an {@link ClickHandler} for it.
 	 * @return
 	 */
 	public HasClickHandlers getNewRegistrationButton();
 	
 	/**
-	 * Get the forgot password button, where the {@link LoginPresenter} can register an {@link ClickHandler} for it.
+	 * Get the forgot password button, where the {@link AuthenticationPresenter} can register an {@link ClickHandler} for it.
 	 * @return
 	 */
 	public HasClickHandlers getForgotPasswordButton();
@@ -92,5 +93,20 @@ public interface LoginView {
 	 * Reset the view. That means, that all input fields will be set to the default value
 	 */
 	public void resetView();
+	
+	/**
+	 * Display a error message, if sending a {@link LoginMessage} to the server has failed
+	 */
+	public void showSendError();
+	
+	/**
+	 * Display an error message, beacause the login with the submited username and password has failed.
+	 */
+	public void showLoginFailed();
+	
+	/**
+	 * Display a message, that says that an unexpected error has occurred
+	 */
+	public void showUnexpectedError();
 	
 }

@@ -1,21 +1,23 @@
 package org.gemsjax.client.admin.presenter;
 
-import org.gemsjax.client.admin.presenter.event.LoginEvent;
-import org.gemsjax.client.admin.presenter.handler.LoginHandler;
+import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
+import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
 import org.gemsjax.client.admin.view.AdminUIView;
+import org.gemsjax.shared.user.RegisteredUser;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 
-public class AdminApplicationPresenter extends Presenter implements LoginHandler{
+public class AdminApplicationPresenter extends Presenter implements LoginSuccessfulHandler{
 
 	private AdminUIView view;
+	private RegisteredUser authenticatedUser;
 	
 	public AdminApplicationPresenter(EventBus eventBus, AdminUIView view) {
 		super(eventBus);
-		eventBus.addHandler(LoginEvent.TYPE, this);
+		eventBus.addHandler(LoginSuccessfulEvent.TYPE, this);
 		this.view = view;
 		//bind();
 	}
@@ -42,15 +44,9 @@ public class AdminApplicationPresenter extends Presenter implements LoginHandler
 
 
 	@Override
-	public void onLogin(LoginEvent event) {
-		if (event.wasSuccessful())
-		{
-			//TODO maybe we should display the username somewhere in the gui
-			view.show();
-		}
-		
-		
-			
+	public void onLoginSuccessful(LoginSuccessfulEvent event) {
+		authenticatedUser = event.getAuthenticatedUser();
+		view.show();	
 	}
 	
 
