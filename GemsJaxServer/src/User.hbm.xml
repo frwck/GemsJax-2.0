@@ -10,6 +10,7 @@
     </id>
     
     <property name="displayedName" column="displayedName" type="string" not-null="true"  />
+    <property name="picture" column="picture" type="string" not-null="false" />
     
     <!--  The Collaborateable on which this User works -->
     <set name="collaborateables" table="CollaborateOn" inverse="true" cascade="save-update">        

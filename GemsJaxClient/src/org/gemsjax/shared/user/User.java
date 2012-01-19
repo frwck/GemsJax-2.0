@@ -42,4 +42,9 @@ public interface User {
 	 */
 	public UserOnlineState getOnlineState();
 	
+	
+	public void setProfilePicture(String pictureUrl);
+	
+	public String getProfilePicture();
+	
 }

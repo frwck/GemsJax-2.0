@@ -1,6 +1,9 @@
 package org.gemsjax.shared.communication.message.system;
 
+import java.util.Set;
+
 import org.gemsjax.shared.communication.CommunicationConstants;
+import org.gemsjax.shared.communication.message.friend.Friend;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.user.RegisteredUser;
 
@@ -115,9 +118,12 @@ public class LoginAnswerMessage extends SystemMessage{
 		
 		String attributes =ATTRIBUTE_STATUS+"=\""+answerStatusToString(answer)+"\" " +
 						 	uId + dispName + expGr + unread;
-			
+		
+		
 		
 		return "<"+SystemMessage.TAG+"><"+TAG+" "+ attributes+"/></"+SystemMessage.TAG+">";
+		
+			
 		
 	}
 	

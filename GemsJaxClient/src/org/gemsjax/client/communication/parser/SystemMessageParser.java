@@ -1,7 +1,9 @@
 package org.gemsjax.client.communication.parser;
 
+import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
+import org.gemsjax.shared.communication.message.system.SystemErrorMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
@@ -61,6 +63,9 @@ public class SystemMessageParser {
 		    else
 		    if (childElement.getTagName().equals(RegistrationAnswerMessage.TAG))
 		    	return parseRegistrationAnswerMessage(childElement);
+		    else
+		    if (childElement.getTagName().equals(SystemErrorMessage.TAG))
+		    	return parseSystemErrorMessage(childElement);
 		    
 		    
 		    
@@ -127,6 +132,9 @@ public class SystemMessageParser {
 				if (notiAttribute==null  || notiAttribute.isEmpty())
 					throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse a LoginAnswerMessage, because the unread notification count is not set or missing: \""+LoginAnswerMessage.ATTRUBUTE_UNREAD_NOTIFICATION_COUNT+"\"");
 				
+				
+				
+				
 				try{
 					int notiCount = Integer.parseInt(notiAttribute);
 					return new LoginAnswerMessage(userId, displayNameAttribute, notiCount);
@@ -168,6 +176,31 @@ public class SystemMessageParser {
 			return new RegistrationAnswerMessage(status);
 	}
 	
+	
+	
+	private SystemErrorMessage parseSystemErrorMessage(Element e) throws DOMException
+	{
+		String typeAttribute = e.getAttribute(SystemErrorMessage.ATTRIBUTE_TYPE);
+		CommunicationError.ErrorType type;
+		
+		try{
+			int typeNr = Integer.parseInt(typeAttribute);
+			type = CommunicationError.intToErrorType(typeNr);
+			
+			if (type==null)
+				throw new DOMException(DOMException.SYNTAX_ERR,"CommunicationError type is null (after parsing int to ErrorType)");
+			
+		}catch(NumberFormatException ex)
+		{
+			throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the error type to a Integer. Value: "+typeAttribute);
+		}
+		
+		
+		String additionalInfo = e.getNodeValue();
+		
+		return new SystemErrorMessage(new CommunicationError(type, additionalInfo));
+		
+	}
 	
 	
 	

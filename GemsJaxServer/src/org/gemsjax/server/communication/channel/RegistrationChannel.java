@@ -19,10 +19,11 @@ import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
+import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.Message;
-import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
+import org.gemsjax.shared.communication.message.system.SystemErrorMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 import org.xml.sax.SAXException;
@@ -123,19 +124,19 @@ public class RegistrationChannel implements InputChannel, OutputChannel{
 		} catch (SAXException e) {
 			e.printStackTrace();
 		
-			UnexpectedErrorMessage em = new UnexpectedErrorMessage(UnexpectedErrorMessage.ErrorType.PARSE);
+			SystemMessage em = new SystemErrorMessage(new CommunicationError(CommunicationError.ErrorType.PARSE));
 		    setHttpResponseStatusCode(400);
 		    send(em);
 		
 		}
 		catch (ClassCastException e)
 		{
-			UnexpectedErrorMessage em = new UnexpectedErrorMessage(UnexpectedErrorMessage.ErrorType.PARSE);
+			SystemMessage em = new SystemErrorMessage(new CommunicationError(CommunicationError.ErrorType.PARSE));
 		    setHttpResponseStatusCode(400);
 		    send(em);
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
-		    UnexpectedErrorMessage em = new UnexpectedErrorMessage(UnexpectedErrorMessage.ErrorType.DATABASE);
+			SystemMessage em = new SystemErrorMessage(new CommunicationError(CommunicationError.ErrorType.DATABASE));
 		    setHttpResponseStatusCode(500);
 		    send(em);
 		} catch (UsernameInUseException e) {
@@ -147,7 +148,7 @@ public class RegistrationChannel implements InputChannel, OutputChannel{
 		} catch (DAOException e) {
 			e.printStackTrace();
 			
-			UnexpectedErrorMessage em = new UnexpectedErrorMessage(UnexpectedErrorMessage.ErrorType.DATABASE);
+			SystemMessage em = new SystemErrorMessage(new CommunicationError(CommunicationError.ErrorType.DATABASE));
 		    setHttpResponseStatusCode(500);
 		    send(em);
 		} catch (EMailInUseExcpetion e) {

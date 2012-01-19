@@ -13,6 +13,7 @@ public class RegisteredUserImpl implements RegisteredUser{
 	private String displayedName;
 	private UserOnlineState onlineState;
 	private String email;
+	private String profilePicture;
 	
 	public RegisteredUserImpl(Integer id, String displayedName, UserOnlineState onlineState)
 	{
@@ -79,6 +80,16 @@ public class RegisteredUserImpl implements RegisteredUser{
 	public Set<Experiment> getOwnedExperiments() {
 		// TODO Aneeded?
 		return null;
+	}
+
+	@Override
+	public void setProfilePicture(String pictureUrl) {
+		profilePicture=pictureUrl;
+	}
+
+	@Override
+	public String getProfilePicture() {
+		return profilePicture;
 	}
 
 }

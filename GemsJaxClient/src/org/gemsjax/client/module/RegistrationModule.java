@@ -7,6 +7,7 @@ import java.util.Set;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
 import org.gemsjax.client.communication.channel.handler.RegistrationChannelHandler;
 import org.gemsjax.client.module.handler.RegistrationModuleHandler;
+import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 
@@ -63,5 +64,11 @@ public class RegistrationModule  implements RegistrationChannelHandler{
 	public void onError(Throwable t) {
 		for (RegistrationModuleHandler h: handlers)
 			h.onError(t);
+	}
+
+
+	@Override
+	public void onCommunicationError(CommunicationError e) {
+		onError( new Exception(""+e.getErrorType()+":\n "+e.getAdditionalInfo()));
 	}
 }

@@ -18,6 +18,7 @@ import org.gemsjax.shared.communication.message.system.LoginMessage;
 import org.gemsjax.shared.communication.message.system.LogoutMessage;
 import org.gemsjax.shared.communication.message.system.LogoutMessage.LogoutReason;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
+import org.gemsjax.shared.communication.message.system.SystemErrorMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.UserOnlineState;
@@ -52,8 +53,10 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 		
 		String regEx1 = RegExFactory.startWithTagSubTag(SystemMessage.TAG, LoginAnswerMessage.TAG);
 		String regEx2 = RegExFactory.startWithTagSubTag(SystemMessage.TAG, LogoutMessage.TAG);
+		String regEx3 = RegExFactory.startWithTagSubTag(SystemMessage.TAG, SystemErrorMessage.TAG);
 		
 		String regExFilter = RegExFactory.createOr(regEx1, regEx2);
+		regExFilter = RegExFactory.createOr(regExFilter, regEx3);
 		
 		regEx = RegExp.compile(regExFilter);
 		connection.registerInputChannel(this);
@@ -99,6 +102,14 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 			else
 			if (m instanceof LogoutMessage){
 				fireLogout(((LogoutMessage)m).getLogoutReason());
+			}
+			else
+			if (m instanceof SystemErrorMessage)
+			{
+				SystemErrorMessage sm = (SystemErrorMessage) m;
+				
+				
+				fireParseError(new Exception("A serverside Error has occurred: "+sm.getError().getErrorType()+ ": "+sm.getError().getAdditionalInfo()));
 			}
 		}
 		catch (DOMException e)

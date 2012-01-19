@@ -23,12 +23,12 @@ import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
+import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.Message;
-import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
-import org.gemsjax.shared.communication.message.UnexpectedErrorMessage.ErrorType;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
+import org.gemsjax.shared.communication.message.system.SystemErrorMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.gemsjax.shared.user.ExperimentUser;
 import org.gemsjax.shared.user.RegisteredUser;
@@ -135,7 +135,7 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 			e.printStackTrace();
 			UnexpectedErrorLogger.severe("- Could not Parse the message: \n\t"+msg+"\n");
 			try {
-				send(new UnexpectedErrorMessage(ErrorType.PARSE));
+				send(new SystemErrorMessage(new CommunicationError(CommunicationError.ErrorType.PARSE)));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -145,7 +145,7 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 			e.printStackTrace();
 			UnexpectedErrorLogger.severe("- IO EXcpetion: "+e.getMessage()+ " \n\tOriginal incoming msg"+msg+"\n");
 			try {
-				send(new UnexpectedErrorMessage(ErrorType.PARSE));
+				send(new SystemErrorMessage(new CommunicationError(CommunicationError.ErrorType.PARSE)));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -154,7 +154,7 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 			e.printStackTrace();
 			UnexpectedErrorLogger.severe("- Database Experiment DAO on Message: \n\t"+msg+"\n");
 			try {
-				send(new UnexpectedErrorMessage(ErrorType.PARSE));
+				send(new SystemErrorMessage(new CommunicationError(CommunicationError.ErrorType.DATABASE)));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
@@ -167,7 +167,7 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 			e.printStackTrace();
 			UnexpectedErrorLogger.severe("- Database Experiment DAO. More than one user found! on Message: \n\t"+msg+"\n");
 			try {
-				send(new UnexpectedErrorMessage(ErrorType.PARSE));
+				send(new SystemErrorMessage(new CommunicationError(CommunicationError.ErrorType.DATABASE)));
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

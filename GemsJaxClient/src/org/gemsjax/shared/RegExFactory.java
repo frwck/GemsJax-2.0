@@ -58,9 +58,23 @@ public class RegExFactory {
 		return "^( )*\\<( )*(("+xmlRootTag+")|("+xmlRootTag+")/|("+xmlRootTag+" .*))>( )*\\<( )*(("+subTag+")|("+subTag+")/|("+subTag+" .*))>.*";
 	}
 	
-	
-	public static String createOr(String firstRegEx, String secondRegex)
+	/**
+	 * Concatenate all passed RegExes to one big by placing a "OR" between them
+	 * @param regexs
+	 * @return
+	 */
+	public static String createOr(String ... regexs)
 	{
-		return "("+firstRegEx+")|("+secondRegex+")";
+		if (regexs.length<=1)
+			throw new IllegalArgumentException("At least two regexes are required");
+		
+		String ret ="("+regexs[0]+")";
+		
+		for (int i=1; i<regexs.length;i++)
+		{
+			ret+="|("+regexs[i]+")";
+		}
+			
+		return ret;
 	}
 }

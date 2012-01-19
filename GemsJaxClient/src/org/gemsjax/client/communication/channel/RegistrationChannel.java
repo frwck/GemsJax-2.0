@@ -12,14 +12,17 @@ import org.gemsjax.shared.communication.CommunicationConnection.ErrorListener;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
+import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
+import org.gemsjax.shared.communication.message.system.SystemErrorMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.gemsjax.shared.user.RegisteredUser;
 
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.xml.client.DOMException;
 import com.smartgwt.client.util.SC;
 
 /**
@@ -40,7 +43,10 @@ public class RegistrationChannel implements InputChannel, OutputChannel, ErrorLi
 	
 	public RegistrationChannel(CommunicationConnection connection) throws IOException
 	{
-		regEx = RegExp.compile(RegExFactory.startWithTagSubTag(SystemMessage.TAG, RegistrationAnswerMessage.TAG));
+		
+		String regEx1 = RegExFactory.startWithTagSubTag(SystemMessage.TAG, RegistrationAnswerMessage.TAG);
+		String regEx2 = RegExFactory.startWithTagSubTag(SystemMessage.TAG, SystemErrorMessage.TAG);
+		regEx = RegExp.compile(RegExFactory.createOr(regEx1, regEx2));
 		
 		
 		this.connection = connection;
@@ -71,14 +77,32 @@ public class RegistrationChannel implements InputChannel, OutputChannel, ErrorLi
 
 	@Override
 	public void onMessageReceived(InputMessage msg) {
-		
-		RegistrationAnswerMessage m = (RegistrationAnswerMessage) parser.parseMessage(msg.getText());
-		
-		if (m.getAnswerStatus() == RegistrationAnswerStatus.OK)
-			fireSuccessful();
-		else
-			fireFailed(m.getAnswerStatus(), m.getFailString());
-		
+		try
+		{
+			
+			SystemMessage m = parser.parseMessage(msg.getText());
+			
+			if (m instanceof RegistrationAnswerMessage)
+			{
+				RegistrationAnswerMessage rm = (RegistrationAnswerMessage) m;
+				
+				if (rm.getAnswerStatus() == RegistrationAnswerStatus.OK)
+					fireSuccessful();
+				else
+					fireFailed(rm.getAnswerStatus(), rm.getFailString());
+			} 	
+			else
+			if (m instanceof SystemErrorMessage)
+			{
+				SystemErrorMessage sm = (SystemErrorMessage)m;
+				fireCommunicationError(sm.getError());
+			}
+				
+		}
+		catch (DOMException e)
+		{
+			
+		}
 	}
 
 	/**
@@ -91,7 +115,13 @@ public class RegistrationChannel implements InputChannel, OutputChannel, ErrorLi
 			h.onRegistrationSuccessful();
 	}
 	
-
+	private void fireCommunicationError(CommunicationError e)
+	{
+		for (RegistrationChannelHandler h : handlers)
+			h.onCommunicationError(e);
+	}
+	
+	
 	/**
 	 * Inform all {@link RegistrationChannelHandler}s that, the registration has failed.
 	 * This is done, by calling {@link RegistrationChannelHandler#onRegistrationFailed(RegistrationAnswerStatus, String)}

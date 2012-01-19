@@ -4,14 +4,18 @@ import org.gemsjax.shared.communication.CommunicationConstants;
 
 /**
  * This message should notify the client about an unexpected server error,
- * like parsing error, database error ...
- * 
- * <b>Note: do not use this {@link UnexpectedErrorMessage} for sematic error handling like a modelling error </b>
+ * like parsing error, database error or authentication error 
+ * <b>Note: do not use this {@link CommunicationError} for sematic error handling like a modelling error </b>
  * @author Hannes Dorfmann
  *
  */
-public class UnexpectedErrorMessage implements Message{
+public class CommunicationError {
 
+	public static final String TAG ="error";
+	
+	public static final String ATTRIBUTE_TYPE ="type";
+	
+	
 	/**
 	 * Representing the error type
 	 * @author Hannes Dorfmann
@@ -29,20 +33,25 @@ public class UnexpectedErrorMessage implements Message{
 		 * An unexpected Database error has occurred.
 		 * Mapped by {@link CommunicationConstants.Error#DATABASE}.
 		 */
-		DATABASE
+		DATABASE,
+		
+		/**
+		 * User which has sent a message and is now waiting for the answer is not authenticated and not allowed to get a answer
+		 */
+		AUTHENTICATION
 	}
 	
 	private ErrorType type;
 	
 	private String additionalInfo;
 	
-	public UnexpectedErrorMessage(ErrorType type)
+	public CommunicationError(ErrorType type)
 	{
 		this.type = type;
 		additionalInfo = null;
 	}
 	
-	public UnexpectedErrorMessage(ErrorType type, String additionalInfo)
+	public CommunicationError(ErrorType type, String additionalInfo)
 	{
 		this.type = type;
 		this.additionalInfo = additionalInfo;
@@ -65,8 +74,8 @@ public class UnexpectedErrorMessage implements Message{
 	{
 		switch (type)
 		{
-			case PARSE: return CommunicationConstants.UnexpectedError.PARSE;
-			case DATABASE: return CommunicationConstants.UnexpectedError.DATABASE;
+			case PARSE: return CommunicationConstants.Error.PARSE;
+			case DATABASE: return CommunicationConstants.Error.DATABASE;
 		}
 		
 		return null;
@@ -74,17 +83,17 @@ public class UnexpectedErrorMessage implements Message{
 	
 	
 	
-	@Override
+	
 	public String toXml() {
 		if (additionalInfo== null)
-			return "<error type=\""+errorTypeToInt()+"\" >";
+			return "<"+TAG+" "+ATTRIBUTE_TYPE+"=\""+errorTypeToInt()+"\" />";
 		else
-			return "error type=\""+errorTypeToInt()+"\">"+additionalInfo+"</error>";
+			return "<"+TAG+" "+ATTRIBUTE_TYPE+"=\""+errorTypeToInt()+"\">"+additionalInfo+"</"+TAG+">";
 	}
 
 	
 	/**
-	 * Converts a integer constant  (see {@link CommunicationConstants.UnexpectedError}) to {@link ErrorType}
+	 * Converts a integer constant  (see {@link CommunicationConstants.Error}) to {@link ErrorType}
 	 * @param errorNr
 	 * @return
 	 */
@@ -92,8 +101,8 @@ public class UnexpectedErrorMessage implements Message{
 	{
 		switch (errorNr)
 		{
-		case CommunicationConstants.UnexpectedError.DATABASE: return ErrorType.DATABASE;
-		case CommunicationConstants.UnexpectedError.PARSE: return ErrorType.PARSE;
+		case CommunicationConstants.Error.DATABASE: return ErrorType.DATABASE;
+		case CommunicationConstants.Error.PARSE: return ErrorType.PARSE;
 		}
 		
 		

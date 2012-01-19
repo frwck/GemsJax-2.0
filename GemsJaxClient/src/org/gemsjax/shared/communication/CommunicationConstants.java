@@ -1,8 +1,10 @@
 package org.gemsjax.shared.communication;
 
-import org.gemsjax.shared.communication.message.UnexpectedErrorMessage;
+import org.gemsjax.shared.communication.message.CommunicationError;
+import org.gemsjax.shared.communication.message.collaboration.NewCollaborateableMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
+import org.gemsjax.shared.user.UserOnlineState;
 
 /**
  * This class contains constants (grouped in subclasses) that were used for the xml communication between server and client and vice versa 
@@ -55,26 +57,48 @@ public class CommunicationConstants {
 		
 	}
 	
-	
 	/**
-	 * Used by {@link UnexpectedErrorMessage}
+	 * This are the constants for {@link UserOnlineState}
 	 * @author Hannes Dorfmann
 	 *
 	 */
-	public class UnexpectedError{
+	public class OnlineState{
+		/**
+		 * mapped to {@link UserOnlineState#ONLINE}
+		 */
+		public static final String ONLINE="online";
+		/**
+		 * mapped to {@link UserOnlineState#OFFLINE}
+		 */
+		public static final String OFFLINE="offline";
+	}
+	
+	
+	
+	/**
+	 * Used by {@link CommunicationError}
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	public class Error{
 		
-		private UnexpectedError(){}
+		private Error(){}
 		
 		/**
 		 * To indicate that a parser could not parse the message.
-		 * Mapped to {@link UnexpectedErrorMessage.ErrorType}
+		 * Mapped to {@link CommunicationError.ErrorType#PARSE}
 		 */
 		public static final int PARSE = 3;
 		
 		/**
-		 * 
+		 * Mapped to {@link CommunicationError.ErrorType#DATABASE}
 		 */
 		public static final int DATABASE = 4;
+		
+		/**
+		 * Mapped to {@link CommunicationError.ErrorType#AUTHENTICATION}
+		 */
+		public static final int AUTHENTICATION=5;
 		
 	}
 	
@@ -94,6 +118,7 @@ public class CommunicationConstants {
 		public static final String OK = "ok";
 		
 		/**
+	{
 		 * Mapped to {@link RegistrationAnswerMessage.RegistrationAnswerStatus#FAIL_USERNAME}.
 		 */
 		public static final String FAIL_USERNAME = "fail_username";
@@ -112,6 +137,32 @@ public class CommunicationConstants {
 		 * Mapped to {@link RegistrationAnswerMessage.RegistrationAnswerStatus#FAIL_INVALID_EMAIL}
 		 */
 		public static final String FAIL_INVALID_EMAIL = "fail_invalid_email";
+	}
+	
+	
+	
+	public class Collaborateable{
+		private Collaborateable(){}
+		
+		/**
+		 * The communication constant mapped to {@link NewCollaborateableMessage.CollaborateableType#METAMODEL}
+		 */
+		public static final String TYPE_METAMODEL ="MetaModel";
+		
+
+		/**
+		 * The communication constant mapped to {@link NewCollaborateableMessage.CollaborateableType#MODEL}
+		 */
+		public static final String TYPE_MODEL = "Model";
+		
+		public static final String OK = "ok";
+
+		public static final String FAIL_AUTHENTICATION="fail_authentication";
+		
+		public static final String FAIL_TYPE="fail_type";
+		public static final String FAIL_NAME="fail_name";
+		public static final String FAIL_INVALID_COLLABORATOR="invalid_colaborator";
+		public static final String FAIL_INVALID_ADMIN="invalid_admin";
 	}
 
 }
