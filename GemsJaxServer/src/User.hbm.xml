@@ -46,6 +46,20 @@
 			 <key column="User_id" />         
 				<many-to-many column="Experiment_id" class="org.gemsjax.server.persistence.experiment.ExperimentImpl"/>    
 		</set> 
+		
+		
+		<!-- The friends -->
+		<set name="friends" table="Friendship" inverse="true" cascade="save-update">        
+			 <key column="User_id_sender" />         
+				<many-to-many column="User_id_friend" class="org.gemsjax.server.persistence.user.RegisteredUserImpl"/>    
+		</set> 
+		
+	
+	<set name="friendOf" table="Friendship" inverse="false" cascade="save-update">
+		 <key column="User_id_friend" />
+		 <many-to-many column="User_id_sender" class="org.gemsjax.server.persistence.user.RegisteredUserImpl"/> 
+	</set>
+		
     </joined-subclass>
     
     

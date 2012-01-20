@@ -1,11 +1,7 @@
 package org.gemsjax.server.persistence.user;
 
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import org.gemsjax.server.persistence.collaboration.command.CommandImpl;
-import org.gemsjax.server.persistence.request.RequestImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.user.RegisteredUser;
@@ -22,6 +18,8 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 	private Set<Collaborateable>ownedCollaborateables;
 	private Set<Experiment> ownedExperiments;
 	private Set<Experiment> administratedExperiments;
+	private Set<RegisteredUser> friends;
+	private Set<RegisteredUser> friendOf;
 	
 	
 	public RegisteredUserImpl()
@@ -30,6 +28,8 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 		ownedExperiments = new LinkedHashSet<Experiment>();
 		administratedExperiments = new LinkedHashSet<Experiment>();
 		ownedCollaborateables = new LinkedHashSet<Collaborateable>();
+		friends = new LinkedHashSet<RegisteredUser>();
+		friendOf = new LinkedHashSet<RegisteredUser>();
 	}
 
 
@@ -78,6 +78,18 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 	@Override
 	public Set<Experiment> getOwnedExperiments() {
 		return ownedExperiments;
+	}
+	
+	
+	
+	public Set<RegisteredUser> getFriends()
+	{
+		Set<RegisteredUser> f = new LinkedHashSet<RegisteredUser>(friends);
+		
+		f.addAll(friendOf);
+		
+		
+		return f;
 	}
 
 

@@ -27,6 +27,12 @@
        	<many-to-one name="experiment" class="org.gemsjax.server.persistence.experiment.ExperimentImpl" column="Experiment_id" not-null="true"  />
     </joined-subclass>
     
+    
+    
+    <joined-subclass name="org.gemsjax.server.persistence.request.FriendshipRequestImpl" table="FriendshipRequest">
+        <key column="Request_id" />
+     </joined-subclass>
+    
          
 </class>
 

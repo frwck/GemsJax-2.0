@@ -1,5 +1,6 @@
 package org.gemsjax.client.module;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -9,7 +10,9 @@ import java.util.Set;
 import org.gemsjax.client.communication.channel.FriendsLiveChannel;
 import org.gemsjax.client.communication.channel.handler.FriendsLiveChannelHandler;
 import org.gemsjax.client.module.handler.FriendsModuleHandler;
+import org.gemsjax.shared.communication.message.friend.CancelFriendshipMessage;
 import org.gemsjax.shared.communication.message.friend.Friend;
+import org.gemsjax.shared.communication.message.friend.GetAllFriendsMessage;
 import org.gemsjax.shared.user.UserOnlineState;
 
 /**
@@ -217,6 +220,35 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 				fr.add(f);
 		
 		return new FriendDisplayNameResults(dispNameToSearch, fr);
+	}
+	
+	
+	
+	/**
+	 * Send a request to the server, that you want to get the list with all friends
+	 * @throws IOException
+	 */
+	public void requestAllFriends() throws IOException
+	{
+		channel.send(new GetAllFriendsMessage() );
+	}
+	
+	
+	/**
+	 * Cancel the friendship to the specified friends
+	 * @param friends
+	 * @throws IOException
+	 */
+	public void cancelFriendship(Set<Friend> friends) throws IOException
+	{
+		Set<Integer> ids = new LinkedHashSet<Integer>();
+		
+		for (Friend f: friends)
+		{
+			ids.add(f.getId());
+		}
+		
+		channel.send(new CancelFriendshipMessage(ids));
 	}
 	
 	
