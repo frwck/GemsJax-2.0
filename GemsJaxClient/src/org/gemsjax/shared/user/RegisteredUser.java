@@ -45,4 +45,7 @@ public interface RegisteredUser extends User{
 	public Set<Experiment> getOwnedExperiments();
 	
 	
+	public Set<RegisteredUser> getAllFriends();
+	
+	
 }

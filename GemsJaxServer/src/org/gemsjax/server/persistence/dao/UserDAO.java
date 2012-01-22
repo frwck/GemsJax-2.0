@@ -82,5 +82,11 @@ public interface UserDAO {
 
 	public abstract void updateRegisteredUserEmail(RegisteredUser u,
 			String newEmail) throws DAOException, EMailInUseExcpetion;
+	
+	
+	
+	public abstract void addFriendship(RegisteredUser requester, RegisteredUser friend) throws DAOException;
+	
+	public abstract void cancelFriendship(RegisteredUser cancler, RegisteredUser exfriend) throws DAOException;
 
 }

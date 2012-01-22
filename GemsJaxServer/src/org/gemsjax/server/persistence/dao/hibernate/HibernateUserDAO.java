@@ -359,5 +359,83 @@ public class HibernateUserDAO implements UserDAO {
 			throw new DAOException(e, "Could not update the email");
 		}
 	}
+
+	@Override
+	public void addFriendship(RegisteredUser requester, RegisteredUser friend) throws DAOException {
+		Session session = null;
+		Transaction tx = null;
+		
+		try 
+		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			
+				RegisteredUserImpl ru =((RegisteredUserImpl) requester); 
+				RegisteredUserImpl fu =((RegisteredUserImpl) requester); 
+				
+				if (!ru.getAllFriends().contains(fu))
+				{
+					tx = session.beginTransaction();
+						ru.getFriends().add(fu);
+						fu.getFriends().add(ru);
+						session.update(ru);
+						session.update(fu);
+					tx.commit();
+				
+				}
+				
+				session.close();
+			
+				
+		} catch(HibernateException e)
+		{
+			
+			if (tx != null)
+				tx.rollback();
+			
+			if (session != null)
+				session.close();
+			throw new DAOException(e, "Could not establish the friendship");
+		}
+	}
+
+	@Override
+	public void cancelFriendship(RegisteredUser cancler, RegisteredUser exfriend) throws DAOException {
+		
+		Session session = null;
+		Transaction tx = null;
+		
+		try 
+		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+				RegisteredUserImpl ca =((RegisteredUserImpl) cancler); 
+				RegisteredUserImpl ex =((RegisteredUserImpl) exfriend); 
+				
+				
+				if (ca.getFriends().contains(ex))
+					ca.getFriends().remove(ex);
+				
+				else
+				if (ca.getFriendOf().contains(ex))
+					ca.getFriendOf().remove(ex);
+				
+				session.update(ca);
+			tx.commit();
+			session.flush();
+			session.close();
+			
+			ex.getFriendOf().remove(ca);
+			ex.getFriends().remove(ca);
+			
+		} catch(HibernateException e)
+		{
+			if (tx != null)
+				tx.rollback();
+			
+			if (session != null)
+				session.close();
+			throw new DAOException(e, "Could not cancel the friendship");
+		}
+	}
 	
 }

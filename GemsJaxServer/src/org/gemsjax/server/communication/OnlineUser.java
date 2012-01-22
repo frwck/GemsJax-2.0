@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.gemsjax.server.communication.channel.FriendsLiveChannel;
 import org.gemsjax.server.communication.channel.SimpleOutputChannel;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
@@ -26,6 +27,7 @@ public class OnlineUser {
 	
 	private User user;
 	private OutputChannel outputChannel;
+	private FriendsLiveChannel friendChannel;
 	private Set<InputChannel> inputChannels;
 	
 	private HttpSession httpSession;
@@ -36,6 +38,18 @@ public class OnlineUser {
 		this.user = user;
 		inputChannels = new HashSet<InputChannel>();
 		this.httpSession = httpSession;
+	}
+	
+	
+	public void setFriendLiveChannel(FriendsLiveChannel channel)
+	{
+		this.friendChannel = channel;
+	}
+	
+	
+	public FriendsLiveChannel getFriendChannel()
+	{
+		return friendChannel;
 	}
 
 	public User getUser()
@@ -115,7 +129,7 @@ public class OnlineUser {
 	 * <li> </li>
 	 * </ul>
 	 * @param user
-	 * @param connection
+	 * @param connection The {@link CommunicationConnection} which can send push messages from server to client
 	 * @return
 	 */
 	public static OnlineUser create(User user, CommunicationConnection connection, HttpSession httpSession)
