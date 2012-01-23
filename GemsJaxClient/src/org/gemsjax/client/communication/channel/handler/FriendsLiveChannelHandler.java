@@ -3,6 +3,7 @@ package org.gemsjax.client.communication.channel.handler;
 import java.io.IOException;
 import java.util.Set;
 
+import org.gemsjax.shared.communication.message.friend.CancelFriendshipMessage;
 import org.gemsjax.shared.communication.message.friend.Friend;
 
 /**
@@ -41,5 +42,11 @@ public interface FriendsLiveChannelHandler {
 	 * @param exFriendId
 	 */
 	public void onFriendshipCanceled(Set<Integer> exFriendIds);
+	
+	/**
+	 * Called if the server response on a {@link CancelFriendshipMessage} was received
+	 * @param exFriendIds
+	 */
+	public void onCancelFriendshipAnswer(Set<Integer> exFriendIds);
 	
 }

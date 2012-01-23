@@ -92,4 +92,15 @@ public class RegisteredUserImpl implements RegisteredUser{
 		return profilePicture;
 	}
 
+	@Override
+	public void setOnlineState(UserOnlineState onlineState) {
+		this.onlineState = onlineState;
+	}
+
+	@Override
+	public Set<RegisteredUser> getAllFriends() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

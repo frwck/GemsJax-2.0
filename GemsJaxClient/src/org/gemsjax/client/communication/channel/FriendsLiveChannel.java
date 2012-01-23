@@ -13,6 +13,7 @@ import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.friend.AddFriendsAnswerMessage;
+import org.gemsjax.shared.communication.message.friend.CancelFriendshipAnswerMessage;
 import org.gemsjax.shared.communication.message.friend.Friend;
 import org.gemsjax.shared.communication.message.friend.FriendErrorMessage;
 import org.gemsjax.shared.communication.message.friend.FriendMessage;
@@ -34,6 +35,7 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	private FriendMessageParser parser;
 	private Set<FriendsLiveChannelHandler> handlers;
 	
+	
 	public FriendsLiveChannel(CommunicationConnection connection)
 	{
 		this.connection = connection;
@@ -44,8 +46,9 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 		String regEx2 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, FriendErrorMessage.TAG);
 		String regEx3 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, AddFriendsAnswerMessage.TAG);
 		String regEx4 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, FriendshipCanceledMessage.TAG);
+		String regEx5 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, CancelFriendshipAnswerMessage.TAG);
 		
-		regEx = RegExp.compile( RegExFactory.createOr(regEx1, regEx2, regEx3, regEx4) );
+		regEx = RegExp.compile( RegExFactory.createOr(regEx1, regEx2, regEx3, regEx4, regEx5) );
 	}
 	
 	
@@ -97,7 +100,11 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 		{
 			fireFriendshipCanceled(((FriendshipCanceledMessage)m).getExFriendId());
 		}
-		
+		else
+		if (m instanceof CancelFriendshipAnswerMessage)
+		{
+			fireCancelAnswer(((CancelFriendshipAnswerMessage)m).getFriendIds());
+		}
 		
 	}
 	
@@ -110,7 +117,6 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	}
 	
 	
-
 	private void fireFriendshipCanceled(Set<Integer> exFriendIds)
 	{
 		for (FriendsLiveChannelHandler h: handlers)
@@ -139,9 +145,18 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	}
 	
 	
+	private void fireCancelAnswer(Set<Integer> exFriendIds)
+	{
+		for (FriendsLiveChannelHandler h: handlers)
+			h.onCancelFriendshipAnswer(exFriendIds);
+	}
+	
+	
 	@Override
 	public boolean isMatchingFilter(String msg) {
 		return regEx.test(msg);
 	}
+	
+	
 
 }

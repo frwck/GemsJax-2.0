@@ -250,6 +250,13 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 		
 		channel.send(new CancelFriendshipMessage(ids));
 	}
+
+
+	@Override
+	public void onCancelFriendshipAnswer(Set<Integer> exFriendIds) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	

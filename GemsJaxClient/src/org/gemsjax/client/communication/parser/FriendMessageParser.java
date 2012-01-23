@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.friend.AddFriendsAnswerMessage;
+import org.gemsjax.shared.communication.message.friend.CancelFriendshipAnswerMessage;
 import org.gemsjax.shared.communication.message.friend.Friend;
 import org.gemsjax.shared.communication.message.friend.FriendErrorMessage;
 import org.gemsjax.shared.communication.message.friend.FriendMessage;
@@ -66,6 +67,9 @@ public class FriendMessageParser {
 		    else
 		    if (childElement.getTagName().equals(FriendshipCanceledMessage.TAG))
 		    	return parseFriendShipChanceledMessage(childElement);
+		    else
+		    if (childElement.getTagName().equals(CancelFriendshipAnswerMessage.TAG))
+		    	return parseCancelFriendshipAnswerMessage(childElement);
 		   
 		    
 		    // If nothing could be parsed
@@ -273,5 +277,43 @@ public class FriendMessageParser {
 		
 		return new FriendErrorMessage(new CommunicationError(type, additionalInfo));
 		
+	}
+	
+	
+	private FriendMessage parseCancelFriendshipAnswerMessage(Element e)
+	{
+		NodeList friendNodes = e.getChildNodes();
+		Element current;
+		
+		Set<Integer> exFriendsIds = new LinkedHashSet<Integer>();
+		int id;
+		String idAtt;
+		
+		for (int i=0; i<friendNodes.getLength(); i++)
+		{
+			current = (Element)friendNodes.item(i);
+			// check if its a expected friend element
+			
+			if (!current.getTagName().equals(CancelFriendshipAnswerMessage.SUBTAG_FRIEND))
+				throw new DOMException(DOMException.SYNTAX_ERR, "A <"+CancelFriendshipAnswerMessage.SUBTAG_FRIEND+"> is expected, but a <"+current.getTagName()+"> was received");
+			
+			
+			idAtt = current.getAttribute(CancelFriendshipAnswerMessage.ATTRIBUTE_FRIEND_ID);
+			
+			if (idAtt == null)
+				throw new DOMException(DOMException.SYNTAX_ERR, "The id of a exfriend was null");
+			
+			try{
+				id = Integer.parseInt(idAtt);
+				exFriendsIds.add(id);
+			}catch(NumberFormatException ex)
+			{
+				throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the id to a Integer. Value: "+idAtt);
+			}
+			
+		}
+		
+		
+		return new CancelFriendshipAnswerMessage(exFriendsIds);
 	}
 }
