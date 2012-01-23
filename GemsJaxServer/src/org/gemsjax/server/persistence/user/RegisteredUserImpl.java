@@ -121,29 +121,4 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 		
 	}
 	
-	/*
-	@Override
-	public boolean equals(Object other) {
-		
-		if (this==other) return true;
-		
-		if ( !(other instanceof RegisteredUserImpl) ) return false;
-		
-		final RegisteredUserImpl that = (RegisteredUserImpl) other;
-		
-		if (getId() != null && that.getId() != null)
-			return this.getId().equals(that.getId());
-		
-		return false;
-	}
-		
-	@Override
-	public int hashCode() {
-		if (getId() != null)
-			return getId().hashCode();
-		else
-			return super.hashCode();
-	}
-	
-	*/
 }

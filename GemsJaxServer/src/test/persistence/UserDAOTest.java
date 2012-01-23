@@ -230,12 +230,15 @@ public class UserDAOTest {
 	}
 	
 	@Test
-	public void establishFriendship() throws UsernameInUseException, DAOException, EMailInUseExcpetion
+	public void testFriendship() throws UsernameInUseException, DAOException, EMailInUseExcpetion, NotFoundException
 	{
+	
 		RegisteredUser user =  dao.createRegisteredUser("IWantFriendsTest", "passwordHash", "iwantfriends@email.com");
 		createdRegisteredUsers.add(user);
 		
-		int fCount = 1;
+		// Create new Friendships
+		
+		int fCount = 2;
 		RegisteredUser friends[] = new RegisteredUser[fCount];
 		
 		for (int i =  0; i<fCount; i++)
@@ -247,9 +250,50 @@ public class UserDAOTest {
 	
 			System.out.println(user.getAllFriends().size());
 			System.out.println(friends[i].getAllFriends().size());
-//			assertTrue(user.getAllFriends().contains(friends[i]));
-//			assertTrue(friends[i].getAllFriends().contains(user));
+			assertTrue(user.getAllFriends().contains(friends[i]));
+			assertTrue(friends[i].getAllFriends().contains(user));
+		
 		}
+		
+		
+		
+		for (int i = 0; i<fCount; i++)
+		{
+			RegisteredUser fCheck = dao.getRegisteredUserById(friends[i].getId());
+			assertTrue(fCheck.getAllFriends().contains(user));
+			assertTrue (fCheck.equals(friends[i]));
+			assertFalse(fCheck == friends[i]);
+		}
+		
+		assertTrue(user.getAllFriends().size() == fCount);
+		
+		
+		// cancel Friendships as user as cancler
+		for (int i=0; i<(fCount/2); i++)
+		{
+
+			dao.cancelFriendship(user, friends[i]);
+			assertTrue(!user.getAllFriends().contains(friends[i]));
+			assertTrue(!friends[i].getAllFriends().contains(user));
+		}
+		
+		
+		// Let the friend cancel the friendship with the  user
+		for (int i=(fCount/2); i<fCount; i++)
+		{
+			dao.cancelFriendship(friends[i], user);
+			assertTrue(!user.getAllFriends().contains(friends[i]));
+			assertTrue(!friends[i].getAllFriends().contains(user));
+		}
+		
+		
+		
+		
+		// Do the final test, no friends should be 
+		
+		
+		
+		
 	}
 	
 	

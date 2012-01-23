@@ -1,6 +1,9 @@
 package org.gemsjax.server.persistence.dao.hibernate;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.collaboration.CollaborateableImpl;
 import org.gemsjax.server.persistence.dao.UserDAO;
@@ -370,21 +373,22 @@ public class HibernateUserDAO implements UserDAO {
 			session = HibernateUtil.getSessionFactory().openSession();
 			
 				RegisteredUserImpl ru =((RegisteredUserImpl) requester); 
-				RegisteredUserImpl fu =((RegisteredUserImpl) requester); 
+				RegisteredUserImpl fu =((RegisteredUserImpl) friend); 
 				
 				if (!ru.getAllFriends().contains(fu))
 				{
 					tx = session.beginTransaction();
 						ru.getFriends().add(fu);
-						fu.getFriends().add(ru);
+						
 						session.update(ru);
-						session.update(fu);
+						//session.update(fu);
 					tx.commit();
 				
 				}
 				
 				session.close();
 			
+				fu.getFriends().add(ru);
 				
 		} catch(HibernateException e)
 		{
@@ -412,20 +416,21 @@ public class HibernateUserDAO implements UserDAO {
 				RegisteredUserImpl ex =((RegisteredUserImpl) exfriend); 
 				
 				
-				if (ca.getFriends().contains(ex))
+				//if (ca.getFriends().contains(ex))
 					ca.getFriends().remove(ex);
 				
-				else
-				if (ca.getFriendOf().contains(ex))
+			//	if (ca.getFriendOf().contains(ex))
 					ca.getFriendOf().remove(ex);
+
+					ex.getFriendOf().remove(ca);
+					ex.getFriends().remove(ca);
 				
 				session.update(ca);
+				session.update(ex);
 			tx.commit();
 			session.flush();
 			session.close();
 			
-			ex.getFriendOf().remove(ca);
-			ex.getFriends().remove(ca);
 			
 		} catch(HibernateException e)
 		{
@@ -437,5 +442,6 @@ public class HibernateUserDAO implements UserDAO {
 			throw new DAOException(e, "Could not cancel the friendship");
 		}
 	}
+	
 	
 }
