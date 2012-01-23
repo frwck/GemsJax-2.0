@@ -42,6 +42,12 @@ public interface User {
 	 */
 	public UserOnlineState getOnlineState();
 	
+	/**
+	 * Set the {@link UserOnlineState}
+	 * @param onlineState
+	 */
+	public void setOnlineState(UserOnlineState onlineState);
+	
 	
 	public void setProfilePicture(String pictureUrl);
 	

@@ -6,10 +6,10 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpSession;
 
-import org.gemsjax.server.communication.OnlineUser;
-import org.gemsjax.server.communication.OnlineUserManager;
 import org.gemsjax.server.communication.parser.SystemMessageParser;
 import org.gemsjax.server.logger.UnexpectedErrorLogger;
+import org.gemsjax.server.module.OnlineUser;
+import org.gemsjax.server.module.OnlineUserManager;
 import org.gemsjax.server.persistence.dao.ExperimentDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.DAOException;

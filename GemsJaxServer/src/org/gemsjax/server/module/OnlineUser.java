@@ -1,4 +1,4 @@
-package org.gemsjax.server.communication;
+package org.gemsjax.server.module;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -8,9 +8,11 @@ import javax.servlet.http.HttpSession;
 import org.gemsjax.server.communication.channel.FriendsLiveChannel;
 import org.gemsjax.server.communication.channel.SimpleOutputChannel;
 import org.gemsjax.shared.communication.CommunicationConnection;
+import org.gemsjax.shared.communication.CommunicationConstants.OnlineState;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.user.User;
+import org.gemsjax.shared.user.UserOnlineState;
 
 
 /**
@@ -33,11 +35,14 @@ public class OnlineUser {
 	private HttpSession httpSession;
 	
 	
+	
+	
 	private OnlineUser(User user, HttpSession httpSession)
 	{
 		this.user = user;
 		inputChannels = new HashSet<InputChannel>();
 		this.httpSession = httpSession;
+		this.setOnlineState(UserOnlineState.ONLINE);
 	}
 	
 	
@@ -139,7 +144,10 @@ public class OnlineUser {
 		// Set the output Channels
 		u.setOutputChannel(new SimpleOutputChannel(connection));
 		
-		// Set the input Channels
+		// Set the FriendsChannel
+		FriendsLiveChannel fc = new FriendsLiveChannel(connection);
+		fc.addFriendsChannelHandler(FriendModule.getInstance());
+		u.setFriendLiveChannel(fc);
 		
 		return u;
 	}
@@ -164,6 +172,16 @@ public class OnlineUser {
 		// Set the input Channels
 		
 		return u;
+	}
+
+
+	public UserOnlineState getOnlineState() {
+		return user.getOnlineState();
+	}
+
+
+	public void setOnlineState(UserOnlineState onlineState) {
+		user.setOnlineState(onlineState);
 	}
 	
 	

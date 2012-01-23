@@ -1,4 +1,4 @@
-package org.gemsjax.server.communication;
+package org.gemsjax.server.module;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -75,6 +75,16 @@ public class OnlineUserManager {
 	public OnlineUser getOnlineUser( User u)
 	{
 		return onlineUserIdMap.get(u.getId());
+	}
+	
+	/**
+	 * Get the OnlineUser by its unique User id
+	 * @param id
+	 * @return the {@link OnlineUser} or null (if not online now)
+	 */
+	public OnlineUser getOnlineUser(int id)
+	{
+		return onlineUserIdMap.get(id);
 	}
 	
 	/**

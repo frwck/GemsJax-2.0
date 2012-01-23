@@ -1,7 +1,10 @@
 package org.gemsjax.server.communication.channel;
 
 import java.io.IOException;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+import org.gemsjax.server.communication.channel.handler.FriendsChannelHandler;
 import org.gemsjax.server.communication.parser.FriendMessageParser;
 import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.communication.CommunicationConnection;
@@ -49,15 +52,27 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	private CommunicationConnection connection;
 	private String filterRegEx;
 	private FriendMessageParser parser;
+	private Set<FriendsChannelHandler> handlers;
 	
 	public FriendsLiveChannel(CommunicationConnection connection)
 	{
 		this.connection = connection;
 		parser = new FriendMessageParser();
+		handlers = new LinkedHashSet<FriendsChannelHandler>();
 		String reg1 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, GetAllFriendsMessage.TAG);
 		String reg2 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, CancelFriendshipMessage.TAG);
 
 		filterRegEx = RegExFactory.createOr(reg1, reg2);
+	}
+	
+	public void addFriendsChannelHandler(FriendsChannelHandler h)
+	{
+		handlers.add(h);
+	}
+	
+	public void removeFriendsChanneslHandler(FriendsChannelHandler h)
+	{
+		handlers.remove(h);
 	}
 
 	@Override
