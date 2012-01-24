@@ -1,4 +1,4 @@
-package org.gemsjax.shared.communication.request;
+package org.gemsjax.shared.communication.message.request;
 
 import org.gemsjax.shared.communication.message.Message;
 

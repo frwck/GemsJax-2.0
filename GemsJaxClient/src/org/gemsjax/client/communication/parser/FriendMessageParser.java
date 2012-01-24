@@ -11,6 +11,8 @@ import org.gemsjax.shared.communication.message.friend.FriendErrorMessage;
 import org.gemsjax.shared.communication.message.friend.FriendMessage;
 import org.gemsjax.shared.communication.message.friend.FriendUpdateMessage;
 import org.gemsjax.shared.communication.message.friend.FriendshipCanceledMessage;
+import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestAnswerMessage;
+import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage;
 import org.gemsjax.shared.user.UserOnlineState;
 import com.google.gwt.xml.client.DOMException;
@@ -70,7 +72,11 @@ public class FriendMessageParser {
 		    else
 		    if (childElement.getTagName().equals(CancelFriendshipAnswerMessage.TAG))
 		    	return parseCancelFriendshipAnswerMessage(childElement);
-		   
+		    
+		    else
+		    if (childElement.getTagName().equals(NewFriendshipRequestAnswerMessage.TAG))
+			  	return parseFriendshipRequestAnswer(childElement);
+				   
 		    
 		    // If nothing could be parsed
 		 	throw new DOMException(DOMException.SYNTAX_ERR, "The <"+FriendErrorMessage.TAG+"> was found, but contains an unknown child tag <"+childElement.getTagName()+">");
@@ -125,6 +131,40 @@ public class FriendMessageParser {
 	
 	
 	
+	private FriendMessage parseFriendshipRequestAnswer(Element e)
+	{
+		String dispName= e.getAttribute(NewFriendshipRequestAnswerMessage.ATTRIBUTE_RECEIVER_DISPLAY_NAME);
+		String statusAtt = e.getAttribute(NewFriendshipRequestAnswerMessage.ATTRIBUTE_STATE);
+		String idAtt = e.getAttribute(NewFriendshipRequestAnswerMessage.ATTRIBUTE_RECEIVER_ID);
+		int id;
+		
+		if (idAtt == null)
+			throw new DOMException(DOMException.SYNTAX_ERR, "The id of a friend was null");
+		
+		try{
+			id = Integer.parseInt(idAtt);
+			
+		}catch(NumberFormatException ex)
+		{
+			throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the id to a Integer. Value: "+idAtt);
+		}
+		
+		
+		
+		if (dispName==null)
+			throw new DOMException(DOMException.SYNTAX_ERR, "The display name of a user was null");
+		
+		if (statusAtt==null)
+			throw new DOMException(DOMException.SYNTAX_ERR, "The response status was null");
+		
+		NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus status = FriendshipRequestAnswerStatus.fromConstant(statusAtt);
+		
+		if (status==null)
+			throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the response status. Value: "+statusAtt+". Thats undefined!");
+		
+		
+		return new NewFriendshipRequestAnswerMessage(status, id, dispName);
+	}
 	
 	
 	
@@ -207,50 +247,50 @@ public class FriendMessageParser {
 	private FriendUpdateMessage parseFriendUpdateMessage(Element e) throws DOMException
 	{
 		NodeList friendNodes = e.getChildNodes();
-		
+
 		if (friendNodes.getLength()!=1)
 			throw new DOMException(DOMException.SYNTAX_ERR,"Expected exactly one <"+FriendUpdateMessage.SUBTAG_FRIEND+"> but got "+friendNodes.getLength());
-		
+
 		Element fe = (Element) friendNodes.item(0);
-		
+
 		if (!fe.getTagName().equals(FriendUpdateMessage.SUBTAG_FRIEND))
 			throw new DOMException(DOMException.SYNTAX_ERR,"Expected a <"+FriendUpdateMessage.SUBTAG_FRIEND+"> but got "+fe.getTagName());
-		
+
 		String idAtt = fe.getAttribute(FriendUpdateMessage.ATTRIBUTE_ID);
 		String dispName=fe.getAttribute(FriendUpdateMessage.ATTRIBUTE_DISPLAY_NAME);
 		String onState=fe.getAttribute(FriendUpdateMessage.ATTRIUBTE_ONLINE_STATE);
 		String picture = fe.getAttribute(FriendUpdateMessage.ATTRIBUTE_PROFILE_PICTURE);
-		
+
 		int id;
 		if (idAtt == null)
 			throw new DOMException(DOMException.SYNTAX_ERR, "The id of a friend was null");
-		
+
 		try{
 			id = Integer.parseInt(idAtt);
-			
+
 		}catch(NumberFormatException ex)
 		{
 			throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the id to a Integer. Value: "+idAtt);
 		}
-		
-		
-		
+
+
+
 		if (dispName==null)
 			throw new DOMException(DOMException.SYNTAX_ERR, "The display name of a friend was null");
-		
+
 		if (onState==null)
 			throw new DOMException(DOMException.SYNTAX_ERR, "The online state of a friend was null");
-		
+
 		UserOnlineState onlineStatus = UserOnlineState.toOnlineState(onState);
-		
+
 		if (onlineStatus==null)
 			throw new DOMException(DOMException.SYNTAX_ERR, "The online state of a friend was "+onState+". Thats undefined!");
-		
-		
+
+
 		Friend friend = new Friend(id, dispName, onlineStatus, picture);
-		
+
 		return new FriendUpdateMessage(friend);
-		
+
 	}
 	
 	

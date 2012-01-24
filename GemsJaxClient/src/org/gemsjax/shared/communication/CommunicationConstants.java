@@ -2,6 +2,7 @@ package org.gemsjax.shared.communication;
 
 import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.collaboration.NewCollaborateableMessage;
+import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestAnswerMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 import org.gemsjax.shared.user.UserOnlineState;
@@ -139,6 +140,43 @@ public class CommunicationConstants {
 		public static final String FAIL_INVALID_EMAIL = "fail_invalid_email";
 	}
 	
+	/**
+	 * The constants for the {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus} enum
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	public class FriendshipRequestAnswer {
+		private FriendshipRequestAnswer(){}
+		
+		/**
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#OK}
+		 */
+		public static final String OK ="ok";
+	
+		/**
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FAIL_PARSING}
+		 */
+		public static final String FAIL_PARSING="fail_parsing";
+		
+		/**
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FAIL_DATABASE}
+		 */
+		public static final String FAIL_DATABASE="fail_database";
+		
+		/**
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FAIL_AUTHENTICATION}
+		 */
+		public static final String FAIL_AUTHENTICATION="fail_authentication";
+		/**
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FAIL_ALREADY_REQUESTED}
+		 */
+		public static final String FAIL_ALREADY_REQUESTED="fail_requested";
+		
+		/**
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FAIL_ALREADY_FRIENDS}
+		 */
+		public static final String FAIL_ALREADY_FRIENDS="fail_friends";
+	}
 	
 	
 	public class Collaborateable{
