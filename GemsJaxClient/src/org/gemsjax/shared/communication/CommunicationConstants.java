@@ -145,37 +145,39 @@ public class CommunicationConstants {
 	 * @author Hannes Dorfmann
 	 *
 	 */
-	public class FriendshipRequestAnswer {
-		private FriendshipRequestAnswer(){}
+	public class FriendError {
+		private FriendError(){}
+		
 		
 		/**
-		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#OK}
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#PARSING}
 		 */
-		public static final String OK ="ok";
+		public static final String PARSING="fail_parsing";
+		
+		/**
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#DATABASE}
+		 */
+		public static final String DATABASE="fail_database";
+		
+		/**
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#AUTHENTICATION}
+		 */
+		public static final String AUTHENTICATION="fail_authentication";
+		/**
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#ALREADY_REQUESTED}
+		 */
 	
-		/**
-		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FAIL_PARSING}
-		 */
-		public static final String FAIL_PARSING="fail_parsing";
+		public static final String ALREADY_REQUESTED="fail_requested";
 		
 		/**
-		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FAIL_DATABASE}
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#ALREADY_FRIENDS}
 		 */
-		public static final String FAIL_DATABASE="fail_database";
+		public static final String ALREADY_FRIENDS="fail_friends";
 		
 		/**
-		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FAIL_AUTHENTICATION}
+		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FRIEND_ID}
 		 */
-		public static final String FAIL_AUTHENTICATION="fail_authentication";
-		/**
-		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FAIL_ALREADY_REQUESTED}
-		 */
-		public static final String FAIL_ALREADY_REQUESTED="fail_requested";
-		
-		/**
-		 * Mapped to {@link NewFriendshipRequestAnswerMessage.FriendshipRequestAnswerStatus#FAIL_ALREADY_FRIENDS}
-		 */
-		public static final String FAIL_ALREADY_FRIENDS="fail_friends";
+		public static final String FRIEND_ID="fail_friend_id";
 	}
 	
 	

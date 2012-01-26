@@ -6,7 +6,7 @@ package org.gemsjax.shared.communication.message.friend;
  * @author Hannes Dorfmann
  *
  */
-public class NewFriendshipRequestMessage extends FriendMessage{
+public class NewFriendshipRequestMessage extends ReferenceableFriendMessage{
 
 	public static final String TAG ="new";
 	public static final String ATTRIBUTE_USER_ID = "receiver-id";
@@ -14,15 +14,16 @@ public class NewFriendshipRequestMessage extends FriendMessage{
 	
 	private int id;
 	
-	public NewFriendshipRequestMessage(int receiverId)
+	public NewFriendshipRequestMessage(String referenceId, int receiverId)
 	{
+		super(referenceId);
 		this.id = receiverId;
 	}
 	
 	
 	@Override
 	public String toXml() {
-		return "<"+FriendMessage.TAG+"><"+TAG+" "+ATTRIBUTE_USER_ID+"=\""+id+"\"></"+TAG+"></"+FriendMessage.TAG+">";
+		return "<"+FriendMessage.TAG+" "+ReferenceableFriendMessage.ATTRIBUTE_REFERENCE_ID+"=\""+getReferenceId()+"\"><"+TAG+" "+ATTRIBUTE_USER_ID+"=\""+id+"\" /></"+FriendMessage.TAG+">";
 	}
 	
 	

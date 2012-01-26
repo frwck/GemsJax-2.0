@@ -8,7 +8,7 @@ import java.util.Set;
  * @see FriendshipCanceledMessage
  *
  */
-public class CancelFriendshipMessage extends FriendMessage{
+public class CancelFriendshipMessage extends ReferenceableFriendMessage{
 
 	public static final String SUBTAG_FRIEND ="friend";
 	public static final String ATTRIBUTE_FRIEND_ID ="id";
@@ -16,8 +16,9 @@ public class CancelFriendshipMessage extends FriendMessage{
 	
 	private Set<Integer> friendIds;
 	
-	public CancelFriendshipMessage(Set<Integer> friendIds)
+	public CancelFriendshipMessage(String referenceId, Set<Integer> friendIds)
 	{
+		super(referenceId);
 		this.friendIds = friendIds;
 	}
 	
@@ -37,7 +38,7 @@ public class CancelFriendshipMessage extends FriendMessage{
 	
 	@Override
 	public String toXml() {
-		return "<"+FriendMessage.TAG+"><"+TAG+">"+friendIdsToXml()+"</"+TAG+"></"+FriendMessage.TAG+">";
+		return "<"+FriendMessage.TAG+" "+ReferenceableFriendMessage.ATTRIBUTE_REFERENCE_ID+"=\""+getReferenceId()+"\"><"+TAG+">"+friendIdsToXml()+"</"+TAG+"></"+FriendMessage.TAG+">";
 	}
 	
 	

@@ -3,6 +3,8 @@ package org.gemsjax.client.admin.presenter;
 import org.gemsjax.client.admin.view.FriendsOnlineView;
 import org.gemsjax.client.module.FriendsModule;
 import org.gemsjax.client.module.handler.FriendsModuleHandler;
+import org.gemsjax.shared.communication.message.friend.Friend;
+import org.gemsjax.shared.communication.message.friend.FriendError;
 
 import com.google.gwt.event.shared.EventBus;
 
@@ -37,8 +39,9 @@ public class FriendsPresenter extends Presenter implements FriendsModuleHandler{
 
 
 
+
 	@Override
-	public void onAuthenticationError() {
+	public void onNewFriendAdded(Friend f) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -46,7 +49,24 @@ public class FriendsPresenter extends Presenter implements FriendsModuleHandler{
 
 
 	@Override
-	public void onUnexpectedError() {
+	public void onErrorAnswer(String referenceId, FriendError error,
+			String additionalInfo) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void onFriendshipsSuccessfullCanceled(String referenceId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void onNewFriendshipSuccessfull(String referenceId) {
 		// TODO Auto-generated method stub
 		
 	}

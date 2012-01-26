@@ -8,6 +8,8 @@ import java.util.Set;
 import org.gemsjax.shared.communication.message.friend.CancelFriendshipMessage;
 import org.gemsjax.shared.communication.message.friend.FriendMessage;
 import org.gemsjax.shared.communication.message.friend.GetAllFriendsMessage;
+import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestMessage;
+import org.gemsjax.shared.communication.message.friend.ReferenceableFriendMessage;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -26,9 +28,12 @@ import org.xml.sax.helpers.XMLReaderFactory;
  */
 public class FriendMessageParser extends AbstractContentHandler {
 	
-	boolean friendStart, friendEnd;
-	boolean getAllStart, getAllEnd;
-	boolean cancelFriendshipStart, cancelFriendshipEnd;
+	private boolean friendStart, friendEnd;
+	private boolean getAllStart, getAllEnd;
+	private boolean cancelFriendshipStart, cancelFriendshipEnd;
+	private boolean friendshipRequestStart, friendshipRequestEnd;
+	
+	private String referenceId;
 	
 	private Set<Integer> friendsIds;
 	
@@ -42,6 +47,11 @@ public class FriendMessageParser extends AbstractContentHandler {
 	 * If the value is less then zero, at least one opening tag is missing.
 	 */
 	private int subTagCanceledCounter;
+	
+	/**
+	 * Used for {@link NewFriendshipRequestMessage}
+	 */
+	private int newFriendId;
 	
 
 	public FriendMessageParser(){	
@@ -68,10 +78,22 @@ public class FriendMessageParser extends AbstractContentHandler {
 	    	throw new SAXException("The received message is not a valid message: The <"+FriendMessage.TAG+"> are missing");
 	    
 	    if (getAllStart && getAllEnd) 
-	    	return new GetAllFriendsMessage();
+	    	if (referenceId!=null)
+	    		return new GetAllFriendsMessage(referenceId);
+	    	else
+	    		throw new SAXException("Reference id is missing");
 	    
 	    if (cancelFriendshipStart && cancelFriendshipEnd)
-	    	return new CancelFriendshipMessage(friendsIds);
+	    	if (referenceId!=null)
+	    		return new CancelFriendshipMessage(referenceId, friendsIds);
+	    	else
+	    		throw new SAXException("Reference id is missing");
+	    
+	    if (friendshipRequestStart && friendshipRequestEnd)
+	    	if (referenceId!=null)
+	    		return new NewFriendshipRequestMessage(referenceId, newFriendId);
+	    	else
+	    		throw new SAXException("Reference id is missing");
 	    	
 	    throw new SAXException("Unexcpected Parse error: Could not determine the type of the received message");
 	}
@@ -94,6 +116,9 @@ public class FriendMessageParser extends AbstractContentHandler {
 		else
 		if (localName.equals(CancelFriendshipMessage.SUBTAG_FRIEND))
 			subTagCanceledCounter--;
+		else
+		if (localName.equals(NewFriendshipRequestMessage.TAG))
+			friendshipRequestEnd = true;
 	}
 
 
@@ -101,7 +126,10 @@ public class FriendMessageParser extends AbstractContentHandler {
 	public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
 		
 		if (localName.equals(FriendMessage.TAG))
+		{
 			friendStart = true;
+			referenceId = atts.getValue(ReferenceableFriendMessage.ATTRIBUTE_REFERENCE_ID);
+		}
 		else
 		if (localName.equals(GetAllFriendsMessage.TAG))
 			getAllStart = true;
@@ -118,6 +146,20 @@ public class FriendMessageParser extends AbstractContentHandler {
 			try{
 				int id = Integer.parseInt(attId);
 				friendsIds.add(id);
+			}catch (NumberFormatException e)
+			{
+				throw new SAXException("Could not parse the friends user id to an integer. received value: "+attId);
+			}
+		}
+		else
+		if (localName.equals(NewFriendshipRequestMessage.TAG))
+		{
+			
+			friendshipRequestStart = true;
+			
+			String attId = atts.getValue(NewFriendshipRequestMessage.ATTRIBUTE_USER_ID);
+			try{
+				newFriendId = Integer.parseInt(attId);
 			}catch (NumberFormatException e)
 			{
 				throw new SAXException("Could not parse the friends user id to an integer. received value: "+attId);
@@ -142,8 +184,19 @@ public class FriendMessageParser extends AbstractContentHandler {
 		if (cancelFriendshipStart != cancelFriendshipEnd)
 			throw new SAXException("<"+CancelFriendshipMessage.TAG+"> missmatch: An opening or closing tag is missing");
 		
+		if (friendshipRequestStart != friendshipRequestEnd)
+			throw new SAXException("<"+NewFriendshipRequestMessage.TAG+"> missmatch: An opening or closing tag is missing");
+		
+		
 		if (getAllStart && getAllEnd && cancelFriendshipStart && cancelFriendshipEnd)
 			throw new SAXException("The message is a <"+GetAllFriendsMessage.TAG+"> and a <"+CancelFriendshipMessage.TAG+"> message at the same time. That's not allowed.");
+		
+		if (getAllStart && getAllEnd && friendshipRequestStart && friendshipRequestEnd)
+			throw new SAXException("The message is a <"+GetAllFriendsMessage.TAG+"> and a <"+NewFriendshipRequestMessage.TAG+"> message at the same time. That's not allowed.");
+		
+		if (cancelFriendshipStart && cancelFriendshipEnd && friendshipRequestStart && friendshipRequestEnd)
+			throw new SAXException("The message is a <"+CancelFriendshipMessage.TAG+"> and a <"+NewFriendshipRequestMessage.TAG+"> message at the same time. That's not allowed.");
+		
 		
 		if (subTagCanceledCounter<0)
 			throw new SAXException("More closing than opening <"+CancelFriendshipMessage.SUBTAG_FRIEND+"> were found");
@@ -157,6 +210,7 @@ public class FriendMessageParser extends AbstractContentHandler {
 	@Override
 	public void startDocument() throws SAXException {
 
+		referenceId = null;
 		subTagCanceledCounter = 0;
 		friendsIds = new LinkedHashSet<Integer>();
 		friendStart = false;
@@ -165,7 +219,16 @@ public class FriendMessageParser extends AbstractContentHandler {
 		cancelFriendshipStart = false;
 		getAllEnd = false;
 		getAllStart = false;
+		friendshipRequestStart = false;
+		friendshipRequestEnd =false;
 		
+	}
+	
+	
+	
+	public String getCurrentReferenceId()
+	{
+		return referenceId;
 	}
 
 }

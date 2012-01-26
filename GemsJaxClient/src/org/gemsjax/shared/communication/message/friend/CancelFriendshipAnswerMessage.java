@@ -10,7 +10,7 @@ import org.gemsjax.shared.communication.message.Message;
  * @author Hannes Dorfmann
  *
  */
-public class CancelFriendshipAnswerMessage extends FriendMessage{
+public class CancelFriendshipAnswerMessage extends ReferenceableFriendMessage{
 	
 	public static final String SUBTAG_FRIEND ="exfriend";
 	public static final String ATTRIBUTE_FRIEND_ID ="id";
@@ -18,8 +18,9 @@ public class CancelFriendshipAnswerMessage extends FriendMessage{
 	
 	private Set<Integer> exFriendIds;
 	
-	public CancelFriendshipAnswerMessage(Set<Integer> exFriendIds)
+	public CancelFriendshipAnswerMessage(String referenceId, Set<Integer> exFriendIds)
 	{
+		super(referenceId);
 		this.exFriendIds = exFriendIds;
 	}
 	
@@ -39,7 +40,7 @@ public class CancelFriendshipAnswerMessage extends FriendMessage{
 	
 	@Override
 	public String toXml() {
-		return "<"+FriendMessage.TAG+"><"+TAG+">"+friendIdsToXml()+"</"+TAG+"></"+FriendMessage.TAG+">";
+		return "<"+FriendMessage.TAG+" "+ReferenceableFriendMessage.ATTRIBUTE_REFERENCE_ID+"=\""+getReferenceId()+"\"><"+TAG+">"+friendIdsToXml()+"</"+TAG+"></"+FriendMessage.TAG+">";
 	}
 	
 	

@@ -11,7 +11,7 @@ import java.util.Set;
 public class FriendshipCanceledMessage extends FriendMessage{
 
 	public static final String TAG ="remove";
-	public static final String SUBTAG_FRIEND = "friend";
+	public static final String SUBTAG_FRIEND = "exfriend";
 	public static final String ATTRIBUTE_FRIEND_ID="id";
 	
 	private Set<Integer> exFriendIds;

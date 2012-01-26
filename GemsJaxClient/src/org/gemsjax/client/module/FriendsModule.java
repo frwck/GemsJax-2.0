@@ -12,6 +12,7 @@ import org.gemsjax.client.communication.channel.handler.FriendsLiveChannelHandle
 import org.gemsjax.client.module.handler.FriendsModuleHandler;
 import org.gemsjax.shared.communication.message.friend.CancelFriendshipMessage;
 import org.gemsjax.shared.communication.message.friend.Friend;
+import org.gemsjax.shared.communication.message.friend.FriendError;
 import org.gemsjax.shared.communication.message.friend.GetAllFriendsMessage;
 import org.gemsjax.shared.user.UserOnlineState;
 
@@ -21,6 +22,9 @@ import org.gemsjax.shared.user.UserOnlineState;
  *
  */
 public class FriendsModule implements FriendsLiveChannelHandler{
+	
+	
+	
 	
 	/**
 	 * Used by {@link FriendsModule#getFriendByDisplayName(String)}
@@ -56,6 +60,7 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 	
 	private FriendsLiveChannel channel;
 	private Set<FriendsModuleHandler> handlers;
+
 	
 	public Map<Integer, Friend> friends;
 	
@@ -66,6 +71,7 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 		this.handlers = new LinkedHashSet<FriendsModuleHandler>();
 		friends = new LinkedHashMap<Integer, Friend>();
 		channel.addFriendsChannelHandler(this);
+
 	}
 	
 	
@@ -89,18 +95,6 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 	}
 	
 	
-	private void fireAuthenticationError()
-	{
-		for (FriendsModuleHandler h : handlers)
-			h.onAuthenticationError(); 
-	}
-	
-	
-	private void fireUnexpectedError()
-	{
-		for (FriendsModuleHandler h : handlers)
-			h.onUnexpectedError(); 
-	}
 	
 
 	@Override
@@ -110,7 +104,7 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 
 
 	@Override
-	public void onAllFriendsReceived(Set<Friend> fr) {
+	public void onAllFriendsReceived(String refId, Set<Friend> fr) {
 		
 		for (Friend f: fr)
 			friends.put(f.getId(), f);
@@ -119,22 +113,13 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 	}
 
 
-	@Override
-	public void onAutenticationError() {
-		fireAuthenticationError();
-	}
-
-
-	@Override
-	public void onUnexpectedError(Throwable t) {
-		fireUnexpectedError();
-	}
-
 
 	@Override
 	public void onFriendshipCanceled(Set<Integer> exFriendIds) {
 		for (int id: exFriendIds)
 			friends.remove(id);
+		
+		fireUpdate();
 	}
 	
 	
@@ -221,6 +206,7 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 		
 		return new FriendDisplayNameResults(dispNameToSearch, fr);
 	}
+	// TODO Auto-generated method stub
 	
 	
 	
@@ -228,9 +214,10 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 	 * Send a request to the server, that you want to get the list with all friends
 	 * @throws IOException
 	 */
-	public void requestAllFriends() throws IOException
+	public void requestAllFriends(String referenceId) throws IOException
 	{
-		channel.send(new GetAllFriendsMessage() );
+		
+		channel.send(new GetAllFriendsMessage(referenceId) );
 	}
 	
 	
@@ -239,7 +226,7 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 	 * @param friends
 	 * @throws IOException
 	 */
-	public void cancelFriendship(Set<Friend> friends) throws IOException
+	public void cancelFriendship(String referenceId, Set<Friend> friends) throws IOException
 	{
 		Set<Integer> ids = new LinkedHashSet<Integer>();
 		
@@ -248,13 +235,52 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 			ids.add(f.getId());
 		}
 		
-		channel.send(new CancelFriendshipMessage(ids));
+		channel.send(new CancelFriendshipMessage(referenceId, ids));
 	}
 
 
 	@Override
-	public void onCancelFriendshipAnswer(Set<Integer> exFriendIds) {
-		// TODO Auto-generated method stub
+	public void onCancelFriendshipAnswer(String referenceId, Set<Integer> exFriendIds) {
+		for (int id: exFriendIds)
+			friends.remove(id);
+		
+		for (FriendsModuleHandler h : handlers)
+			h.onFriendsUpdate();
+		
+	}
+
+
+	@Override
+	public void onNewFriendAdded(Friend newFriend) {
+		friends.put(newFriend.getId(), newFriend);
+		
+		for (FriendsModuleHandler h : handlers)
+		{
+			h.onFriendsUpdate();
+			h.onNewFriendAdded(newFriend);
+		}
+		
+	}
+
+
+	@Override
+	public void onError(String referenceId, FriendError error, String additionalInfo) {
+		
+		for (FriendsModuleHandler h : handlers)
+			h.onErrorAnswer(referenceId, error, additionalInfo);
+		
+	}
+
+
+	@Override
+	public void onNewFriendshipRequestAnswer(String referenceId, Friend f) {
+		friends.put(f.getId(), f);
+		
+		for (FriendsModuleHandler h: handlers)
+		{
+			h.onFriendsUpdate();
+			h.onNewFriendshipSuccessfull(referenceId);
+		}
 		
 	}
 	

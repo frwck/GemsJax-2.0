@@ -12,13 +12,16 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
-import org.gemsjax.shared.communication.message.friend.AddFriendsAnswerMessage;
+import org.gemsjax.shared.communication.message.friend.AllFriendsAnswerMessage;
 import org.gemsjax.shared.communication.message.friend.CancelFriendshipAnswerMessage;
 import org.gemsjax.shared.communication.message.friend.Friend;
-import org.gemsjax.shared.communication.message.friend.FriendErrorMessage;
+import org.gemsjax.shared.communication.message.friend.FriendError;
+import org.gemsjax.shared.communication.message.friend.FriendErrorAnswerMessage;
 import org.gemsjax.shared.communication.message.friend.FriendMessage;
 import org.gemsjax.shared.communication.message.friend.FriendUpdateMessage;
 import org.gemsjax.shared.communication.message.friend.FriendshipCanceledMessage;
+import org.gemsjax.shared.communication.message.friend.NewFriendAddedMessage;
+import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestAnswerMessage;
 
 import com.google.gwt.regexp.shared.RegExp;
 
@@ -42,13 +45,7 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 		parser = new FriendMessageParser();
 		handlers = new LinkedHashSet<FriendsLiveChannelHandler>();
 		
-		String regEx1 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, FriendUpdateMessage.TAG);
-		String regEx2 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, FriendErrorMessage.TAG);
-		String regEx3 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, AddFriendsAnswerMessage.TAG);
-		String regEx4 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, FriendshipCanceledMessage.TAG);
-		String regEx5 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, CancelFriendshipAnswerMessage.TAG);
-		
-		regEx = RegExp.compile( RegExFactory.createOr(regEx1, regEx2, regEx3, regEx4, regEx5) );
+		regEx = RegExp.compile( RegExFactory.startWithTag(FriendMessage.TAG) );
 	}
 	
 	
@@ -72,9 +69,11 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	public void onMessageReceived(InputMessage msg) {
 		FriendMessage m = parser.parseMessage(msg.getText());
 		
-		if (m instanceof AddFriendsAnswerMessage)
+		if (m instanceof AllFriendsAnswerMessage)
 		{
-			fireAllFriends(((AddFriendsAnswerMessage)m).getFriends());
+			AllFriendsAnswerMessage am = ((AllFriendsAnswerMessage)m);
+			
+			fireAllFriends(am.getReferenceId(), am.getFriends());
 		}
 		else
 		if (m instanceof FriendUpdateMessage)
@@ -82,18 +81,10 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 			fireFriendUpdate(((FriendUpdateMessage)m).getFriend());
 		}
 		else
-		if(m instanceof FriendErrorMessage)
+		if(m instanceof FriendErrorAnswerMessage)
 		{
-			FriendErrorMessage fm = (FriendErrorMessage) m;
-			
-			switch (fm.getError().getErrorType())
-			{
-			case AUTHENTICATION: fireAuthenticationError(); break;
-			case PARSE: fireUnexpectedError(new Exception("An unexpected parse error has occurred on server side: "+fm.getError().getAdditionalInfo())); break;
-			case DATABASE:  fireUnexpectedError(new Exception("An unexpected databasae error has occurred on server side: "+fm.getError().getAdditionalInfo())); break;
-			default: fireUnexpectedError(new Exception("An unexpected error has occurred. Error type could not be determined"));break;
-			}
-			
+			FriendErrorAnswerMessage fm = (FriendErrorAnswerMessage) m;
+			fireError(fm.getReferenceId(), fm.getError(), fm.getAdditionalInfo());
 		}
 		else
 		if (m instanceof FriendshipCanceledMessage)
@@ -103,17 +94,37 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 		else
 		if (m instanceof CancelFriendshipAnswerMessage)
 		{
-			fireCancelAnswer(((CancelFriendshipAnswerMessage)m).getFriendIds());
+			CancelFriendshipAnswerMessage cm = ((CancelFriendshipAnswerMessage)m);
+			
+			fireCancelAnswer(cm.getReferenceId(), cm.getFriendIds());
+		}
+		else
+		if (m instanceof NewFriendAddedMessage)
+		{
+			fireNewFriendAdded(((NewFriendAddedMessage)m).getFriend());
+		}
+		else
+		if (m instanceof NewFriendshipRequestAnswerMessage)
+		{
+			NewFriendshipRequestAnswerMessage rm = (NewFriendshipRequestAnswerMessage) m;
+			fireNewFriendshipAnswerMessage(rm.getReferenceId(), rm.getFriend());
 		}
 		
 	}
 	
 	
 	
-	private void fireAllFriends(Set<Friend> friends)
+	private void fireNewFriendshipAnswerMessage(String referenceId, Friend f)
 	{
 		for (FriendsLiveChannelHandler h: handlers)
-			h.onAllFriendsReceived(friends);
+			h.onNewFriendshipRequestAnswer(referenceId, f);
+	}
+	
+	
+	private void fireAllFriends(String referenceId, Set<Friend> friends)
+	{
+		for (FriendsLiveChannelHandler h: handlers)
+			h.onAllFriendsReceived(referenceId, friends);
 	}
 	
 	
@@ -129,26 +140,33 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 		for (FriendsLiveChannelHandler h: handlers)
 			h.onFriendUpdate(f);
 	}
-
 	
-	private void fireAuthenticationError()
+	
+	private void fireNewFriendAdded(Friend f)
 	{
 		for (FriendsLiveChannelHandler h: handlers)
-			h.onAutenticationError();
+			h.onNewFriendAdded(f);
+	}
+
+	
+	private void fireError(String referenceId, FriendError error, String additionalInfo)
+	{
+		for (FriendsLiveChannelHandler h: handlers)
+			h.onError(referenceId, error, additionalInfo);
 	}
 	
-	
+	/*
 	private void fireUnexpectedError(Throwable t)
 	{
 		for (FriendsLiveChannelHandler h: handlers)
 			h.onUnexpectedError(t);
 	}
+	*/
 	
-	
-	private void fireCancelAnswer(Set<Integer> exFriendIds)
+	private void fireCancelAnswer(String referenceId, Set<Integer> exFriendIds)
 	{
 		for (FriendsLiveChannelHandler h: handlers)
-			h.onCancelFriendshipAnswer(exFriendIds);
+			h.onCancelFriendshipAnswer(referenceId, exFriendIds);
 	}
 	
 	

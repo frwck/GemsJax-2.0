@@ -11,12 +11,10 @@ import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
-import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.Message;
-import org.gemsjax.shared.communication.message.CommunicationError.ErrorType;
-import org.gemsjax.shared.communication.message.friend.AddFriendsAnswerMessage;
 import org.gemsjax.shared.communication.message.friend.CancelFriendshipMessage;
-import org.gemsjax.shared.communication.message.friend.FriendErrorMessage;
+import org.gemsjax.shared.communication.message.friend.FriendError;
+import org.gemsjax.shared.communication.message.friend.FriendErrorAnswerMessage;
 import org.gemsjax.shared.communication.message.friend.FriendMessage;
 import org.gemsjax.shared.communication.message.friend.FriendUpdateMessage;
 import org.gemsjax.shared.communication.message.friend.FriendshipCanceledMessage;
@@ -59,10 +57,7 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 		this.connection = connection;
 		parser = new FriendMessageParser();
 		handlers = new LinkedHashSet<FriendsChannelHandler>();
-		String reg1 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, GetAllFriendsMessage.TAG);
-		String reg2 = RegExFactory.startWithTagSubTag(FriendMessage.TAG, CancelFriendshipMessage.TAG);
-
-		filterRegEx = RegExFactory.createOr(reg1, reg2);
+		filterRegEx = RegExFactory.startWithTag(FriendMessage.TAG);
 	}
 	
 	public void addFriendsChannelHandler(FriendsChannelHandler h)
@@ -90,14 +85,12 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 		
 		try {
 			FriendMessage fm = parser.parse(msg.getText());
-		
-		
-		
+	
 		
 		} catch (SAXException e) {
 			
 			try {
-				send(new FriendErrorMessage(new CommunicationError(ErrorType.PARSE, e.getMessage())));
+				send(new FriendErrorAnswerMessage(parser.getCurrentReferenceId(), FriendError.PARSING, e.getMessage()));
 			} catch (IOException e1) {
 				// TODO What to do, if error message could not be sent to the client?
 				e1.printStackTrace();
@@ -107,7 +100,7 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 			e.printStackTrace();
 			
 			try {
-				send(new FriendErrorMessage(new CommunicationError(ErrorType.PARSE, e.getMessage())));
+				send(new FriendErrorAnswerMessage(parser.getCurrentReferenceId(), FriendError.PARSING, e.getMessage()));
 			} catch (IOException e1) {
 				// TODO What to do, if error message could not be sent to the client?
 				e1.printStackTrace();
@@ -115,6 +108,8 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 		}
 		
 	}
+	
+	
 	
 	
 }
