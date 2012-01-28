@@ -1,11 +1,15 @@
 package org.gemsjax.server.module;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.gemsjax.server.communication.channel.handler.LogoutChannelHandler;
 import org.gemsjax.shared.communication.channel.OutputChannel;
+import org.gemsjax.shared.communication.message.system.LogoutMessage;
+import org.gemsjax.shared.communication.message.system.LogoutMessage.LogoutReason;
 import org.gemsjax.shared.user.User;
 
 
@@ -18,7 +22,7 @@ import org.gemsjax.shared.user.User;
  * @author Hannes Dorfmann
  *
  */
-public class OnlineUserManager {
+public class OnlineUserManager implements LogoutChannelHandler {
 
 	/**
 	 * The singleton instance
@@ -67,6 +71,7 @@ public class OnlineUserManager {
 		return o.getOutputChannel();
 	}
 	
+	
 	/**
 	 * Get the {@link OnlineUser} object
 	 * @param u
@@ -105,10 +110,19 @@ public class OnlineUserManager {
 		
 		if (existingOnlineUser != null)
 		{
+			
 			// The User is already logged in with another connection, so logout and close the old connection
 			// and use the new connection
-			
-			//TODO write LogoutMessage and close CommunicationConnection
+			try {
+				user.getLogoutChannel().send(new LogoutMessage(LogoutReason.SERVER_OTHER_CONNECTION));
+			} catch (IOException e) {
+				// TODO What to do if could not sent logout message to the client
+				e.printStackTrace();
+			}
+			finally
+			{
+				doLogout(user);
+			}
 			
 		}
 		
@@ -116,6 +130,21 @@ public class OnlineUserManager {
 		onlineUserIdMap.put(user.getId(), user);
 		onlineUserSessionMap.put(user.getHttpSession().getId(), user);
 		
+	}
+
+
+	private void doLogout(OnlineUser ou)
+	{
+		onlineUserIdMap.remove(ou.getId());
+		onlineUserSessionMap.remove(ou.getHttpSession().getId());
+		ou.getHttpSession().invalidate();
+		
+	}
+	
+
+	@Override
+	public void onLogoutReceived(OnlineUser user) {
+		doLogout(user);
 	}
 	
 	

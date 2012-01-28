@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 import org.gemsjax.server.communication.channel.FriendsLiveChannel;
+import org.gemsjax.server.communication.channel.LogoutChannel;
 import org.gemsjax.server.communication.channel.SimpleOutputChannel;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.CommunicationConstants.OnlineState;
@@ -30,6 +31,7 @@ public class OnlineUser {
 	private User user;
 	private OutputChannel outputChannel;
 	private FriendsLiveChannel friendChannel;
+	private LogoutChannel logoutChannel;
 	private Set<InputChannel> inputChannels;
 	
 	private HttpSession httpSession;
@@ -144,10 +146,14 @@ public class OnlineUser {
 		// Set the output Channels
 		u.setOutputChannel(new SimpleOutputChannel(connection));
 		
+		// LogoutChannel
+		setLogoutChannel(u, connection);
+		
 		// Set the FriendsChannel
-		FriendsLiveChannel fc = new FriendsLiveChannel(connection);
+		FriendsLiveChannel fc = new FriendsLiveChannel(connection, httpSession);
 		fc.addFriendsChannelHandler(FriendModule.getInstance());
 		u.setFriendLiveChannel(fc);
+		
 		
 		return u;
 	}
@@ -169,11 +175,20 @@ public class OnlineUser {
 		// Set the output Channels
 		u.setOutputChannel(new SimpleOutputChannel(connection));
 		
-		// Set the input Channels
+		// Set LogoutChannel
+		setLogoutChannel(u, connection);
 		
 		return u;
 	}
 
+	
+	private static void setLogoutChannel(OnlineUser u, CommunicationConnection connection)
+	{
+		// Set LogoutChannel
+		LogoutChannel lc = new LogoutChannel(connection, u.getHttpSession());
+		u.setLogoutChannel(lc);
+		lc.addLogoutChannelHandler(OnlineUserManager.getInstance());
+	}
 
 	public UserOnlineState getOnlineState() {
 		return user.getOnlineState();
@@ -182,6 +197,16 @@ public class OnlineUser {
 
 	public void setOnlineState(UserOnlineState onlineState) {
 		user.setOnlineState(onlineState);
+	}
+
+
+	public LogoutChannel getLogoutChannel() {
+		return logoutChannel;
+	}
+
+
+	public void setLogoutChannel(LogoutChannel logoutChannel) {
+		this.logoutChannel = logoutChannel;
 	}
 	
 	

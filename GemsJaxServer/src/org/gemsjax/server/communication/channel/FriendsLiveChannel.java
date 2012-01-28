@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
+
 import org.gemsjax.server.communication.channel.handler.FriendsChannelHandler;
 import org.gemsjax.server.communication.parser.FriendMessageParser;
+import org.gemsjax.server.module.OnlineUser;
+import org.gemsjax.server.module.OnlineUserManager;
 import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
@@ -19,6 +23,8 @@ import org.gemsjax.shared.communication.message.friend.FriendMessage;
 import org.gemsjax.shared.communication.message.friend.FriendUpdateMessage;
 import org.gemsjax.shared.communication.message.friend.FriendshipCanceledMessage;
 import org.gemsjax.shared.communication.message.friend.GetAllFriendsMessage;
+import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestAnswerMessage;
+import org.gemsjax.shared.communication.message.friend.ReferenceableFriendMessage;
 import org.gemsjax.shared.request.FriendshipRequest;
 import org.gemsjax.shared.user.UserOnlineState;
 import org.xml.sax.SAXException;
@@ -51,10 +57,12 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	private String filterRegEx;
 	private FriendMessageParser parser;
 	private Set<FriendsChannelHandler> handlers;
+	private HttpSession session;
 	
-	public FriendsLiveChannel(CommunicationConnection connection)
+	public FriendsLiveChannel(CommunicationConnection connection, HttpSession session)
 	{
 		this.connection = connection;
+		this.session = session;
 		parser = new FriendMessageParser();
 		handlers = new LinkedHashSet<FriendsChannelHandler>();
 		filterRegEx = RegExFactory.startWithTag(FriendMessage.TAG);
@@ -84,8 +92,36 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	public void onMessageReceived(InputMessage msg) {
 		
 		try {
+			
 			FriendMessage fm = parser.parse(msg.getText());
-	
+			
+			OnlineUser authenticatedUser = OnlineUserManager.getInstance().getOnlineUser(session);
+			
+			if (authenticatedUser==null) // Check if user is authenticated
+			{
+				if (fm instanceof ReferenceableFriendMessage)
+					send(new FriendErrorAnswerMessage(((ReferenceableFriendMessage) fm).getReferenceId(), FriendError.AUTHENTICATION));
+				else
+					send(new FriendErrorAnswerMessage(null, FriendError.AUTHENTICATION));
+				
+				return;
+			}
+			
+			
+			
+			if (fm instanceof CancelFriendshipMessage )
+				fireCancelFriendship(authenticatedUser, ((CancelFriendshipMessage) fm).getFriendIds(), ((CancelFriendshipMessage) fm).getReferenceId());
+			
+			else
+			if (fm instanceof GetAllFriendsMessage)
+				fireGetAllFriends(authenticatedUser, ((GetAllFriendsMessage) fm).getReferenceId());
+			
+			else
+			if (fm instanceof NewFriendshipRequestAnswerMessage)
+				fireNewFriendshipRequest(authenticatedUser, ((NewFriendshipRequestAnswerMessage) fm).getFriend().getId(), ((NewFriendshipRequestAnswerMessage) fm).getReferenceId());
+			
+			else
+			send(new FriendErrorAnswerMessage(null, FriendError.PARSING,"Could not determine the type of this message"));
 		
 		} catch (SAXException e) {
 			
@@ -111,5 +147,23 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	
 	
 	
+	private void fireCancelFriendship(OnlineUser user, Set<Integer> friendIds, String referenceId)
+	{
+		for (FriendsChannelHandler h: handlers)
+			h.onCancelFriendships(user, friendIds, referenceId);
+	}
+	
+	
+	private void fireGetAllFriends(OnlineUser user, String referenceId)
+	{
+		for (FriendsChannelHandler h: handlers)
+			h.onGetAllFriends(user, referenceId);
+	}
+	
+	private void fireNewFriendshipRequest(OnlineUser user, int friendId, String referenceId)
+	{
+		for (FriendsChannelHandler h: handlers)
+			h.onNewFriendshipRequest(user, friendId, referenceId);
+	}
 	
 }
