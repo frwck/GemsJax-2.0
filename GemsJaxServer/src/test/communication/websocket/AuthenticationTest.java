@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 
+import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.CommunicationConnection.ClosedListener;
 import org.gemsjax.shared.communication.CommunicationConnection.EstablishedListener;
 import org.junit.BeforeClass;
@@ -83,7 +84,7 @@ public class AuthenticationTest implements EstablishedListener,ErrorListener, Cl
 
 
 	@Override
-	public void onClose() {
+	public void onClose(CommunicationConnection connection) {
 		System.out.println("Connection closed");
 	}
 

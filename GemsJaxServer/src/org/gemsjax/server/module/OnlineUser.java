@@ -143,6 +143,8 @@ public class OnlineUser {
 	{
 		OnlineUser u = new OnlineUser(user, httpSession);
 		
+		setClosedListener(connection);
+		
 		// Set the output Channels
 		u.setOutputChannel(new SimpleOutputChannel(connection));
 		
@@ -172,6 +174,8 @@ public class OnlineUser {
 	{
 		OnlineUser u = new OnlineUser(user, httpSession);
 		
+		setClosedListener(connection);
+		
 		// Set the output Channels
 		u.setOutputChannel(new SimpleOutputChannel(connection));
 		
@@ -190,6 +194,12 @@ public class OnlineUser {
 		lc.addLogoutChannelHandler(OnlineUserManager.getInstance());
 	}
 
+	
+	private static void setClosedListener(CommunicationConnection connection)
+	{
+		connection.addCloseListener(OnlineUserManager.getInstance());
+	}
+	
 	public UserOnlineState getOnlineState() {
 		return user.getOnlineState();
 	}

@@ -64,7 +64,7 @@ public class HttpGetCommunicationConnection implements CommunicationConnection {
 		request.cancel();
 		
 		for (ClosedListener c: closedListeners)
-			c.onClose();
+			c.onClose(this);
 	}
 
 

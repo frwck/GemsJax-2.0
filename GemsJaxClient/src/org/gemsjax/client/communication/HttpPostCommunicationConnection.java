@@ -68,7 +68,7 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 		request.cancel();
 		
 		for (ClosedListener c: closedListeners)
-			c.onClose();
+			c.onClose(this);
 	}
 
 

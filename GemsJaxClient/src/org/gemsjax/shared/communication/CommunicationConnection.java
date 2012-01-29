@@ -61,7 +61,7 @@ public interface CommunicationConnection {
 		/**
 		 * Is called, if the {@link CommunicationConnection} has been closed
 		 */
-		public void onClose();
+		public void onClose(CommunicationConnection connection);
 		
 
 	}

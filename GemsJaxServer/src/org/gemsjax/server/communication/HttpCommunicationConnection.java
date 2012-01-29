@@ -74,7 +74,7 @@ public class HttpCommunicationConnection implements CommunicationConnection{
 		isClosed = true;
 		
 		for (ClosedListener c : closedListeners)
-			c.onClose();
+			c.onClose(this);
 	}
 	
 	@Override

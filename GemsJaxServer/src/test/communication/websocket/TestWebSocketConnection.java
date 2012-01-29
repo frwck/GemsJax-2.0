@@ -89,7 +89,7 @@ public class TestWebSocketConnection implements CommunicationConnection {
 	    	isConnected = false;
 	    	
 	    	for (ClosedListener c: closedListeners)
-	    		c.onClose();
+	    		c.onClose(this);
 	    }
 
 	    

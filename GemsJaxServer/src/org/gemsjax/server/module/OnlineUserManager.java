@@ -7,6 +7,9 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.gemsjax.server.communication.channel.handler.LogoutChannelHandler;
+import org.gemsjax.server.communication.servlet.UserWebSocket;
+import org.gemsjax.shared.communication.CommunicationConnection;
+import org.gemsjax.shared.communication.CommunicationConnection.ClosedListener;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.system.LogoutMessage;
 import org.gemsjax.shared.communication.message.system.LogoutMessage.LogoutReason;
@@ -22,7 +25,7 @@ import org.gemsjax.shared.user.User;
  * @author Hannes Dorfmann
  *
  */
-public class OnlineUserManager implements LogoutChannelHandler {
+public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 
 	/**
 	 * The singleton instance
@@ -139,12 +142,32 @@ public class OnlineUserManager implements LogoutChannelHandler {
 		onlineUserSessionMap.remove(ou.getHttpSession().getId());
 		ou.getHttpSession().invalidate();
 		
+		// unbind Channel Handlers
+		ou.getLogoutChannel().removeLogoutChannelHandler(this);
+		ou.getFriendChannel().removeFriendsChanneslHandler(FriendModule.getInstance());
+		
+		
 	}
 	
 
 	@Override
 	public void onLogoutReceived(OnlineUser user) {
 		doLogout(user);
+	}
+
+
+
+	@Override
+	public void onClose(CommunicationConnection connection) {
+		if (connection instanceof UserWebSocket){
+			OnlineUser ou = getOnlineUser(((UserWebSocket) connection).getSession());
+			
+			if (ou != null)
+			{
+				doLogout(ou);
+			}
+		}
+		
 	}
 	
 	

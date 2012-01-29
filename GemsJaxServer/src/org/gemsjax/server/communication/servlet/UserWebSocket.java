@@ -161,7 +161,7 @@ import org.gemsjax.shared.communication.message.Message;
 		public void onClose(int arg0, String arg1) {
 			
 			for (ClosedListener c: closedListeners)
-				c.onClose();
+				c.onClose(this);
 		}
 
 		@Override
@@ -172,6 +172,12 @@ import org.gemsjax.shared.communication.message.Message;
 		@Override
 		public void removeErrorListener(ErrorListener arg0) {
 			errorListeners.remove(arg0);
+		}
+		
+		
+		public HttpSession getSession()
+		{
+			return session;
 		}
 
 	}
