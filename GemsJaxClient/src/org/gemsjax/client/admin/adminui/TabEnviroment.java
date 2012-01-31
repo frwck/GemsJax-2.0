@@ -1,17 +1,8 @@
 package org.gemsjax.client.admin.adminui;
 
-import org.gemsjax.client.admin.UserLanguage;
-import org.gemsjax.client.admin.tabs.LoadingTab;
-import org.gemsjax.client.admin.tabs.SearchResultTab;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
-import org.gemsjax.client.admin.view.implementation.MetaModelViewImpl;
-import org.gemsjax.client.canvas.CanvasSupportException;
-
-import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Side;
-import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
@@ -24,22 +15,11 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public class TabEnviroment extends TabSet{
 	
-	private static TabEnviroment instance;
+	private static TabEnviroment instance = new TabEnviroment();
 
-	
-	private UserLanguage language;
-	
-	private int iii = 0;
-	
-	
-	public TabEnviroment(UserLanguage language){
+	private TabEnviroment(){
 		super();
 		
-		//TODO Implement TabEnviroment as pure Singleton when demo has been removed
-		//TODO remove hack
-		instance = this;
-		
-		this.language = language;
 		this.setAlign(Alignment.CENTER);
 		
 		// Styling
@@ -48,7 +28,6 @@ public class TabEnviroment extends TabSet{
 		this.setTabBarPosition(Side.TOP);
 		
 		this.draw();
-		demo();
 	}
 
 	
@@ -57,44 +36,5 @@ public class TabEnviroment extends TabSet{
 		return instance;
 	}
 	
-	// TODO remove DEMO TABS
-	private void demo()
-	{
-		final LoadingTab loadingTab = new LoadingTab("Loading Tab Test", language);
-		loadingTab.setContent(new Label("Test"));
-		// TODO remove demo timer	
-		new Timer()
-		{
-			public void run()
-			{
-				
-				
-					if (instance.iii%2==0)
-						loadingTab.showContent();
-					else
-						loadingTab.showLoading();
-					
-					instance.iii++;
-			}
-		}.scheduleRepeating(2000);
-		
-		instance.addTab(new SearchResultTab("Search Result", language));
-		instance.addTab(loadingTab);
-		
-		try {
-			instance.addTab(new MetaModelViewImpl("Edit MetaModel", language));
-		} catch (CanvasSupportException e) {
-			// TODO say it in the right language
-		SC.say("HTML 5 Canvas is not supported by your browser. The Tab can't be opened");
-		}
-		
-		
-		
-		instance.addTab(new Tab("Tab4"));
-		instance.addTab(new Tab("Tab5"));
-		instance.addTab(new Tab("Tab6"));
-		
-
-	}
 
 }

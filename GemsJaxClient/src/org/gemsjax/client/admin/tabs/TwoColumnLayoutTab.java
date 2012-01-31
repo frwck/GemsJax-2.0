@@ -16,27 +16,22 @@ import com.smartgwt.client.widgets.tab.Tab;
  * @author Hannes Dorfmann
  *
  */
-public class TwoColumnLayoutTab extends Tab{
+public class TwoColumnLayoutTab extends LoadingTab{
 	
 	private Canvas leftColumnCanvas;
 	private Canvas rightColumnCanvas;
 	private HLayout layout;
 	
-	private UserLanguage language;
 	
 	public TwoColumnLayoutTab(String title, UserLanguage language)
 	{
-		super(title);
-		this.language = language;
+		super(title, language);
 		
 		layout = new HLayout();
 		layout.setWidth100();
 		layout.setHeight100();
-		
-		this.setPane(layout);
-		
+		setContent(layout);
 		layout.setMembersMargin(25);
-		
 	}
 	
 	
