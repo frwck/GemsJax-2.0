@@ -62,6 +62,7 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	public FriendsLiveChannel(CommunicationConnection connection, HttpSession session)
 	{
 		this.connection = connection;
+		connection.registerInputChannel(this);
 		this.session = session;
 		parser = new FriendMessageParser();
 		handlers = new LinkedHashSet<FriendsChannelHandler>();
@@ -90,6 +91,7 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 
 	@Override
 	public void onMessageReceived(InputMessage msg) {
+		
 		
 		try {
 			

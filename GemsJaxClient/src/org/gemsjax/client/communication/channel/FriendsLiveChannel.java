@@ -42,6 +42,7 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	public FriendsLiveChannel(CommunicationConnection connection)
 	{
 		this.connection = connection;
+		this.connection.registerInputChannel(this);
 		parser = new FriendMessageParser();
 		handlers = new LinkedHashSet<FriendsLiveChannelHandler>();
 		

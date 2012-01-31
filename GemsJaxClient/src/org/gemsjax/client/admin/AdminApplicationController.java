@@ -3,6 +3,8 @@ package org.gemsjax.client.admin;
 import java.io.IOException;
 
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
+import org.gemsjax.client.admin.presenter.CriticalErrorPresenter;
+import org.gemsjax.client.admin.presenter.FriendsPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
 import org.gemsjax.client.admin.presenter.AuthenticationPresenter;
 import org.gemsjax.client.admin.presenter.MetaModelPresenter;
@@ -11,6 +13,7 @@ import org.gemsjax.client.admin.presenter.RegistrationPresenter;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
+import org.gemsjax.client.admin.view.implementation.CriticalErrorViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoginViewImpl;
 import org.gemsjax.client.admin.view.implementation.LogoutViewImpl;
@@ -20,9 +23,11 @@ import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.communication.HttpPostCommunicationConnection;
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 import org.gemsjax.client.communication.channel.AuthenticationChannel;
+import org.gemsjax.client.communication.channel.FriendsLiveChannel;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
 import org.gemsjax.client.metamodel.factory.MetaFactory;
 import org.gemsjax.client.module.AuthenticationModule;
+import org.gemsjax.client.module.FriendsModule;
 import org.gemsjax.client.module.RegistrationModule;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.metamodel.MetaBaseType;
@@ -81,15 +86,22 @@ public class AdminApplicationController  {
 	 */
 	private RegistrationPresenter registrationPresenter;
 	
+	private FriendsModule friendsModule;
+	private FriendsPresenter friendsPresenter;
+	
 	
 	private AdminApplicationPresenter applicationPresenter;
 	
 	private AuthenticationModule authenticationModule;
 	
+	private CriticalErrorPresenter errorPresenter;
+	
 	
 	private AdminApplicationController()
 	{
 		eventBus = new SimpleEventBus();
+		authenticationModule = new AuthenticationModule(new AuthenticationChannel(WebSocketCommunicationConnection.getInstance()));
+		friendsModule = new FriendsModule(new FriendsLiveChannel(WebSocketCommunicationConnection.getInstance()));
 	}
 
 	
@@ -132,22 +144,22 @@ public class AdminApplicationController  {
 		
 		loadingPresenter = new LoadingPresenter(eventBus, new LoadingViewImpl());
 		
-		
-	
-		
+			
 		try {
 		
 			RegistrationModule registrationModule = new RegistrationModule( new RegistrationChannel(new HttpPostCommunicationConnection(ServletPaths.REGISTRATION)));
 			
 			registrationPresenter = new RegistrationPresenter(new RegistrationViewImpl(language), eventBus,  registrationModule);
-			// Important: first create the authenticationPresenter and than the AdminApplicationPresenter: So the LoginPresenter will receive LoginEvents as the first
 			
-			authenticationModule = new AuthenticationModule(new AuthenticationChannel(WebSocketCommunicationConnection.getInstance()));
+			errorPresenter = new CriticalErrorPresenter(eventBus, new CriticalErrorViewImpl(), WebSocketCommunicationConnection.getInstance());
+			
+			// Important: first create the authenticationPresenter and than the AdminApplicationPresenter: So the LoginPresenter will receive LoginEvents as the first
 			authenticationPresenter = new AuthenticationPresenter(eventBus, new LoginViewImpl(language), new LogoutViewImpl(language), authenticationModule);
+			
+			friendsPresenter = new FriendsPresenter(eventBus, null, friendsModule);
 			applicationPresenter = new AdminApplicationPresenter(eventBus, new AdminApplicationViewImpl(language));
 
-		
-		
+			
 		
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block

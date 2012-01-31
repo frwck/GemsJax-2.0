@@ -16,14 +16,14 @@ import org.gemsjax.shared.communication.message.friend.FriendError;
 import org.gemsjax.shared.communication.message.friend.GetAllFriendsMessage;
 import org.gemsjax.shared.user.UserOnlineState;
 
+import com.google.gwt.user.client.Random;
+
 /**
  * 
  * @author Hannes Dorfmann
  *
  */
 public class FriendsModule implements FriendsLiveChannelHandler{
-	
-	
 	
 	
 	/**
@@ -60,6 +60,7 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 	
 	private FriendsLiveChannel channel;
 	private Set<FriendsModuleHandler> handlers;
+	private String initGetAllReferenceId;
 
 	
 	public Map<Integer, Friend> friends;
@@ -106,9 +107,15 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 	@Override
 	public void onAllFriendsReceived(String refId, Set<Friend> fr) {
 		
+		
 		for (Friend f: fr)
 			friends.put(f.getId(), f);
 		
+
+		if (refId.equals(initGetAllReferenceId))
+			for(FriendsModuleHandler h: handlers)
+				h.onInitGetFriendsResponse(true);
+		else
 		fireUpdate();
 	}
 
@@ -158,6 +165,12 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 	}
 	
 	
+	public void doInitGetAllFriends() throws IOException
+	{
+		initGetAllReferenceId ="init-get-all-"+Random.nextInt();
+		channel.send(new GetAllFriendsMessage(initGetAllReferenceId));
+	}
+	
 	
 	/**
 	 * Get a Set of {@link Friend}s that are offline right now
@@ -206,8 +219,6 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 		
 		return new FriendDisplayNameResults(dispNameToSearch, fr);
 	}
-	// TODO Auto-generated method stub
-	
 	
 	
 	/**
@@ -265,7 +276,12 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 
 	@Override
 	public void onError(String referenceId, FriendError error, String additionalInfo) {
-		
+	
+
+		if (referenceId.equals(initGetAllReferenceId))
+			for(FriendsModuleHandler h: handlers)
+				h.onInitGetFriendsResponse(false);
+		else
 		for (FriendsModuleHandler h : handlers)
 			h.onErrorAnswer(referenceId, error, additionalInfo);
 		
@@ -279,7 +295,7 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 		for (FriendsModuleHandler h: handlers)
 		{
 			h.onFriendsUpdate();
-			h.onNewFriendshipSuccessfull(referenceId);
+			h.onNewFriendshipRequestSuccessful(referenceId);
 		}
 		
 	}

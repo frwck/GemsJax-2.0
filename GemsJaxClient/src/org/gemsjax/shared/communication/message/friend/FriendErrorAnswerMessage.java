@@ -37,7 +37,7 @@ public class FriendErrorAnswerMessage extends ReferenceableFriendMessage{
 	
 	@Override
 	public String toXml() {
-		return "<"+FriendMessage.TAG+" "+ReferenceableFriendMessage.ATTRIBUTE_REFERENCE_ID+"=\""+getReferenceId()+"\">"+errorXml()+"<"+FriendMessage.TAG+">";
+		return "<"+FriendMessage.TAG+" "+ReferenceableFriendMessage.ATTRIBUTE_REFERENCE_ID+"=\""+getReferenceId()+"\">"+errorXml()+"</"+FriendMessage.TAG+">";
 	}
 	
 	

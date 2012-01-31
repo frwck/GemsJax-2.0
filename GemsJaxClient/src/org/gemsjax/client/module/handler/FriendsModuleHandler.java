@@ -20,6 +20,13 @@ public interface FriendsModuleHandler {
 	public void onFriendsUpdate();
 	
 	/**
+	 * Called, if {@link FriendsModule#doInitGetAllFriends()} has got a answer from the server.
+	 * @param successful is <b>true</b>, if everything was sucessful or <b>false</b> if an error has occurred
+	 */
+	public void onInitGetFriendsResponse(boolean successful);
+	
+	
+	/**
 	 * Called if a new friendship has been established.
 	 * It would be nice, if the client displays a notification
 	 */
@@ -35,12 +42,12 @@ public interface FriendsModuleHandler {
 	 * Called if a successful answer from {@link FriendsModule#cancelFriendship(String, java.util.Set)} has been received
 	 * @param referenceId
 	 */
-	public void onFriendshipsSuccessfullCanceled(String referenceId);
+	public void onFriendshipsSuccessfulCanceled(String referenceId);
 
 	/**
 	 * Called if the {@link NewFriendshipRequestMessage} has returned a {@link NewFriendshipRequestAnswerMessage} from server as response
 	 * @param referenceId
 	 */
-	public void onNewFriendshipSuccessfull(String referenceId);
+	public void onNewFriendshipRequestSuccessful(String referenceId);
 	
 }

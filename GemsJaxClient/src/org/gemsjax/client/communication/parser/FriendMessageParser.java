@@ -71,7 +71,7 @@ public class FriendMessageParser {
 		    	return parseFriendUpdateMessage(childElement);
 		    else
 		    if (childElement.getTagName().equals(FriendErrorAnswerMessage.TAG))
-		    	return parseFriendrrorMessage(referenceId, childElement);
+		    	return parseFriendErrorMessage(referenceId, childElement);
 		    else
 		    if (childElement.getTagName().equals(FriendshipCanceledMessage.TAG))
 		    	return parseFriendShipChanceledMessage(childElement);
@@ -373,7 +373,7 @@ public class FriendMessageParser {
 	
 	
 	
-	private FriendErrorAnswerMessage parseFriendrrorMessage(String referenceId, Element e) throws DOMException
+	private FriendErrorAnswerMessage parseFriendErrorMessage(String referenceId, Element e) throws DOMException
 	{
 		String typeAttribute = e.getAttribute(FriendErrorAnswerMessage.ATTRIBUTE_TYPE);
 		FriendError type;

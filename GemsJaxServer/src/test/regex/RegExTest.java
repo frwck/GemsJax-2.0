@@ -37,6 +37,18 @@ public class RegExTest {
 		assertFalse("sys>".matches(filter));
 	}
 	
+	
+	@Test
+	public void startWithTagAndRef()
+	{
+		String filter = RegExFactory.startWithTag("friends");
+		
+		String testStr = "<friends ref-id=\"init-get-all-236368411\"><get-all-friends/><friends>";
+		
+		assertTrue(testStr.matches(filter));
+	}
+	
+	
 	@Test
 	public void startWithTagSubTag()
 	{

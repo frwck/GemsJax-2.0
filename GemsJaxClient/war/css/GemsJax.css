@@ -247,3 +247,20 @@ This is the CSS style for the class Title
 	padding: 0px 0px;
 	text-align: justify;
 }
+
+
+.criticalErrorLabel
+{
+	color: white;
+	font-size:24px;
+	font-family: font:Verdana, Geneva, sans-serif;
+}
+
+.criticalErrorReloadLabel{
+	color: white;
+	font-size:22px;
+	font-family: font:Verdana, Geneva, sans-serif;
+	weight: bold;
+	text-decoration: underline;
+	cursor:pointer;
+}

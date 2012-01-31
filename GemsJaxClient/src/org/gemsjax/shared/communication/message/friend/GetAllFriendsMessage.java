@@ -18,7 +18,7 @@ public class GetAllFriendsMessage extends ReferenceableFriendMessage {
 
 	@Override
 	public String toXml() {
-		return "<"+FriendMessage.TAG+" "+ReferenceableFriendMessage.ATTRIBUTE_REFERENCE_ID+"=\""+getReferenceId()+"\"><"+TAG+"/><"+FriendMessage.TAG+">";
+		return "<"+FriendMessage.TAG+" "+ReferenceableFriendMessage.ATTRIBUTE_REFERENCE_ID+"=\""+getReferenceId()+"\"><"+TAG+"/></"+FriendMessage.TAG+">";
 	}
 
 }
