@@ -60,6 +60,7 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		//this.getLayout().setOverflow(Overflow.HIDDEN);
 
 		//canvas.setOverflow(Overflow.SCROLL);
+		this.showContent();
 
 	}
 	

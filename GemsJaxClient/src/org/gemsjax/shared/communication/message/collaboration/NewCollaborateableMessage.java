@@ -4,32 +4,16 @@ import java.util.Set;
 
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.CommunicationConstants;
-import org.gemsjax.shared.communication.CommunicationConstants.Collaborateable;
+import org.gemsjax.shared.communication.message.collaboration.CollaborationType;
 
 /**
- * Create a new {@link Collaborateable}
+ * Create a new {@link CollaborateableType}
  * @author Hannes Dorfmann
  *
  */
 public class NewCollaborateableMessage extends CollaborateableAdministrationMessage {
 	
-	/**
-	 * Used to determine, what kind of Collaborateable should be created
-	 * @author Hannes Dorfmann
-	 *
-	 */
-	public enum CollaborateableType{
-		/**
-		 * Mapped to protocol constant {@link CommunicationConstants.Collaborateable#TYPE_METAMODEL}
-		 */
-		METAMODEL,
-		
-		/**
-		 * Mapped to protocol constant {@link CommunicationConstants.Collaborateable#TYPE_MODEL}
-		 */
-		MODEL
-	}
-
+	
 	public static final String TAG = "new";
 	public static final String ATTRIBUTE_NAME="name";
 	public static final String ATTRIBUTE_PUBLIC="public";
@@ -49,10 +33,10 @@ public class NewCollaborateableMessage extends CollaborateableAdministrationMess
 	private String name;
 	private Set<String> adminIds;
 	private Set<String> collaboratorIds;
-	private CollaborateableType type;
+	private CollaborationType type;
 	private String keywords;
 	
-	public NewCollaborateableMessage(String name, CollaborateableType type, Set<String> administratorIds, Set<String> collaboratorIds, boolean _public, String keywords)
+	public NewCollaborateableMessage(String name, CollaborationType type, Set<String> administratorIds, Set<String> collaboratorIds, boolean _public, String keywords)
 	{
 		this._public = _public;
 		this.name = name;
@@ -62,7 +46,7 @@ public class NewCollaborateableMessage extends CollaborateableAdministrationMess
 	}
 	
 	
-	public CollaborateableType getCollaborateableType()
+	public CollaborationType getCollaborateableType()
 	{
 		return type;
 	}
@@ -89,8 +73,8 @@ public class NewCollaborateableMessage extends CollaborateableAdministrationMess
 	{
 		switch(type)
 		{
-			case METAMODEL: return CommunicationConstants.Collaborateable.TYPE_METAMODEL;
-			case MODEL: return CommunicationConstants.Collaborateable.TYPE_MODEL;
+			case METAMODEL: return CommunicationConstants.CollaborateableType.TYPE_METAMODEL;
+			case MODEL: return CommunicationConstants.CollaborateableType.TYPE_MODEL;
 		}
 		
 		return null;

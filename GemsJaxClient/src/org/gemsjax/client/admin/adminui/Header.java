@@ -68,7 +68,9 @@ public class Header extends HLayout{
 		private void fireSearch()
 		{
 			for (QuickSearchHanlder h : handlers)
+			{
 				h.onDoSearch(this.getValueAsString());
+			}
 		}
 		
 		public Set<QuickSearchHanlder> getQuickSearchHandlers()

@@ -31,6 +31,8 @@ public class GlobalSearchResultMessage extends ReferenceableSearchMessage {
 	public static final String ATTRIBUTE_COLLABORATEABLE_ID="id";
 	public static final String ATTRIBUTE_COLLABORATEABLE_NAME="name";
 	public static final String ATTRIBUTE_COLLABORATEABLE_OWNER_NAME="owner";
+	public static final String ATTRIBUTE_COLLABORATEABLE_TYPE="type";
+	
 	
 	private Set<UserResult> userResults;
 	private Set<CollaborationResult> collaborationResults;
@@ -66,7 +68,7 @@ public class GlobalSearchResultMessage extends ReferenceableSearchMessage {
 		String r ="<"+SUBTAG_COLLABORATEABLE_RESULT+">";
 		
 		for (CollaborationResult u : collaborationResults)
-			r+="<"+SUBTAG_COLLABORATEABLE+" "+ATTRIBUTE_COLLABORATEABLE_ID+"=\""+u.getId()+"\" "+ATTRIBUTE_COLLABORATEABLE_NAME+"=\""+u.getName()+"\" "+ATTRIBUTE_COLLABORATEABLE_OWNER_NAME+"=\""+u.getOwnerName()+"\" />";
+			r+="<"+SUBTAG_COLLABORATEABLE+" "+ATTRIBUTE_COLLABORATEABLE_ID+"=\""+u.getId()+"\" "+ATTRIBUTE_COLLABORATEABLE_NAME+"=\""+u.getName()+"\" "+ATTRIBUTE_COLLABORATEABLE_OWNER_NAME+"=\""+u.getOwnerName()+"\" "+ATTRIBUTE_COLLABORATEABLE_TYPE+"=\""+u.getType().toConstant() +"\" />";
 		
 		r+="</"+SUBTAG_COLLABORATEABLE_RESULT+">";
 		

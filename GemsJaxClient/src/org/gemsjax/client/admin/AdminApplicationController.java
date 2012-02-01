@@ -10,7 +10,9 @@ import org.gemsjax.client.admin.presenter.AuthenticationPresenter;
 import org.gemsjax.client.admin.presenter.MetaModelPresenter;
 import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.admin.presenter.RegistrationPresenter;
+import org.gemsjax.client.admin.presenter.event.DoNewGlobalSearchEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
+import org.gemsjax.client.admin.presenter.handler.DoNewGlobalSearchHandler;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.view.implementation.CriticalErrorViewImpl;
@@ -44,7 +46,7 @@ import org.gemsjax.shared.user.RegisteredUser;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
-import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.Window;
 import com.smartgwt.client.util.SC;
 
 /**
@@ -53,7 +55,7 @@ import com.smartgwt.client.util.SC;
  * @author Hannes Dorfmann
  *
  */
-public class AdminApplicationController  {
+public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 	
 	/**
 	 * Singleton instance
@@ -94,6 +96,7 @@ public class AdminApplicationController  {
 	
 	private AuthenticationModule authenticationModule;
 	
+	private AdminApplicationViewImpl adminMainView;
 	private CriticalErrorPresenter errorPresenter;
 	
 	
@@ -102,6 +105,14 @@ public class AdminApplicationController  {
 		eventBus = new SimpleEventBus();
 		authenticationModule = new AuthenticationModule(new AuthenticationChannel(WebSocketCommunicationConnection.getInstance()));
 		friendsModule = new FriendsModule(new FriendsLiveChannel(WebSocketCommunicationConnection.getInstance()));
+		
+		bindPresenterEvents();
+	}
+	
+	
+	private void bindPresenterEvents()
+	{
+		eventBus.addHandler(DoNewGlobalSearchEvent.TYPE, this);
 	}
 
 	
@@ -157,7 +168,8 @@ public class AdminApplicationController  {
 			authenticationPresenter = new AuthenticationPresenter(eventBus, new LoginViewImpl(language), new LogoutViewImpl(language), authenticationModule);
 			
 			friendsPresenter = new FriendsPresenter(eventBus, null, friendsModule);
-			applicationPresenter = new AdminApplicationPresenter(eventBus, new AdminApplicationViewImpl(language));
+			adminMainView = new AdminApplicationViewImpl(language);
+			applicationPresenter = new AdminApplicationPresenter(eventBus, adminMainView, adminMainView);
 
 			
 		
@@ -282,6 +294,14 @@ public class AdminApplicationController  {
 		}
 	
 		
+	}
+
+
+
+	@Override
+	public void onDoNewGlobalSerch(DoNewGlobalSearchEvent event) {
+		
+		Window.alert("Do new search: "+event.getSearchString());
 	}
 
 	

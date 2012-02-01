@@ -181,8 +181,29 @@ public class CommunicationConstants {
 	}
 	
 	
-	public class Collaborateable{
-		private Collaborateable(){}
+	
+	public class SearchError{
+		private SearchError(){}
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.search.SearchError#PARSING}
+		 */
+		public static final String PARSING="fail_parsing";
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.search.SearchError#DATABASE}
+		 */
+		public static final String DATABASE="fail_database";
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.search.SearchError#AUTHENTICATION}
+		 */
+		public static final String AUTHENTICATION="fail_authentication";
+		}
+	
+	
+	public class CollaborateableType{
+		private CollaborateableType(){}
 		
 		/**
 		 * The communication constant mapped to {@link NewCollaborateableMessage.CollaborateableType#METAMODEL}
@@ -194,6 +215,11 @@ public class CommunicationConstants {
 		 * The communication constant mapped to {@link NewCollaborateableMessage.CollaborateableType#MODEL}
 		 */
 		public static final String TYPE_MODEL = "Model";
+
+	}
+	
+	public class CollaborateableError{
+		public CollaborateableError(){}
 		
 		public static final String OK = "ok";
 

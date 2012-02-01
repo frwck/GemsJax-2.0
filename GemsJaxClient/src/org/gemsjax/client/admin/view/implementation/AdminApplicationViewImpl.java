@@ -5,7 +5,6 @@ import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.adminui.Footer;
 import org.gemsjax.client.admin.adminui.Header;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
-import org.gemsjax.client.admin.adminui.UserBox;
 import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.view.AdminUIView;
 import org.gemsjax.client.admin.view.QuickSearchView;
@@ -57,7 +56,7 @@ public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView{
 		uiLayout.setHeight100();
 		uiLayout.setMargin(0);
 		
-		Header header = new Header(language);
+		header = new Header(language);
 		
 		// Header
 		Canvas spacerHeaderLeft = new Canvas();
