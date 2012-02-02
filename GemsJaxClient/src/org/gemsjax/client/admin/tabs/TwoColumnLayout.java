@@ -1,11 +1,7 @@
 package org.gemsjax.client.admin.tabs;
 
-import org.gemsjax.client.admin.UserLanguage;
-
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.Layout;
-import com.smartgwt.client.widgets.tab.Tab;
 
 /**
  * This Tab provides a Layout, that devide the whole tab pane into two columns:
@@ -16,22 +12,18 @@ import com.smartgwt.client.widgets.tab.Tab;
  * @author Hannes Dorfmann
  *
  */
-public class TwoColumnLayoutTab extends LoadingTab{
+public class TwoColumnLayout extends HLayout{
 	
 	private Canvas leftColumnCanvas;
 	private Canvas rightColumnCanvas;
-	private HLayout layout;
 	
 	
-	public TwoColumnLayoutTab(String title, UserLanguage language)
+	
+	public TwoColumnLayout()
 	{
-		super(title, language);
-		
-		layout = new HLayout();
-		layout.setWidth100();
-		layout.setHeight100();
-		setContent(layout);
-		layout.setMembersMargin(25);
+		this.setWidth100();
+		this.setHeight100();
+		this.setMembersMargin(25);
 	}
 	
 	
@@ -41,8 +33,8 @@ public class TwoColumnLayoutTab extends LoadingTab{
 	 */
 	public void setMarginBetweenColumns(int margin)
 	{
-		layout.setMargin(margin);
-		layout.draw();
+		this.setMargin(margin);
+		this.draw();
 	}
 	
 	
@@ -54,17 +46,17 @@ public class TwoColumnLayoutTab extends LoadingTab{
 	public void setRightColumn(Canvas canvas, boolean withAnimation)
 	{
 		
-		layout.setAnimateMembers(withAnimation);
+		this.setAnimateMembers(withAnimation);
 		
 		// remove previous content
 		if (rightColumnCanvas != null)
-			layout.removeMember(rightColumnCanvas);
+			this.removeMember(rightColumnCanvas);
 		
 		rightColumnCanvas = canvas;
-		layout.addMember(canvas);
+		this.addMember(canvas);
 		
 		
-		layout.setAnimateMembers(false);
+		this.setAnimateMembers(false);
 	}
 	
 	/**
@@ -94,23 +86,17 @@ public class TwoColumnLayoutTab extends LoadingTab{
 	 */
 	public void setLeftColumn(Canvas canvas, boolean withAnimation)
 	{
-		layout.setAnimateMembers(withAnimation);
+		this.setAnimateMembers(withAnimation);
 		
 		if (leftColumnCanvas != null)
-			layout.removeMember(rightColumnCanvas);
+			this.removeMember(rightColumnCanvas);
 		
 		leftColumnCanvas = canvas;
-		layout.addMember(canvas, 0);
+		this.addMember(canvas, 0);
 		
 		//TODO maybe remove this animation in here and do this in an own method
-		layout.setAnimateMembers(false);
+		this.setAnimateMembers(false);
 	}
 	
 	
-	public Layout getLayout()
-	{
-		return layout;
-	}
-	
-
 }

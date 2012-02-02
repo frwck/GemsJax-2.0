@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.dao.UserDAO;
@@ -229,7 +230,7 @@ public class UserDAOTest {
 		
 	}
 	
-	@Test
+	//@Test
 	public void testFriendship() throws UsernameInUseException, DAOException, EMailInUseExcpetion, NotFoundException
 	{
 	
@@ -296,6 +297,15 @@ public class UserDAOTest {
 		
 	}
 	
+	
+	@Test
+	public void searchTest()
+	{
+		Set<RegisteredUser> res = dao.getBySearch(".com");
+		
+		for (RegisteredUser r : res)
+			System.out.println("User: " + r.getUsername()+" "+r.getDisplayedName()+" "+r.getEmail());
+	}
 	
 	
 

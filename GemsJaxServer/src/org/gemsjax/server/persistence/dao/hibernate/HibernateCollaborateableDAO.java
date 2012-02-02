@@ -1,5 +1,6 @@
 package org.gemsjax.server.persistence.dao.hibernate;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -512,5 +513,34 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 			throw new DAOException(e, "Could not remove a collaborative User from the Collaborateable");
 		}
 	}
+
+
+	@Override
+	public Set<Collaborateable> getBySearch(String searchString,
+			RegisteredUser requester) {
+		
+		
+		searchString = "%"+searchString.toLowerCase()+"%";
+		
+		
+		String sql = "FROM CollaborateableImpl WHERE "
+				+" ( publicPermission<>"+Collaborateable.NO_PERMISSION+ " OR owner=:requester OR users WITH r");
+				//lower(username) like :criteria OR email like :criteria OR displayedName like :criteria ";
+		
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Query query = session.createQuery( sql );
+	    query.setParameter("criteria",searchCriteria);
+	    
+	    List<RegisteredUserImpl> result = query.list();
+	    
+	    return new LinkedHashSet<RegisteredUser>(result);
+		
+		return null;
+	}
+	
+	
+	
 	
 }

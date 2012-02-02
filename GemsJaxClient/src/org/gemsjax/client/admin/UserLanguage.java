@@ -179,4 +179,26 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  String RegistrationUnexpectedError();
 	  
 	  
+	  
+	  
+	  @DefaultStringValue("Users")
+	  String GlobalSearchUsersMenuTitle();
+	
+	  @DefaultStringValue("Friends")
+	  String GlobalSearchFriendsMenuTitle();
+	  
+	  
+	  @DefaultStringValue("MetaModls")
+	  String GlobalSearchMetaModelsMenuTitle();
+	  
+	  
+	  @DefaultStringValue("Models")
+	  String GlobalSearchModelsMenuTitle();
+	  
+	  
+	  @DefaultStringValue("Experiments")
+	  String GlobalSearchExperimentsMenuTitle();
+	  
+	  
+	  
 }

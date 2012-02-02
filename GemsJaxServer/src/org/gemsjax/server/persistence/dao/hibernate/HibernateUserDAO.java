@@ -442,6 +442,22 @@ public class HibernateUserDAO implements UserDAO {
 			throw new DAOException(e, "Could not cancel the friendship");
 		}
 	}
+
+	@Override
+	public Set<RegisteredUser> getBySearch(String searchCriteria) {
+		
+		searchCriteria = "%"+searchCriteria.toLowerCase()+"%";
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Query query = session.createQuery( "FROM RegisteredUserImpl WHERE lower(username) like :criteria OR email like :criteria OR displayedName like :criteria ");
+	    query.setParameter("criteria",searchCriteria);
+	    
+	    List<RegisteredUserImpl> result = query.list();
+	    
+	    return new LinkedHashSet<RegisteredUser>(result);
+	}
+	
+	
 	
 	
 }

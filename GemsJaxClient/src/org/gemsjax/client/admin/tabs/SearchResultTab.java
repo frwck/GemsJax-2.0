@@ -11,10 +11,13 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.VStack;
 
-public class SearchResultTab extends TwoColumnLayoutTab{
+public class SearchResultTab {}
+/*extends TwoColumnLayout{
 
 	private VStack content; 
 	private BigMenuButton allResultsButton, othersMenuButton, metaModelmenuButton, experimentMenuButton, notificationsMenuButton;
+	
+	
 	
 	public SearchResultTab(String t, UserLanguage language) {
 		super(t, language);
@@ -122,3 +125,4 @@ public class SearchResultTab extends TwoColumnLayoutTab{
 	}
 
 }
+*/

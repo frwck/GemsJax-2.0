@@ -24,6 +24,11 @@ public class ServletPaths {
 	
 	
 	
+	public static final String SEARCH = "/servlets/search";
+	
+	
+	
+	
 	private ServletPaths(){}
 	
 }

@@ -125,4 +125,15 @@ public interface CollaborateableDAO {
 	public abstract void removeCollaborativeUsers(Collaborateable c,
 			Set<User> users) throws DAOException;
 
+	
+	
+	/**
+	 * Search for {@link Collaborateable}s that search criteria matches the name or keywords and have set the public permission to
+	 * be public or the requester is owner or collaborator on this. Note: {@link Collaborateable}s that ara used for experiments are
+	 * not considered. 
+	 * @param searchString
+	 * @return
+	 */
+	public abstract Set<Collaborateable> getBySearch(String searchString, RegisteredUser requester);
+	
 }

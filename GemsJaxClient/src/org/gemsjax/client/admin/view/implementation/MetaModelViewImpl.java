@@ -7,7 +7,8 @@ import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
 import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.notification.NotificationManager;
-import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
+import org.gemsjax.client.admin.tabs.LoadingTab;
+import org.gemsjax.client.admin.tabs.TwoColumnLayout;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
@@ -32,11 +33,13 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
  * @author Hannes Dorfmann
  *
  */
-public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelView{
+public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 
 	private TipNotification tipNotification;
 	private BigMenuButton mouseButton, newClassButton, newRelationButton, newInheritanceButton;
 	private MetaModelCanvas canvas;
+	
+	private TwoColumnLayout layout;
 	
 	private UserLanguage language;
 	
@@ -46,10 +49,12 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		
 		this.language = language;
 		
+		layout = new TwoColumnLayout();
+		
 		generateToolStrip(language);
 		
 		canvas = new MetaModelCanvas();
-		this.setRightColumn(canvas, true);
+		layout.setRightColumn(canvas, true);
 		
 		// TODO set it to the corresponding MetaModel settings (check for READ_ONLY)
 		setCanvasEditingMode(EditingMode.NORMAL);
@@ -60,6 +65,7 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		//this.getLayout().setOverflow(Overflow.HIDDEN);
 
 		//canvas.setOverflow(Overflow.SCROLL);
+		this.setContent(layout);
 		this.showContent();
 
 	}
@@ -91,7 +97,7 @@ public class MetaModelViewImpl extends TwoColumnLayoutTab implements MetaModelVi
 		toolbar.addMember(newInheritanceButton);
 		
 		
-	    this.setLeftColumn(toolbar, true);
+	    layout.setLeftColumn(toolbar, true);
 	    
 	    
 	}

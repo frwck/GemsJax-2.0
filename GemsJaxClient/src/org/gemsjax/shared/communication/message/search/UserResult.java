@@ -1,11 +1,14 @@
 package org.gemsjax.shared.communication.message.search;
 
+import org.gemsjax.shared.communication.CommunicationConstants.OnlineState;
+
 public class UserResult {
 	
 	private String username;
 	private String displayName;
 	private String profilePicture;
 	private int userId;
+	
 	
 	public UserResult(int userId, String username, String displayName, String profilePicture)
 	{
@@ -30,5 +33,6 @@ public class UserResult {
 	public int getUserId() {
 		return userId;
 	}
+
 
 }

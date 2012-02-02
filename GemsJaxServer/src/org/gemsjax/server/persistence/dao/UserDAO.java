@@ -1,5 +1,7 @@
 package org.gemsjax.server.persistence.dao;
 
+import java.util.Set;
+
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
@@ -83,6 +85,12 @@ public interface UserDAO {
 	public abstract void updateRegisteredUserEmail(RegisteredUser u,
 			String newEmail) throws DAOException, EMailInUseExcpetion;
 	
+	/**
+	 * Get {@link RegisteredUser}, that match the passed search criteria in username, email, display name
+	 * @param searchCriteria
+	 * @return
+	 */
+	public abstract Set<RegisteredUser> getBySearch(String searchCriteria);
 	
 	
 	public abstract void addFriendship(RegisteredUser requester, RegisteredUser friend) throws DAOException;

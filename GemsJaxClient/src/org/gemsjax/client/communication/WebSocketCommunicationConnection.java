@@ -130,7 +130,6 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
     			c.onMessageReceived(im);
         }
     	
-    	SC.logWarn("Message: "+message); // TODO remove
     }
     
     private void onWebSocketNotSupported() throws IOException

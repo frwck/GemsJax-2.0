@@ -2,9 +2,11 @@ package org.gemsjax.client.admin;
 
 import java.io.IOException;
 
+import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
 import org.gemsjax.client.admin.presenter.CriticalErrorPresenter;
 import org.gemsjax.client.admin.presenter.FriendsPresenter;
+import org.gemsjax.client.admin.presenter.GlobalSearchPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
 import org.gemsjax.client.admin.presenter.AuthenticationPresenter;
 import org.gemsjax.client.admin.presenter.MetaModelPresenter;
@@ -16,6 +18,7 @@ import org.gemsjax.client.admin.presenter.handler.DoNewGlobalSearchHandler;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.view.implementation.CriticalErrorViewImpl;
+import org.gemsjax.client.admin.view.implementation.GlobalSearchResultViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoginViewImpl;
 import org.gemsjax.client.admin.view.implementation.LogoutViewImpl;
@@ -27,9 +30,11 @@ import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 import org.gemsjax.client.communication.channel.AuthenticationChannel;
 import org.gemsjax.client.communication.channel.FriendsLiveChannel;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
+import org.gemsjax.client.communication.channel.SearchChannel;
 import org.gemsjax.client.metamodel.factory.MetaFactory;
 import org.gemsjax.client.module.AuthenticationModule;
 import org.gemsjax.client.module.FriendsModule;
+import org.gemsjax.client.module.GlobalSearchModule;
 import org.gemsjax.client.module.RegistrationModule;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.metamodel.MetaBaseType;
@@ -177,6 +182,8 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		/*
 		try {
 			
 			/*
@@ -228,7 +235,7 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 			
 			
 			*/
-			
+			/*
 			MetaBaseType baseType = MetaFactory.createExistingBaseType("basetypeID", "BaseType 1");
 			
 			MetaModel metaModel = MetaFactory.createMetaModel(1,"MetaFactory Model");
@@ -265,7 +272,7 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 			
 			
 			new MetaModelPresenter(eventBus, new MetaModelViewImpl("MetaFactory Model", language), metaModel);
-			
+		
 			
 			
 		} catch (CanvasSupportException e) {
@@ -292,6 +299,8 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 			e.printStackTrace();
 			SC.logWarn(e.getMessage());
 		}
+		
+		*/
 	
 		
 	}
@@ -301,7 +310,17 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 	@Override
 	public void onDoNewGlobalSerch(DoNewGlobalSearchEvent event) {
 		
-		Window.alert("Do new search: "+event.getSearchString());
+
+		GlobalSearchResultViewImpl view = new GlobalSearchResultViewImpl(event.getSearchString(), getLanguage());
+		TabEnviroment.getInstance().addTab(view);
+		view.showLoading();
+		view.showContent();
+		
+		SearchChannel channel = new SearchChannel(new HttpPostCommunicationConnection(ServletPaths.SEARCH));
+		GlobalSearchModule searchModule = new GlobalSearchModule(authenticationModule.getCurrentlyAuthenticatedUser(),channel, friendsModule);
+		
+		GlobalSearchPresenter p = new GlobalSearchPresenter(eventBus, view, searchModule);
+		//p.start(event.getSearchString());
 	}
 
 	

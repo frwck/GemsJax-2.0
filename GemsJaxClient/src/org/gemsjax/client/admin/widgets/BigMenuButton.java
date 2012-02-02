@@ -3,7 +3,7 @@ package org.gemsjax.client.admin.widgets;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.gemsjax.client.admin.tabs.TwoColumnLayoutTab;
+import org.gemsjax.client.admin.tabs.TwoColumnLayout;
 
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Label;
@@ -15,7 +15,7 @@ import com.smartgwt.client.widgets.events.MouseOverHandler;
 
 /**
  * This is something like a Button, but its not a HTML Button, but have nearly the same behavior. This GUI widget is considered to use for simple menus, 
- * in example to use within a {@link TwoColumnLayoutTab} to implement the menu. <br />
+ * in example to use within a {@link TwoColumnLayout} to implement the menu. <br />
  * The CSS style classes that are used are: widget-big-menu-button, widget-big-menu-button-mouseover and widget-big-menu-button-active
  * @author Hannes Dorfmann
  *

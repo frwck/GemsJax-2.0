@@ -17,7 +17,7 @@ import org.gemsjax.shared.user.RegisteredUser;
  */
 public class GlobalSearchMessage  extends ReferenceableSearchMessage {
 	
-	private static final String TAG="global";
+	public static final String TAG="global";
 
 	private String serachString;
 	

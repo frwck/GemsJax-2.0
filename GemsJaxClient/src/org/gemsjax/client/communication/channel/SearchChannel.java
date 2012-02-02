@@ -26,6 +26,7 @@ public class SearchChannel implements InputChannel, OutputChannel, ErrorListener
 	private RegExp regEx;
 	private Set<SearchChannelHandler> handlers;
 	private SearchMessageParser parser;
+	private String currentReferenceId;
 	
 	public SearchChannel(CommunicationConnection connection)
 	{
@@ -35,6 +36,16 @@ public class SearchChannel implements InputChannel, OutputChannel, ErrorListener
 		handlers = new LinkedHashSet<SearchChannelHandler>();
 		regEx = RegExp.compile( RegExFactory.startWithTag(ReferenceableSearchMessage.TAG) );
 		parser = new SearchMessageParser();
+	}
+	
+	/**
+	 * Sets the current ReferenceId
+	 * @param newReferenceId
+	 */
+	public void setCurrentReferenceId(String newReferenceId)
+	{
+		regEx = RegExp.compile( RegExFactory.startWithTagAttributeValue(ReferenceableSearchMessage.TAG, ReferenceableSearchMessage.ATTRIBUTE_REFERENCE_ID, newReferenceId));
+		currentReferenceId = newReferenceId;
 	}
 	
 	
@@ -49,13 +60,15 @@ public class SearchChannel implements InputChannel, OutputChannel, ErrorListener
 			
 			ReferenceableSearchMessage m = parser.parseMessage(msg.getText());
 			
+			if (m.getReferenceId().equals(currentReferenceId)) // Check if the currently received message is the server response, of the last sent search query
+			{
 
-			if (m instanceof GlobalSearchResultMessage)
-				fireSearchResult((GlobalSearchResultMessage)m);
-			else
-			if (m instanceof SearchResultErrorMessage)
-				fireErrorResult((SearchResultErrorMessage) m);
-				
+				if (m instanceof GlobalSearchResultMessage)
+					fireSearchResult((GlobalSearchResultMessage)m);
+				else
+				if (m instanceof SearchResultErrorMessage)
+					fireErrorResult((SearchResultErrorMessage) m);
+			}
 			
 		}catch (DOMException e)
 		{

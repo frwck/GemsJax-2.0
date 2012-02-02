@@ -10,13 +10,15 @@ public class CollaborationResult {
 	private String ownerName;
 	private int id;
 	private CollaborationType type;
+	private boolean collaborator;
 	
-	public CollaborationResult(int id, String name, String ownerName, CollaborationType type)
+	public CollaborationResult(int id, String name, String ownerName, boolean collaborator,  CollaborationType type)
 	{
 		this.name = name;
 		this.ownerName = ownerName;
 		this.id =id;
 		this.type = type;
+		this.collaborator = collaborator;
 	}
 
 	public String getName() {
@@ -35,6 +37,10 @@ public class CollaborationResult {
 	public CollaborationType getType()
 	{
 		return type;
+	}
+
+	public boolean isCollaborator() {
+		return collaborator;
 	}
 	
 }

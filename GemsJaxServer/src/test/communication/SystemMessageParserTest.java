@@ -1,15 +1,12 @@
 package test.communication;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
-import org.gemsjax.server.communication.parser.SystemMessageParser;
-import org.gemsjax.shared.communication.message.system.LoginMessage;
-import org.gemsjax.shared.communication.message.system.LogoutMessage;
-import org.gemsjax.shared.communication.message.system.LogoutMessage.LogoutReason;
-
+import org.gemsjax.server.communication.parser.SearchMessageParser;
+import org.gemsjax.shared.communication.message.search.GlobalSearchMessage;
+import org.gemsjax.shared.communication.message.search.SearchRegisteredUserMessage;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
@@ -17,47 +14,40 @@ public class SystemMessageParserTest {
 
 	
 	@Test
-	public void loginMessage() throws SAXException, IOException
+	public void globalSearchTest() throws SAXException, IOException
 	{
-		String username = "username";
-		String password = "password";
-		boolean experimentLogin = true;
+		String refId ="ref1";
+		String search ="serarch for this";
 		
-		LoginMessage lm = new LoginMessage(username, password, experimentLogin);
-			
-		SystemMessageParser parser = new SystemMessageParser();
+		SearchMessageParser parser = new SearchMessageParser();
 		
-		LoginMessage m = (LoginMessage) parser.parse(lm.toXml());
+		GlobalSearchMessage m = new GlobalSearchMessage(refId, search);
 		
+		GlobalSearchMessage pm = (GlobalSearchMessage) parser.parse(m.toXml());
 		
-		assertEquals(m.getUsername(), username);
-		assertEquals(m.getPassword(), password);
-		assertTrue(m.isExperimentLogin() == experimentLogin);
+		assertEquals(m.getReferenceId(), pm.getReferenceId());
+		assertEquals(m.getSearchString(), pm.getSearchString());
 		
-		assertTrue(m.equals(lm));
 	}
-	
 	
 	
 	
 	@Test
-	public void logoutMessage() throws SAXException, IOException
+	public void searchRegisteredUserTest() throws SAXException, IOException
 	{
-		LogoutReason reason = LogoutReason.CLIENT_USER_LOGOUT;
+		String refId ="ref1";
+		String search ="serarch for this";
 		
-		LogoutMessage lm = new LogoutMessage(reason);
-			
-		SystemMessageParser parser = new SystemMessageParser();
+		SearchMessageParser parser = new SearchMessageParser();
 		
-		LogoutMessage m = (LogoutMessage) parser.parse(lm.toXml());
+		SearchRegisteredUserMessage m = new SearchRegisteredUserMessage(refId, search);
 		
-		assertTrue (m.getLogoutReason() == reason);
-		assertTrue(lm.getLogoutReason() == m.getLogoutReason());
-		assertTrue(m.equals(lm));
+		SearchRegisteredUserMessage pm = (SearchRegisteredUserMessage) parser.parse(m.toXml());
+		
+		assertEquals(m.getReferenceId(), pm.getReferenceId());
+		assertEquals(m.getSearchString(), pm.getSearchString());
+		
 	}
-	
-	
-	
 	
 	
 

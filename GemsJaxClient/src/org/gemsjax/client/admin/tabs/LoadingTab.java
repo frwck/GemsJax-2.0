@@ -7,6 +7,7 @@ import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -27,7 +28,7 @@ public class LoadingTab extends Tab{
 	{
 		super(title);
 		
-		content = new Canvas();
+		content = new Label("No content set");
 		this.setPane(content);
 		
 		showingLoading = false;
@@ -97,10 +98,8 @@ public class LoadingTab extends Tab{
 	 */
 	public void showLoading()
 	{
-		if (!showingLoading)
-			this.content = this.getPane();
 		
-		this.getTabSet().updateTab(this, loadingCanvas);
+		TabEnviroment.getInstance().updateTab(this, loadingCanvas);
 		showingLoading= true;
 		
 	}
@@ -112,9 +111,7 @@ public class LoadingTab extends Tab{
 	{
 		if (content != null) 
 		{
-			
-			TabSet ts=this.getTabSet();
-			
+
 			TabEnviroment.getInstance().updateTab(this, content);
 		}
 			
