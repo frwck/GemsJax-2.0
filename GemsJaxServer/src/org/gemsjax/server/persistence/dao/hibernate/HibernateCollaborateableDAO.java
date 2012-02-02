@@ -516,28 +516,23 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 
 
 	@Override
-	public Set<Collaborateable> getBySearch(String searchString,
-			RegisteredUser requester) {
+	public Set<Collaborateable> getBySearch(String searchString, RegisteredUser requester) {
 		
 		
-		searchString = "%"+searchString.toLowerCase()+"%";
 		
-		
-		String sql = "FROM CollaborateableImpl WHERE "
-				+" ( publicPermission<>"+Collaborateable.NO_PERMISSION+ " OR owner=:requester OR users WITH r");
-				//lower(username) like :criteria OR email like :criteria OR displayedName like :criteria ";
-		
+		String search = "%"+searchString.toLowerCase()+"%";
+		System.out.println(requester+"   -    "+ search);
+		String sql = "SELECT c FROM CollaborateableImpl c WHERE (c.owner = :user OR :user in elements(c.users)) AND (c.keywords like :searchString OR c.name like :searchString)";
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		Query query = session.createQuery( sql );
-	    query.setParameter("criteria",searchCriteria);
+		query.setParameter("user", requester);
+		query.setParameter("searchString",search);
 	    
-	    List<RegisteredUserImpl> result = query.list();
+	    List<Collaborateable> result = query.list();
 	    
-	    return new LinkedHashSet<RegisteredUser>(result);
-		
-		return null;
+	    return new LinkedHashSet<Collaborateable>(result);
 	}
 	
 	

@@ -117,6 +117,11 @@ public class CollaborateableDAOTest {
 		 }
 		 
 		 
+		 Set<Collaborateable> searchRes=dao.getBySearch("name", owner1);
+		 for (Collaborateable c: searchRes)
+			 System.out.println(c+" "+c.getId()+" "+c.getName());
+		 
+		 
 		 //TODO Test with ExperimentUser
 		
 		 
