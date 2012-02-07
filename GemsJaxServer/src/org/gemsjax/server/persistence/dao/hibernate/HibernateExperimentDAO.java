@@ -24,6 +24,7 @@ import org.gemsjax.server.persistence.request.AdministrateExperimentRequestImpl;
 import org.gemsjax.server.persistence.request.RequestImpl;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.shared.FieldVerifier;
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;
@@ -845,6 +846,26 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 			
 			throw new DAOException(e,"Could not create ExperimentInvitations");
 		}
+	}
+	
+	
+	
+	@Override
+	public Set<Experiment> getBySearch(String searchString, RegisteredUser requester) {
+		
+		String search = "%"+searchString.toLowerCase()+"%";
+		System.out.println(requester+"   -    "+ search);
+		String sql = "SELECT c FROM ExperimentImpl c WHERE (c.owner = :user OR :user in elements(c.administrators)) AND (c.description like :searchString OR c.name like :searchString)";
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Query query = session.createQuery( sql );
+		query.setParameter("user", requester);
+		query.setParameter("searchString",search);
+	    
+	    List<Experiment> result = query.list();
+	    
+	    return new LinkedHashSet<Experiment>(result);
 	}
 	
 	

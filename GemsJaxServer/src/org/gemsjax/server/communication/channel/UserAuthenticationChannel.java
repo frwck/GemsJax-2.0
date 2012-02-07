@@ -113,7 +113,7 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 					{
 						OnlineUserManager.getInstance().addOnlineUser(ou);
 						
-						// TODO determine unread message
+						// TODO determine unread notification
 						send(new LoginAnswerMessage(ou.getId(), u.getDisplayedName() , 0)); 
 						communicationConnection.deregisterInputChannel(this);
 					}

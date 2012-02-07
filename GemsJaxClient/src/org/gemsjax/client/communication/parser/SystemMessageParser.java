@@ -2,10 +2,12 @@ package org.gemsjax.client.communication.parser;
 
 import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage;
+import org.gemsjax.shared.communication.message.system.LogoutMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
 import org.gemsjax.shared.communication.message.system.SystemErrorMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
+import org.gemsjax.shared.communication.message.system.LogoutMessage.LogoutReason;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 
 import com.google.gwt.xml.client.DOMException;
@@ -64,8 +66,12 @@ public class SystemMessageParser {
 		    if (childElement.getTagName().equals(RegistrationAnswerMessage.TAG))
 		    	return parseRegistrationAnswerMessage(childElement);
 		    else
+		    if (childElement.getTagName().equals(LogoutMessage.TAG))
+		    	return parseLogoutMessage(childElement);
+		    else
 		    if (childElement.getTagName().equals(SystemErrorMessage.TAG))
 		    	return parseSystemErrorMessage(childElement);
+		    
 		    
 		    
 		    
@@ -176,6 +182,21 @@ public class SystemMessageParser {
 			return new RegistrationAnswerMessage(status);
 	}
 	
+	
+	private LogoutMessage parseLogoutMessage(Element e) throws DOMException
+	{
+		try{
+			String attrLR = e.getAttribute(LogoutMessage.ATTRIBUTE_REASON);
+			int r = Integer.parseInt(attrLR);
+			
+			LogoutReason reason = LogoutMessage.intToLogoutReason(r);
+		
+			return new LogoutMessage(reason);
+		}
+		catch (NumberFormatException ex){
+			throw new DOMException(DOMException.SYNTAX_ERR, "Could not parse the logout reason");
+		}
+	}
 	
 	
 	private SystemErrorMessage parseSystemErrorMessage(Element e) throws DOMException

@@ -5,15 +5,12 @@ import java.io.File;
 
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.handler.ContextHandler;
-import org.eclipse.jetty.server.handler.HandlerCollection;
-import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.gemsjax.server.communication.servlet.FileServlet;
 import org.gemsjax.server.communication.servlet.LiveCommunicationWebSocketServlet;
 import org.gemsjax.server.communication.servlet.post.RegistrationServlet;
-
-
+import org.gemsjax.server.communication.servlet.post.SearchServlet;
 
 
 
@@ -21,21 +18,21 @@ public class GemsJaxServer {
 	
 	public static void main(String[] args) {
 
-	     
+
 	     if (args.length !=1 )
 	     {
 	    	 System.out.println("Wrong argument count ("+args.length+"): \nThe first parameter is the path to the war folder");
 	    	 return;
 	     }
-	     
+
 	     Server server = new Server(8081);
-         
-	     
-	     
+        
+
+
 	     String warUrl = args[0];
 	     if (!warUrl.endsWith(""+File.separatorChar))
 	    	 warUrl+=File.separatorChar;
-	     
+
 	     System.out.println(warUrl);
 	    //SSL    
 	    /* SslSelectChannelConnector sslConnector = new SslSelectChannelConnector();
@@ -52,38 +49,19 @@ public class GemsJaxServer {
 	    	  System.out.println(c);
 
 
+	        
 	        // Add the GemsJaxServlet (WebSocket Communication)
 	        ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
-	        servletContext.setContextPath("/servlets");
-	        servletContext.addServlet(new ServletHolder( new LiveCommunicationWebSocketServlet()),"/liveCommunication");
-	        servletContext.addServlet(new ServletHolder( new RegistrationServlet()),"/registration");
+	        servletContext.setContextPath("/");
+	        servletContext.addServlet(new ServletHolder(new FileServlet(warUrl,"GemsJax.html")),"/*");
+	        servletContext.addServlet(new ServletHolder( new LiveCommunicationWebSocketServlet()),"/servlets/liveCommunication");
+	        servletContext.addServlet(new ServletHolder( new RegistrationServlet()),"/servlets/registration");
+	        servletContext.addServlet(new ServletHolder( new SearchServlet()),"/servlets/search");
 	        
-	        
-	        // The ResourceHandler to handle static web content
-	        ResourceHandler resourceHandler = new ResourceHandler();
-	        resourceHandler.setDirectoriesListed(true);
-	        resourceHandler.setWelcomeFiles(new String[]{ "GemsJax.html" });
-	        
-	        // linux dir  "/home/hannes/GemsJaxWorkspace/GemsJaxClient/war/"
-	        resourceHandler.setResourceBase(warUrl);
-	        
-	        
-	        ContextHandler resourceContext = new ContextHandler();
-	        resourceContext.setContextPath("/");
-	        resourceContext.setHandler(resourceHandler);
-	        
-	        
-	        
-	        
-	        
-	        HandlerCollection handlers = new HandlerCollection();
 
-	        
-	        handlers.addHandler(resourceContext);
-	        handlers.addHandler(servletContext);
 
-	        server.setHandler(handlers);
-	        
+	        server.setHandler(servletContext);
+
 
 	        try {
 				server.start();
@@ -91,10 +69,9 @@ public class GemsJaxServer {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 
 	}
-
 
 
 }

@@ -34,7 +34,7 @@ public class GlobalSearchResultMessage extends ReferenceableSearchMessage {
 	public static final String ATTRIBUTE_COLLABORATEABLE_NAME="name";
 	public static final String ATTRIBUTE_COLLABORATEABLE_OWNER_NAME="owner";
 	public static final String ATTRIBUTE_COLLABORATEABLE_TYPE="type";
-	public static final String ATTRIBUTE_COLLABORATEABLE_COLLABORATOR="coLab";
+	public static final String ATTRIBUTE_COLLABORATEABLE_PUBLIC="public";
 	
 	
 	
@@ -72,7 +72,7 @@ public class GlobalSearchResultMessage extends ReferenceableSearchMessage {
 		String r ="<"+SUBTAG_COLLABORATEABLE_RESULT+">";
 		
 		for (CollaborationResult u : collaborationResults)
-			r+="<"+SUBTAG_COLLABORATEABLE+" "+ATTRIBUTE_COLLABORATEABLE_ID+"=\""+u.getId()+"\" "+ATTRIBUTE_COLLABORATEABLE_NAME+"=\""+u.getName()+"\" "+ATTRIBUTE_COLLABORATEABLE_OWNER_NAME+"=\""+u.getOwnerName()+"\" "+ATTRIBUTE_COLLABORATEABLE_TYPE+"=\""+u.getType().toConstant() +"\" "+ATTRIBUTE_COLLABORATEABLE_COLLABORATOR+"=\""+u.isCollaborator()+"\" />";
+			r+="<"+SUBTAG_COLLABORATEABLE+" "+ATTRIBUTE_COLLABORATEABLE_ID+"=\""+u.getId()+"\" "+ATTRIBUTE_COLLABORATEABLE_NAME+"=\""+u.getName()+"\" "+ATTRIBUTE_COLLABORATEABLE_OWNER_NAME+"=\""+u.getOwnerName()+"\" "+ATTRIBUTE_COLLABORATEABLE_TYPE+"=\""+u.getType().toConstant() +"\" "+ATTRIBUTE_COLLABORATEABLE_PUBLIC+"=\""+u.isPublic()+"\" />";
 		
 		r+="</"+SUBTAG_COLLABORATEABLE_RESULT+">";
 		

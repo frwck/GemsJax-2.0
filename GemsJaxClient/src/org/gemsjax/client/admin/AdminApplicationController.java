@@ -12,6 +12,8 @@ import org.gemsjax.client.admin.presenter.AuthenticationPresenter;
 import org.gemsjax.client.admin.presenter.MetaModelPresenter;
 import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.admin.presenter.RegistrationPresenter;
+import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent;
+import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent.CriticalErrorType;
 import org.gemsjax.client.admin.presenter.event.DoNewGlobalSearchEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.handler.DoNewGlobalSearchHandler;
@@ -37,6 +39,7 @@ import org.gemsjax.client.module.FriendsModule;
 import org.gemsjax.client.module.GlobalSearchModule;
 import org.gemsjax.client.module.RegistrationModule;
 import org.gemsjax.shared.ServletPaths;
+import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
@@ -310,17 +313,24 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 	@Override
 	public void onDoNewGlobalSerch(DoNewGlobalSearchEvent event) {
 		
-
-		GlobalSearchResultViewImpl view = new GlobalSearchResultViewImpl(event.getSearchString(), getLanguage());
-		TabEnviroment.getInstance().addTab(view);
-		view.showLoading();
-		view.showContent();
-		
-		SearchChannel channel = new SearchChannel(new HttpPostCommunicationConnection(ServletPaths.SEARCH));
-		GlobalSearchModule searchModule = new GlobalSearchModule(authenticationModule.getCurrentlyAuthenticatedUser(),channel, friendsModule);
-		
-		GlobalSearchPresenter p = new GlobalSearchPresenter(eventBus, view, searchModule);
-		//p.start(event.getSearchString());
+		try {
+			GlobalSearchResultViewImpl view = new GlobalSearchResultViewImpl(event.getSearchString(), getLanguage());
+			TabEnviroment.getInstance().addTab(view);
+			view.showLoading();
+			view.showContent();
+			CommunicationConnection c = new HttpPostCommunicationConnection(ServletPaths.SEARCH);
+			c.connect();
+			SearchChannel channel = new SearchChannel(c);
+			GlobalSearchModule searchModule = new GlobalSearchModule(authenticationModule.getCurrentlyAuthenticatedUser(),channel, friendsModule);
+			
+			GlobalSearchPresenter p = new GlobalSearchPresenter(eventBus, view, searchModule);
+			p.start(event.getSearchString());
+			
+		} catch (IOException e) {
+			// TODO Maybe the error type should be the real one 
+			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.LIVE_CONNECTION_CLOSED) );
+			e.printStackTrace();
+		}
 	}
 
 	

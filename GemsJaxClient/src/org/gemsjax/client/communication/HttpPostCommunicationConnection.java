@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
@@ -150,12 +151,15 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 		
 		try {
 		  String postParameter=Message.POST_PARAMETER_NAME+"="+URL.encode(message.toXml());
+		  //TODO remove console
+		  Console.log("SEND HTTP Post: "+message.toXml());
 		  
 		  builder.sendRequest(postParameter, new RequestCallback() {
 			
 			@Override
 			public void onResponseReceived(Request request, Response response) {
-				
+				//TODO remove console
+				Console.log("RECEIVED HTTP Post: "+response.getText());
 				onRequestResponseReceived(request, response);
 			}
 			

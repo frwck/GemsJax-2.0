@@ -26,11 +26,12 @@ public class SearchChannel implements InputChannel, OutputChannel, ErrorListener
 	private RegExp regEx;
 	private Set<SearchChannelHandler> handlers;
 	private SearchMessageParser parser;
-	private String currentReferenceId;
+//	private String currentReferenceId;
 	
 	public SearchChannel(CommunicationConnection connection)
 	{
 		this.connection = connection;
+		
 		this.connection.registerInputChannel(this);
 		this.connection.addErrorListener(this);
 		handlers = new LinkedHashSet<SearchChannelHandler>();
@@ -38,16 +39,26 @@ public class SearchChannel implements InputChannel, OutputChannel, ErrorListener
 		parser = new SearchMessageParser();
 	}
 	
-	/**
+	public void addSearchChannelHandler(SearchChannelHandler h)
+	{
+		handlers.add(h);
+	}
+	
+	public void removeSearchChannelHandler(SearchChannelHandler h)
+	{
+		handlers.remove(h);
+	}
+	
+	/*
 	 * Sets the current ReferenceId
 	 * @param newReferenceId
-	 */
+	 
 	public void setCurrentReferenceId(String newReferenceId)
 	{
 		regEx = RegExp.compile( RegExFactory.startWithTagAttributeValue(ReferenceableSearchMessage.TAG, ReferenceableSearchMessage.ATTRIBUTE_REFERENCE_ID, newReferenceId));
 		currentReferenceId = newReferenceId;
 	}
-	
+	*/
 	
 	@Override
 	public void send(Message message) throws IOException {
@@ -60,21 +71,19 @@ public class SearchChannel implements InputChannel, OutputChannel, ErrorListener
 			
 			ReferenceableSearchMessage m = parser.parseMessage(msg.getText());
 			
-			if (m.getReferenceId().equals(currentReferenceId)) // Check if the currently received message is the server response, of the last sent search query
-			{
-
-				if (m instanceof GlobalSearchResultMessage)
-					fireSearchResult((GlobalSearchResultMessage)m);
-				else
-				if (m instanceof SearchResultErrorMessage)
-					fireErrorResult((SearchResultErrorMessage) m);
-			}
+		
+			if (m instanceof GlobalSearchResultMessage)
+				fireSearchResult((GlobalSearchResultMessage)m);
+			else
+			if (m instanceof SearchResultErrorMessage)
+				fireErrorResult((SearchResultErrorMessage) m);
 			
 		}catch (DOMException e)
 		{
 			for (SearchChannelHandler h : handlers)
 				h.onUnexpectedError(null, e);
 		}
+		
 		
 	}
 	

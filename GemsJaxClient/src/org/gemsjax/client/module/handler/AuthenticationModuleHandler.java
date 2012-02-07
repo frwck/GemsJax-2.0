@@ -12,7 +12,7 @@ import org.gemsjax.shared.user.RegisteredUser;
  */
 public interface AuthenticationModuleHandler {
 	
-	public void onLogout(LogoutReason reason);
+	public void onLogoutReceived(LogoutReason reason);
 
 	/**
 	 * Is called, if the authentication was successful and the user no loged in

@@ -92,7 +92,7 @@ public class SearchMessageParser {
 	{
 		int id;
 		String displayName, username, profilePicture, name, ownerName;
-		boolean colLaborator, coAdmin;
+		boolean _public, coAdmin;
 		CollaborationType colType;
 		
 		// Users
@@ -163,9 +163,9 @@ public class SearchMessageParser {
 				throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration type. Value: "+c.getAttribute(GlobalSearchResultMessage.ATTRIBUTE_COLLABORATEABLE_TYPE));
 		
 			
-			colLaborator = Boolean.parseBoolean(c.getAttribute(GlobalSearchResultMessage.ATTRIBUTE_COLLABORATEABLE_COLLABORATOR));
+			_public = Boolean.parseBoolean(c.getAttribute(GlobalSearchResultMessage.ATTRIBUTE_COLLABORATEABLE_PUBLIC));
 			
-			collaborationResults.add(new CollaborationResult(id, name, ownerName, colLaborator, colType));
+			collaborationResults.add(new CollaborationResult(id, name, ownerName, _public, colType));
 		}
 		
 		

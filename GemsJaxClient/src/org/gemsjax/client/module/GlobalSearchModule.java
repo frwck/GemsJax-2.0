@@ -23,11 +23,13 @@ public class GlobalSearchModule implements SearchChannelHandler {
 	private RegisteredUser autenticatedUser;
 	private Set<GlobalSearchModuleHandler> handlers;
 	private int lastRefIdCounter;
+	private String lastRefId;
 	
 	public GlobalSearchModule(RegisteredUser currentlyAuthenticatedUser, SearchChannel channel, FriendsModule friendModule)
 	{
 		handlers = new LinkedHashSet<GlobalSearchModuleHandler>();
 		this.channel = channel;
+		this.channel.addSearchChannelHandler(this);
 		this.friendModule =friendModule;
 		this.autenticatedUser = currentlyAuthenticatedUser;
 		lastRefIdCounter = 0;
@@ -49,68 +51,117 @@ public class GlobalSearchModule implements SearchChannelHandler {
 			Set<UserResult> userResults,
 			Set<CollaborationResult> collaborationResults,
 			Set<ExperimentResult> experimentResults) {
+		
+		
+		if (referenceId.equals(lastRefId)) // proceed only, if the passed referencId is the lastRefId
+		{
 	
-		Set<UserResult> users = new LinkedHashSet<UserResult>();
-		Set<Friend> friends = new LinkedHashSet<Friend>();
-		
-		Set<CollaborationResult> publicMetaModels = new LinkedHashSet<CollaborationResult>();
-		Set<CollaborationResult> publicModels = new LinkedHashSet<CollaborationResult>();
-		
-		Set<CollaborationResult> usersMetaModels = new LinkedHashSet<CollaborationResult>();
-		Set<CollaborationResult> usersModels = new LinkedHashSet<CollaborationResult>();
-		
-		
-		// Filter friends from other users
-		for (UserResult u: userResults)
-		{
-			Friend f = friendModule.getFriendById(u.getUserId());
+			Set<UserResult> users = new LinkedHashSet<UserResult>();
+			Set<Friend> friends = new LinkedHashSet<Friend>();
 			
-			if (f!=null) // then u is a Friend
-				friends.add(f);
+			Set<CollaborationResult> publicMetaModels = new LinkedHashSet<CollaborationResult>();
+			Set<CollaborationResult> publicModels = new LinkedHashSet<CollaborationResult>();
 			
-			else
-			users.add(u);
-		}
-		
-		
-		// Filter public from owned or collaborated
-		for (CollaborationResult c : collaborationResults)
-		{
-			switch (c.getType())
+			Set<CollaborationResult> usersMetaModels = new LinkedHashSet<CollaborationResult>();
+			Set<CollaborationResult> usersModels = new LinkedHashSet<CollaborationResult>();
+			
+			
+			// Filter friends from other users
+			for (UserResult u: userResults)
 			{
-				case METAMODEL:
-								if (c.isCollaborator())
-									usersMetaModels.add(c);
-								else
-									publicMetaModels.add(c);
-								break;
-								
-				case MODEL:
-								if (c.isCollaborator())
-									usersModels.add(c);
-								else
-									publicModels.add(c);
-								break;
+				if (u.getUserId() == autenticatedUser.getId())
+					continue;
+				
+				Friend f = friendModule.getFriendById(u.getUserId());
+				
+				if (f!=null) // then u is a Friend
+					friends.add(f);
+				
+				else
+				users.add(u);
 			}
-		}
-		
-		
-		
-		
-		// fire Result ready
-		GlobalSearchResultSet result = new GlobalSearchResultSet(users, friends, publicMetaModels, publicModels, usersMetaModels, usersModels, experimentResults);
-		
-		for (GlobalSearchModuleHandler h : handlers)
-			h.onSearchResultReady(result);
+			
+			
+			// Filter public from owned or collaborated
+			for (CollaborationResult c : collaborationResults)
+			{
+				switch (c.getType())
+				{
+					case METAMODEL:
+									if (c.isPublic())
+										publicMetaModels.add(c);
+									else
+										usersMetaModels.add(c);
+									break;
+									
+					case MODEL:
+									if (c.isPublic())
+										publicModels.add(c);
+									else
+										usersModels.add(c);
+									break;
+				}
+			}
+			
+			
+			// Filter friends from other users
+			for (UserResult u: userResults)
+			{
+				if (u.getUserId() == autenticatedUser.getId())
+					continue;
+				
+				Friend f = friendModule.getFriendById(u.getUserId());
+				
+				if (f!=null) // then u is a Friend
+					friends.add(f);
+				
+				else
+				users.add(u);
+			}
+			
+			
+			// Filter public from owned or collaborated
+			for (CollaborationResult c : collaborationResults)
+			{
+				switch (c.getType())
+				{
+					case METAMODEL:
+									if (c.isPublic())
+										publicMetaModels.add(c);
+									else
+										usersMetaModels.add(c);
+									break;
+									
+					case MODEL:
+									if (c.isPublic())
+										publicModels.add(c);
+									else
+										usersModels.add(c);
+									break;
+				}
+			}
+			
+			
+			
+			
+			// fire Result ready
+			GlobalSearchResultSet result = new GlobalSearchResultSet(users, friends, publicMetaModels, publicModels, usersMetaModels, usersModels, experimentResults);
+			
+			for (GlobalSearchModuleHandler h : handlers)
+				h.onSearchResultReady(result);
+
+		} // if refId = last ref id
 	}
 
 
 	@Override
 	public void onSearchResultError(String referenceId, SearchError error) {
 		
-		for (GlobalSearchModuleHandler h : handlers)
-			h.onSearchResultErrorResponse(error);
-
+		if (referenceId.equals(lastRefId) || error == SearchError.AUTHENTICATION) {
+			for (GlobalSearchModuleHandler h : handlers)
+				h.onSearchResultErrorResponse(error);
+		}
+		
 	}
 
 
@@ -126,11 +177,11 @@ public class GlobalSearchModule implements SearchChannelHandler {
 	{
 		lastRefIdCounter++;
 		
-		String refId = this.toString()+"-"+lastRefIdCounter;
+		lastRefId = this.toString()+"-"+lastRefIdCounter;
 		
-		channel.send(new GlobalSearchMessage(refId, searchString));
+		channel.send(new GlobalSearchMessage(lastRefId, searchString));
 		
-		return refId;
+		return lastRefId;
 		
 	}
 

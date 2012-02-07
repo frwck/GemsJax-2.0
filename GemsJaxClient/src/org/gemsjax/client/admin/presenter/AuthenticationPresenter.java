@@ -172,7 +172,7 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 
 
 	@Override
-	public void onLogout(LogoutReason reason) {
+	public void onLogoutReceived(LogoutReason reason) {
 		loginView.resetView();
 		loginView.bringToFront();
 		logoutView.show(reason);

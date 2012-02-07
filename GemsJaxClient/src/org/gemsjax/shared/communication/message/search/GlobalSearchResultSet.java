@@ -2,8 +2,6 @@ package org.gemsjax.shared.communication.message.search;
 
 import java.util.Set;
 
-import org.gemsjax.client.module.GlobalSearchModule;
-import org.gemsjax.client.module.handler.GlobalSearchModuleHandler;
 import org.gemsjax.shared.communication.message.friend.Friend;
 
 /**

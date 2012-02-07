@@ -20,6 +20,7 @@ public class GlobalSearchPresenter extends Presenter implements GlobalSearchModu
 	
 		this.view = view;
 		this.searchModule = searchModule;
+		this.searchModule.addGlobalSearchModuleHandler(this);
 	}
 	
 	private void doSearch(String search)

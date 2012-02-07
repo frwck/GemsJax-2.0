@@ -107,7 +107,7 @@ public class AuthenticationModule implements AuthenticationChannelHandler {
 	private void fireOnLogout(LogoutReason reason)
 	{
 		for (AuthenticationModuleHandler h: handlers)
-			h.onLogout(reason);
+			h.onLogoutReceived(reason);
 	}
 	
 	

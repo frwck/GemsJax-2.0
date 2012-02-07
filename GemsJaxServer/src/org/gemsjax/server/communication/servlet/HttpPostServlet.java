@@ -71,6 +71,8 @@ public abstract class HttpPostServlet extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)  throws ServletException, IOException
 	{
+		System.out.println("Registration "+req.getSession().getId());
+		
 		resp.setContentType("text/html");
 		resp.setStatus(403);
 	    PrintWriter out = resp.getWriter();

@@ -189,4 +189,13 @@ public interface ExperimentDAO {
 	 * @throws DAOException 
 	 */
 	public abstract ExperimentUser getExperimentUserByLogin(String username, String passwordHash) throws MoreThanOneExcpetion, NotFoundException, DAOException;
+
+	/**
+	 * Search for experiments that are owned by the requester or co-administrated by the requester,
+	 * and the experiment name or experiment description matches the passed searchString.
+	 * @param searchString
+	 * @param requester
+	 * @return
+	 */
+	public Set<Experiment> getBySearch(String searchString, RegisteredUser requester);
 }

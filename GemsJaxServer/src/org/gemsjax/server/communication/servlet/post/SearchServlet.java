@@ -7,14 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.gemsjax.server.communication.HttpCommunicationConnection;
-import org.gemsjax.server.communication.channel.RegistrationChannel;
-import org.gemsjax.server.communication.channel.SearchRegisteredUserChannel;
+import org.gemsjax.server.communication.channel.SearchChannel;
 import org.gemsjax.server.communication.servlet.HttpPostServlet;
 import org.gemsjax.shared.communication.CommunicationConnection;
 
-public class SearchRegisteredUserServlet extends HttpPostServlet{
+public class SearchServlet extends HttpPostServlet{
 	
-	public SearchRegisteredUserServlet()
+	public SearchServlet()
 	{
 	}
 
@@ -23,7 +22,7 @@ public class SearchRegisteredUserServlet extends HttpPostServlet{
 			throws ServletException, IOException {
 	
 		CommunicationConnection connection = new HttpCommunicationConnection(request, response);
-		SearchRegisteredUserChannel rc = new SearchRegisteredUserChannel(connection);
+		SearchChannel rc = new SearchChannel(connection, request.getSession());
 		connection.connect();
 	}
 

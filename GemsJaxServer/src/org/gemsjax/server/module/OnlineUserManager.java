@@ -117,14 +117,14 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 			// The User is already logged in with another connection, so logout and close the old connection
 			// and use the new connection
 			try {
-				user.getLogoutChannel().send(new LogoutMessage(LogoutReason.SERVER_OTHER_CONNECTION));
+				existingOnlineUser.getLogoutChannel().send(new LogoutMessage(LogoutReason.SERVER_OTHER_CONNECTION));
 			} catch (IOException e) {
 				// TODO What to do if could not sent logout message to the client
 				e.printStackTrace();
 			}
 			finally
 			{
-				doLogout(user);
+				doLogout(existingOnlineUser);
 			}
 			
 		}
@@ -140,7 +140,8 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 	{
 		onlineUserIdMap.remove(ou.getId());
 		onlineUserSessionMap.remove(ou.getHttpSession().getId());
-		ou.getHttpSession().invalidate();
+		// TODO, check if needed?
+		//ou.getHttpSession().invalidate();
 		
 		// unbind Channel Handlers
 		ou.getLogoutChannel().removeLogoutChannelHandler(this);

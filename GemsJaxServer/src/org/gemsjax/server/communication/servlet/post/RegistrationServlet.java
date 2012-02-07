@@ -36,7 +36,7 @@ public class RegistrationServlet extends HttpPostServlet{
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-	
+		
 		CommunicationConnection connection = new HttpCommunicationConnection(request, response);
 		RegistrationChannel rc = new RegistrationChannel(connection);
 		connection.connect();
