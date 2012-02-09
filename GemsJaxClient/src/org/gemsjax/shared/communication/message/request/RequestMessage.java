@@ -7,4 +7,13 @@ public abstract class RequestMessage implements Message {
 	public static final String TAG ="request";
 	
 	
+	protected String openingXml(){
+		return "<"+TAG+">";
+	}
+	
+	protected String closingXml()
+	{
+		return "</"+TAG+">";
+	}
+	
 }

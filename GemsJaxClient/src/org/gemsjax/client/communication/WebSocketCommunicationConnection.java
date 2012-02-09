@@ -82,7 +82,6 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	private boolean isConnected = false;
 	 
     private WebSocketCommunicationConnection() {
-        SC.showConsole(); // TODO remove
         inputChannels = new LinkedHashSet<InputChannel>();
         establishedListeners = new LinkedHashSet<EstablishedListener>();
         closedListeners = new LinkedHashSet<ClosedListener>();
@@ -105,6 +104,17 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
     	
     	isConnected = true;
     	
+    	
+    	if (keepAlive)
+		{
+    		if (keepAliveTimer!=null)
+    			keepAliveTimer.cancel();
+    		
+			keepAliveTimer = new KeepAliveTimer();
+			keepAliveTimer.scheduleRepeating(keepAliveTimer.timeout);
+		}
+    	
+    	
     	for (EstablishedListener e : establishedListeners)
     		e.onEstablished();
     
@@ -114,6 +124,9 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
     
     private void onClose() {
     	isConnected = false;
+    	
+    	if (keepAliveTimer!=null)
+    		keepAliveTimer.cancel();
     	
     	for (ClosedListener c: closedListeners)
     		c.onClose(this);
@@ -247,11 +260,6 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	public void connect() throws IOException {
 		doConnect(getRemoteAddress());
 		
-		if (keepAlive)
-		{
-			keepAliveTimer = new KeepAliveTimer();
-			keepAliveTimer.scheduleRepeating(keepAliveTimer.timeout);
-		}
 	}
 
 

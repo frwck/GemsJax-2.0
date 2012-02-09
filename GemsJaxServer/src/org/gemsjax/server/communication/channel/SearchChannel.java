@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.gemsjax.server.communication.HttpCommunicationConnection;
 import org.gemsjax.server.communication.parser.SearchMessageParser;
+import org.gemsjax.server.module.Authenticator;
 import org.gemsjax.server.module.OnlineUser;
 import org.gemsjax.server.module.OnlineUserManager;
 import org.gemsjax.server.module.SearchExecutor;
@@ -71,7 +72,7 @@ public class SearchChannel implements InputChannel, OutputChannel{
 	@Override
 	public void onMessageReceived(InputMessage msg) {
 		
-		OnlineUser ou = OnlineUserManager.getInstance().getOnlineUser(session);
+		OnlineUser ou = Authenticator.isAuthenticated(session);
 		
 		if (ou !=null && ou.getUser() instanceof RegisteredUser)
 		{

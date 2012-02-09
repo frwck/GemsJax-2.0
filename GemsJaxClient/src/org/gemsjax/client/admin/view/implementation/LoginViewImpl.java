@@ -2,6 +2,10 @@ package org.gemsjax.client.admin.view.implementation;
 
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.view.LoginView;
+import org.gemsjax.client.util.Console;
+
+import com.google.gwt.event.logical.shared.AttachEvent;
+import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -80,6 +84,7 @@ public class LoginViewImpl extends VLayout implements LoginView{
 		this.addMember(topSpacer);
 		this.addMember(middleLayout);
 		this.addMember(bottomSpacer);
+	
 	}
 	
 	

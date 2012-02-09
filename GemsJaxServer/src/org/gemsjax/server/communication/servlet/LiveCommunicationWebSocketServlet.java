@@ -20,8 +20,7 @@ public class LiveCommunicationWebSocketServlet extends WebSocketServlet {
 
 	@Override
 	public WebSocket doWebSocketConnect(HttpServletRequest request, String arg1) {
-		System.out.println("doWebSocketConnect");
-		System.out.println("WebSocket "+request.getSession().getId());
+		System.out.println("WebSocket "+request.getSession(true).getId());
 		return new UserWebSocket(request.getSession());
 	}
 	
@@ -29,7 +28,7 @@ public class LiveCommunicationWebSocketServlet extends WebSocketServlet {
   {
 	  ServletContext con = getServletContext();
       RequestDispatcher dp = getServletContext().getNamedDispatcher("default");
-      System.out.println("GET:"+request.getSession().getId());
+      System.out.println("Websocket GET:"+request.getSession(true).getId());
       dp.forward(request,response);
   }
 

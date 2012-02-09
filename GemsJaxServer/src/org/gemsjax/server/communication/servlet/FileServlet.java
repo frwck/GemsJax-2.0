@@ -111,7 +111,7 @@ public class FileServlet extends HttpServlet {
     {
     	
     	
-    	System.out.println("File session: "+request.getSession().getId() + " path "+request.getPathInfo());
+    	System.out.println("File session: "+request.getSession(true).getId() + " path "+request.getPathInfo());
         // Validate the requested file ------------------------------------------------------------
 
         // Get requested file by path info.

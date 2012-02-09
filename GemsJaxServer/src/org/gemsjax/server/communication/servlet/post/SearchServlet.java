@@ -21,6 +21,7 @@ public class SearchServlet extends HttpPostServlet{
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 	
+		System.out.println("POST SEARCH: "+request.getSession(true).getId());
 		CommunicationConnection connection = new HttpCommunicationConnection(request, response);
 		SearchChannel rc = new SearchChannel(connection, request.getSession());
 		connection.connect();

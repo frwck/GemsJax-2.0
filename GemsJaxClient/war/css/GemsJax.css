@@ -119,6 +119,7 @@ This is the CSS style for the class Title
 	border-bottom: 1px solid #AAA;
 	margin: 0px;
 	padding-bottom: 5px;
+	padding-top: 5px;
 	color:444444;
 	height:25px;
 }
@@ -263,4 +264,14 @@ This is the CSS style for the class Title
 	weight: bold;
 	text-decoration: underline;
 	cursor:pointer;
+}
+
+
+
+.GloabalSearchResultLabel{
+	text-align: left;
+	vertical-align: middle;
+	font-size: 18px;
+	margin-left:30px;
+	
 }

@@ -188,9 +188,24 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  String GlobalSearchFriendsMenuTitle();
 	  
 	  
-	  @DefaultStringValue("MetaModls")
+	  @DefaultStringValue("MetaModels")
 	  String GlobalSearchMetaModelsMenuTitle();
 	  
+	  
+	  @DefaultStringValue("My MetaModels")
+	  String GlobalSearchMyMetaModelsTitle();
+	  
+	  
+	  @DefaultStringValue("Public MetaModels")
+	  String GlobalSearchPublicMetaModelsTitle();
+	  
+	  
+	  @DefaultStringValue("My Models")
+	  String GlobalSearchMyModelsTitle();
+	  
+	  
+	  @DefaultStringValue("Public Models")
+	  String GlobalSearchPublicModelsTitle();
 	  
 	  @DefaultStringValue("Models")
 	  String GlobalSearchModelsMenuTitle();
@@ -198,6 +213,39 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  
 	  @DefaultStringValue("Experiments")
 	  String GlobalSearchExperimentsMenuTitle();
+	  
+	  @DefaultStringValue("Nothing found")
+	  String GlobalSearchNoResult();
+	  
+
+	  @DefaultStringValue("Send friendship request")
+	  String GlobalSearchNewFriendshipRequest();
+	  
+	  @DefaultStringValue("Unfriend")
+	  String GlobalSearchUnfriend();
+	  
+	  
+	  @DefaultStringValue("Show")
+	  String GlobalSearchShow();
+	  
+	  
+	  @DefaultStringValue("An unexpected error has been occurred. Please retry.")
+	  String GlobalSearchUnexpectedErrorMessage();
+	  
+	  
+	  @DefaultStringValue("The search can not be executed, because you are not authenticated!")
+	  String GlobalSearchErrorNotAuthenticated();
+	  
+	  @DefaultStringValue("An unexpected parse error has been ocurred. Please retry.")
+	  String GlobalSearchErrorParsing();
+	  
+	  
+	  @DefaultStringValue("An unexpected database error has been ocurred. Please retry.")
+	  String GlobalSearchErrorDatabase();
+	  
+	  @DefaultStringValue("No Result received yet")
+	  String GlobalSearchNoResultReceived();
+	  
 	  
 	  
 	  

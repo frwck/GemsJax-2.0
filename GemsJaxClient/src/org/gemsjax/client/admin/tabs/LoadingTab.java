@@ -23,10 +23,12 @@ public class LoadingTab extends Tab{
 	public Canvas content;
 	public VLayout loadingCanvas;
 	private boolean showingLoading;
+	protected UserLanguage language;
 	
 	public LoadingTab(String title, UserLanguage language)
 	{
 		super(title);
+		this.language = language;
 		
 		content = new Label("No content set");
 		this.setPane(content);

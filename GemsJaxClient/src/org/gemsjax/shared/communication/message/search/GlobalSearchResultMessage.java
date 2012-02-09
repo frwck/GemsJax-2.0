@@ -96,7 +96,7 @@ public class GlobalSearchResultMessage extends ReferenceableSearchMessage {
 
 	@Override
 	public String toXml() {
-		return "<"+ReferenceableSearchMessage.TAG+"><"+TAG+">"+userToXml()+experimentToXml()+collaborateableToXml()+"</"+TAG+"></"+ReferenceableSearchMessage.TAG+">";
+		return "<"+ReferenceableSearchMessage.TAG+" "+ATTRIBUTE_REFERENCE_ID+"=\""+getReferenceId()+"\" ><"+TAG+">"+userToXml()+experimentToXml()+collaborateableToXml()+"</"+TAG+"></"+ReferenceableSearchMessage.TAG+">";
 	}
 
 

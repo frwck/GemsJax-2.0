@@ -8,7 +8,10 @@ import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.view.AdminUIView;
 import org.gemsjax.client.admin.view.QuickSearchView;
+import org.gemsjax.client.util.Console;
 
+import com.google.gwt.event.logical.shared.AttachEvent;
+import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.layout.HLayout;

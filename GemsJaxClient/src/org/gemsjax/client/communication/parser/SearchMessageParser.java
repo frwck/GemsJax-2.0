@@ -126,6 +126,9 @@ public class SearchMessageParser {
 			if (profilePicture== null)
 				throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the profile picture url. Value: "+u.getAttribute(GlobalSearchResultMessage.ATTRIBUTE_USER_PROFILE_PICTURE));
 		
+			if (profilePicture.equals("null"))
+				profilePicture = null;
+			
 			userResults.add(new UserResult(id, username, displayName, profilePicture));
 		}
 		

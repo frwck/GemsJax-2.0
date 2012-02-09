@@ -32,7 +32,25 @@
     <!-- If you add any GWT meta tags, they must   -->
     <!-- be added before this line.                -->
     <!--                                           -->
+ 
+    <script type="text/javascript" language="javascript" src="js/domready.js"></script>
+   
+	 <script type="application/javascript">
+
+	function initWindowLoad() {
+		console.log("window onload");
+	}
+	window.onload = initWindowLoad;
+                
+	DomReady.ready(function() {
+                    console.log("dom ready");
+                });
+
+		
+        </script>
+
     <script type="text/javascript" language="javascript" src="gemsjax/gemsjax.nocache.js"></script>
+    
   </head>
 
   <!--                                           -->

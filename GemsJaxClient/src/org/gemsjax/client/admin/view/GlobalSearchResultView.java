@@ -2,6 +2,9 @@ package org.gemsjax.client.admin.view;
 
 import java.util.Set;
 
+import org.gemsjax.client.admin.view.handlers.FriendshipHandler;
+import org.gemsjax.client.admin.view.handlers.ShowCollaborationHandler;
+import org.gemsjax.client.admin.view.handlers.ShowExperimentHandler;
 import org.gemsjax.shared.communication.message.friend.Friend;
 import org.gemsjax.shared.communication.message.search.CollaborationResult;
 import org.gemsjax.shared.communication.message.search.ExperimentResult;
@@ -10,49 +13,33 @@ import org.gemsjax.shared.communication.message.search.UserResult;
 
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
-public interface GlobalSearchResultView {
+public interface GlobalSearchResultView extends QuickSearchView{
 	
+	public void addFriendshipHandler(FriendshipHandler h);
+	public void removeFriendshipHandler(FriendshipHandler h);
 	
-/*
-	public void showUserResult(Set<UserResult> userResults);
+	public void addShowCollaborateableHandler(ShowCollaborationHandler h);
+	public void removeShowCollaborateableHandler(ShowCollaborationHandler h);
 	
-	public void showFriendResult(Set<UserResult> friendResults);
+	public void addShowExperimentHandler(ShowExperimentHandler h);
+	public void removeShowExperimentHandler(ShowExperimentHandler h);
 	
-	public void showMetaModels(Set<CollaborationResult> metaModels);
-	
-	public void showExperimentResult(Set<ExperimentResult> experimentResults);
-	
-	public void showModels(Set<CollaborationResult> models);
-	
-	public HasClickHandlers getShowUserResultButton();
-	
-	public HasClickHandlers getShowModelsResultButton();
-	
-	public HasClickHandlers getShowMetaModelsResultButton();
-	
-	public HasClickHandlers getShowExperimentResultButton();
-	*/
 	
 	
 	public void setUserResult(Set<UserResult> userResults);
 	
 	public void setFriendResult(Set<Friend> friendResults);
 	
-	public void setPublicMetaModelResult(Set<CollaborationResult> metaModels);
 	
-	public void setUsersMetaModelResult(Set<CollaborationResult> metaModels);
+	public void setMetaModelResult(Set<CollaborationResult> userMetaModels, Set<CollaborationResult> publicMetaModels);
 	
 	public void setExperimentResult(Set<ExperimentResult> experimentResults);
 	
-	public void setPublicModelresult(Set<CollaborationResult> models);
-	
-	public void setUsersModelResult(Set<CollaborationResult> models);
-	
-	public HasClickHandlers getSearchButton();
-	
-	public String getSearchString();
+	public void setModelResult(Set<CollaborationResult> userModel, Set<CollaborationResult> publicModels);
 	
 	
+	public void setTitle(String title);
+
 	public void showLoading();
 	
 	public void showContent();
@@ -67,10 +54,6 @@ public interface GlobalSearchResultView {
 	 */
 	public void close();
 	
-	/*
-	public void addBigMenuButtonChangedEventHandler(BigMenuButtonChangedEventHandler h);
 	
-	public void removeBigMenuButtonChangedEventHandler(BigMenuButtonChangedEventHandler h);
-	*/
 	
 }

@@ -104,44 +104,6 @@ public class GlobalSearchModule implements SearchChannelHandler {
 			}
 			
 			
-			// Filter friends from other users
-			for (UserResult u: userResults)
-			{
-				if (u.getUserId() == autenticatedUser.getId())
-					continue;
-				
-				Friend f = friendModule.getFriendById(u.getUserId());
-				
-				if (f!=null) // then u is a Friend
-					friends.add(f);
-				
-				else
-				users.add(u);
-			}
-			
-			
-			// Filter public from owned or collaborated
-			for (CollaborationResult c : collaborationResults)
-			{
-				switch (c.getType())
-				{
-					case METAMODEL:
-									if (c.isPublic())
-										publicMetaModels.add(c);
-									else
-										usersMetaModels.add(c);
-									break;
-									
-					case MODEL:
-									if (c.isPublic())
-										publicModels.add(c);
-									else
-										usersModels.add(c);
-									break;
-				}
-			}
-			
-			
 			
 			
 			// fire Result ready
