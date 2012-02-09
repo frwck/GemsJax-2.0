@@ -1,6 +1,6 @@
 package org.gemsjax.shared.communication.message.request;
 
-public class LiveFriendshipRequestMessage extends NewRequestMessage{
+public class LiveFriendshipRequestMessage extends LiveRequestMessage{
 	
 	public static final String TAG="friendship";
 	

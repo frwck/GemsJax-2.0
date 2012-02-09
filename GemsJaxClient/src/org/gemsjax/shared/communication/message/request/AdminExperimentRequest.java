@@ -2,12 +2,12 @@ package org.gemsjax.shared.communication.message.request;
 
 import java.util.Date;
 
-public class AdministrateExperimentRequest extends Request{
+public class AdminExperimentRequest extends Request{
 	
 	private int experimentId;
 	private String experimentName;
 	
-	public AdministrateExperimentRequest(int id, String requesterDisplayName,
+	public AdminExperimentRequest(int id, String requesterDisplayName,
 			String requesterUsername, Date date, int experimentId, String experimentName) {
 		super(id, requesterDisplayName, requesterUsername, date);
 		

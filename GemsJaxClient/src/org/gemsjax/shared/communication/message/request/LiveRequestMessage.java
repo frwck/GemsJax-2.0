@@ -7,7 +7,7 @@ import java.util.Date;
  * @author Hannes Dorfmann
  *
  */
-public abstract class NewRequestMessage extends RequestMessage{
+public abstract class LiveRequestMessage extends RequestMessage{
 	
 	public static final String TAG="new";
 	public static final String ATTRIBUTE_ID="id";
@@ -17,7 +17,7 @@ public abstract class NewRequestMessage extends RequestMessage{
 	
 	private Request request;
 	
-	public NewRequestMessage(Request request)
+	public LiveRequestMessage(Request request)
 	{
 		this.request = request;
 	}
