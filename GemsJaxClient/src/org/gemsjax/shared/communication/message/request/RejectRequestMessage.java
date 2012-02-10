@@ -5,14 +5,14 @@ package org.gemsjax.shared.communication.message.request;
  * @author Hannes Dorfmann
  *
  */
-public class AcceptRequestMessage extends  ReferenceableRequestMessage{
+public class RejectRequestMessage extends  ReferenceableRequestMessage{
 
-	public static final String TAG="accept";
+	public static final String TAG="reject";
 	public static final String ATTRIBUTE_REQUEST_ID="id";
 	
 	private int requestId;
 	
-	public AcceptRequestMessage(String referenceId, int requestId) {
+	public RejectRequestMessage(String referenceId, int requestId) {
 		super(referenceId);
 		this.requestId = requestId;
 	}

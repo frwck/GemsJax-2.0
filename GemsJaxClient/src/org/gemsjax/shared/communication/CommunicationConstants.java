@@ -219,7 +219,7 @@ public class CommunicationConstants {
 	}
 	
 	public class CollaborateableError{
-		public CollaborateableError(){}
+		private CollaborateableError(){}
 		
 		public static final String OK = "ok";
 
@@ -229,6 +229,32 @@ public class CommunicationConstants {
 		public static final String FAIL_NAME="fail_name";
 		public static final String FAIL_INVALID_COLLABORATOR="invalid_colaborator";
 		public static final String FAIL_INVALID_ADMIN="invalid_admin";
+	}
+	
+	
+	
+	public class RequestError{
+		private RequestError(){}
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.request.RequestError#PARSING}
+		 */
+		public static final String PARSING="fail_parsing";
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.request.RequestError#DATABASE}
+		 */
+		public static final String DATABASE="fail_database";
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.request.RequestError#AUTHENTICATION}
+		 */
+		public static final String AUTHENTICATION="fail_authentication";
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.request.RequestError#REQUEST_NOT_FOUND}
+		 */
+		public static final String REQUEST_NOT_FOUND="fail_id";
 	}
 
 }
