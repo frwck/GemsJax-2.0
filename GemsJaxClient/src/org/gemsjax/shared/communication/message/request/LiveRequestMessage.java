@@ -1,6 +1,5 @@
 package org.gemsjax.shared.communication.message.request;
 
-import java.util.Date;
 
 /**
  * Pushed from Server to the client, if a new friendshiprequest has been created while the user is online.
