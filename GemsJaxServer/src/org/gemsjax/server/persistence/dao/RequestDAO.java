@@ -5,10 +5,12 @@ import java.util.List;
 import org.gemsjax.server.persistence.dao.exception.AlreadyAssignedException;
 import org.gemsjax.server.persistence.dao.exception.AlreadyExistException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
+import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.request.AdministrateExperimentRequest;
 import org.gemsjax.shared.request.CollaborateRequest;
+import org.gemsjax.shared.request.FriendshipRequest;
 import org.gemsjax.shared.request.Request;
 import org.gemsjax.shared.user.RegisteredUser;
 
@@ -38,6 +40,7 @@ public interface RequestDAO {
 	 */
 	public abstract AdministrateExperimentRequest createAdministrateExperimentRequest(RegisteredUser sender, RegisteredUser receiver, Experiment experiment) throws DAOException, AlreadyAssignedException, AlreadyExistException;
 	
+	public abstract FriendshipRequest createFriendshipRequest(RegisteredUser sender, RegisteredUser receiver) throws AlreadyAssignedException, AlreadyExistException, DAOException;
 	
 	/**
 	 * Get all {@link Request}s for a {@link RegisteredUser}.
@@ -59,4 +62,17 @@ public interface RequestDAO {
 	 * @param request
 	 */
 	public abstract void deleteRequest(Request request) throws DAOException;
+	
+	/**
+	 * Get a request by its unique id
+	 * @param id
+	 * @return
+	 * @throws DAOException
+	 * @throws NotFoundException
+	 */
+	public abstract Request getRequestById(int id) throws DAOException, NotFoundException;
+	
+	
+	public int getRequestCount(RegisteredUser user) throws DAOException;
+	
 }

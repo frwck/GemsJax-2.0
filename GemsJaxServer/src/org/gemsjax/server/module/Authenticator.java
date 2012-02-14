@@ -4,6 +4,8 @@ import javax.servlet.http.HttpSession;
 
 public class Authenticator {
 	
+	
+	
 	public static OnlineUser isAuthenticated(HttpSession session)
 	{
 		// TODO, do the right thing
@@ -11,5 +13,7 @@ public class Authenticator {
 		
 		return OnlineUserManager.getInstance().getOnlineUser(1);
 	}
+	
+	
 
 }

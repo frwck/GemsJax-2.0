@@ -1,10 +1,82 @@
 package org.gemsjax.server.communication.channel;
 
-public class RequestChannel {
+import java.io.IOException;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.apache.http.protocol.RequestExpectContinue;
+import org.gemsjax.server.communication.channel.handler.RequestChannelHandler;
+import org.gemsjax.server.communication.parser.RequestMessageParser;
+import org.gemsjax.shared.RegExFactory;
+import org.gemsjax.shared.communication.CommunicationConnection;
+import org.gemsjax.shared.communication.channel.InputChannel;
+import org.gemsjax.shared.communication.channel.InputMessage;
+import org.gemsjax.shared.communication.channel.OutputChannel;
+import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.request.ReferenceableRequestMessage;
+import org.gemsjax.shared.communication.message.request.RequestError;
+import org.gemsjax.shared.communication.message.request.RequestErrorMessage;
+import org.gemsjax.shared.communication.message.request.RequestMessage;
+import org.xml.sax.SAXException;
+
+public class RequestChannel implements OutputChannel, InputChannel {
 	
-	public RequestChannel()
+	private CommunicationConnection connection;
+	private String regexFilter;
+	private Set<RequestChannelHandler> handlers;
+	
+	
+	public RequestChannel(CommunicationConnection connection)
 	{
+		this.connection = connection;
+		this.regexFilter = RegExFactory.startWithTag(RequestMessage.TAG);
+		this.handlers = new LinkedHashSet<RequestChannelHandler>();
+	}
+
+	
+	public void addRequestChannelHandler(RequestChannelHandler h)
+	{
+		this.handlers.add(h);
+	}
+	
+	public void removeRequestChannelHandler(RequestChannelHandler h)
+	{
+		this.handlers.remove(h);
+	}
+	
+	
+	@Override
+	public boolean isMatchingFilter(String m) {
+		return m.matches(regexFilter);
+	}
+
+	@Override
+	public void onMessageReceived(InputMessage m) {
+		RequestMessageParser parser = new RequestMessageParser();
 		
+		try {
+			ReferenceableRequestMessage rm = parser.parse(m.getText());
+		} catch (SAXException e) {
+			try {
+				send(new  RequestErrorMessage(parser.getCurrentReferenceId(), RequestError.PARSING));
+			} catch (IOException e1) {
+				//TODO what to do, if could not send message
+				e1.printStackTrace();
+			}
+		} catch (IOException e) {
+			try {
+				send(new  RequestErrorMessage(parser.getCurrentReferenceId(), RequestError.PARSING));
+			} catch (IOException e1) {
+				//TODO what to do, if could not send message
+				e1.printStackTrace();
+			}
+		}
+		
+	}
+
+	@Override
+	public void send(Message m) throws IOException {
+		connection.send(m);
 	}
 
 }

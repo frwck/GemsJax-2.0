@@ -7,7 +7,8 @@ public enum RequestError {
 	AUTHENTICATION,
 	PARSING,
 	DATABASE,
-	REQUEST_NOT_FOUND;
+	REQUEST_NOT_FOUND,
+	PERMISSION_DENIED;
 	
 	
 	public String toConstant()
@@ -37,6 +38,10 @@ public enum RequestError {
 		
 		if (constant.equals(CommunicationConstants.RequestError.REQUEST_NOT_FOUND))
 			return REQUEST_NOT_FOUND;
+		
+		if (constant.equals(CommunicationConstants.RequestError.PERMISSION_DENIED))
+			return PERMISSION_DENIED;
+		
 		
 		return null;
 		

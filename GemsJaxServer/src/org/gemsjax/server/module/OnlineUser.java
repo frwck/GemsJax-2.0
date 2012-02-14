@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.gemsjax.server.communication.channel.FriendsLiveChannel;
 import org.gemsjax.server.communication.channel.LogoutChannel;
+import org.gemsjax.server.communication.channel.RequestChannel;
 import org.gemsjax.server.communication.channel.SimpleOutputChannel;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.CommunicationConstants.OnlineState;
@@ -33,6 +34,8 @@ public class OnlineUser {
 	private FriendsLiveChannel friendChannel;
 	private LogoutChannel logoutChannel;
 	private Set<InputChannel> inputChannels;
+	private RequestChannel requestChannel;
+
 	
 	private HttpSession httpSession;
 	
@@ -157,6 +160,13 @@ public class OnlineUser {
 		u.setFriendLiveChannel(fc);
 		
 		
+		// Request channel
+		
+		RequestChannel rc = new RequestChannel(connection);
+		rc.addRequestChannelHandler(RequestModule.getInstance());
+		u.setRequestChannel(rc);
+		
+		
 		return u;
 	}
 	
@@ -217,6 +227,16 @@ public class OnlineUser {
 
 	public void setLogoutChannel(LogoutChannel logoutChannel) {
 		this.logoutChannel = logoutChannel;
+	}
+
+
+	public RequestChannel getRequestChannel() {
+		return requestChannel;
+	}
+
+
+	public void setRequestChannel(RequestChannel requestChannel) {
+		this.requestChannel = requestChannel;
 	}
 	
 	

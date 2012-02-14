@@ -255,6 +255,8 @@ public class CommunicationConstants {
 		 * Mapped to {@link org.gemsjax.shared.communication.message.request.RequestError#REQUEST_NOT_FOUND}
 		 */
 		public static final String REQUEST_NOT_FOUND="fail_id";
+		
+		public static final String PERMISSION_DENIED="fail_denied";
 	}
 
 }
