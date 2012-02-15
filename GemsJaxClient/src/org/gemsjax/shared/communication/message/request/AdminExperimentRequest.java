@@ -7,7 +7,7 @@ public class AdminExperimentRequest extends Request{
 	private int experimentId;
 	private String experimentName;
 	
-	public AdminExperimentRequest(int id, String requesterDisplayName,
+	public AdminExperimentRequest(long id, String requesterDisplayName,
 			String requesterUsername, Date date, int experimentId, String experimentName) {
 		super(id, requesterDisplayName, requesterUsername, date);
 		

@@ -139,7 +139,7 @@ public class HibernateRequestDAO implements RequestDAO{
 	public List<Request> getAllRequestsBy(RegisteredUser senderUser) {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		Query query = session.createQuery( "FROM RequestImpl WHERE sender = :senderUser");
+		Query query = session.createQuery( "FROM RequestImpl WHERE sender = :senderUser ORDER BY date DESC");
 		query.setEntity("senderUser", senderUser);
 	    List<Request> result = query.list();
 	    session.close();

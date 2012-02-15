@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class FriendshipRequest extends Request{
 
-	public FriendshipRequest(int id, String requesterDisplayName,
+	public FriendshipRequest(long id, String requesterDisplayName,
 			String requesterUsername, Date date) {
 		super(id, requesterDisplayName, requesterUsername, date);
 		

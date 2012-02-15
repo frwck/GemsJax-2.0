@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringReader;
 
 import org.gemsjax.shared.communication.message.request.AcceptRequestMessage;
+import org.gemsjax.shared.communication.message.request.GetAllRequestsMessage;
 import org.gemsjax.shared.communication.message.request.ReferenceableRequestMessage;
 import org.gemsjax.shared.communication.message.request.RejectRequestMessage;
 import org.xml.sax.Attributes;
@@ -13,11 +14,6 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
- * This parser parse the following {@link FriendMessage}s:
- * <ul>
- * <li> {@link GetAllFriendsMessage}</li>
- * <li> {@link CancelFriendshipMessage} </li>
- * </ul>
  * @author Hannes Dorfmann
  *
  */
@@ -26,7 +22,7 @@ public class RequestMessageParser extends AbstractContentHandler {
 	private boolean startRequest, endRequest;
 	private boolean startAccept, endAccept;
 	private boolean startReject, endReject;
-	
+	private boolean startGetAll, endGetAll;
 	private String referenceId;
 	private Integer requestId;
 	
@@ -58,6 +54,9 @@ public class RequestMessageParser extends AbstractContentHandler {
 	    
 	    if (startReject && endReject)
 	    	return new RejectRequestMessage(referenceId, requestId);
+	    
+	    if (startGetAll && endGetAll)
+	    	return new GetAllRequestsMessage(referenceId);
 	    	
 	    throw new SAXException("Unexcpected Parse error: Could not determine the type of the received message");
 	}
@@ -80,6 +79,11 @@ public class RequestMessageParser extends AbstractContentHandler {
 		if (localName.equals(ReferenceableRequestMessage.TAG)){
 			endRequest = true;
 		}
+		else
+		if (localName.equals(GetAllRequestsMessage.TAG)){
+			endGetAll = true;
+		}
+		
 	}
 
 
@@ -114,6 +118,10 @@ public class RequestMessageParser extends AbstractContentHandler {
 				throw new SAXException("Could not parse the request id. Value is: "+atts.getValue(AcceptRequestMessage.ATTRIBUTE_REQUEST_ID));
 			}
 		}
+		else
+		if (localName.equals(GetAllRequestsMessage.TAG)){	
+			startGetAll = true;
+		}
 	
 	}
 	
@@ -134,6 +142,10 @@ public class RequestMessageParser extends AbstractContentHandler {
 		if (startReject != endReject)
 			throw new SAXException("<"+RejectRequestMessage.TAG+"> missmatch: An opening or closing tag is missing");
 		
+
+		if (startGetAll != endGetAll)
+			throw new SAXException("<"+GetAllRequestsMessage.TAG+"> missmatch: An opening or closing tag is missing");
+		
 		if (referenceId == null)
 			throw new SAXException("Reference Id is missing");
 		
@@ -141,8 +153,9 @@ public class RequestMessageParser extends AbstractContentHandler {
 			throw new SAXException("Search string is missing");
 		
 		
-		if (startAccept && startReject)
+		if ((startAccept && startReject) || (startAccept && startGetAll) || (startReject && startGetAll))
 			throw new SAXException("The received message is a <"+AcceptRequestMessage.TAG+"> and <"+RejectRequestMessage.TAG+"> at the same time. Thats not allowed.");
+		
 		
 	}
 
@@ -156,6 +169,8 @@ public class RequestMessageParser extends AbstractContentHandler {
 		endReject = false;
 		startRequest = false;
 		endRequest = false;
+		startGetAll = false;
+		endGetAll = false;
 		
 		referenceId = null;
 		requestId = null;

@@ -1,6 +1,9 @@
 package org.gemsjax.server.module;
 
 import java.io.IOException;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.gemsjax.server.communication.channel.handler.RequestChannelHandler;
 import org.gemsjax.server.persistence.dao.RequestDAO;
@@ -9,12 +12,17 @@ import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateRequestDAO;
 import org.gemsjax.server.persistence.request.AdministrateExperimentRequestImpl;
 import org.gemsjax.server.persistence.request.CollaborateRequestImpl;
+import org.gemsjax.server.persistence.request.FriendshipRequestImpl;
+import org.gemsjax.shared.communication.message.request.AdminExperimentRequest;
+import org.gemsjax.shared.communication.message.request.FriendshipRequest;
+import org.gemsjax.shared.communication.message.request.CollaborationRequest;
+import org.gemsjax.shared.communication.message.request.GetAllRequestsAnswerMessage;
 import org.gemsjax.shared.communication.message.request.RequestChangedAnswerMessage;
 import org.gemsjax.shared.communication.message.request.RequestError;
 import org.gemsjax.shared.communication.message.request.RequestErrorMessage;
-import org.gemsjax.shared.request.FriendshipRequest;
 import org.gemsjax.shared.request.Request;
 import org.gemsjax.shared.user.RegisteredUser;
+
 
 public class RequestModule implements RequestChannelHandler{
 
@@ -32,6 +40,8 @@ public class RequestModule implements RequestChannelHandler{
 	public static RequestModule getInstance(){
 		return INSTANCE;
 	}
+	
+	
 	
 	
 	@Override
@@ -170,6 +180,50 @@ public class RequestModule implements RequestChannelHandler{
 	public long getRequestCount(RegisteredUser user) throws DAOException
 	{
 		return dao.getRequestCount(user);
+	}
+
+	@Override
+	public void onGetAllRequests(OnlineUser user, String referenceId) {
+		
+		List<Request> requests = dao.getAllRequestsBy((RegisteredUser)user.getUser());
+		Set<FriendshipRequest> friends = new LinkedHashSet<FriendshipRequest>();
+		Set<AdminExperimentRequest> experiments = new LinkedHashSet<AdminExperimentRequest>();
+		Set<CollaborationRequest> collaborations = new LinkedHashSet<CollaborationRequest>();
+		
+		
+		for (Request r: requests)
+		{
+			if (r instanceof FriendshipRequestImpl)
+			{
+				FriendshipRequestImpl fr = (FriendshipRequestImpl)r;
+				FriendshipRequest req = new FriendshipRequest(fr.getId(), fr.getSender().getDisplayedName(), fr.getSender().getUsername(), fr.getDate());
+				friends.add(req);
+			}
+			else
+			if (r instanceof AdministrateExperimentRequestImpl)
+			{
+				AdministrateExperimentRequestImpl er = (AdministrateExperimentRequestImpl)r;
+				AdminExperimentRequest req = new AdminExperimentRequest(er.getId(), er.getSender().getDisplayedName(), er.getSender().getUsername(), er.getDate(), er.getExperiment().getId(), er.getExperiment().getName());
+				experiments.add(req);
+			}
+			else
+			if (r instanceof CollaborateRequestImpl)
+			{
+				CollaborateRequestImpl cr = (CollaborateRequestImpl)r;
+				CollaborationRequest req = new CollaborationRequest(cr.getId(), cr.getSender().getDisplayedName(), cr.getSender().getUsername(), cr.getDate(), cr.getCollaborateable().getId(), cr.getCollaborateable().getName() );
+				collaborations.add(req);
+			}
+		}
+		
+		
+		
+		try {
+			user.getRequestChannel().send(new GetAllRequestsAnswerMessage(referenceId, friends, experiments, collaborations));
+		} catch (IOException e) {
+			// TODO What to do if cant be sent
+			e.printStackTrace();
+		}
+		
 	}
 	
 

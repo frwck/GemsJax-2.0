@@ -4,13 +4,13 @@ import java.util.Date;
 
 public class Request {
 	
-	private int id;
+	private long id;
 	private String requesterUsername;
 	private String requesterDisplayName;
 	private Date date;
 	
 	
-	public Request(int id, String requesterDisplayName, String requesterUsername, Date date)
+	public Request(long id, String requesterDisplayName, String requesterUsername, Date date)
 	{
 		this.id = id;
 		this.requesterDisplayName = requesterDisplayName;
@@ -20,7 +20,7 @@ public class Request {
 	
 	
 
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 

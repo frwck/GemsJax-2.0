@@ -118,7 +118,6 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 						long unread = NotificationModule.getInstance().getUnreadNotifications(u);
 						unread+= RequestModule.getInstance().getRequestCount(u);
 						
-						// TODO determine unread notification
 						send(new LoginAnswerMessage(ou.getId(), u.getDisplayedName() , unread)); 
 						communicationConnection.deregisterInputChannel(this);
 					}

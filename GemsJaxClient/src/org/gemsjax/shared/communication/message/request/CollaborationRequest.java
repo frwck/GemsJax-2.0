@@ -7,7 +7,7 @@ public class CollaborationRequest extends Request {
 	private String name;
 	private int collaborationId;
 	
-	public CollaborationRequest(int id, String requesterDisplayName,
+	public CollaborationRequest(long id, String requesterDisplayName,
 			String requesterUsername, Date date, int collaborationId, String name) {
 		super(id, requesterDisplayName, requesterUsername, date);
 
