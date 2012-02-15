@@ -14,17 +14,12 @@ import org.gemsjax.shared.user.RegisteredUser;
 public class NotificationImpl implements Notification{
 	
 	private Long id;
-	private int codeNumber;
 	private Date date;
-	private String optionalMessage;
 	private boolean read;
 	private RegisteredUser receiver;
 	
 	
-	@Override
-	public int getCodeNumber() {
-		return codeNumber;
-	}
+
 
 	@Override
 	public Date getDate() {
@@ -36,30 +31,19 @@ public class NotificationImpl implements Notification{
 		return id;
 	}
 
-	@Override
-	public String getOptionalMessage() {
-		return optionalMessage;
-	}
-
+	
 	@Override
 	public boolean isRead() {
 		return read;
 	}
 
-	@Override
-	public void setCodeNumber(int codeNumber) {
-		this.codeNumber = codeNumber;
-	}
+	
 
 	@Override
 	public void setDate(Date date) {
 		this.date  = date;
 	}
 
-	@Override
-	public void setOptionalMessage(String message) {
-		this.optionalMessage = message;
-	}
 
 	@Override
 	public void setRead(boolean read) {

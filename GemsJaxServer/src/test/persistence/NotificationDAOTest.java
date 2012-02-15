@@ -24,9 +24,11 @@ import org.gemsjax.server.persistence.dao.hibernate.HibernateNotificationDAO;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateRequestDAO;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.server.persistence.notification.NotificationImpl;
+import org.gemsjax.server.persistence.notification.QuickNotificationImpl;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.notification.Notification;
+import org.gemsjax.shared.notification.QuickNotification;
 import org.gemsjax.shared.request.AdministrateExperimentRequest;
 import org.gemsjax.shared.request.CollaborateRequest;
 import org.gemsjax.shared.request.Request;
@@ -75,7 +77,7 @@ public class NotificationDAOTest {
 		 for (int i =0; i<tests; i++)
 		 {
 			 
-			 NotificationImpl n = (NotificationImpl) dao.createNotification(receiver, Notification.COLLABORATEABLE_DELETED,"optionalMessage");
+			 QuickNotificationImpl n = (QuickNotificationImpl)dao.createQuickNotification(receiver, QuickNotification.COLLABORATEABLE_DELETED,"optionalMessage");
 			 createdNotifications.add(n);
 			
 			
@@ -85,7 +87,7 @@ public class NotificationDAOTest {
 			 assertTrue(unList.size() == 1);
 			 assertTrue(unList.contains(n));
 			 
-			 NotificationImpl queried = (NotificationImpl)dao.getNotification(n.getId());
+			 QuickNotificationImpl queried = (QuickNotificationImpl)dao.getNotification(n.getId());
 			 
 			 assertEquals(queried, n);
 			 //assertTrue(queried.getDate().getTime() == n.getDate().getTime());
@@ -97,7 +99,7 @@ public class NotificationDAOTest {
 			 
 			 dao.setRead(n, true);
 			 
-			 queried = (NotificationImpl)dao.getNotification(n.getId());
+			 queried = (QuickNotificationImpl)dao.getNotification(n.getId());
 			 assertTrue(queried.isRead());
 			 
 			 

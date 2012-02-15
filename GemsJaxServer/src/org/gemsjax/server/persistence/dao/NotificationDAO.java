@@ -3,9 +3,14 @@ package org.gemsjax.server.persistence.dao;
 import java.util.List;
 
 import org.gemsjax.server.persistence.dao.exception.DAOException;
-import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
+import org.gemsjax.server.persistence.notification.CollaborationRequestNotificationImpl;
+import org.gemsjax.server.persistence.notification.ExperimentRequestNotificationImpl;
+import org.gemsjax.server.persistence.notification.FriendshipRequestNotificationImpl;
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.notification.Notification;
+import org.gemsjax.shared.notification.QuickNotification;
 import org.gemsjax.shared.user.RegisteredUser;
 
 
@@ -16,17 +21,8 @@ import org.gemsjax.shared.user.RegisteredUser;
  */
 public interface NotificationDAO {
 	
-	/**
-	 * Create a new {@link Notification} with the passed arguments.<br />
-	 * NOTE: read is set to false (--> unread) and the current timestamp of the servers time is used as the date of creation
-	 * @param receiver
-	 * @param codeNumber
-	 * @param optionalMessage
-	 * @return
-	 * @throws DAOException
-	 */
-	public abstract Notification createNotification(RegisteredUser receiver, int codeNumber, String optionalMessage ) throws DAOException;
-
+	
+	
 	
 	/**
 	 * Set a {@link Notification} as read / unread
@@ -66,6 +62,29 @@ public interface NotificationDAO {
 	 * @throws NotFoundException
 	 */
 	public Notification getNotification(long id) throws  NotFoundException;
+
+
+	/**
+	 * Create a new {@link Notification} with the passed arguments.<br />
+	 * NOTE: read is set to false (--> unread) and the current timestamp of the servers time is used as the date of creation
+	 * @param receiver
+	 * @param codeNumber
+	 * @param optionalMessage
+	 * @return
+	 * @throws DAOException
+	 */
+	public QuickNotification createQuickNotification(RegisteredUser receiver,
+			int codeNumber, String optionalMessage) throws DAOException;
 	
+	
+	public ExperimentRequestNotificationImpl createExperimentRequestNotification(RegisteredUser receiver,
+			RegisteredUser acceptor, Experiment experiment, boolean accepted) throws DAOException;
+	
+	
+	public CollaborationRequestNotificationImpl createExperimentRequestNotification(RegisteredUser receiver,
+			RegisteredUser acceptor, Collaborateable collaborateable, boolean accepted) throws DAOException;
+	
+	
+	public FriendshipRequestNotificationImpl createFriendshipRequestNotification(RegisteredUser receiver, RegisteredUser acceptor, boolean accepted) throws DAOException;
 	
 }

@@ -11,11 +11,39 @@
     
     <property name="read" column="read_" type="boolean" not-null="true" />
     <property name="date" column="date" type="timestamp" not-null="true" />
-    <property name="optionalMessage" column="optionalMessage" type="string" not-null="false" />
-    <property name="codeNumber" column="codeNumber" type="int" not-null="true" />
    
     <many-to-one name="receiver" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_receiver" not-null="true"/>
          
+         
+    <joined-subclass name="org.gemsjax.server.persistence.notification.ExperimentRequestNotificationImpl" table="ExperimentRequestNotification">
+        <key column="Request_id" />
+        <property name="accepted" column="accepted" type="boolean" not-null="true" />
+       	<many-to-one name="experiment" class="org.gemsjax.server.persistence.experiment.ExperimentImpl" column="Experiment_id" not-null="true"  />
+    	<many-to-one name="acceptor" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id" not-null="true"  />
+    </joined-subclass>
+    
+    
+    <joined-subclass name="org.gemsjax.server.persistence.notification.CollaborationRequestNotificationImpl" table="CollaborationRequestNotification">
+        <key column="Request_id" />
+        <property name="accepted" column="accepted" type="boolean" not-null="true" />
+       	<many-to-one name="collaboration" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" column="Collaborateable_id" not-null="true"  />
+    	<many-to-one name="acceptor" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id" not-null="true"  />
+    </joined-subclass>
+    
+    
+    <joined-subclass name="org.gemsjax.server.persistence.notification.FriendshipRequestNotificationImpl" table="FriendshipRequestNotification">
+        <key column="Request_id" />
+        <property name="accepted" column="accepted" type="boolean" not-null="true" />
+       <many-to-one name="acceptor" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id" not-null="true"  />
+    </joined-subclass>
+
+    <joined-subclass name="org.gemsjax.server.persistence.notification.QuickNotificationImpl" table="QuickNotification">
+        <key column="Request_id" />
+	    <property name="optionalMessage" column="optionalMessage" type="string" not-null="false" />
+	    <property name="codeNumber" column="codeNumber" type="int" not-null="true" />
+    </joined-subclass>
+
+
 </class>
 
 </hibernate-mapping>

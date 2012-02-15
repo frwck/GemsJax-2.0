@@ -3,20 +3,19 @@ package org.gemsjax.server.persistence.dao.hibernate;
 import java.util.Date;
 import java.util.List;
 
-import org.gemsjax.server.data.metamodel.MetaModelImpl;
 import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.dao.NotificationDAO;
-import org.gemsjax.server.persistence.dao.exception.AlreadyAssignedException;
-import org.gemsjax.server.persistence.dao.exception.AlreadyExistException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
-import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
+import org.gemsjax.server.persistence.notification.CollaborationRequestNotificationImpl;
+import org.gemsjax.server.persistence.notification.ExperimentRequestNotificationImpl;
+import org.gemsjax.server.persistence.notification.FriendshipRequestNotificationImpl;
 import org.gemsjax.server.persistence.notification.NotificationImpl;
-import org.gemsjax.server.persistence.request.CollaborateRequestImpl;
-import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.server.persistence.notification.QuickNotificationImpl;
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.notification.Notification;
-import org.gemsjax.shared.request.CollaborateRequest;
-import org.gemsjax.shared.request.Request;
+import org.gemsjax.shared.notification.QuickNotification;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -24,9 +23,14 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class HibernateNotificationDAO implements NotificationDAO{
+	
+	public HibernateNotificationDAO()
+	{
+		
+	}
 
 	@Override
-	public Notification createNotification(RegisteredUser receiver,
+	public QuickNotification createQuickNotification(RegisteredUser receiver,
 			int codeNumber, String optionalMessage) throws DAOException {
 		
 		Transaction tx = null;
@@ -35,7 +39,7 @@ public class HibernateNotificationDAO implements NotificationDAO{
 		{
 			session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
-				NotificationImpl n = new NotificationImpl();
+				QuickNotificationImpl n = new QuickNotificationImpl();
 				n.setCodeNumber(codeNumber);
 				n.setDate(new Date());
 				n.setOptionalMessage(optionalMessage);
@@ -151,6 +155,125 @@ public class HibernateNotificationDAO implements NotificationDAO{
 		else
 			return n;
 	
+	}
+
+	@Override
+	public ExperimentRequestNotificationImpl createExperimentRequestNotification(
+			RegisteredUser receiver, RegisteredUser acceptor,
+			Experiment experiment, boolean accepted) throws DAOException {
+		
+		
+		Transaction tx = null;
+		Session session = null;
+		try
+		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+				ExperimentRequestNotificationImpl n = new ExperimentRequestNotificationImpl();
+				n.setDate(new Date());
+				n.setExperiment(experiment);
+				n.setAccepted(accepted);
+				n.setAcceptor(acceptor);
+				n.setRead(false);
+				n.setReceiver(receiver);
+				
+				session.save(n);
+			tx.commit();
+			session.flush();
+			session.close();
+			
+			return n;
+		}catch (HibernateException ex )
+		{
+			ex.printStackTrace();
+			
+			if (tx != null)
+				tx.rollback();
+			
+			if (session!=null)
+				session.close();
+			
+			throw new DAOException(ex, "Could not create a new Notification");
+		}
+	}
+
+	@Override
+	public CollaborationRequestNotificationImpl createExperimentRequestNotification(
+			RegisteredUser receiver, RegisteredUser acceptor,
+			Collaborateable collaborateable, boolean accepted)
+			throws DAOException {
+		
+		
+		Transaction tx = null;
+		Session session = null;
+		try
+		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+				CollaborationRequestNotificationImpl n = new CollaborationRequestNotificationImpl();
+				n.setDate(new Date());
+				n.setCollaborateable(collaborateable);
+				n.setAccepted(accepted);
+				n.setAcceptor(acceptor);
+				n.setRead(false);
+				n.setReceiver(receiver);
+				
+				session.save(n);
+			tx.commit();
+			session.flush();
+			session.close();
+			
+			return n;
+		}catch (HibernateException ex )
+		{
+			ex.printStackTrace();
+			
+			if (tx != null)
+				tx.rollback();
+			
+			if (session!=null)
+				session.close();
+			
+			throw new DAOException(ex, "Could not create a new Notification");
+		}
+		
+	}
+
+	@Override
+	public FriendshipRequestNotificationImpl createFriendshipRequestNotification(
+			RegisteredUser receiver, RegisteredUser acceptor, boolean accepted) throws DAOException {
+		
+		Transaction tx = null;
+		Session session = null;
+		try
+		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+				FriendshipRequestNotificationImpl n = new FriendshipRequestNotificationImpl();
+				n.setDate(new Date());
+				n.setAccepted(accepted);
+				n.setAcceptor(acceptor);
+				n.setRead(false);
+				n.setReceiver(receiver);
+				
+				session.save(n);
+			tx.commit();
+			session.flush();
+			session.close();
+			
+			return n;
+		}catch (HibernateException ex )
+		{
+			ex.printStackTrace();
+			
+			if (tx != null)
+				tx.rollback();
+			
+			if (session!=null)
+				session.close();
+			
+			throw new DAOException(ex, "Could not create a new Notification");
+		}
 	}
 
 }
