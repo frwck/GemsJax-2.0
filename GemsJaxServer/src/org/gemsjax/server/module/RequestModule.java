@@ -111,7 +111,7 @@ public class RequestModule implements RequestChannelHandler{
 	}
 
 	@Override
-	public void onAcceptReject(OnlineUser user, int requestId,
+	public void onRejectRequest(OnlineUser user, int requestId,
 			String referenceId) {
 		
 		try {

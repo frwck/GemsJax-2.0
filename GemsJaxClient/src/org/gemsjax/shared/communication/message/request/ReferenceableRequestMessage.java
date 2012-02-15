@@ -22,5 +22,10 @@ public abstract class ReferenceableRequestMessage extends RequestMessage{
 	{
 		return "</"+RequestMessage.TAG+">";
 	}
+	
+	public String getReferenceId()
+	{
+		return this.referenceId;
+	}
 
 }

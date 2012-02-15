@@ -11,6 +11,7 @@ import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.notification.Notification;
 import org.gemsjax.shared.notification.QuickNotification;
+import org.gemsjax.shared.notification.QuickNotification.QuickNotificationType;
 import org.gemsjax.shared.user.RegisteredUser;
 
 
@@ -77,7 +78,7 @@ public interface NotificationDAO {
 	 * @throws DAOException
 	 */
 	public QuickNotification createQuickNotification(RegisteredUser receiver,
-			int codeNumber, String optionalMessage) throws DAOException;
+			QuickNotificationType type, String optionalMessage) throws DAOException;
 	
 	
 	public ExperimentRequestNotificationImpl createExperimentRequestNotification(RegisteredUser receiver,

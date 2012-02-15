@@ -4,9 +4,13 @@ import org.gemsjax.shared.notification.QuickNotification;
 
 public class QuickNotificationImpl extends NotificationImpl implements QuickNotification{
 
+	/**
+	 * Used for persistence only
+	 */
 	private int codeNumber;
 	private String optionalMessage;
 	
+	private QuickNotificationType type;
 	
 	public QuickNotificationImpl()
 	{
@@ -14,24 +18,32 @@ public class QuickNotificationImpl extends NotificationImpl implements QuickNoti
 	}
 	
 	
-	@Override
-	public int getCodeNumber() {
-		return codeNumber;
-	}
-
+	
 	@Override
 	public String getOptionalMessage() {
 		return optionalMessage;
 	}
 
-	@Override
-	public void setCodeNumber(int arg0) {
-		this.codeNumber = arg0;
-	}
+	
 
 	@Override
 	public void setOptionalMessage(String arg0) {
 		this.optionalMessage = arg0;
+	}
+
+
+
+	@Override
+	public QuickNotificationType getQuickNotificationType() {
+		return QuickNotificationType.fromConstant(codeNumber);
+	}
+
+
+
+	@Override
+	public void setQuickNotificationType(QuickNotificationType type) {
+		codeNumber = type.toConstant();
+		
 	}
 
 }

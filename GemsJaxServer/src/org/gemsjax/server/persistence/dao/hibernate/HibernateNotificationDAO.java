@@ -16,6 +16,7 @@ import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.notification.Notification;
 import org.gemsjax.shared.notification.QuickNotification;
+import org.gemsjax.shared.notification.QuickNotification.QuickNotificationType;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -31,7 +32,7 @@ public class HibernateNotificationDAO implements NotificationDAO{
 
 	@Override
 	public QuickNotification createQuickNotification(RegisteredUser receiver,
-			int codeNumber, String optionalMessage) throws DAOException {
+			QuickNotificationType type, String optionalMessage) throws DAOException {
 		
 		Transaction tx = null;
 		Session session = null;
@@ -40,7 +41,7 @@ public class HibernateNotificationDAO implements NotificationDAO{
 			session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
 				QuickNotificationImpl n = new QuickNotificationImpl();
-				n.setCodeNumber(codeNumber);
+				n.setQuickNotificationType(type);
 				n.setDate(new Date());
 				n.setOptionalMessage(optionalMessage);
 				n.setRead(false);

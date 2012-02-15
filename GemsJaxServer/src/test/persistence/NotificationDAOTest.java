@@ -29,6 +29,7 @@ import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.notification.Notification;
 import org.gemsjax.shared.notification.QuickNotification;
+import org.gemsjax.shared.notification.QuickNotification.QuickNotificationType;
 import org.gemsjax.shared.request.AdministrateExperimentRequest;
 import org.gemsjax.shared.request.CollaborateRequest;
 import org.gemsjax.shared.request.Request;
@@ -77,7 +78,7 @@ public class NotificationDAOTest {
 		 for (int i =0; i<tests; i++)
 		 {
 			 
-			 QuickNotificationImpl n = (QuickNotificationImpl)dao.createQuickNotification(receiver, QuickNotification.COLLABORATEABLE_DELETED,"optionalMessage");
+			 QuickNotificationImpl n = (QuickNotificationImpl)dao.createQuickNotification(receiver, QuickNotificationType.COLLABORATEABLE_DELETED,"optionalMessage");
 			 createdNotifications.add(n);
 			
 			
@@ -93,7 +94,7 @@ public class NotificationDAOTest {
 			 //assertTrue(queried.getDate().getTime() == n.getDate().getTime());
 			 assertTrue(queried.getOptionalMessage().equals( n.getOptionalMessage() ));
 			 assertTrue(queried.getId() == n.getId());
-			 assertTrue(queried.getCodeNumber() == n.getCodeNumber());
+			 assertTrue(queried.getQuickNotificationType() == n.getQuickNotificationType());
 			// assertEquals(queried.getReceiver(), n.getReceiver());
 			 assertFalse(queried.isRead());
 			 

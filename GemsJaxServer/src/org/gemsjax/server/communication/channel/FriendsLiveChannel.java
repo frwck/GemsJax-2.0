@@ -4,12 +4,9 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.servlet.http.HttpSession;
-
 import org.gemsjax.server.communication.channel.handler.FriendsChannelHandler;
 import org.gemsjax.server.communication.parser.FriendMessageParser;
 import org.gemsjax.server.module.OnlineUser;
-import org.gemsjax.server.module.OnlineUserManager;
 import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
@@ -57,13 +54,13 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	private String filterRegEx;
 	private FriendMessageParser parser;
 	private Set<FriendsChannelHandler> handlers;
-	private HttpSession session;
+	private OnlineUser user;
 	
-	public FriendsLiveChannel(CommunicationConnection connection, HttpSession session)
+	public FriendsLiveChannel(CommunicationConnection connection, OnlineUser user)
 	{
 		this.connection = connection;
 		connection.registerInputChannel(this);
-		this.session = session;
+		this.user = user;
 		parser = new FriendMessageParser();
 		handlers = new LinkedHashSet<FriendsChannelHandler>();
 		filterRegEx = RegExFactory.startWithTag(FriendMessage.TAG);
@@ -97,7 +94,7 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 			
 			FriendMessage fm = parser.parse(msg.getText());
 			
-			OnlineUser authenticatedUser = OnlineUserManager.getInstance().getOnlineUser(session);
+			OnlineUser authenticatedUser = user;
 			
 			if (authenticatedUser==null) // Check if user is authenticated
 			{

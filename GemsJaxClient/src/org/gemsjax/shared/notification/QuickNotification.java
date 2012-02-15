@@ -1,27 +1,40 @@
 package org.gemsjax.shared.notification;
 
-import org.gemsjax.shared.collaboration.Collaborateable;
-import org.gemsjax.shared.experiment.Experiment;
-
 public interface QuickNotification extends Notification{
 	
+	public enum QuickNotificationType{
+		EXPERIMENT_DELETED,
+		COLLABORATEABLE_DELETED,
+		FRIENDSHIP_CANCELED;
+		
+		public Integer toConstant()
+		{
+			switch(this)
+			{
+			case EXPERIMENT_DELETED: return 0;
+			case COLLABORATEABLE_DELETED: return 1;
+			case FRIENDSHIP_CANCELED: return 2;
+			}
+			
+			return null;
+		}
+		
+		public static QuickNotificationType fromConstant(int constant)
+		{
+			if (constant == 0)
+				return EXPERIMENT_DELETED;
+			if (constant == 1)
+				return COLLABORATEABLE_DELETED;
+			if (constant == 2)
+				return FRIENDSHIP_CANCELED;
+			
+			
+			return null;
+		}
+	}
 	
 
-	/**
-	 * The code number,  which indicates, that an {@link Experiment} was deleted for which 
-	 * the user, who has received this {@link Notification}, was an administrator.
-	 * 
-	 * The optional message text will contain the original {@link Experiment} name ({@link #getCodeNumber()})
-	 */
-	public static final int EXPERIMENT_DELETED = 1;
 	
-	/**
-	 * The code number, which indicates, that a {@link Collaborateable} was deleted on which 
-	 * the user, who has received this {@link Notification}, worked collaboratively.
-	 * 
-	 * The optional message text will contain the original name of the deleted {@link Collaborateable}. ({@link #getCodeNumber()})
-	 */
-	public static final int COLLABORATEABLE_DELETED = 2;
 	
 	/**
 	 * A optional text message. The content of this optional message depends on the type of this {@link Notification} (
@@ -36,7 +49,7 @@ public interface QuickNotification extends Notification{
 	 * So this code number is submitted to the client, and the client will map this code number to a text in his current language and display it on screen
 	 * @return
 	 */
-	public int getCodeNumber();
-	public void setCodeNumber(int codeNumber);
+	public QuickNotificationType getQuickNotificationType();
+	public void setQuickNotificationType(QuickNotificationType type);
 
 }
