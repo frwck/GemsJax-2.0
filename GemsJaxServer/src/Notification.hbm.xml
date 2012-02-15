@@ -26,7 +26,7 @@
     <joined-subclass name="org.gemsjax.server.persistence.notification.CollaborationRequestNotificationImpl" table="CollaborationRequestNotification">
         <key column="Request_id" />
         <property name="accepted" column="accepted" type="boolean" not-null="true" />
-       	<many-to-one name="collaboration" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" column="Collaborateable_id" not-null="true"  />
+       	<many-to-one name="collaborateable" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" column="Collaborateable_id" not-null="true"  />
     	<many-to-one name="acceptor" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id" not-null="true"  />
     </joined-subclass>
     

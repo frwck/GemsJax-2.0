@@ -1,9 +1,6 @@
 package org.gemsjax.shared.communication.message.system;
 
-import java.util.Set;
-
 import org.gemsjax.shared.communication.CommunicationConstants;
-import org.gemsjax.shared.communication.message.friend.Friend;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.user.RegisteredUser;
 
@@ -42,7 +39,7 @@ public class LoginAnswerMessage extends SystemMessage{
 	
 	private LoginAnswerStatus answer;
 	private Integer experimentGroupId;
-	private Integer unreadNotifications;
+	private Long unreadNotifications;
 	private String displayedName;
 	private Integer userId;
 	
@@ -86,7 +83,7 @@ public class LoginAnswerMessage extends SystemMessage{
 	 * @param displayedName
 	 * @param unreadNotifications
 	 */
-	public LoginAnswerMessage(int userId, String displayedName, int unreadNotifications)
+	public LoginAnswerMessage(int userId, String displayedName, long unreadNotifications)
 	{
 		this.answer = LoginAnswerStatus.OK;
 		this.experimentGroupId = null;
@@ -174,7 +171,7 @@ public class LoginAnswerMessage extends SystemMessage{
 	}
 
 	
-	public Integer getUnreadNotifications() {
+	public Long getUnreadNotifications() {
 		return unreadNotifications;
 	}
 

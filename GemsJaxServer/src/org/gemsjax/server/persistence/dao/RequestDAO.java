@@ -73,6 +73,6 @@ public interface RequestDAO {
 	public abstract Request getRequestById(int id) throws DAOException, NotFoundException;
 	
 	
-	public int getRequestCount(RegisteredUser user) throws DAOException;
+	public long getRequestCount(RegisteredUser user) throws DAOException;
 	
 }

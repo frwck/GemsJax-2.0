@@ -300,12 +300,12 @@ public class HibernateRequestDAO implements RequestDAO{
 
 
 	@Override
-	public int getRequestCount(RegisteredUser user) throws DAOException {
+	public long getRequestCount(RegisteredUser user) throws DAOException {
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Query query = session.createQuery( "SELECT count(*) FROM RequestImpl WHERE receiver = :receiverUser");
 		query.setEntity("receiverUser", user);
 		
-		return (Integer) query.list().get(0);
+		return (Long) query.list().get(0);
 	}
 
 }

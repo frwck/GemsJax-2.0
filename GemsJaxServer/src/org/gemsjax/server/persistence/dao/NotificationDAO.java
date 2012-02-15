@@ -24,6 +24,9 @@ public interface NotificationDAO {
 	
 	
 	
+	public abstract long getUnreadCount(RegisteredUser user);
+	
+	
 	/**
 	 * Set a {@link Notification} as read / unread
 	 * @param notification

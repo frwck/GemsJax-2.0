@@ -1,5 +1,7 @@
 package org.gemsjax.server.module;
 
+import org.gemsjax.server.persistence.dao.NotificationDAO;
+import org.gemsjax.server.persistence.dao.hibernate.HibernateNotificationDAO;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.user.RegisteredUser;
@@ -7,12 +9,12 @@ import org.gemsjax.shared.user.RegisteredUser;
 public class NotificationModule {
 
 	
-	public static NotificationModule INSTANCE = new NotificationModule();
-	
+	private static NotificationModule INSTANCE = new NotificationModule();
+	private NotificationDAO dao;
 	
 	private NotificationModule()
 	{
-		
+		dao = new HibernateNotificationDAO();
 	}
 	
 	public static NotificationModule getInstance(){
@@ -53,6 +55,11 @@ public class NotificationModule {
 	public void onCollaborationRejected(RegisteredUser receiver, RegisteredUser acceptor, Collaborateable collaborateable)
 	{
 		// TODO implement
+	}
+	
+	
+	public long getUnreadNotifications(RegisteredUser user){
+		return dao.getUnreadCount(user);
 	}
 	
 }

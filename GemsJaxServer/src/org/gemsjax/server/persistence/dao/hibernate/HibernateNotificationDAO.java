@@ -276,4 +276,15 @@ public class HibernateNotificationDAO implements NotificationDAO{
 		}
 	}
 
+	@Override
+	public long getUnreadCount(RegisteredUser user) {
+			
+		Session session = HibernateUtil.getSessionFactory().openSession();
+			Query query = session.createQuery( "SELECT count(*) FROM NotificationImpl WHERE receiver = :receiverUser AND read=false");
+			query.setEntity("receiverUser", user);
+			
+			return (Long) query.list().get(0);
+		
+	}
+
 }

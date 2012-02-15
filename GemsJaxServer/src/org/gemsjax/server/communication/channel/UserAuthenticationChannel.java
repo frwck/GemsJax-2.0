@@ -8,8 +8,10 @@ import javax.servlet.http.HttpSession;
 
 import org.gemsjax.server.communication.parser.SystemMessageParser;
 import org.gemsjax.server.logger.UnexpectedErrorLogger;
+import org.gemsjax.server.module.NotificationModule;
 import org.gemsjax.server.module.OnlineUser;
 import org.gemsjax.server.module.OnlineUserManager;
+import org.gemsjax.server.module.RequestModule;
 import org.gemsjax.server.persistence.dao.ExperimentDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
@@ -113,8 +115,11 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 					{
 						OnlineUserManager.getInstance().addOnlineUser(ou);
 						
+						long unread = NotificationModule.getInstance().getUnreadNotifications(u);
+						unread+= RequestModule.getInstance().getRequestCount(u);
+						
 						// TODO determine unread notification
-						send(new LoginAnswerMessage(ou.getId(), u.getDisplayedName() , 0)); 
+						send(new LoginAnswerMessage(ou.getId(), u.getDisplayedName() , unread)); 
 						communicationConnection.deregisterInputChannel(this);
 					}
 				}

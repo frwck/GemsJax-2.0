@@ -165,5 +165,12 @@ public class RequestModule implements RequestChannelHandler{
 		}
 	}
 	
+	
+	
+	public long getRequestCount(RegisteredUser user) throws DAOException
+	{
+		return dao.getRequestCount(user);
+	}
+	
 
 }

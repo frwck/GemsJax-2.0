@@ -2,7 +2,6 @@ package org.gemsjax.server.persistence.notification;
 
 import java.util.Date;
 
-import org.gemsjax.server.persistence.collaboration.command.CommandImpl;
 import org.gemsjax.shared.notification.Notification;
 import org.gemsjax.shared.user.RegisteredUser;
 

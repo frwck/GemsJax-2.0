@@ -97,7 +97,11 @@ public class NotificationDAOTest {
 			// assertEquals(queried.getReceiver(), n.getReceiver());
 			 assertFalse(queried.isRead());
 			 
+
+			 System.out.println(dao.getUnreadCount(receiver));
 			 dao.setRead(n, true);
+
+			 System.out.println(dao.getUnreadCount(receiver));
 			 
 			 queried = (QuickNotificationImpl)dao.getNotification(n.getId());
 			 assertTrue(queried.isRead());
