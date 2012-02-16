@@ -15,7 +15,7 @@
 
 
 <target name="compile" description="compile" depends="clean">
-    <javac srcdir="${src}" destdir="${build}" />
+    <javac srcdir="${src}" destdir="${build}" debug="on" />
   </target>
 
 

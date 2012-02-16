@@ -9,6 +9,6 @@ import org.gemsjax.shared.request.Request;
  * @author Hannes Dorfmann
  *
  */
-public class AlreadyExistException extends Exception{
+public class AlreadyExistsException extends Exception{
 
 }

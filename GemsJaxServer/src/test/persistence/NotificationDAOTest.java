@@ -12,7 +12,7 @@ import org.gemsjax.server.persistence.dao.NotificationDAO;
 import org.gemsjax.server.persistence.dao.RequestDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.AlreadyAssignedException;
-import org.gemsjax.server.persistence.dao.exception.AlreadyExistException;
+import org.gemsjax.server.persistence.dao.exception.AlreadyExistsException;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
@@ -69,7 +69,7 @@ public class NotificationDAOTest {
 	 
 	 
 	 @Test
-	 public void testCollaborateRequests() throws DAOException, UsernameInUseException, EMailInUseExcpetion, AlreadyAssignedException, AlreadyExistException, NotFoundException
+	 public void testCollaborateRequests() throws DAOException, UsernameInUseException, EMailInUseExcpetion, AlreadyAssignedException, AlreadyExistsException, NotFoundException
 	 {
 		RegisteredUser receiver = registeredUserDAO.createRegisteredUser("NotificationTestReceiver", "passwordHash", "NotificationTest@receiver.com");
 		 

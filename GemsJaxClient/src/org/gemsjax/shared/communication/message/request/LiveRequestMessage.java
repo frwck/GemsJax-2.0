@@ -12,7 +12,7 @@ public abstract class LiveRequestMessage extends RequestMessage{
 	public static final String ATTRIBUTE_ID="id";
 	public static final String ATTRIBUTE_REQUESTER_USERNAME="requester";
 	public static final String ATTRIBUTE_REQUESTER_DISPLAY_NAME="requesterDispName";
-	public static final String ATTRIBUTE_DATETIME="date";
+	public static final String ATTRIBUTE_DATETIME="time";
 	
 	private Request request;
 	

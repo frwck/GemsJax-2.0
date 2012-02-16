@@ -6,7 +6,8 @@ import java.util.List;
 import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.dao.RequestDAO;
 import org.gemsjax.server.persistence.dao.exception.AlreadyAssignedException;
-import org.gemsjax.server.persistence.dao.exception.AlreadyExistException;
+import org.gemsjax.server.persistence.dao.exception.AlreadyBefriendedException;
+import org.gemsjax.server.persistence.dao.exception.AlreadyExistsException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.request.AdministrateExperimentRequestImpl;
@@ -40,7 +41,7 @@ public class HibernateRequestDAO implements RequestDAO{
 
 	@Override
 	public CollaborateRequest createCollaborateRequest(RegisteredUser sender,
-			RegisteredUser receiver, Collaborateable c) throws DAOException, AlreadyAssignedException, AlreadyExistException {
+			RegisteredUser receiver, Collaborateable c) throws DAOException, AlreadyAssignedException, AlreadyExistsException {
 		
 		Transaction tx = null;
 		Session session = null;
@@ -63,9 +64,8 @@ public class HibernateRequestDAO implements RequestDAO{
 
 				//Query query = session.createQuery( "SELECT id FROM Request INNER JOIN CollaborateRequest ON (Request.id = CollaborateRequest.Request_id) WHERE User_id_sender = :sid AND User_id_receiver = :rid AND Collaborateable_id = :cid ");
 				
-				Query query = session.createQuery( "FROM CollaborateRequestImpl WHERE receiver = :receiverUser AND sender = :senderUser AND collaborateable = :col");
+				Query query = session.createQuery( "FROM CollaborateRequestImpl WHERE receiver = :receiverUser AND collaborateable = :col");
 				query.setEntity("receiverUser", receiver);
-				query.setEntity("senderUser", sender);
 				query.setEntity("col",c);
 				
 				int size = query.list().size() ;
@@ -73,7 +73,7 @@ public class HibernateRequestDAO implements RequestDAO{
 				System.out.println("Size s" +size);
 				
 				if (size != 0 )
-					throw new AlreadyExistException();
+					throw new AlreadyExistsException();
 			    
 			
 				CollaborateRequest r = new CollaborateRequestImpl();
@@ -157,7 +157,7 @@ public class HibernateRequestDAO implements RequestDAO{
 	@Override
 	public AdministrateExperimentRequest createAdministrateExperimentRequest(
 			RegisteredUser sender, RegisteredUser receiver,
-			Experiment experiment) throws DAOException, AlreadyExistException, AlreadyAssignedException {
+			Experiment experiment) throws DAOException, AlreadyExistsException, AlreadyAssignedException {
 
 		Transaction tx = null;
 		Session session = null;
@@ -172,16 +172,15 @@ public class HibernateRequestDAO implements RequestDAO{
 				
 				// Check if already assigned
 				if (experiment.getAdministrators().contains(receiver))
-					throw new AlreadyAssignedException("The receiver (User: "+receiver.getUsername()+") is already working on this Collaborateable");
+					throw new AlreadyAssignedException("The receiver (User: "+receiver.getUsername()+") is already working on this Experiment");
 				
 				
-				Query query = session.createQuery( "FROM AdministrateExperimentRequestImpl WHERE receiver = :receiverUser AND sender = :senderUser AND experiment = :ex");
+				Query query = session.createQuery( "FROM AdministrateExperimentRequestImpl WHERE receiver = :receiverUser AND experiment = :ex");
 				query.setEntity("receiverUser", receiver);
-				query.setEntity("senderUser", sender);
 				query.setEntity("ex", experiment);
 				
 				if (query.list().size() > 0 )
-					throw new AlreadyExistException();
+					throw new AlreadyExistsException();
 				
 			
 				AdministrateExperimentRequest r = new AdministrateExperimentRequestImpl();
@@ -212,8 +211,8 @@ public class HibernateRequestDAO implements RequestDAO{
 
 	@Override
 	public FriendshipRequest createFriendshipRequest(RegisteredUser sender,
-			RegisteredUser receiver) throws AlreadyAssignedException,
-			AlreadyExistException, DAOException {
+			RegisteredUser receiver) throws AlreadyBefriendedException,
+			AlreadyExistsException, DAOException {
 		
 		Transaction tx = null;
 		Session session = null;
@@ -228,7 +227,7 @@ public class HibernateRequestDAO implements RequestDAO{
 				
 				// Check if already assigned
 				if (sender.getAllFriends().contains(receiver))
-					throw new AlreadyAssignedException("The receiver and user are already friends");
+					throw new AlreadyBefriendedException();
 				
 				
 				
@@ -244,7 +243,7 @@ public class HibernateRequestDAO implements RequestDAO{
 				int size = query.list().size() ;
 				
 				if (size != 0 )
-					throw new AlreadyExistException();
+					throw new AlreadyExistsException();
 			    
 			
 				FriendshipRequest r = new FriendshipRequestImpl();

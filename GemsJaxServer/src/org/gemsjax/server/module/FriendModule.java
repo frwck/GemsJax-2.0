@@ -8,6 +8,7 @@ import org.gemsjax.server.communication.channel.FriendsLiveChannel;
 import org.gemsjax.server.communication.channel.handler.FriendsChannelHandler;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.AlreadyBefriendedException;
+import org.gemsjax.server.persistence.dao.exception.AlreadyExistsException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
@@ -250,17 +251,44 @@ public class FriendModule implements FriendsChannelHandler{
 			return;
 		}
 		
-		RequestModule.getInstance().createFriendshipRequest(req, friend);
-		
-		
-		
-		// If everything was fine, generate a positive answer
 		try {
-			requester.getFriendChannel().send(new NewFriendshipRequestAnswerMessage(referenceId));
-		} catch (IOException e) {
-			// TODO What to do if message can't be sent
-			e.printStackTrace();
+			RequestModule.getInstance().createFriendshipRequest(req, friend);
+			
+			// If everything was fine, generate a positive answer
+			try {
+				requester.getFriendChannel().send(new NewFriendshipRequestAnswerMessage(referenceId));
+			} catch (IOException e) {
+				// TODO What to do if message can't be sent
+				e.printStackTrace();
+			}
+			
+			
+		} catch (AlreadyBefriendedException e1) {
+			try {
+				requester.getFriendChannel().send(new FriendErrorAnswerMessage(referenceId, FriendError.ALREADY_FRIENDS));
+			} catch (IOException e) {
+				// TODO What to do if message cant be sent
+				e.printStackTrace();
+			}
+		} catch (AlreadyExistsException e1) {
+			try {
+				requester.getFriendChannel().send(new FriendErrorAnswerMessage(referenceId, FriendError.ALREADY_REQUESTED));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} catch (DAOException e1) {
+			try {
+				requester.getFriendChannel().send(new FriendErrorAnswerMessage(referenceId, FriendError.DATABASE));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		
+		
+		
+		
 		
 	}
 

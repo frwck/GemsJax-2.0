@@ -9,7 +9,7 @@ import org.gemsjax.server.persistence.dao.ExperimentDAO;
 import org.gemsjax.server.persistence.dao.RequestDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.AlreadyAssignedException;
-import org.gemsjax.server.persistence.dao.exception.AlreadyExistException;
+import org.gemsjax.server.persistence.dao.exception.AlreadyExistsException;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
@@ -61,7 +61,7 @@ public class RequestDAOTest {
 	 
 	 
 	 @Test
-	 public void testCollaborateRequests() throws DAOException, UsernameInUseException, EMailInUseExcpetion, AlreadyAssignedException, AlreadyExistException
+	 public void testCollaborateRequests() throws DAOException, UsernameInUseException, EMailInUseExcpetion, AlreadyAssignedException, AlreadyExistsException
 	 {
 		 RegisteredUser sender = registeredUserDAO.createRegisteredUser("RequestTestSender", "passwordHash", "requestTest@sender.com");
 		 RegisteredUser receiver = registeredUserDAO.createRegisteredUser("RequestTestReceiver", "passwordHash", "requestTest@receiver.com");
@@ -94,7 +94,7 @@ public class RequestDAOTest {
 				 dao.createCollaborateRequest(sender, receiver, collaborateable);
 				 assertTrue(false);
 			 }
-			 catch(AlreadyExistException e) {}
+			 catch(AlreadyExistsException e) {}
 			 
 			 // try to create a request, where Receiver is already assigned to --> Exception
 			 try
@@ -121,7 +121,7 @@ public class RequestDAOTest {
 	 
 	 
 	 @Test
-	 public void testAdministrateExperiment() throws UsernameInUseException, DAOException, EMailInUseExcpetion, ArgumentException, AlreadyAssignedException, AlreadyExistException
+	 public void testAdministrateExperiment() throws UsernameInUseException, DAOException, EMailInUseExcpetion, ArgumentException, AlreadyAssignedException, AlreadyExistsException
 	 {
 		 RegisteredUser sender = registeredUserDAO.createRegisteredUser("RequestTestSender", "passwordHash", "requestTest@sender.com");
 		 RegisteredUser receiver = registeredUserDAO.createRegisteredUser("RequestTestReceiver", "passwordHash", "requestTest@receiver.com");
@@ -158,7 +158,7 @@ public class RequestDAOTest {
 				 dao.createAdministrateExperimentRequest(sender, receiver, ex);
 				 assertTrue(false);
 			 }
-			 catch(AlreadyExistException e) {System.out.println("catched");}
+			 catch(AlreadyExistsException e) {System.out.println("catched");}
 			 
 			 // try to create a request, where Receiver is already assigned to --> Exception
 			 try

@@ -2,6 +2,7 @@ package org.gemsjax.server.module;
 
 import org.gemsjax.server.persistence.dao.NotificationDAO;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateNotificationDAO;
+import org.gemsjax.server.persistence.request.FriendshipRequestImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.user.RegisteredUser;
@@ -61,5 +62,7 @@ public class NotificationModule {
 	public long getUnreadNotifications(RegisteredUser user){
 		return dao.getUnreadCount(user);
 	}
+	
+	
 	
 }

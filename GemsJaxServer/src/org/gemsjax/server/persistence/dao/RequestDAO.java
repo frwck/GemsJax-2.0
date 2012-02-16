@@ -3,7 +3,8 @@ package org.gemsjax.server.persistence.dao;
 import java.util.List;
 
 import org.gemsjax.server.persistence.dao.exception.AlreadyAssignedException;
-import org.gemsjax.server.persistence.dao.exception.AlreadyExistException;
+import org.gemsjax.server.persistence.dao.exception.AlreadyBefriendedException;
+import org.gemsjax.server.persistence.dao.exception.AlreadyExistsException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.shared.collaboration.Collaborateable;
@@ -24,9 +25,9 @@ public interface RequestDAO {
 	 * @return
 	 * @throws DAOException 
 	 * @throws {@link AlreadyAssignedException} thrown, if its not possible to create a {@link Request}, because the receiver({@link Request#getReceiver()}) is already working collaborateable on this collaborateable
-	 * @throws AlreadyExistException thrown, if there exists already a {@link CollaborateRequest} with the same sender, receiver and {@link Collaborateable}
+	 * @throws AlreadyExistsException thrown, if there exists already a {@link CollaborateRequest} with the same sender, receiver and {@link Collaborateable}
 	 */
-	public abstract CollaborateRequest createCollaborateRequest(RegisteredUser sender, RegisteredUser receiver, Collaborateable c) throws DAOException, AlreadyAssignedException, AlreadyExistException;
+	public abstract CollaborateRequest createCollaborateRequest(RegisteredUser sender, RegisteredUser receiver, Collaborateable c) throws DAOException, AlreadyAssignedException, AlreadyExistsException;
 	
 	/**
 	 * Create a new {@link AdministrateExperimentRequest}
@@ -36,11 +37,11 @@ public interface RequestDAO {
 	 * @return
 	 * @throws DAOException
 	 * @throws {@link AlreadyAssignedException} thrown, if its not possible to create a {@link Request}, because the receiver({@link Request#getReceiver()}) is already working collaborateable on this collaborateable
-	 * @throws AlreadyExistException thrown, if there exists already a {@link CollaborateRequest} with the same sender, receiver and {@link Collaborateable}
+	 * @throws AlreadyExistsException thrown, if there exists already a {@link CollaborateRequest} with the same sender, receiver and {@link Collaborateable}
 	 */
-	public abstract AdministrateExperimentRequest createAdministrateExperimentRequest(RegisteredUser sender, RegisteredUser receiver, Experiment experiment) throws DAOException, AlreadyAssignedException, AlreadyExistException;
+	public abstract AdministrateExperimentRequest createAdministrateExperimentRequest(RegisteredUser sender, RegisteredUser receiver, Experiment experiment) throws DAOException, AlreadyAssignedException, AlreadyExistsException;
 	
-	public abstract FriendshipRequest createFriendshipRequest(RegisteredUser sender, RegisteredUser receiver) throws AlreadyAssignedException, AlreadyExistException, DAOException;
+	public abstract FriendshipRequest createFriendshipRequest(RegisteredUser sender, RegisteredUser receiver) throws AlreadyBefriendedException, AlreadyExistsException, DAOException;
 	
 	/**
 	 * Get all {@link Request}s for a {@link RegisteredUser}.

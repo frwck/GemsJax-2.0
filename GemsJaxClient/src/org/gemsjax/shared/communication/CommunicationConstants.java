@@ -257,6 +257,17 @@ public class CommunicationConstants {
 		public static final String REQUEST_NOT_FOUND="fail_id";
 		
 		public static final String PERMISSION_DENIED="fail_denied";
+		
+		public static final String ALREADY_BEFRIENDED="fail_befriended";
+		
+		public static final String ALREADY_IN_COLLABORATION="fail_collaboration";
+		
+		public static final String ALREADY_EXPERIMENT_ADMIN="fail_admin";
+		
+		public static final String ALREADY_REQUESTED="alerady_requested";
+		
+
+		
 	}
 
 }
