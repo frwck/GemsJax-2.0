@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.gemsjax.server.communication.channel.handler.RequestChannelHandler;
 import org.gemsjax.server.persistence.dao.RequestDAO;
+import org.gemsjax.server.persistence.dao.exception.AlreadyBefriendedException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateRequestDAO;
@@ -55,8 +56,15 @@ public class RequestModule implements RequestChannelHandler{
 			{
 				RegisteredUser acceptor = (RegisteredUser) user.getUser();
 				
-				if (r instanceof FriendshipRequest)
+				if (r instanceof FriendshipRequestImpl){
 					NotificationModule.getInstance().onFriendshipAccepted(r.getReceiver(), acceptor);
+					try {
+						FriendModule.getInstance().createFriendship(r.getSender(), r.getReceiver());
+					} catch (AlreadyBefriendedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 				else
 				if (r instanceof AdministrateExperimentRequestImpl)
 					NotificationModule.getInstance().onAdminExperimentAccepted(r.getReceiver(), acceptor, ((AdministrateExperimentRequestImpl) r).getExperiment());
@@ -223,6 +231,13 @@ public class RequestModule implements RequestChannelHandler{
 			// TODO What to do if cant be sent
 			e.printStackTrace();
 		}
+		
+	}
+	
+	
+	
+	public void createFriendshipRequest(RegisteredUser requester, RegisteredUser receiver)
+	{
 		
 	}
 	

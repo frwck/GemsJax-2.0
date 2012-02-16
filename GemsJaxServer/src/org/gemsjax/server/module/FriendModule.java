@@ -7,6 +7,7 @@ import java.util.Set;
 import org.gemsjax.server.communication.channel.FriendsLiveChannel;
 import org.gemsjax.server.communication.channel.handler.FriendsChannelHandler;
 import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.exception.AlreadyBefriendedException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
@@ -148,34 +149,52 @@ public class FriendModule implements FriendsChannelHandler{
 	 * Create a new Friendship between requester and friend and send all needed {@link FriendMessage}s to both
 	 * @param requester
 	 * @param friend
-	 * @throws DAOException
+	 * @throws DAOException, {@link AlreadyBefriendedException}
 	 */
-	private void createFriendship(OnlineUser requesterOu, RegisteredUser friend, String referenceId) throws DAOException 
+	public void createFriendship(RegisteredUser requester, RegisteredUser friend) throws DAOException, AlreadyBefriendedException 
 	{
-		RegisteredUser requester = (RegisteredUser)requesterOu.getUser();
 		userDAO.addFriendship(requester, friend);
-		
-		
-		
 		
 		// check if request is online and send him a Add
 		OnlineUser friendOu = OnlineUserManager.getInstance().getOnlineUser(friend);
+				
+				if (friendOu!=null)
+				{ // requester is online
+					
+					Friend f = new Friend(requester.getId(), requester.getDisplayedName(), requester.getOnlineState(), requester.getProfilePicture());
+					try {
+						friendOu.getFriendChannel().send(new NewFriendAddedMessage(f));
+					} catch (IOException e) {
+						// TODO what to do if message could be sent
+						e.printStackTrace();
+					}
+				}
+				
+				// TODO store a Notification, if friend is not online right now
+				
+				
+				
+				OnlineUser requesterOu = OnlineUserManager.getInstance().getOnlineUser(requester);
+				
+				if (requesterOu!=null)
+				{ // requester is online
+					
+					Friend f = new Friend(requester.getId(), requester.getDisplayedName(), requester.getOnlineState(), requester.getProfilePicture());
+					try {
+						requesterOu.getFriendChannel().send(new NewFriendAddedMessage(f));
+					} catch (IOException e) {
+						// TODO what to do if message could be sent
+						e.printStackTrace();
+					}
+				}
+				// TODO store a Notification, if friend is not online right now
+				
+	
+	}
+	/*	
 		
-		if (friendOu!=null)
-		{ // requester is online
-			
-			Friend f = new Friend(requester.getId(), requester.getDisplayedName(), requester.getOnlineState(), requester.getProfilePicture());
-			try {
-				friendOu.getFriendChannel().send(new NewFriendAddedMessage(f));
-			} catch (IOException e) {
-				// TODO what to do if message could be sent
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			// TODO store a Notification, if friend is not online right now
-		}
+		
+		
 		
 		
 		// Generate answer for the requester
@@ -188,7 +207,7 @@ public class FriendModule implements FriendsChannelHandler{
 		}
 				
 	}
-
+*/
 
 	@Override
 	public void onNewFriendshipRequest(OnlineUser requester, int friendId, String referenceId) {
@@ -231,16 +250,18 @@ public class FriendModule implements FriendsChannelHandler{
 			return;
 		}
 		
-		// TODO Check for request already exists
+		RequestModule.getInstance().createFriendshipRequest(req, friend);
 		
 		
-		// if this point is reached, than we can create the friendship
+		
+		// If everything was fine, generate a positive answer
 		try {
-			createFriendship(requester, friend, referenceId);
-		} catch (DAOException e) {
-			// TODO what to do if msg cant be sent
+			requester.getFriendChannel().send(new NewFriendshipRequestAnswerMessage(referenceId));
+		} catch (IOException e) {
+			// TODO What to do if message can't be sent
 			e.printStackTrace();
 		}
+		
 	}
 
 }

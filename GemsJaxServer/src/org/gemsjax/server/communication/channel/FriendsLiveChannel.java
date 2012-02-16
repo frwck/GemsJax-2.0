@@ -21,6 +21,7 @@ import org.gemsjax.shared.communication.message.friend.FriendUpdateMessage;
 import org.gemsjax.shared.communication.message.friend.FriendshipCanceledMessage;
 import org.gemsjax.shared.communication.message.friend.GetAllFriendsMessage;
 import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestAnswerMessage;
+import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestMessage;
 import org.gemsjax.shared.communication.message.friend.ReferenceableFriendMessage;
 import org.gemsjax.shared.request.FriendshipRequest;
 import org.gemsjax.shared.user.UserOnlineState;
@@ -116,8 +117,8 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 				fireGetAllFriends(authenticatedUser, ((GetAllFriendsMessage) fm).getReferenceId());
 			
 			else
-			if (fm instanceof NewFriendshipRequestAnswerMessage)
-				fireNewFriendshipRequest(authenticatedUser, ((NewFriendshipRequestAnswerMessage) fm).getFriend().getId(), ((NewFriendshipRequestAnswerMessage) fm).getReferenceId());
+			if (fm instanceof NewFriendshipRequestMessage)
+				fireNewFriendshipRequest(authenticatedUser, ((NewFriendshipRequestMessage) fm).getReceiverId(), ((NewFriendshipRequestMessage) fm).getReferenceId());
 			
 			else
 			send(new FriendErrorAnswerMessage(null, FriendError.PARSING,"Could not determine the type of this message"));

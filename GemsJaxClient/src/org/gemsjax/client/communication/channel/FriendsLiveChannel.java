@@ -108,17 +108,17 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 		if (m instanceof NewFriendshipRequestAnswerMessage)
 		{
 			NewFriendshipRequestAnswerMessage rm = (NewFriendshipRequestAnswerMessage) m;
-			fireNewFriendshipAnswerMessage(rm.getReferenceId(), rm.getFriend());
+			fireNewFriendshipAnswerMessage(rm.getReferenceId());
 		}
 		
 	}
 	
 	
 	
-	private void fireNewFriendshipAnswerMessage(String referenceId, Friend f)
+	private void fireNewFriendshipAnswerMessage(String referenceId)
 	{
 		for (FriendsLiveChannelHandler h: handlers)
-			h.onNewFriendshipRequestAnswer(referenceId, f);
+			h.onNewFriendshipRequestAnswer(referenceId);
 	}
 	
 	

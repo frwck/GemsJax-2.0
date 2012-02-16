@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.exception.AlreadyBefriendedException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
@@ -231,7 +232,7 @@ public class UserDAOTest {
 	}
 	
 	//@Test
-	public void testFriendship() throws UsernameInUseException, DAOException, EMailInUseExcpetion, NotFoundException
+	public void testFriendship() throws UsernameInUseException, DAOException, EMailInUseExcpetion, NotFoundException, AlreadyBefriendedException
 	{
 	
 		RegisteredUser user =  dao.createRegisteredUser("IWantFriendsTest", "passwordHash", "iwantfriends@email.com");

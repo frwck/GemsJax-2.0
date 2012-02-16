@@ -61,5 +61,5 @@ public interface FriendsLiveChannelHandler {
 	public void onCancelFriendshipAnswer(String referenceId, Set<Integer> exFriendIds);
 	
 	
-	public void onNewFriendshipRequestAnswer(String referenceId, Friend friend);
+	public void onNewFriendshipRequestAnswer(String referenceId);
 }

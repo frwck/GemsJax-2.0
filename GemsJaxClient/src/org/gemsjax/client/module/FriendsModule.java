@@ -289,8 +289,7 @@ public class FriendsModule implements FriendsLiveChannelHandler{
 
 
 	@Override
-	public void onNewFriendshipRequestAnswer(String referenceId, Friend f) {
-		friends.put(f.getId(), f);
+	public void onNewFriendshipRequestAnswer(String referenceId) {
 		
 		for (FriendsModuleHandler h: handlers)
 		{

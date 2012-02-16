@@ -75,4 +75,13 @@ public interface RequestDAO {
 	
 	public long getRequestCount(RegisteredUser user) throws DAOException;
 	
+	
+	public boolean isFriendshipRequestAlreadyExisting(RegisteredUser requester, RegisteredUser receiver) throws DAOException;
+	
+	public boolean isAdminExperimentRequestAlreadyExisting(RegisteredUser receiver, Experiment experiment) throws DAOException;
+	
+	public boolean isCollaborationRequestAlreadyExisting( RegisteredUser receiver, Collaborateable collaborateable) throws DAOException;
+	
+	
+	
 }

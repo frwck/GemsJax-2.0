@@ -2,6 +2,7 @@ package org.gemsjax.server.persistence.dao;
 
 import java.util.Set;
 
+import org.gemsjax.server.persistence.dao.exception.AlreadyBefriendedException;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
@@ -93,7 +94,7 @@ public interface UserDAO {
 	public abstract Set<RegisteredUser> getBySearch(String searchCriteria);
 	
 	
-	public abstract void addFriendship(RegisteredUser requester, RegisteredUser friend) throws DAOException;
+	public abstract void addFriendship(RegisteredUser requester, RegisteredUser friend) throws DAOException, AlreadyBefriendedException;
 	
 	public abstract void cancelFriendship(RegisteredUser cancler, RegisteredUser exfriend) throws DAOException;
 

@@ -7,6 +7,7 @@ import java.util.Set;
 import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.collaboration.CollaborateableImpl;
 import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.exception.AlreadyBefriendedException;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
@@ -364,9 +365,12 @@ public class HibernateUserDAO implements UserDAO {
 	}
 
 	@Override
-	public void addFriendship(RegisteredUser requester, RegisteredUser friend) throws DAOException {
+	public void addFriendship(RegisteredUser requester, RegisteredUser friend) throws DAOException, AlreadyBefriendedException {
 		Session session = null;
 		Transaction tx = null;
+		
+		if (requester.getAllFriends().contains(friend))
+			throw new AlreadyBefriendedException();
 		
 		try 
 		{

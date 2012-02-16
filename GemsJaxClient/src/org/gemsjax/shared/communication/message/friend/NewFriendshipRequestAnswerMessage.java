@@ -11,37 +11,21 @@ import org.gemsjax.shared.user.UserOnlineState;
 public class NewFriendshipRequestAnswerMessage extends ReferenceableFriendMessage{
 	
 	
-	public static final String TAG = "new";
-	public static final String SUBTAG_FRIEND="friend";
-	public static final String ATTRIBUTE_FRIEND_ID = "id";
-	public static final String ATTRIBUTE_DISPLAY_NAME="dispName";
-	public static final String ATTRIBUTE_ONLINE_STATE="state";
-	public static final String ATTRIBUTE_PROFILE_PICTURE = "img";
+	public static final String TAG = "new-ok";
+
 	
-	private Friend friend;
-	
-	public NewFriendshipRequestAnswerMessage(String referenceId, Friend friend)
+	public NewFriendshipRequestAnswerMessage(String referenceId)
 	{
 		super(referenceId);
-		this.friend = friend;
 	}
 	
 	
-	private String friendToXml()
-	{
-		return "<"+SUBTAG_FRIEND+" "+ATTRIBUTE_FRIEND_ID+"=\""+friend.getId()+"\" "+ATTRIBUTE_ONLINE_STATE+"=\""+UserOnlineState.toCommunicationConstant(friend.getOnlineState())+"\" "+ATTRIBUTE_DISPLAY_NAME+"=\""+friend.getDisplayName()+"\" "+ATTRIBUTE_PROFILE_PICTURE+"=\""+friend.getProfilePicture()+"\" />";
-	}
 
 	
 	@Override
 	public String toXml() {
-		return "<"+FriendMessage.TAG+" "+ReferenceableFriendMessage.ATTRIBUTE_REFERENCE_ID+"=\""+getReferenceId()+"\"><"+TAG+">"+friendToXml()+"</"+TAG+"></"+FriendMessage.TAG+">";
+		return "<"+FriendMessage.TAG+" "+ReferenceableFriendMessage.ATTRIBUTE_REFERENCE_ID+"=\""+getReferenceId()+"\"><"+TAG+" /></"+FriendMessage.TAG+">";
 	}
 	
 	
-	public Friend getFriend()
-	{
-		return friend;
-	}
-
 }

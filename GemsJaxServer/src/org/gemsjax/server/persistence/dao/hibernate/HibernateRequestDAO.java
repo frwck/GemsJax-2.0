@@ -37,9 +37,6 @@ public class HibernateRequestDAO implements RequestDAO{
 	}
 	
 	
-	
-	
-	
 
 	@Override
 	public CollaborateRequest createCollaborateRequest(RegisteredUser sender,
@@ -306,6 +303,88 @@ public class HibernateRequestDAO implements RequestDAO{
 		query.setEntity("receiverUser", user);
 		
 		return (Long) query.list().get(0);
+	}
+
+
+
+
+
+
+	@Override
+	public boolean isFriendshipRequestAlreadyExisting(RegisteredUser requester,
+			RegisteredUser receiver) throws DAOException {
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			Query query = session.createQuery( "FROM FriendshipRequestImpl WHERE (sender = :senderUser AND receiver = :receiverUser) OR (sender = :receiverUser AND receiver = :senderUser)");
+			query.setEntity("senderUser", requester);
+			query.setEntity("receiverUser", receiver);
+			
+		    List<Request> result = query.list();
+		    session.close();
+		   
+		    return result.size()>=1;
+		}
+		catch(Exception e){
+			throw new DAOException(e.getMessage());
+		}
+		
+		
+	}
+
+
+
+
+
+
+	@Override
+	public boolean isAdminExperimentRequestAlreadyExisting(
+			RegisteredUser receiver, Experiment experiment)
+			throws DAOException {
+		
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			Query query = session.createQuery( "FROM AdministrateExperimentRequestImpl WHERE receiver = :receiverUser AND experiment = :experiment)");
+			query.setEntity("receiverUser", receiver);
+			query.setEntity("experiment", experiment);
+			
+			
+		    List<Request> result = query.list();
+		    session.close();
+		   
+		    return result.size()>=1;
+		}
+		catch(Exception e){
+			throw new DAOException(e.getMessage());
+		}
+		
+	}
+
+
+
+
+
+
+	@Override
+	public boolean isCollaborationRequestAlreadyExisting(
+			RegisteredUser receiver, Collaborateable collaborateable)
+			throws DAOException {
+		
+		try{
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			Query query = session.createQuery( "FROM CollaborateRequestImpl WHERE receiver = :receiverUser AND collaborateable = :col)");
+			query.setEntity("receiverUser", receiver);
+			query.setEntity("col", collaborateable);
+			
+			
+		    List<Request> result = query.list();
+		    session.close();
+		   
+		    return result.size()>=1;
+		}
+		catch(Exception e){
+			throw new DAOException(e.getMessage());
+		}
+		
 	}
 
 }
