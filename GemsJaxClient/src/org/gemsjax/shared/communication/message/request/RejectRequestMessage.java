@@ -10,9 +10,9 @@ public class RejectRequestMessage extends  ReferenceableRequestMessage{
 	public static final String TAG="reject";
 	public static final String ATTRIBUTE_REQUEST_ID="id";
 	
-	private int requestId;
+	private long requestId;
 	
-	public RejectRequestMessage(String referenceId, int requestId) {
+	public RejectRequestMessage(String referenceId, long requestId) {
 		super(referenceId);
 		this.requestId = requestId;
 	}
@@ -23,7 +23,7 @@ public class RejectRequestMessage extends  ReferenceableRequestMessage{
 		return super.openingXml()+"<"+TAG+" "+ATTRIBUTE_REFERENCE_ID+"=\""+requestId+"\" />"+super.closingXml();
 	}
 	
-	public int getRequestId()
+	public long getRequestId()
 	{
 		return requestId;
 	}

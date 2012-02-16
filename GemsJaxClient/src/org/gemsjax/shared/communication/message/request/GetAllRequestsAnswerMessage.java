@@ -93,4 +93,19 @@ public class GetAllRequestsAnswerMessage extends ReferenceableRequestMessage{
 		return super.openingXml()+friendsToXml()+experimentsToXml()+collaborationsToXml()+super.closingXml();
 	}
 
+
+	public Set<FriendshipRequest> getFriendshipRequests() {
+		return friendshipRequests;
+	}
+
+
+	public Set<AdminExperimentRequest> getExperimentRequests() {
+		return experimentRequests;
+	}
+
+
+	public Set<CollaborationRequest> getCollaborationRequests() {
+		return collaborationRequests;
+	}
+
 }
