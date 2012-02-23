@@ -2,8 +2,7 @@ package org.gemsjax.shared.notification;
 
 import java.util.Date;
 
-import org.gemsjax.shared.collaboration.Collaborateable;
-import org.gemsjax.shared.experiment.Experiment;
+import org.gemsjax.shared.user.RegisteredUser;
 
 /**
  * This is the base interface for {@link Notification}s.
@@ -20,6 +19,8 @@ public interface Notification {
 	
 	public void setRead(boolean read);
 	public boolean isRead();
+	
+	public RegisteredUser getReceiver();
 	
 	
 }

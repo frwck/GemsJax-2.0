@@ -29,6 +29,7 @@ public class NotificationChannel implements InputChannel, OutputChannel {
 	
 	public NotificationChannel(CommunicationConnection connection){
 		this.connection = connection;
+		this.connection.registerInputChannel(this);
 		this.regEx = RegExp.compile(RegExFactory.startWithTag(NotificationMessage.TAG));
 		this.parser = new NotificationMessageParser();
 		handlers = new LinkedHashSet<NotificationChannelHandler>();

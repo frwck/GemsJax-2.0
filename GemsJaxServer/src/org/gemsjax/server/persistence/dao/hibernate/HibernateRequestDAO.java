@@ -277,7 +277,7 @@ public class HibernateRequestDAO implements RequestDAO{
 
 
 	@Override
-	public Request getRequestById(int id) throws DAOException,
+	public Request getRequestById(long id) throws DAOException,
 			NotFoundException {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();

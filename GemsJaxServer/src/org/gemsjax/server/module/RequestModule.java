@@ -55,7 +55,7 @@ public class RequestModule implements RequestChannelHandler{
 	
 	
 	@Override
-	public void onAcceptRequest(OnlineUser user, int requestId,
+	public void onAcceptRequest(OnlineUser user, long requestId,
 			String referenceId) {
 		
 		try {
@@ -128,7 +128,7 @@ public class RequestModule implements RequestChannelHandler{
 	}
 
 	@Override
-	public void onRejectRequest(OnlineUser user, int requestId,
+	public void onRejectRequest(OnlineUser user, long requestId,
 			String referenceId) {
 		
 		try {

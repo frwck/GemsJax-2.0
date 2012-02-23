@@ -71,7 +71,7 @@ public interface RequestDAO {
 	 * @throws DAOException
 	 * @throws NotFoundException
 	 */
-	public abstract Request getRequestById(int id) throws DAOException, NotFoundException;
+	public abstract Request getRequestById(long id) throws DAOException, NotFoundException;
 	
 	
 	public long getRequestCount(RegisteredUser user) throws DAOException;
