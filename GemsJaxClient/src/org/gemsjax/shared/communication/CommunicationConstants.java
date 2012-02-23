@@ -266,8 +266,39 @@ public class CommunicationConstants {
 		
 		public static final String ALREADY_REQUESTED="alerady_requested";
 		
-
+	}
+	
+	
+	
+	public class NotificationError{
+		private NotificationError(){}
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.notification.NotificationError#PARSING}
+		 */
+		public static final String PARSING="fail_parsing";
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.notification.NotificationError#DATABASE}
+		 */
+		public static final String DATABASE="fail_database";
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.notification.NotificationError#AUTHENTICATION}
+		 */
+		public static final String AUTHENTICATION="fail_authentication";
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.notification.NotificationError#NOT_FOUND}
+		 */
+		public static final String NOT_FOUND = "not_found";
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.notification.NotificationError#PERMISSION_DENIED}
+		 */
+		public static final String PERMISSION_DENIED="permission";
+		
 		
 	}
+	
+	
 
 }

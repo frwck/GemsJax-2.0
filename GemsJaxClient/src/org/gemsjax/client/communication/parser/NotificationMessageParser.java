@@ -9,9 +9,15 @@ import org.gemsjax.shared.communication.message.notification.ExperimentRequestNo
 import org.gemsjax.shared.communication.message.notification.FriendshipRequestNotification;
 import org.gemsjax.shared.communication.message.notification.GetAllNotificationsAnswerMessage;
 import org.gemsjax.shared.communication.message.notification.GetAllNotificationsMessage;
+import org.gemsjax.shared.communication.message.notification.LiveCollaborationRequestMessage;
+import org.gemsjax.shared.communication.message.notification.LiveExperimentRequestNotification;
+import org.gemsjax.shared.communication.message.notification.LiveQuickNotificationMessage;
+import org.gemsjax.shared.communication.message.notification.NotificationError;
+import org.gemsjax.shared.communication.message.notification.NotificationErrorMessage;
 import org.gemsjax.shared.communication.message.notification.NotificationMessage;
 import org.gemsjax.shared.communication.message.notification.QuickNotification;
 import org.gemsjax.shared.communication.message.notification.ReferenceableNotificationMessage;
+import org.gemsjax.shared.communication.message.notification.SuccessfulNotificationMessage;
 import org.gemsjax.shared.communication.message.request.AdminExperimentRequest;
 import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.FriendshipRequest;
@@ -85,15 +91,23 @@ public class NotificationMessageParser {
 		    if (childElement.getTagName().equals(GetAllNotificationsAnswerMessage.TAG))
 		    	return parseGetAllAnswer(referenceId, childElement);
 		    else    
-		    if (childElement.getTagName().equals(RequestErrorMessage.TAG))
-		    	return parseErrorMessage(referenceId, childElement);
+		    if (childElement.getTagName().equals(LiveQuickNotificationMessage.TAG))
+		    	return parseLiveQuickMessage(childElement);
 		    else
-	    	if (childElement.getTagName().equals(LiveRequestMessage.TAG))
-		    	return parseLive(childElement);
+	    	if (childElement.getTagName().equals(LiveExperimentRequestNotification.TAG))
+		    	return parseLiveExperimentMessage(childElement);
 		    
 	    	else
-	    	if (childElement.getTagName().equals(RequestChangedAnswerMessage.TAG))
-		    	return new RequestChangedAnswerMessage(referenceId);
+	    	if (childElement.getTagName().equals(LiveCollaborationRequestMessage.TAG))
+		    	return parseLiveCollaborationMessage(childElement);
+		    
+	    	else
+	    	if (childElement.getTagName().equals(NotificationErrorMessage.TAG))
+	    		return parseErrorMessage(referenceId, childElement);
+		    
+		    if (childElement.getTagName().equals(SuccessfulNotificationMessage.TAG))
+	    		return new SuccessfulNotificationMessage(referenceId);
+		    
 		    
 		    
 		    return null;
@@ -101,128 +115,165 @@ public class NotificationMessageParser {
 	}
 	
 	
-	
-	
-	
-	private LiveRequestMessage parseLive(Element e)
+	private NotificationErrorMessage parseErrorMessage(String referenceId, Element e)
 	{
-		long reqId, dateMs;
-		String username, displayName;
+		NotificationError error = NotificationError.fromConstant(e.getAttribute(NotificationErrorMessage.ATTRIBUTE_REASON));
+		
+		if (error == null)
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the error reason");
+		
+		
+		return new NotificationErrorMessage(referenceId, error);
+		
+	}
+	
+	
+	private LiveCollaborationRequestMessage parseLiveCollaborationMessage(Element e)
+	{
+		long id, dateMs;
+		String username, displayName, name;
+		int colId;
 		Date date;
+		boolean read, accepted;
 		
-		
-		NodeList childNodes = e.getChildNodes();
-	    
-	    if(childNodes== null || childNodes.getLength() == 0)
-	      	throw new DOMException(DOMException.SYNTAX_ERR, "The <"+LiveRequestMessage.TAG+"> does not contain child tags");
-		
-	    
-	    if (childNodes.getLength()!=1)
-	    	throw new DOMException(DOMException.SYNTAX_ERR, "The <"+LiveRequestMessage.TAG+"> contains more that one child tags");
-		
-	    Element childElement = (Element)childNodes.item(0);
-	    
 		
 		try{
-			reqId = Long.parseLong(e.getAttribute(LiveRequestMessage.ATTRIBUTE_ID));
+			id = Long.parseLong(e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_ID));
 		} catch(NumberFormatException ex){
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the request id to an int. Value: "+e.getAttribute(LiveRequestMessage.ATTRIBUTE_ID));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the notification id to an int. Value: "+e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_ID));
 		}
 		
-			
 		try{
-			dateMs = Long.parseLong(e.getAttribute(LiveRequestMessage.ATTRIBUTE_DATETIME));
+			colId = Integer.parseInt(e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_ID));
+		} catch(NumberFormatException ex){
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration to an int. Value: "+e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_ID));
+		}
+		
+		try{
+			dateMs = Long.parseLong(e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_TIME));
 			date = new Date(dateMs);
 		} catch(NumberFormatException ex){
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the request date time (ms) to long. Value: "+e.getAttribute(LiveRequestMessage.ATTRIBUTE_DATETIME));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the date time (ms) to long. Value: "+e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_TIME));
 		}
 		
 		
-		displayName = e.getAttribute(LiveRequestMessage.ATTRIBUTE_REQUESTER_DISPLAY_NAME);
+		
+		read = Boolean.parseBoolean(e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_READ));
+		accepted = Boolean.parseBoolean(e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_ACCEPTED));
+		
+		
+		displayName = e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_DISPLAYNAME);
 		if (displayName== null)
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the display name. Value: "+e.getAttribute(LiveRequestMessage.ATTRIBUTE_REQUESTER_DISPLAY_NAME));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the display name. Value: "+displayName);
 	
-		username = e.getAttribute(LiveRequestMessage.ATTRIBUTE_REQUESTER_USERNAME);
+		username = e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_USERNAME);
 		if (username== null)
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the username. Value: "+e.getAttribute(LiveRequestMessage.ATTRIBUTE_REQUESTER_USERNAME));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the username. Value: "+username);
 	
-		
-		
-		if (childElement.getTagName().equals(LiveAdminExperimentRequestMessage.TAG))
-			return parseLiveExperiment(childElement, reqId, date, displayName, username);
-		else
-		if (childElement.getTagName().equals(LiveCollaborationRequest.TAG))
-			return parseLiveExperiment(childElement, reqId, date, displayName, username);
-		else
-		if (childElement.getTagName().equals(LiveFriendshipRequestMessage.TAG))
-			return new LiveFriendshipRequestMessage(new FriendshipRequest(reqId, displayName, username, date));
-		
-		
-		
-		
-		return null;
+		name = e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_NAME);
+		if (name== null)
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the name. Value: "+name);
+	
+		return new LiveCollaborationRequestMessage(new CollaborationRequestNotification(id, date, read, displayName, username, accepted, colId, name));
 	}
 	
 	
 	
-	private LiveRequestMessage parseLiveExperiment(Element u, long reqId, Date date, String displayName, String username) throws DOMException
+	private LiveQuickNotificationMessage parseLiveQuickMessage(Element e)
 	{
+		long id, dateMs;
+		String username, displayName;
+		Date date;
+		String optional;
+		boolean read;
+		QuickNotificationType type;
+		
+		
+		try{
+			id = Long.parseLong(e.getAttribute(LiveQuickNotificationMessage.ATTRIBUTE_ID));
+		} catch(NumberFormatException ex){
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the notification id to an int. Value: "+e.getAttribute(LiveQuickNotificationMessage.ATTRIBUTE_ID));
+		}
+		
+		
+		try{
+			dateMs = Long.parseLong(e.getAttribute(LiveQuickNotificationMessage.ATTRIBUTE_TIME));
+			date = new Date(dateMs);
+		} catch(NumberFormatException ex){
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the date time (ms) to long. Value: "+e.getAttribute(LiveQuickNotificationMessage.ATTRIBUTE_TIME));
+		}
+		
+		
+		
+		read = Boolean.parseBoolean(e.getAttribute(LiveQuickNotificationMessage.ATTRIBUTE_READ));
+		
+		
+		optional = e.getAttribute(LiveQuickNotificationMessage.ATTRIBUTE_OPTIONAL);
+		
+		try{
+			type = QuickNotificationType.fromConstant(Integer.parseInt(e.getAttribute(LiveQuickNotificationMessage.ATTRIBUTE_TYPE)));
+			if (type== null)
+				throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the quick notifiacation type. Value: null");
+		} catch(NumberFormatException ex){
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the quick notification type constant (int) to QuickNotificationType. Value: "+e.getAttribute(GetAllNotificationsAnswerMessage.ATTRIBUTE_QUICKNOTIFICATION_TYPE));
+		}
+		
+		
+		
+		return new LiveQuickNotificationMessage( new QuickNotification(id, date, read, type, optional));
+	}
+	
+	
+	private LiveExperimentRequestNotification parseLiveExperimentMessage(Element e)
+	{
+		long id, dateMs;
+		String username, displayName, name;
 		int expId;
-		String name;
+		Date date;
+		String optional;
+		boolean read, accepted;
+		QuickNotificationType type;
+		
 		
 		try{
-			expId = Integer.parseInt(u.getAttribute(LiveAdminExperimentRequestMessage.ATTRIBUTE_EXPERIMENT_ID));
+			id = Long.parseLong(e.getAttribute(LiveExperimentRequestNotification.ATTRIBUTE_ID));
 		} catch(NumberFormatException ex){
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration to an int. Value: "+u.getAttribute(LiveAdminExperimentRequestMessage.ATTRIBUTE_EXPERIMENT_ID));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the notification id to an int. Value: "+e.getAttribute(GetAllNotificationsAnswerMessage.ATTRIBUTE_ID));
 		}
-	
-		name = u.getAttribute(LiveAdminExperimentRequestMessage.ATTRIBUTE_EXPERIMENT_NAME);
-		if (name== null)
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the name. Value: "+u.getAttribute(LiveAdminExperimentRequestMessage.ATTRIBUTE_EXPERIMENT_NAME));
-	
-		 
-		return new LiveAdminExperimentRequestMessage(new AdminExperimentRequest(reqId, displayName, username, date, expId, name));
-		
-	}
-	
-	
-	
-	private LiveRequestMessage parseLiveCollaboration(Element u, long reqId, Date date, String displayName, String username) throws DOMException
-	{
-		int colId;
-		String name;
 		
 		try{
-			colId = Integer.parseInt(u.getAttribute(LiveCollaborationRequest.ATTRIBUTE_COLLABORATION_ID));
+			expId = Integer.parseInt(e.getAttribute(LiveExperimentRequestNotification.ATTRIBUTE_EXPERIMENT_ID));
 		} catch(NumberFormatException ex){
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration id to an int. Value: "+u.getAttribute(LiveCollaborationRequest.ATTRIBUTE_COLLABORATION_ID));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration to an int. Value: "+e.getAttribute(GetAllRequestsAnswerMessage.ATTRIBUTE_EXPERIMENT_ID));
 		}
+		
+		try{
+			dateMs = Long.parseLong(e.getAttribute(LiveExperimentRequestNotification.ATTRIBUTE_TIME));
+			date = new Date(dateMs);
+		} catch(NumberFormatException ex){
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the date time (ms) to long. Value: "+e.getAttribute(GetAllNotificationsAnswerMessage.ATTRIBUTE_TIME));
+		}
+		
+		
+		
+		read = Boolean.parseBoolean(e.getAttribute(LiveExperimentRequestNotification.ATTRIBUTE_READ));
+		accepted = Boolean.parseBoolean(e.getAttribute(LiveExperimentRequestNotification.ATTRIBUTE_EXPERIMENT_ACCEPTED));
+		
+		
+		displayName = e.getAttribute(LiveExperimentRequestNotification.ATTRIBUTE_EXPERIMENT_DISPLAYNAME);
+		if (displayName== null)
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the display name. Value: "+displayName);
 	
-		name = u.getAttribute(LiveCollaborationRequest.ATTRIBUTE_COLLABORATION_NAME);
+		username = e.getAttribute(LiveExperimentRequestNotification.ATTRIBUTE_EXPERIMENT_USERNAME);
+		if (username== null)
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the username. Value: "+username);
+	
+		name = e.getAttribute(LiveExperimentRequestNotification.ATTRIBUTE_EXPERIMENT_NAME);
 		if (name== null)
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the name. Value: "+u.getAttribute(LiveCollaborationRequest.ATTRIBUTE_COLLABORATION_NAME));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the name. Value: "+name);
 	
-		 
-		return new LiveCollaborationRequest(new CollaborationRequest(reqId, displayName, username, date, colId, name));
 		
-	}
-	
-	
-	
-	private ReferenceableRequestMessage parseErrorMessage(String referenceId, Element e) throws DOMException
-	{
-		String typeAttribute = e.getAttribute(RequestErrorMessage.ATTRIBUTE_REASON);
-		RequestError type;
-	
-			type = RequestError.fromConstant(typeAttribute);
-			
-		if (type==null)
-			throw new DOMException(DOMException.SYNTAX_ERR,"RequestError type is null (after parsing)");
-			
-		String additionalInfo = e.getNodeValue();
-		
-		return new RequestErrorMessage(referenceId,type);
-		
+		return new LiveExperimentRequestNotification(new ExperimentRequestNotification(id, date, read, displayName, username, accepted, expId, name));
 	}
 	
 	
@@ -315,7 +366,7 @@ public class NotificationMessageParser {
 			}
 			
 			try{
-				colId = Integer.parseInt(u.getAttribute(GetAllNotificationsAnswerMessage.ATTRIBUTE_EXPERIMENT_ID));
+				expId = Integer.parseInt(u.getAttribute(GetAllNotificationsAnswerMessage.ATTRIBUTE_EXPERIMENT_ID));
 			} catch(NumberFormatException ex){
 				throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration to an int. Value: "+u.getAttribute(GetAllRequestsAnswerMessage.ATTRIBUTE_EXPERIMENT_ID));
 			}
@@ -347,7 +398,7 @@ public class NotificationMessageParser {
 		
 			 
 			
-			expRequests.add(new ExperimentRequestNotification(id, date, read, displayName, username, accepted, colId, name));
+			expRequests.add(new ExperimentRequestNotification(id, date, read, displayName, username, accepted, expId, name));
 		}
 		
 		
@@ -438,12 +489,13 @@ public class NotificationMessageParser {
 						throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the quick notification type constant (int) to QuickNotificationType. Value: "+u.getAttribute(GetAllNotificationsAnswerMessage.ATTRIBUTE_QUICKNOTIFICATION_TYPE));
 					}
 					
-					quickResults.add(new QuickNotification(id, date, read, type, optional);
+					quickResults.add(new QuickNotification(id, date, read, type, optional));
 				}
 
 				
 				
 		return new GetAllNotificationsAnswerMessage(referenceId, quickResults, expRequests, frRequests, colRequests);
+	}
 
 
 }
