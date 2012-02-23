@@ -2,7 +2,7 @@ package org.gemsjax.shared.communication.message.notification;
 
 import java.util.Date;
 
-public class CollaborationNotification extends Notification {
+public class CollaborationRequestNotification extends Notification {
 
 	private String username;
 	private String displayName;
@@ -10,7 +10,7 @@ public class CollaborationNotification extends Notification {
 	private String collaborationName;
 	private int collaborationId;
 	
-	public CollaborationNotification(long id, Date date, boolean read, String displayName, String username, boolean accepted, int collaborationid, String collaborationName) {
+	public CollaborationRequestNotification(long id, Date date, boolean read, String displayName, String username, boolean accepted, int collaborationid, String collaborationName) {
 		super(id, date, read);
 		this.username = username;
 		this.displayName = displayName;
