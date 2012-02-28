@@ -6,9 +6,15 @@ import java.util.Set;
 
 import org.gemsjax.client.communication.channel.NotificationChannel;
 import org.gemsjax.client.communication.channel.RequestChannel;
+import org.gemsjax.client.communication.channel.handler.NotificationChannelHandler;
 import org.gemsjax.client.communication.channel.handler.RequestChannelHandler;
 import org.gemsjax.client.module.handler.NotificationRequestModuleHandler;
 import org.gemsjax.shared.communication.message.friend.GetAllFriendsMessage;
+import org.gemsjax.shared.communication.message.notification.GetAllNotificationsAnswerMessage;
+import org.gemsjax.shared.communication.message.notification.LiveNotificationMessage;
+import org.gemsjax.shared.communication.message.notification.Notification;
+import org.gemsjax.shared.communication.message.notification.NotificationError;
+import org.gemsjax.shared.communication.message.notification.QuickNotification;
 import org.gemsjax.shared.communication.message.request.AcceptRequestMessage;
 import org.gemsjax.shared.communication.message.request.AdminExperimentRequest;
 import org.gemsjax.shared.communication.message.request.CollaborationRequest;
@@ -25,7 +31,7 @@ import org.gemsjax.shared.communication.message.request.RequestError;
  * @author Hannes Dorfmann
  *
  */
-public class NotificationRequestModule implements RequestChannelHandler {
+public class NotificationRequestModule implements RequestChannelHandler, NotificationChannelHandler {
 	
 	
 	private RequestChannel requestChannel;
@@ -37,7 +43,7 @@ public class NotificationRequestModule implements RequestChannelHandler {
 	private Set<FriendshipRequest> friendshipRequests;
 	private Set<CollaborationRequest> collaborationRequests;
 	private Set<AdminExperimentRequest> experimentRequests;
-	private Set notificaions;
+	private Set<Notification> notifications;
 	
 	private int initialNotificationCount;
 
@@ -50,10 +56,19 @@ public class NotificationRequestModule implements RequestChannelHandler {
 	{
 		this.notificationChannel = notificationChannel;
 		this.requestChannel = requestChannel;
+		this.notificationChannel.addNotificationChannelHandler(this);
+		this.requestChannel.addRequestChannelHandler(this);
+		
 		getAllCounter = 0;
 		
 		this.handlers = new LinkedHashSet<NotificationRequestModuleHandler>();
 		this.initialNotificationCount = initialNotificationCount;
+		
+		
+		this.notifications = new LinkedHashSet<Notification>();
+		this.friendshipRequests = new LinkedHashSet<FriendshipRequest>();
+		this.experimentRequests = new LinkedHashSet<AdminExperimentRequest>();
+		this.collaborationRequests = new LinkedHashSet<CollaborationRequest>();
 	}
 	
 	
@@ -103,8 +118,8 @@ public class NotificationRequestModule implements RequestChannelHandler {
 	
 	public int getUneradUnansweredCount()
 	{
-		if (friendshipRequests!=null && collaborationRequests!=null && friendshipRequests!=null && notificaions!=null)
-			return friendshipRequests.size()+collaborationRequests.size()+friendshipRequests.size()+notificaions.size();
+		if (friendshipRequests!=null && collaborationRequests!=null && friendshipRequests!=null && notifications!=null)
+			return friendshipRequests.size()+collaborationRequests.size()+friendshipRequests.size()+notifications.size();
 		
 		else
 			return initialNotificationCount;
@@ -168,6 +183,38 @@ public class NotificationRequestModule implements RequestChannelHandler {
 		
 		for (NotificationRequestModuleHandler h: handlers)
 			h.onRequestAnsweredSuccessfully(referenceId);
+	}
+
+
+
+	@Override
+	public void onError(String referenceId, NotificationError error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void onSuccess(String referenceId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void onLiveMessageReceived(LiveNotificationMessage msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void onGetAllAnswer(GetAllNotificationsAnswerMessage msg) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

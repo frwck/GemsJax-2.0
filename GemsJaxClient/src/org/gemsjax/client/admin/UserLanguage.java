@@ -247,6 +247,55 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  String GlobalSearchNoResultReceived();
 	  
 	  
+	  // Requests
+	  
+	  @DefaultStringValue("Accept")
+	  String RequestAccept();
+	  
+	  @DefaultStringValue("Reject")
+	  String RequestReject();
+	  
+	  @DefaultStringValue("Friendships")
+	  String RequestFriendshipTitle();
+	  
+	  @DefaultStringValue("Experiments")
+	  String RequestExperimentTitle();
+	  
+	  @DefaultStringValue("Collabrations")
+	  String RequestCollaborationTitle();
+	  
+	  @DefaultStringValue("Received")
+	  String RequestDateLabel();
+	  
+	  @DefaultStringValue("From")
+	  String RequestFromLabel();
+	  
+	  @DefaultStringValue("Message")
+	  String RequestMessageLabel();
 	  
 	  
+	  @DefaultStringValue("Options")
+	  String RequestOptionsLabel();
+	  
+	  @DefaultStringValue("You have been invited to administrate ")
+	  String RequestExperimentInvitedMessage();
+	  
+	  
+	  @DefaultStringValue("You have been invited to work on ")
+	  String RequestCollaborationInvitedMessage();
+	  
+	  
+	  @DefaultStringValue(" wants to be befriended with you")
+	  String RequestFriendshipInvitedMessage();
+	  
+	  
+	  // Notification
+	  @DefaultStringValue("Notifications")
+	  String NotificationTitle();
+	  
+	  @DefaultStringValue("Received:")
+	  String NotificationDateLabel();
+	  
+	  @DefaultStringValue("Delete")
+	  String NotificationDelete();
 }
