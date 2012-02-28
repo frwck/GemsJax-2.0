@@ -85,7 +85,7 @@ public interface NotificationDAO {
 			RegisteredUser acceptor, Experiment experiment, boolean accepted) throws DAOException;
 	
 	
-	public CollaborationRequestNotificationImpl createExperimentRequestNotification(RegisteredUser receiver,
+	public CollaborationRequestNotificationImpl createCollaborationRequestNotification(RegisteredUser receiver,
 			RegisteredUser acceptor, Collaborateable collaborateable, boolean accepted) throws DAOException;
 	
 	

@@ -199,7 +199,7 @@ public class HibernateNotificationDAO implements NotificationDAO{
 	}
 
 	@Override
-	public CollaborationRequestNotificationImpl createExperimentRequestNotification(
+	public CollaborationRequestNotificationImpl createCollaborationRequestNotification(
 			RegisteredUser receiver, RegisteredUser acceptor,
 			Collaborateable collaborateable, boolean accepted)
 			throws DAOException {
