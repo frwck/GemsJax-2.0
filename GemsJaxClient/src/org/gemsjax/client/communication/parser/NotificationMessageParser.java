@@ -11,6 +11,7 @@ import org.gemsjax.shared.communication.message.notification.GetAllNotifications
 import org.gemsjax.shared.communication.message.notification.GetAllNotificationsMessage;
 import org.gemsjax.shared.communication.message.notification.LiveCollaborationRequestMessage;
 import org.gemsjax.shared.communication.message.notification.LiveExperimentRequestNotification;
+import org.gemsjax.shared.communication.message.notification.LiveFriendshipNotificationMessage;
 import org.gemsjax.shared.communication.message.notification.LiveQuickNotificationMessage;
 import org.gemsjax.shared.communication.message.notification.NotificationError;
 import org.gemsjax.shared.communication.message.notification.NotificationErrorMessage;
@@ -87,7 +88,9 @@ public class NotificationMessageParser {
 			
 		    Element childElement = (Element)childNodes.item(0);
 	
-		    
+		    if (childElement.getTagName().equals(SuccessfulNotificationMessage.TAG))
+	    		return new SuccessfulNotificationMessage(referenceId);
+		    else
 		    if (childElement.getTagName().equals(GetAllNotificationsAnswerMessage.TAG))
 		    	return parseGetAllAnswer(referenceId, childElement);
 		    else    
@@ -102,15 +105,15 @@ public class NotificationMessageParser {
 		    	return parseLiveCollaborationMessage(childElement);
 		    
 	    	else
+		    	if (childElement.getTagName().equals(LiveFriendshipNotificationMessage.TAG))
+			    	return parseLiveFriendshipMessage(childElement);
+		    
+	    	else
 	    	if (childElement.getTagName().equals(NotificationErrorMessage.TAG))
 	    		return parseErrorMessage(referenceId, childElement);
 		    
-		    if (childElement.getTagName().equals(SuccessfulNotificationMessage.TAG))
-	    		return new SuccessfulNotificationMessage(referenceId);
 		    
-		    
-		    
-		    return null;
+		    throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the incoming message to a NotificationMessage");
 		    
 	}
 	
@@ -222,6 +225,50 @@ public class NotificationMessageParser {
 		
 		return new LiveQuickNotificationMessage( new QuickNotification(id, date, read, type, optional));
 	}
+	
+	
+	
+	private LiveFriendshipNotificationMessage parseLiveFriendshipMessage(Element e)
+	{
+		long id, dateMs;
+		String username, displayName, name;
+		int expId;
+		Date date;
+		boolean read, accepted;
+		
+		
+		try{
+			id = Long.parseLong(e.getAttribute(LiveFriendshipNotificationMessage.ATTRIBUTE_ID));
+		} catch(NumberFormatException ex){
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the notification id to an int. Value: "+e.getAttribute(LiveFriendshipNotificationMessage.ATTRIBUTE_ID));
+		}
+		
+		
+		try{
+			dateMs = Long.parseLong(e.getAttribute(LiveFriendshipNotificationMessage.ATTRIBUTE_TIME));
+			date = new Date(dateMs);
+		} catch(NumberFormatException ex){
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the date time (ms) to long. Value: "+e.getAttribute(LiveFriendshipNotificationMessage.ATTRIBUTE_TIME));
+		}
+		
+		
+		
+		read = Boolean.parseBoolean(e.getAttribute(LiveFriendshipNotificationMessage.ATTRIBUTE_READ));
+		accepted = Boolean.parseBoolean(e.getAttribute(LiveFriendshipNotificationMessage.ATTRIBUTE_ACCEPTED));
+		
+		
+		displayName = e.getAttribute(LiveFriendshipNotificationMessage.ATTRIBUTE_DISPLAYNAME);
+		if (displayName== null)
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the display name. Value: "+displayName);
+	
+		username = e.getAttribute(LiveFriendshipNotificationMessage.ATTRIBUTE_USERNAME);
+		if (username== null)
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the username. Value: "+username);
+	
+		return new LiveFriendshipNotificationMessage(new FriendshipRequestNotification(id, date, read, displayName, username, accepted));
+	}
+	
+	
 	
 	
 	private LiveExperimentRequestNotification parseLiveExperimentMessage(Element e)

@@ -14,6 +14,7 @@ public class LiveFriendshipNotificationMessage extends LiveNotificationMessage{
 	public static final String ATTRIBUTE_READ="read";
 	public static final String ATTRIBUTE_USERNAME="username";
 	public static final String ATTRIBUTE_DISPLAYNAME="dispName";
+	public static final String ATTRIBUTE_ACCEPTED="accepted";
 	
 			
 	private FriendshipRequestNotification notification;
@@ -28,7 +29,8 @@ public class LiveFriendshipNotificationMessage extends LiveNotificationMessage{
 		return "<"+TAG+" "+ATTRIBUTE_ID+"=\""+notification.getId()+"\" "+
 				ATTRIBUTE_TIME+"=\""+notification.getDate().getTime()+"\" "+ATTRIBUTE_READ+"\""+notification.isRead()+"\" "+
 				ATTRIBUTE_USERNAME+"=\""+notification.getUsername()+"\" "+
-				ATTRIBUTE_DISPLAYNAME+"=\""+notification.getDisplayName()+"\" />";
+				ATTRIBUTE_DISPLAYNAME+"=\""+notification.getDisplayName()+"\" "+
+				ATTRIBUTE_ACCEPTED+"=\""+notification.isAccepted()+"\" />";
 	}
 	
 	@Override
