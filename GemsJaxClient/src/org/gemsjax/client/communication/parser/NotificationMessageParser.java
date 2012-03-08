@@ -64,10 +64,11 @@ public class NotificationMessageParser {
 		    if (surroundingElement == null)
 		    	throw new DOMException(DOMException.SYNTAX_ERR, "No tag <"+NotificationMessage.TAG+"> found");
 		 
+		    /*
 		    if (surroundingElement.getLength()!=1)
 		      	throw new DOMException(DOMException.SYNTAX_ERR, "No or more than one <"+NotificationMessage.TAG+"> tag found");
 			
-		    
+		    */
 		    
 
 		    // Check for reference Number if set

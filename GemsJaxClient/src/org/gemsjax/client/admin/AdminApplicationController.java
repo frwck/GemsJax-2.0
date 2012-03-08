@@ -10,13 +10,16 @@ import org.gemsjax.client.admin.presenter.GlobalSearchPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
 import org.gemsjax.client.admin.presenter.AuthenticationPresenter;
 import org.gemsjax.client.admin.presenter.MetaModelPresenter;
+import org.gemsjax.client.admin.presenter.NotificationRequestPresenter;
 import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.admin.presenter.RegistrationPresenter;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent.CriticalErrorType;
 import org.gemsjax.client.admin.presenter.event.DoNewGlobalSearchEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
+import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
 import org.gemsjax.client.admin.presenter.handler.DoNewGlobalSearchHandler;
+import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.view.implementation.CriticalErrorViewImpl;
@@ -25,18 +28,22 @@ import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoginViewImpl;
 import org.gemsjax.client.admin.view.implementation.LogoutViewImpl;
 import org.gemsjax.client.admin.view.implementation.MetaModelViewImpl;
+import org.gemsjax.client.admin.view.implementation.NotificationRequestViewImpl;
 import org.gemsjax.client.admin.view.implementation.RegistrationViewImpl;
 import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.communication.HttpPostCommunicationConnection;
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 import org.gemsjax.client.communication.channel.AuthenticationChannel;
 import org.gemsjax.client.communication.channel.FriendsLiveChannel;
+import org.gemsjax.client.communication.channel.NotificationChannel;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
+import org.gemsjax.client.communication.channel.RequestChannel;
 import org.gemsjax.client.communication.channel.SearchChannel;
 import org.gemsjax.client.metamodel.factory.MetaFactory;
 import org.gemsjax.client.module.AuthenticationModule;
 import org.gemsjax.client.module.FriendsModule;
 import org.gemsjax.client.module.GlobalSearchModule;
+import org.gemsjax.client.module.NotificationRequestModule;
 import org.gemsjax.client.module.RegistrationModule;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.communication.CommunicationConnection;
@@ -63,7 +70,7 @@ import com.smartgwt.client.util.SC;
  * @author Hannes Dorfmann
  *
  */
-public class AdminApplicationController  implements DoNewGlobalSearchHandler {
+public class AdminApplicationController  implements DoNewGlobalSearchHandler, LoginSuccessfulHandler {
 	
 	/**
 	 * Singleton instance
@@ -107,13 +114,14 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 	private AdminApplicationViewImpl adminMainView;
 	private CriticalErrorPresenter errorPresenter;
 	
+	private NotificationRequestModule notificationRequestModle;
+	
 	
 	private AdminApplicationController()
 	{
 		eventBus = new SimpleEventBus();
 		authenticationModule = new AuthenticationModule(new AuthenticationChannel(WebSocketCommunicationConnection.getInstance()));
 		friendsModule = new FriendsModule(new FriendsLiveChannel(WebSocketCommunicationConnection.getInstance()));
-		
 		bindPresenterEvents();
 	}
 	
@@ -121,6 +129,7 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 	private void bindPresenterEvents()
 	{
 		eventBus.addHandler(DoNewGlobalSearchEvent.TYPE, this);
+		eventBus.addHandler(LoginSuccessfulEvent.TYPE, this);
 	}
 
 	
@@ -248,7 +257,7 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 			
 			MetaClass c2 = MetaFactory.createClass("Class2",300,100);
 			
-			
+			LoginSuccessfulEvent
 			for (int i =1; i<=10; i++)
 			{
 				c1.addAttribute(MetaFactory.createAttribute("Attribute "+i,baseType));
@@ -331,6 +340,13 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler {
 			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.LIVE_CONNECTION_CLOSED) );
 			e.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public void onLoginSuccessful(LoginSuccessfulEvent event) {
+		notificationRequestModle = new NotificationRequestModule(event.getUnreadNotificationRequestCount(), new NotificationChannel(WebSocketCommunicationConnection.getInstance()), new RequestChannel(WebSocketCommunicationConnection.getInstance()));
+		new NotificationRequestPresenter(notificationRequestModle, new NotificationRequestViewImpl(language.NotificationCenterTitle(),language), adminMainView, eventBus);
 	}
 
 	

@@ -92,11 +92,11 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 				if (am.getAnswer()== LoginAnswerStatus.OK) // Login successful
 				{
 					RegisteredUser u = new RegisteredUserImpl(am.getUserId(), am.getDisplayedName(), UserOnlineState.ONLINE);
-					fireLoginAnswer(am.getAnswer(),u);
+					fireLoginAnswer(am.getAnswer(),u, am.getUnreadNotifications());
 				}
 				else // Login fail
 				{
-					fireLoginAnswer(am.getAnswer(), null);
+					fireLoginAnswer(am.getAnswer(), null, 0l);
 				}
 			}
 			else
@@ -139,10 +139,10 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 	 * @param status
 	 * @param authenticatedUser
 	 */
-	private void fireLoginAnswer(LoginAnswerStatus status, RegisteredUser authenticatedUser)
+	private void fireLoginAnswer(LoginAnswerStatus status, RegisteredUser authenticatedUser, Long unreadNotifications)
 	{
 		for (AuthenticationChannelHandler h : handlers)
-			h.onLoginAnswer(status, authenticatedUser);
+			h.onLoginAnswer(status, authenticatedUser, unreadNotifications);
 	}
 	
 	

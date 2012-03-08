@@ -80,7 +80,12 @@ public class Header extends HLayout{
 		
 				
 	}
+
 	
+	public void setNotificationRequestCount(long count)
+	{
+		this.userBox.setNotificationRequestCount(count);
+	}
 
 	
 

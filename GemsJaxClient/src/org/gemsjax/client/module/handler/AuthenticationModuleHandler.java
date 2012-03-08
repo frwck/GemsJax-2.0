@@ -17,7 +17,7 @@ public interface AuthenticationModuleHandler {
 	/**
 	 * Is called, if the authentication was successful and the user no loged in
 	 */
-	public void onLoginSuccessful(RegisteredUser authenticatedUser);
+	public void onLoginSuccessful(RegisteredUser authenticatedUser, long unreadNotificationRequest);
 	
 	/**
 	 * Is called, if the last submited authentication has failed

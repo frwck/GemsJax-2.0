@@ -2,11 +2,15 @@ package org.gemsjax.client.admin.adminui;
 
 import org.gemsjax.client.admin.UserLanguage;
 
+import com.smartgwt.client.widgets.events.MouseOverHandler;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
+import com.smartgwt.client.widgets.events.MouseOutEvent;
+import com.smartgwt.client.widgets.events.MouseOutHandler;
+import com.smartgwt.client.widgets.events.MouseOverEvent;
 import com.smartgwt.client.widgets.layout.HStack;
 
 
@@ -28,18 +32,23 @@ public class UserBox extends HStack {
 	 * @author Hannes Dorfmann
 	 *
 	 */
-	private class UserBoxItem extends Label
+	private class UserBoxItem extends Label implements MouseOverHandler, MouseOutHandler
 	{
+		private static final String defaultStyle = "userbox-item";
+		private static final String hoverStyle = "userbox-item-hover";
+		
+		
 		/**
 		 * Create a new UserBoxItem with the CSS Style userbox-item (defined in /css/GemsJax.css) and do some other styling things like Centering, Padding
 		 */
 		public UserBoxItem()
 		{
 			super();
-			this.setStyleName("userbox-item");
+			this.setStyleName(defaultStyle);
 			this.setAlign(Alignment.CENTER);
 			this.setValign(VerticalAlignment.CENTER);
-			
+			this.addMouseOverHandler(this);
+			this.addMouseOutHandler(this);
 		}
 		
 		
@@ -60,6 +69,18 @@ public class UserBox extends HStack {
 		public void setText(String text)
 		{
 			this.setContents("<a href=\"#\">"+text+"</a>");
+		}
+
+
+		@Override
+		public void onMouseOut(MouseOutEvent event) {
+			this.setStyleName(defaultStyle);
+		}
+
+
+		@Override
+		public void onMouseOver(MouseOverEvent event) {
+			this.setStyleName(hoverStyle);
 		}
 		
 		
@@ -95,20 +116,23 @@ public class UserBox extends HStack {
 		public NotificationCountLabel()
 		{
 			this.setAlign(Alignment.LEFT);
-			setCount(212);
-			
-			
+			setCount(0);
 		}
 		
-		public void setCount(int count)
+		public void setCount(long count)
 		{
-			String content = "<table cellspacing=\"0\" cellpadding=\"0\" class=\"userbox-notifications-unread\"><tr>" +
-			"<td class=\"userbox-notifications-unread-border-left\"></td>" +
-			"<td class=\"userbox-notificatoins-unread-count\">"+count+"</td>" +
-			"<td class=\"userbox-notifications-unread-border-right\"></td>" +
-			"</tr></table>";
-			this.setContents(content);
-			this.setWidth((""+count).length()*9+10+10);
+			if (count<0){
+				String content = "<table cellspacing=\"0\" cellpadding=\"0\" class=\"userbox-notifications-unread\"><tr>" +
+				"<td class=\"userbox-notifications-unread-border-left\"></td>" +
+				"<td class=\"userbox-notificatoins-unread-count\">"+count+"</td>" +
+				"<td class=\"userbox-notifications-unread-border-right\"></td>" +
+				"</tr></table>";
+				this.setContents(content);
+				this.setWidth((""+count).length()*9+10+10);
+				this.setVisible(true);
+			}
+			else
+				this.setVisible(false);
 		}
 	}
 	
@@ -122,6 +146,7 @@ public class UserBox extends HStack {
 	private UserBoxItem logoutItem;
 	private UserBoxItem dashBoardItem;
 	private UserLanguage language;
+	private NotificationCountLabel notificationCountLabel;
 	
 	public UserBox(UserLanguage language)
 	{
@@ -156,7 +181,8 @@ public class UserBox extends HStack {
 		this.addMember(experimentsItem);
 		this.addMember(new UserBoxItemSeparator());
 		this.addMember(notificationsItem);
-		this.addMember(new NotificationCountLabel());
+		this.notificationCountLabel = new NotificationCountLabel();
+		this.addMember(notificationCountLabel);
 		this.addMember(new UserBoxItemSeparator());
 		this.addMember(settingsItem);
 		this.addMember(new UserBoxItemSeparator());
@@ -174,6 +200,9 @@ public class UserBox extends HStack {
 	}
 	
 	
+	public void setNotificationRequestCount(long count){
+		notificationCountLabel.setCount(count);
+	}
 	
 	public HasClickHandlers getDashBoardMenuItem()
 	{

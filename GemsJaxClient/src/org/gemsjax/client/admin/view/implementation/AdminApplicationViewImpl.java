@@ -38,10 +38,7 @@ public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView, N
 	
 	
 	private VLayout uiLayout;
-	
-	
 	private UserLanguage language;
-	
 	private Header header;
 	private TabEnviroment tabEnviroment;
 	
@@ -136,7 +133,7 @@ public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView, N
 
 
 	@Override
-	public HasClickHandlers getUserMenuNotifications() {
+	public HasClickHandlers getUserMenuNotificationRequestCenter() {
 		return header.getNotificationsMenuItem();
 	}
 
@@ -167,22 +164,22 @@ public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView, N
 
 
 	@Override
-	public void setUnreadNotificationRequest(int unread) {
-		// TODO weiter do
+	public void setUnreadNotificationRequest(long unread) {
+		header.setNotificationRequestCount(unread);
 		
 	}
 
 
 	@Override
 	public void showShortNotification(LiveNotificationMessage msg) {
-		// TODO weiter do
+		// TODO implement
 		
 	}
 
 
 	@Override
 	public void showShortRequestNotification(LiveRequestMessage msg) {
-		// TODO weiter do
+		// TODO implement
 		
 	}
 

@@ -98,4 +98,5 @@ public interface NotificationRequestView {
 	
 	public void addRequest(Request r);
 	
+	public void setCount(int unreadNotifications, int friendshipRequests, int experimentRequests, int collaborationRequests);
 }

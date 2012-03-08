@@ -2,6 +2,7 @@ package org.gemsjax.client.admin.presenter;
 
 import org.gemsjax.client.admin.presenter.event.DoNewGlobalSearchEvent;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
+import org.gemsjax.client.admin.presenter.event.ShowNotificationRequestCenterRequiredEvent;
 import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
 import org.gemsjax.client.admin.view.AdminUIView;
 import org.gemsjax.client.admin.view.QuickSearchView;
@@ -31,6 +32,15 @@ public class AdminApplicationPresenter extends Presenter implements QuickSearchH
 	private void bind()
 	{
 		searchView.addQuickSearchHandler(this);
+		
+		view.getUserMenuNotificationRequestCenter().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				onNotificationRequestCenterClicked();
+			}
+		});
+		
 		
 		/*
 		view.getUserMenuExperiments().addClickHandler(new ClickHandler() {
@@ -65,6 +75,10 @@ public class AdminApplicationPresenter extends Presenter implements QuickSearchH
 		eventBus.fireEvent(new DoNewGlobalSearchEvent(searchString));
 	}
 	
+	
+	private void onNotificationRequestCenterClicked(){
+		eventBus.fireEvent(new ShowNotificationRequestCenterRequiredEvent());
+	}
 
 	
 	

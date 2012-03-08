@@ -8,22 +8,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.naming.NoInitialContextException;
-
 import org.gemsjax.client.admin.UserLanguage;
-import org.gemsjax.client.admin.adminui.SearchField;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.tabs.LoadingTab;
 import org.gemsjax.client.admin.tabs.TwoColumnLayout;
-import org.gemsjax.client.admin.view.GlobalSearchResultView;
 import org.gemsjax.client.admin.view.NotificationRequestView;
-import org.gemsjax.client.admin.view.handlers.FriendshipHandler;
-import org.gemsjax.client.admin.view.handlers.ShowCollaborationHandler;
-import org.gemsjax.client.admin.view.handlers.ShowExperimentHandler;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
-import org.gemsjax.client.admin.widgets.Title;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
-import org.gemsjax.shared.communication.message.friend.Friend;
 import org.gemsjax.shared.communication.message.notification.CollaborationRequestNotification;
 import org.gemsjax.shared.communication.message.notification.ExperimentRequestNotification;
 import org.gemsjax.shared.communication.message.notification.FriendshipRequestNotification;
@@ -35,28 +26,16 @@ import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.FriendshipRequest;
 import org.gemsjax.shared.communication.message.request.Request;
 import org.gemsjax.shared.communication.message.request.RequestError;
-import org.gemsjax.shared.communication.message.search.CollaborationResult;
-import org.gemsjax.shared.communication.message.search.ExperimentResult;
-import org.gemsjax.shared.communication.message.search.SearchError;
-import org.gemsjax.shared.communication.message.search.UserResult;
-import org.gemsjax.shared.user.UserOnlineState;
 
-import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.user.client.Window;
-import com.smartgwt.client.types.Alignment;
-import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.DateUtil;
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
-import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.VStack;
-import com.smartgwt.client.widgets.tab.Tab;
 
 public class NotificationRequestViewImpl extends LoadingTab implements NotificationRequestView{
 
@@ -145,7 +124,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		});
 		
 		
-		experimentButton = new BigMenuButton(lang.GlobalSearchExperimentsMenuTitle(), new ClickHandler() {
+		experimentButton = new BigMenuButton(lang.RequestExperimentTitle(), new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
@@ -155,7 +134,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		});
 		
 		
-		collaborationButton= new BigMenuButton(lang.GlobalSearchExperimentsMenuTitle(), new ClickHandler() {
+		collaborationButton= new BigMenuButton(lang.RequestCollaborationTitle(), new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
@@ -804,6 +783,17 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		else	// This should never be the case
 			collaborationStack.addMember(new RequestListEntry(r));
 		
+		
+	}
+
+	@Override
+	public void setCount(int unreadNotifications, int friendshipRequests,
+			int experimentRequests, int collaborationRequests) {
+		
+		notificationButton.setText(language.NotificationTitle() +(unreadNotifications>0?"("+unreadNotifications+")":""));
+		friendshipButton.setText(language.RequestFriendshipTitle() +(friendshipRequests>0?"("+friendshipRequests+")":""));
+		experimentButton.setText(language.RequestExperimentTitle() +(experimentRequests>0?"("+experimentRequests+")":""));
+		collaborationButton.setText(language.RequestCollaborationTitle() +(collaborationRequests>0?"("+collaborationRequests+")":""));
 		
 	}
 }

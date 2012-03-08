@@ -25,7 +25,7 @@ public interface AuthenticationChannelHandler {
 	 RegisteredUser authenticatedUser
 	 * @param answerStatus
 	 */
-	public void onLoginAnswer(LoginAnswerStatus answerStatus, RegisteredUser authenticatedUser);
+	public void onLoginAnswer(LoginAnswerStatus answerStatus, RegisteredUser authenticatedUser, long unreadNotificationRequest);
 	
 	/**
 	 * If an unexpected parse error occures in the observed {@link AuthenticationChannel} while receiving an parsing a {@link InputMessage}

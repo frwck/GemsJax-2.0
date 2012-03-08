@@ -149,6 +149,10 @@ public class BigMenuButton extends Label{
 	}
 
 	
+	
+	
+	
+	
 	/**
 	 * Creates a BigMenuButton with an icon
 	 * @param text
@@ -172,6 +176,15 @@ public class BigMenuButton extends Label{
 	{
 		this("<img src=\""+iconURL+"\" alt=\""+text+"\" /><br />"+text);
 		
+	}
+	
+	
+	public void setText(String text){
+		this.setContents(text);
+	}
+	
+	public void setTextIcon(String text, String iconUrl){
+		this.setContents("<img src=\""+iconUrl+"\" alt=\""+text+"\" /><br />"+text);
 	}
 
 

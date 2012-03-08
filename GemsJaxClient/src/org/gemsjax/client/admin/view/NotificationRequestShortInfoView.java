@@ -9,7 +9,7 @@ public interface NotificationRequestShortInfoView {
 	 * Set the count, that should be displayed somewhere on the gui
 	 * @param unread
 	 */
-	public abstract void setUnreadNotificationRequest(int unread);
+	public abstract void setUnreadNotificationRequest(long unread);
 	
 	/**
 	 * Called to display a notification popup somewhere on the gui

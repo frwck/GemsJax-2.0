@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.gemsjax.client.communication.channel.NotificationChannel;
 import org.gemsjax.client.communication.channel.RequestChannel;
@@ -14,14 +15,10 @@ import org.gemsjax.shared.communication.message.friend.GetAllFriendsMessage;
 import org.gemsjax.shared.communication.message.notification.DeleteNotificationMessage;
 import org.gemsjax.shared.communication.message.notification.GetAllNotificationsAnswerMessage;
 import org.gemsjax.shared.communication.message.notification.GetAllNotificationsMessage;
-import org.gemsjax.shared.communication.message.notification.LiveCollaborationRequestNotificationMessage;
-import org.gemsjax.shared.communication.message.notification.LiveExperimentRequestNotification;
 import org.gemsjax.shared.communication.message.notification.LiveNotificationMessage;
-import org.gemsjax.shared.communication.message.notification.LiveQuickNotificationMessage;
 import org.gemsjax.shared.communication.message.notification.Notification;
 import org.gemsjax.shared.communication.message.notification.NotificationAsReadMessage;
 import org.gemsjax.shared.communication.message.notification.NotificationError;
-import org.gemsjax.shared.communication.message.notification.QuickNotification;
 import org.gemsjax.shared.communication.message.request.AcceptRequestMessage;
 import org.gemsjax.shared.communication.message.request.AdminExperimentRequest;
 import org.gemsjax.shared.communication.message.request.CollaborationRequest;
@@ -34,8 +31,6 @@ import org.gemsjax.shared.communication.message.request.LiveRequestMessage;
 import org.gemsjax.shared.communication.message.request.RejectRequestMessage;
 import org.gemsjax.shared.communication.message.request.Request;
 import org.gemsjax.shared.communication.message.request.RequestError;
-
-import com.google.gwt.dev.util.collect.HashMap;
 
 
 /**
@@ -77,7 +72,7 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 	private Map<String, Request> currentPendingRequests;
 	
 	
-	private int initialNotificationCount;
+	private long initialNotificationCount;
 
 	
 	private Set<NotificationRequestModuleHandler> handlers;
@@ -87,21 +82,21 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 	private boolean initialAllRequests = false;
 	
 	
-	public NotificationRequestModule(int initialNotificationCount, NotificationChannel notificationChannel, RequestChannel requestChannel)
+	public NotificationRequestModule(long l, NotificationChannel notificationChannel, RequestChannel rc)
 	{
 		this.notificationChannel = notificationChannel;
-		this.requestChannel = requestChannel;
+		this.requestChannel = rc;
 		this.notificationChannel.addNotificationChannelHandler(this);
 		this.requestChannel.addRequestChannelHandler(this);
 		
 		getAllCounter = 0;
 		refIdCounter = 0;
 		
-		currentPendingNotifications = new HashMap<String, Notification>();
-		currentPendingRequests = new HashMap<String, Request>();
+		currentPendingNotifications = new TreeMap<String, Notification>();
+		currentPendingRequests = new TreeMap<String, Request>();
 		
 		this.handlers = new LinkedHashSet<NotificationRequestModuleHandler>();
-		this.initialNotificationCount = initialNotificationCount;
+		this.initialNotificationCount = l;
 		
 		
 		this.notifications = new LinkedHashSet<Notification>();
@@ -224,7 +219,7 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 	 * Get the total count of unread {@link Notification} (not marked as read) and the unanswered {@link Request}s
 	 * @return
 	 */
-	public int getUneradUnansweredCount()
+	public long getUneradUnansweredCount()
 	{
 		if (isInitializedWithGetAll())
 			return friendshipRequests.size()+collaborationRequests.size()+friendshipRequests.size()+getUnreadNotificationCount();
@@ -424,7 +419,7 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 	 * Note: The Request are not counted to the returning value
 	 * @return
 	 */
-	private int getUnreadNotificationCount(){
+	public int getUnreadNotificationCount(){
 		int c =0; 
 		for (Notification n: notifications)
 			if (!n.isRead())
@@ -432,7 +427,8 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 			
 		return c;
 	}
-
+	
+	
 
 
 	public Set<FriendshipRequest> getFriendshipRequests() {

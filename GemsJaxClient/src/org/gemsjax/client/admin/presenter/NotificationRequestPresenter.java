@@ -4,8 +4,12 @@ import java.io.IOException;
 
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent.CriticalErrorType;
+import org.gemsjax.client.admin.presenter.event.ShowNotificationRequestCenterRequiredEvent;
+import org.gemsjax.client.admin.presenter.handler.ShowNotificationRequestCenterHandler;
 import org.gemsjax.client.admin.view.NotificationRequestShortInfoView;
 import org.gemsjax.client.admin.view.NotificationRequestView;
+import org.gemsjax.client.admin.view.NotificationRequestView.AnswerRequestHandler;
+import org.gemsjax.client.admin.view.NotificationRequestView.ChangeNotificationHandler;
 import org.gemsjax.client.module.NotificationRequestModule;
 import org.gemsjax.client.module.handler.NotificationRequestModuleHandler;
 import org.gemsjax.shared.communication.message.notification.LiveNotificationMessage;
@@ -16,8 +20,10 @@ import org.gemsjax.shared.communication.message.request.Request;
 import org.gemsjax.shared.communication.message.request.RequestError;
 
 import com.google.gwt.event.shared.EventBus;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 
-public class NotificationRequestPresenter extends Presenter implements NotificationRequestModuleHandler{
+public class NotificationRequestPresenter extends Presenter implements NotificationRequestModuleHandler, AnswerRequestHandler, ChangeNotificationHandler, ShowNotificationRequestCenterHandler{
 
 	private NotificationRequestView view;
 	private NotificationRequestShortInfoView shortView;
@@ -30,6 +36,7 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 		this.shortView = shortView;
 		this.module = module;
 		bind();
+		start();
 	}
 	
 	
@@ -49,27 +56,44 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 	
 	
 	private void bind(){
+		eventBus.addHandler(ShowNotificationRequestCenterRequiredEvent.TYPE, this);
 		module.addNotificationRequestModuleHandler(this);
+		view.addAnswerRequestHandler(this);
+		view.addChangeNotificationHandler(this);
+		
+		view.getReInitializeButton().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				onRestartClicked();
+			}
+		});
+	}
+	
+	
+	private void onRestartClicked(){
+		start();
 	}
 	
 
 	@Override
 	public void onLiveNotificationReceived(LiveNotificationMessage msg) {
 		shortView.showShortNotification(msg);	
+		view.addNotification(msg.getNotification());
 	}
 
 
 	@Override
 	public void onLiveRequestReceived(LiveRequestMessage msg) {
 		shortView.showShortRequestNotification(msg);
-		
+		view.addRequest(msg.getRequest());
 	}
 
 
 	@Override
 	public void onUpdated() {
 		shortView.setUnreadNotificationRequest(module.getUneradUnansweredCount());
-		
+		view.setCount(module.getUnreadNotificationCount(), module.getFriendshipRequests().size(), module.getExperimentRequests().size(), module.getCollaborationRequests().size());
 	}
 
 
@@ -78,7 +102,6 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 		
 		if (module.isInitializedWithGetAll())
 		{
-			
 			view.setAdministrateExperimentRequests(module.getExperimentRequests());
 			view.setCollaborationRequests(module.getCollaborationRequests());
 			view.setFriendshipRequests(module.getFriendshipRequests());
@@ -106,6 +129,7 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 	@Override
 	public void onRequestAnsweredFail(Request r, RequestError error) {
 		view.showRequestError(r, error);
+		view.addRequest(r);
 	}
 
 
@@ -139,12 +163,12 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 	@Override
 	public void onNotificationDeleteError(Notification n, NotificationError error) {
 		view.showNotificationError(n, error);
+		view.addNotification(n);	// Because the Notification has been removed previosly on the gui
 	}
 
 
 	@Override
 	public void onNotificationDeletedSuccessfully(Notification n) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -163,6 +187,63 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 		view.setNotificationAsRead(n,true);
 		
 	}
+
+
+
+	@Override
+	public void onNotificationAsRead(Notification notification) {
+		try {
+			module.markNotificationAsRead(notification);
+		} catch (IOException e) {
+			view.showNotificationError(notification, NotificationError.DATABASE);
+			view.setNotificationAsRead(notification, false);
+		}
+		
+	}
+
+
+
+	@Override
+	public void onDeleteNotification(Notification notification) {
+		try {
+			module.deleteNotification(notification);
+		} catch (IOException e) {
+			view.addNotification(notification);
+			view.showNotificationError(notification, NotificationError.PARSING);
+		}
+	}
+
+
+
+	@Override
+	public void onRequestAnswer(Request request, boolean accepted) {
+		
+		try {
+			
+		
+			if (accepted)
+			{
+				module.doAcceptRequest(request);
+			}
+			else
+			{
+				module.doRejectRequest(request);
+			}
+		
+		} catch (IOException e) {
+			view.addRequest(request);
+			view.showRequestError(request, RequestError.PARSING);
+		}
+		
+	}
+
+
+
+	@Override
+	public void onShowNotificationRequestCenterRequired(ShowNotificationRequestCenterRequiredEvent event) {
+		view.showIt(true);
+	}
+	
 
 
 	

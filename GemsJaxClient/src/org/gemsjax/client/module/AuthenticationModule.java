@@ -22,7 +22,6 @@ public class AuthenticationModule implements AuthenticationChannelHandler {
 	
 	private AuthenticationChannel authenticationChannel;
 	private RegisteredUser authenticatedUser;
-	
 	private Set<AuthenticationModuleHandler> handlers;
 	
 	public AuthenticationModule(AuthenticationChannel channel)
@@ -80,7 +79,7 @@ public class AuthenticationModule implements AuthenticationChannelHandler {
 	
 
 	@Override
-	public void onLoginAnswer(LoginAnswerStatus answerStatus, RegisteredUser authenticatedUser) {
+	public void onLoginAnswer(LoginAnswerStatus answerStatus, RegisteredUser authenticatedUser, long unreadNotificationRequest) {
 		
 		
 		if (answerStatus==LoginAnswerStatus.FAIL)
@@ -91,7 +90,7 @@ public class AuthenticationModule implements AuthenticationChannelHandler {
 		if (answerStatus==LoginAnswerStatus.OK)
 		{
 			this.authenticatedUser = authenticatedUser;
-			fireOnLoginSuccessful(authenticatedUser);
+			fireOnLoginSuccessful(authenticatedUser, unreadNotificationRequest);
 		}
 		
 		
@@ -111,10 +110,10 @@ public class AuthenticationModule implements AuthenticationChannelHandler {
 	}
 	
 	
-	private void fireOnLoginSuccessful(RegisteredUser authenticatedUser)
+	private void fireOnLoginSuccessful(RegisteredUser authenticatedUser, long unreadNotificationRequest)
 	{
 		for (AuthenticationModuleHandler h: handlers)
-			h.onLoginSuccessful(authenticatedUser);
+			h.onLoginSuccessful(authenticatedUser,unreadNotificationRequest);
 	}
 
 	

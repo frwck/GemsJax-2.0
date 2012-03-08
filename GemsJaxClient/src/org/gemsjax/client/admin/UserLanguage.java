@@ -343,4 +343,9 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Could not load your Notifications or Requests")
 	  String NotificationErrorLoading();
 	  
+	  @DefaultStringValue("Notification Center")
+	  String NotificationCenterTitle();
+	  
+	  
+	  
 }

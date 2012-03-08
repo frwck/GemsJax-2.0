@@ -190,11 +190,11 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 
 
 	@Override
-	public void onLoginSuccessful(RegisteredUser authenticatedUser) {
+	public void onLoginSuccessful(RegisteredUser authenticatedUser, long unreadNotificationRequest) {
 		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
 		loginView.setLoginButtonEnabled(true);
 		loginView.hide();
-		eventBus.fireEvent(new LoginSuccessfulEvent(authenticatedUser));
+		eventBus.fireEvent(new LoginSuccessfulEvent(authenticatedUser, unreadNotificationRequest));
 		
 	}
 

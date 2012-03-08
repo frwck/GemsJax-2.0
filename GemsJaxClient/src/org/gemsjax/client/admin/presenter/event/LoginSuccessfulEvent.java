@@ -16,15 +16,17 @@ public class LoginSuccessfulEvent extends GwtEvent<LoginSuccessfulHandler>{
 	public static Type<LoginSuccessfulHandler>TYPE = new Type<LoginSuccessfulHandler>();
 	
 	private RegisteredUser authenticatedUser;
+	private long unreadNotificationRequestCount;
 	
 
 	/**
 	 * 
 	 * @param authenticatedUser The {@link RegisteredUser} that is authenticated from now on
 	 */
-	public LoginSuccessfulEvent(RegisteredUser authenticatedUser )
+	public LoginSuccessfulEvent(RegisteredUser authenticatedUser, long unreadNotificationRequestCount )
 	{
 		this.authenticatedUser = authenticatedUser;
+		this.unreadNotificationRequestCount= unreadNotificationRequestCount;
 	}
 	
 	/**
@@ -48,5 +50,8 @@ public class LoginSuccessfulEvent extends GwtEvent<LoginSuccessfulHandler>{
 		handler.onLoginSuccessful(this);
 	}
 
+	public long getUnreadNotificationRequestCount() {
+		return unreadNotificationRequestCount;
+	}
 
 }

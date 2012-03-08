@@ -33,7 +33,7 @@ public interface AdminUIView {
 	 * Get the clickable menu item, that represents the Notifications menu item
 	 * @return
 	 */
-	public HasClickHandlers getUserMenuNotifications();
+	public HasClickHandlers getUserMenuNotificationRequestCenter();
 	
 	/**
 	 * show the whole user interface
