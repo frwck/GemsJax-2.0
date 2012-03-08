@@ -7,8 +7,11 @@ import org.gemsjax.client.admin.adminui.Header;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.view.AdminUIView;
+import org.gemsjax.client.admin.view.NotificationRequestShortInfoView;
 import org.gemsjax.client.admin.view.QuickSearchView;
 import org.gemsjax.client.util.Console;
+import org.gemsjax.shared.communication.message.notification.LiveNotificationMessage;
+import org.gemsjax.shared.communication.message.request.LiveRequestMessage;
 
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
@@ -22,7 +25,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * @author Hannes Dorfmann
  *
  */
-public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView{
+public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView, NotificationRequestShortInfoView{
 	
 	/**
 	 * The width of the "visible" content. This is the width of the {@link Header}, {@link Footer} and the {@link TabEnviroment}. <br /><br />
@@ -160,6 +163,27 @@ public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView{
 	public void removeQuickSearchHandler(QuickSearchHanlder h) {
 
 		header.getSearchField().getQuickSearchHandlers().remove(h);
+	}
+
+
+	@Override
+	public void setUnreadNotificationRequest(int unread) {
+		// TODO weiter do
+		
+	}
+
+
+	@Override
+	public void showShortNotification(LiveNotificationMessage msg) {
+		// TODO weiter do
+		
+	}
+
+
+	@Override
+	public void showShortRequestNotification(LiveRequestMessage msg) {
+		// TODO weiter do
+		
 	}
 
 

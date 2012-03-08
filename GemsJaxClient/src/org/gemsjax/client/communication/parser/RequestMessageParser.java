@@ -9,7 +9,7 @@ import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.FriendshipRequest;
 import org.gemsjax.shared.communication.message.request.GetAllRequestsAnswerMessage;
 import org.gemsjax.shared.communication.message.request.LiveAdminExperimentRequestMessage;
-import org.gemsjax.shared.communication.message.request.LiveCollaborationRequest;
+import org.gemsjax.shared.communication.message.request.LiveCollaborationRequestMessage;
 import org.gemsjax.shared.communication.message.request.LiveFriendshipRequestMessage;
 import org.gemsjax.shared.communication.message.request.LiveRequestMessage;
 import org.gemsjax.shared.communication.message.request.ReferenceableRequestMessage;
@@ -30,7 +30,7 @@ import com.google.gwt.xml.client.XMLParser;
  * <li>{@link GetAllRequestsAnswerMessage}</li>
  * <li>{@link LiveAdminExperimentRequestMessage}</li>
  * <li>{@link LiveFriendshipRequestMessage}</li>
- * <li>{@link LiveCollaborationRequest}</li>
+ * <li>{@link LiveCollaborationRequestMessage}</li>
  * <li>{@link RequestChangedAnswerMessage}</li>
  * </ul>
  * @author Hannes Dorfmann
@@ -142,7 +142,7 @@ public class RequestMessageParser {
 		if (childElement.getTagName().equals(LiveAdminExperimentRequestMessage.TAG))
 			return parseLiveExperiment(childElement, reqId, date, displayName, username);
 		else
-		if (childElement.getTagName().equals(LiveCollaborationRequest.TAG))
+		if (childElement.getTagName().equals(LiveCollaborationRequestMessage.TAG))
 			return parseLiveExperiment(childElement, reqId, date, displayName, username);
 		else
 		if (childElement.getTagName().equals(LiveFriendshipRequestMessage.TAG))
@@ -184,17 +184,17 @@ public class RequestMessageParser {
 		String name;
 		
 		try{
-			colId = Integer.parseInt(u.getAttribute(LiveCollaborationRequest.ATTRIBUTE_COLLABORATION_ID));
+			colId = Integer.parseInt(u.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_ID));
 		} catch(NumberFormatException ex){
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration id to an int. Value: "+u.getAttribute(LiveCollaborationRequest.ATTRIBUTE_COLLABORATION_ID));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration id to an int. Value: "+u.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_ID));
 		}
 	
-		name = u.getAttribute(LiveCollaborationRequest.ATTRIBUTE_COLLABORATION_NAME);
+		name = u.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_NAME);
 		if (name== null)
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the name. Value: "+u.getAttribute(LiveCollaborationRequest.ATTRIBUTE_COLLABORATION_NAME));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the name. Value: "+u.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_NAME));
 	
 		 
-		return new LiveCollaborationRequest(new CollaborationRequest(reqId, displayName, username, date, colId, name));
+		return new LiveCollaborationRequestMessage(new CollaborationRequest(reqId, displayName, username, date, colId, name));
 		
 	}
 	

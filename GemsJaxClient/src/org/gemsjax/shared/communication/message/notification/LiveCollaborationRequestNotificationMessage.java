@@ -1,6 +1,6 @@
 package org.gemsjax.shared.communication.message.notification;
 
-public class LiveCollaborationRequestMessage extends LiveNotificationMessage{
+public class LiveCollaborationRequestNotificationMessage extends LiveNotificationMessage{
 	
 	public static final String TAG="quick-exp";
 	
@@ -17,7 +17,7 @@ public class LiveCollaborationRequestMessage extends LiveNotificationMessage{
 	
 	private CollaborationRequestNotification notification;
 	
-	public LiveCollaborationRequestMessage(CollaborationRequestNotification notification){
+	public LiveCollaborationRequestNotificationMessage(CollaborationRequestNotification notification){
 		this.notification = notification;
 	}
 

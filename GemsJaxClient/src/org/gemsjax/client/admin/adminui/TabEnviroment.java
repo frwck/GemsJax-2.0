@@ -36,5 +36,37 @@ public class TabEnviroment extends TabSet{
 		return instance;
 	}
 	
+	
+	public boolean containsTab(Tab tab)
+	{
+		for (Tab t: getTabs())
+			if (t==tab)
+				return true;
+		
+		return false;
+	}
+	
+	
+	public int indexOfTab(Tab tab)
+	{
+		Tab [] tabs = getTabs();
+		for (int i =0; i<tabs.length; i++)
+			if (tabs[i]==tab)
+				return i;
+						
+						
+		return -1;			
+						
+	}
+	
+	
+	public void setSelectedTab(Tab tab)
+	{
+		int index = indexOfTab(tab);
+		
+		if (index>=0)
+			this.setSelectedTab(index);
+	}
+	
 
 }

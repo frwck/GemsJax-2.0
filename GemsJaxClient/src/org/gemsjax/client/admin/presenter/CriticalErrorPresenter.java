@@ -33,6 +33,8 @@ public class CriticalErrorPresenter extends Presenter implements CriticalErrorHa
 		{
 		case LIVE_CONNECTION_CLOSED: view.setErrorText("The live connection to the server has been lost!"); break;
 		case INITIAL_ALL_FRIENDS: view.setErrorText("Could not load your friends."); break;
+		case INITAIL_NOTIFICATION_REQUEST: view.setErrorText("Could not load your notifications or requests"); break;
+		
 		}
 		
 		view.show();

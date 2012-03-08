@@ -43,4 +43,9 @@ public class LiveExperimentRequestNotification extends LiveNotificationMessage{
 		return openingXml()+expToXml()+closingXml();
 	}
 
+	@Override
+	public Notification getNotification() {
+		return notification;
+	}
+
 }

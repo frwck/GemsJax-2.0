@@ -9,7 +9,7 @@ import org.gemsjax.shared.communication.message.notification.ExperimentRequestNo
 import org.gemsjax.shared.communication.message.notification.FriendshipRequestNotification;
 import org.gemsjax.shared.communication.message.notification.GetAllNotificationsAnswerMessage;
 import org.gemsjax.shared.communication.message.notification.GetAllNotificationsMessage;
-import org.gemsjax.shared.communication.message.notification.LiveCollaborationRequestMessage;
+import org.gemsjax.shared.communication.message.notification.LiveCollaborationRequestNotificationMessage;
 import org.gemsjax.shared.communication.message.notification.LiveExperimentRequestNotification;
 import org.gemsjax.shared.communication.message.notification.LiveFriendshipNotificationMessage;
 import org.gemsjax.shared.communication.message.notification.LiveQuickNotificationMessage;
@@ -24,7 +24,7 @@ import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.FriendshipRequest;
 import org.gemsjax.shared.communication.message.request.GetAllRequestsAnswerMessage;
 import org.gemsjax.shared.communication.message.request.LiveAdminExperimentRequestMessage;
-import org.gemsjax.shared.communication.message.request.LiveCollaborationRequest;
+import org.gemsjax.shared.communication.message.request.LiveCollaborationRequestMessage;
 import org.gemsjax.shared.communication.message.request.LiveFriendshipRequestMessage;
 import org.gemsjax.shared.communication.message.request.LiveRequestMessage;
 import org.gemsjax.shared.communication.message.request.ReferenceableRequestMessage;
@@ -46,7 +46,7 @@ import com.google.gwt.xml.client.XMLParser;
  * <li>{@link GetAllRequestsAnswerMessage}</li>
  * <li>{@link LiveAdminExperimentRequestMessage}</li>
  * <li>{@link LiveFriendshipRequestMessage}</li>
- * <li>{@link LiveCollaborationRequest}</li>
+ * <li>{@link LiveCollaborationRequestMessage}</li>
  * <li>{@link RequestChangedAnswerMessage}</li>
  * </ul>
  * @author Hannes Dorfmann
@@ -101,7 +101,7 @@ public class NotificationMessageParser {
 		    	return parseLiveExperimentMessage(childElement);
 		    
 	    	else
-	    	if (childElement.getTagName().equals(LiveCollaborationRequestMessage.TAG))
+	    	if (childElement.getTagName().equals(LiveCollaborationRequestNotificationMessage.TAG))
 		    	return parseLiveCollaborationMessage(childElement);
 		    
 	    	else
@@ -131,7 +131,7 @@ public class NotificationMessageParser {
 	}
 	
 	
-	private LiveCollaborationRequestMessage parseLiveCollaborationMessage(Element e)
+	private LiveCollaborationRequestNotificationMessage parseLiveCollaborationMessage(Element e)
 	{
 		long id, dateMs;
 		String username, displayName, name;
@@ -141,43 +141,43 @@ public class NotificationMessageParser {
 		
 		
 		try{
-			id = Long.parseLong(e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_ID));
+			id = Long.parseLong(e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_ID));
 		} catch(NumberFormatException ex){
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the notification id to an int. Value: "+e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_ID));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the notification id to an int. Value: "+e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_ID));
 		}
 		
 		try{
-			colId = Integer.parseInt(e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_ID));
+			colId = Integer.parseInt(e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_COLLABORATION_ID));
 		} catch(NumberFormatException ex){
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration to an int. Value: "+e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_ID));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration to an int. Value: "+e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_COLLABORATION_ID));
 		}
 		
 		try{
-			dateMs = Long.parseLong(e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_TIME));
+			dateMs = Long.parseLong(e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_TIME));
 			date = new Date(dateMs);
 		} catch(NumberFormatException ex){
-			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the date time (ms) to long. Value: "+e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_TIME));
+			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the date time (ms) to long. Value: "+e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_TIME));
 		}
 		
 		
 		
-		read = Boolean.parseBoolean(e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_READ));
-		accepted = Boolean.parseBoolean(e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_ACCEPTED));
+		read = Boolean.parseBoolean(e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_READ));
+		accepted = Boolean.parseBoolean(e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_COLLABORATION_ACCEPTED));
 		
 		
-		displayName = e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_DISPLAYNAME);
+		displayName = e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_COLLABORATION_DISPLAYNAME);
 		if (displayName== null)
 			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the display name. Value: "+displayName);
 	
-		username = e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_USERNAME);
+		username = e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_COLLABORATION_USERNAME);
 		if (username== null)
 			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the username. Value: "+username);
 	
-		name = e.getAttribute(LiveCollaborationRequestMessage.ATTRIBUTE_COLLABORATION_NAME);
+		name = e.getAttribute(LiveCollaborationRequestNotificationMessage.ATTRIBUTE_COLLABORATION_NAME);
 		if (name== null)
 			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the name. Value: "+name);
 	
-		return new LiveCollaborationRequestMessage(new CollaborationRequestNotification(id, date, read, displayName, username, accepted, colId, name));
+		return new LiveCollaborationRequestNotificationMessage(new CollaborationRequestNotification(id, date, read, displayName, username, accepted, colId, name));
 	}
 	
 	

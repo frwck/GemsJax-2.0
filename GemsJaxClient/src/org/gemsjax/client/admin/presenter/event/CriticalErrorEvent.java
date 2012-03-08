@@ -20,7 +20,11 @@ public class CriticalErrorEvent extends GwtEvent<CriticalErrorHandler> {
 		/**
 		 * Get all Friends, which is required at the beginning of the authentication, has failed
 		 */
-		INITIAL_ALL_FRIENDS
+		INITIAL_ALL_FRIENDS,
+		/**
+		 * Get all Notifications and request went completely wrong
+		 */
+		INITAIL_NOTIFICATION_REQUEST
 	}
 	
 	

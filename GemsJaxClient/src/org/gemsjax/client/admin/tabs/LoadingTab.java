@@ -133,5 +133,10 @@ public class LoadingTab extends Tab{
 		this.content = content;
 	}
 	
+	
+	public void showErrorContent(Canvas errorCanvas){
+		TabEnviroment.getInstance().updateTab(this, errorCanvas);
+	}
+	
 		
 }

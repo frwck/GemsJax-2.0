@@ -56,19 +56,19 @@ public class NotificationChannel implements InputChannel, OutputChannel {
 		
 		if (m instanceof GetAllNotificationsAnswerMessage)
 			for (NotificationChannelHandler h: handlers)
-				h.onGetAllAnswer((GetAllNotificationsAnswerMessage) m);
+				h.onGetAllNotificationAnswer( ((GetAllNotificationsAnswerMessage) m).getReferenceId(), (GetAllNotificationsAnswerMessage) m);
 		else
 		if (m instanceof LiveNotificationMessage)
 			for (NotificationChannelHandler h: handlers)
-				h.onLiveMessageReceived((LiveNotificationMessage)m);
+				h.onLiveNotificationReceived((LiveNotificationMessage)m);
 		else
 		if (m instanceof NotificationErrorMessage)
 			for (NotificationChannelHandler h: handlers)
-				h.onError(((NotificationErrorMessage) m).getReferenceId(), ((NotificationErrorMessage) m).getError());
+				h.onNotificationError(((NotificationErrorMessage) m).getReferenceId(), ((NotificationErrorMessage) m).getError());
 		else
 		if (m instanceof SuccessfulNotificationMessage)
 			for (NotificationChannelHandler h: handlers)
-				h.onSuccess(((SuccessfulNotificationMessage) m).getReferenceId());
+				h.onNotificationSuccess(((SuccessfulNotificationMessage) m).getReferenceId());
 		
 		
 	}

@@ -11,12 +11,12 @@ import org.gemsjax.shared.communication.message.notification.NotificationError;
  */
 public interface NotificationChannelHandler {
 
-	public abstract void onError(String referenceId, NotificationError error);
+	public abstract void onNotificationError(String referenceId, NotificationError error);
 	
-	public abstract void onSuccess(String referenceId);
+	public abstract void onNotificationSuccess(String referenceId);
 	
-	public abstract void onLiveMessageReceived(LiveNotificationMessage msg);
+	public abstract void onLiveNotificationReceived(LiveNotificationMessage msg);
 	
-	public abstract void onGetAllAnswer(GetAllNotificationsAnswerMessage msg);
+	public abstract void onGetAllNotificationAnswer(String referenceId, GetAllNotificationsAnswerMessage msg);
 	
 }

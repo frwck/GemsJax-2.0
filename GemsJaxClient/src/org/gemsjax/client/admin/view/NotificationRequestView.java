@@ -3,10 +3,14 @@ package org.gemsjax.client.admin.view;
 import java.util.Set;
 
 import org.gemsjax.shared.communication.message.notification.Notification;
+import org.gemsjax.shared.communication.message.notification.NotificationError;
 import org.gemsjax.shared.communication.message.request.AdminExperimentRequest;
 import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.FriendshipRequest;
 import org.gemsjax.shared.communication.message.request.Request;
+import org.gemsjax.shared.communication.message.request.RequestError;
+
+import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 /**
  * Define the operations, that a {@link NotificationRequestView} should offer to his presenter
@@ -65,10 +69,33 @@ public interface NotificationRequestView {
 	public void setCollaborationRequests(Set<CollaborationRequest> requests);
 	
 	
+	public void showIt(boolean show);
+	
+	
 	public void showLoading();
 	
 	public void showContent();
 	
 	
+	public void showRequestError(Request r, RequestError error);
+	
+	public void showNotificationError(Notification n, NotificationError error);
+	
+	/**
+	 * Show a info message, that retrieving the initial notifications or requests has failed,
+	 */
+	public void showInitializeError();
+	
+	/**
+	 * By clicking on this button, the initial (all) notifications and request should be reloaded
+	 * @return
+	 */
+	public HasClickHandlers getReInitializeButton();
+	
+	public void setNotificationAsRead(Notification n, boolean read);
+	
+	public void addNotification(Notification n);
+	
+	public void addRequest(Request r);
 	
 }

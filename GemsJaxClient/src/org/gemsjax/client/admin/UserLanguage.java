@@ -298,4 +298,49 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  
 	  @DefaultStringValue("Delete")
 	  String NotificationDelete();
+	  
+	  @DefaultStringValue("Mark as read")
+	  String NotificationMarkAsRead();
+	  
+	  @DefaultStringValue("Topic")
+	  String NotificationTopicLabel();
+	  
+	  
+	  @DefaultStringValue("You are no longer befriended with ")
+	  String NotificationQuickFriendshipMessage();
+	  
+	  @DefaultStringValue("The Experiment ")
+	  String NotificationQuickExperimentDeletedMessagePart1();
+	  
+	  @DefaultStringValue(" has been deleted and is no longer available")
+	  String NotificationQuickExperimentDeletedMessagePart2();
+
+	  @DefaultStringValue("The Collaborateable ")
+	  String NotificationQuickCollaborationDeletedMessagePart1();
+	  
+	  @DefaultStringValue(" has been deleted and is no longer available")
+	  String NotificationQuickCollaborationDeletedMessagePart2();
+	  
+	  @DefaultStringValue(" has accepted ")
+	  String NotificationAccepted();
+	  
+	  @DefaultStringValue(" has rejected ")
+	  String NotificationRejected();
+	  
+	  @DefaultStringValue(" your experiment invitation to ")
+	  String NotificationExperimentInvitation();
+	  
+	  @DefaultStringValue(" your friendship request")
+	  String NotificationFriendshipInvitation();
+	  
+	  @DefaultStringValue(" your collaboration invitation to ")
+	  String NotificationCollaborationInvitation();
+	  
+	  
+	  @DefaultStringValue("Click here to retry")
+	  String NotificationErrorRestartLoading();
+	  
+	  @DefaultStringValue("Could not load your Notifications or Requests")
+	  String NotificationErrorLoading();
+	  
 }

@@ -1,6 +1,6 @@
 package org.gemsjax.shared.communication.message.request;
 
-public class LiveCollaborationRequest extends LiveRequestMessage{
+public class LiveCollaborationRequestMessage extends LiveRequestMessage{
 
 	public static final String TAG="collaboration";
 	public static final String ATTRIBUTE_COLLABORATION_ID="id";
@@ -8,7 +8,7 @@ public class LiveCollaborationRequest extends LiveRequestMessage{
 	
 	private CollaborationRequest req;
 	
-	public LiveCollaborationRequest(CollaborationRequest request) {
+	public LiveCollaborationRequestMessage(CollaborationRequest request) {
 		super(request);
 		this.req = request;
 	}

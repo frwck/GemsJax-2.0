@@ -289,12 +289,23 @@ This is the CSS style for the class Title
 	background-color: #E6E6E6;
 }
 
+.NotificationListHeaderEntry{
+	font-size: 20px;
+	font-weight: bold;
+	color:black;
+	margin-left:30px;
+	text-align: left;
+	vertical-align: middle;
+}
+
+
 .RequestListEntry{
 	text-align: left;
 	vertical-align: middle;
 	font-size: 18px;
 	margin-left:30px;
 }
+
 
 .RequestListHeaderEntry{
 	font-size: 20px;
