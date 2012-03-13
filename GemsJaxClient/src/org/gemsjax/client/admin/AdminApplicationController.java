@@ -3,6 +3,8 @@ package org.gemsjax.client.admin;
 import java.io.IOException;
 
 import org.gemsjax.client.admin.adminui.TabEnviroment;
+import org.gemsjax.client.admin.notification.NotificationManager;
+import org.gemsjax.client.admin.notification.ShortInfoNotification;
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
 import org.gemsjax.client.admin.presenter.CriticalErrorPresenter;
 import org.gemsjax.client.admin.presenter.FriendsPresenter;
@@ -62,6 +64,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.user.client.Window;
+import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.util.SC;
 
 /**
@@ -347,6 +350,9 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 	public void onLoginSuccessful(LoginSuccessfulEvent event) {
 		notificationRequestModle = new NotificationRequestModule(event.getUnreadNotificationRequestCount(), new NotificationChannel(WebSocketCommunicationConnection.getInstance()), new RequestChannel(WebSocketCommunicationConnection.getInstance()));
 		new NotificationRequestPresenter(notificationRequestModle, new NotificationRequestViewImpl(language.NotificationCenterTitle(),language), adminMainView, eventBus);
+	
+		NotificationManager.getInstance().show(new ShortInfoNotification("Test Test Test Test Test text text text bla bla"), AnimationEffect.FLY);
+		
 	}
 
 	

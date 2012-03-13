@@ -48,12 +48,17 @@ public class RequestMessageParser extends AbstractContentHandler {
 	    xmlReader.setContentHandler(this);
 	    xmlReader.parse(inputSource);
 	    
-	   
-	    if (startAccept && endAccept) 
-	    	return new AcceptRequestMessage(referenceId, requestId);
+        if (startAccept && endAccept) 
+        	if (requestId == null)
+    	    	throw new SAXException("Request id is null");
+        	else
+        		return new AcceptRequestMessage(referenceId, requestId);
 	    
 	    if (startReject && endReject)
-	    	return new RejectRequestMessage(referenceId, requestId);
+	    	if (requestId == null)
+		    	throw new SAXException("Request id is null");
+	    	else
+	    		return new RejectRequestMessage(referenceId, requestId);
 	    
 	    if (startGetAll && endGetAll)
 	    	return new GetAllRequestsMessage(referenceId);
@@ -149,8 +154,7 @@ public class RequestMessageParser extends AbstractContentHandler {
 		if (referenceId == null)
 			throw new SAXException("Reference Id is missing");
 		
-		if (requestId == null)
-			throw new SAXException("Search string is missing");
+		
 		
 		
 		if ((startAccept && startReject) || (startAccept && startGetAll) || (startReject && startGetAll))

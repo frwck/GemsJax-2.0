@@ -250,6 +250,58 @@ This is the CSS style for the class Title
 }
 
 
+.shortInfoNotification
+{
+	opacity: 0.9;
+	position: absolute;
+	background: #3B3C3E;
+	border: 1px solid #585B5C;
+	padding: 5px 5px;
+	color: white;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	font-size: 100%;
+	font-weight: bold;
+	width: 100px;
+	max-width: 100px;
+	height: auto;
+	max-height: 50%;
+	overflow:visible;
+}
+
+.shortInfoNotification h1
+{
+	color: white;
+	font-size: 14px;
+	font-weight: bold;
+	font-family: font:Verdana, Geneva, sans-serif;
+	margin: 0px 0px;
+	padding: 0px 0px;
+	text-align: justify;
+}
+
+.shortInfoNotificationCloseButton{
+	padding-left:95px;
+	heigth:10px;
+	width:5px;
+	font-size: 8px;
+	text-align: right;
+	color: #585B5C;
+}
+
+.shortInfoNotificationCloseButtonHover{
+	padding-left:95px;
+	heigth:10px;
+	width:5px;
+	font-size: 8px;
+	text-align: right;
+	color: white;
+}
+
+
+
+
 .criticalErrorLabel
 {
 	color: white;

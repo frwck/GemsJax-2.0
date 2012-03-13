@@ -100,6 +100,9 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		layout.setRightColumn(rightViewContainer, false);
 		this.setContent(layout);
 		
+		notificationButton.setActive(true);
+		showNotifications();
+		
 	}
 	
 	private void generateMenuButtons(UserLanguage lang)

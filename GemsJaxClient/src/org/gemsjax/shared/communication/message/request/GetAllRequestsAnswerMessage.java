@@ -90,7 +90,7 @@ public class GetAllRequestsAnswerMessage extends ReferenceableRequestMessage{
 	
 	@Override
 	public String toXml() {
-		return super.openingXml()+friendsToXml()+experimentsToXml()+collaborationsToXml()+super.closingXml();
+		return super.openingXml()+"<"+TAG+">"+friendsToXml()+experimentsToXml()+collaborationsToXml()+"</"+TAG+">"+super.closingXml();
 	}
 
 

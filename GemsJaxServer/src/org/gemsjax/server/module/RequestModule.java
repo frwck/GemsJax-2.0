@@ -22,7 +22,7 @@ import org.gemsjax.shared.communication.message.request.FriendshipRequest;
 import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.GetAllRequestsAnswerMessage;
 import org.gemsjax.shared.communication.message.request.LiveAdminExperimentRequestMessage;
-import org.gemsjax.shared.communication.message.request.LiveCollaborationRequest;
+import org.gemsjax.shared.communication.message.request.LiveCollaborationRequestMessage;
 import org.gemsjax.shared.communication.message.request.LiveFriendshipRequestMessage;
 import org.gemsjax.shared.communication.message.request.RequestChangedAnswerMessage;
 import org.gemsjax.shared.communication.message.request.RequestError;
@@ -286,7 +286,7 @@ public class RequestModule implements RequestChannelHandler{
 		if (receiverOU != null) // if receiver is online
 		{
 			try {
-				receiverOU.getRequestChannel().send(new LiveCollaborationRequest( new CollaborationRequest(r.getId(),r.getSender().getDisplayedName(), r.getSender().getUsername(), r.getDate(), r.getCollaborateable().getId(), r.getCollaborateable().getName())));
+				receiverOU.getRequestChannel().send(new LiveCollaborationRequestMessage( new CollaborationRequest(r.getId(),r.getSender().getDisplayedName(), r.getSender().getUsername(), r.getDate(), r.getCollaborateable().getId(), r.getCollaborateable().getName())));
 			} catch (IOException e) {
 				// TODO What to do, if message can not be send
 				e.printStackTrace();

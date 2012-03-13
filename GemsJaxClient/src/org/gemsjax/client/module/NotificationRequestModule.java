@@ -11,7 +11,6 @@ import org.gemsjax.client.communication.channel.RequestChannel;
 import org.gemsjax.client.communication.channel.handler.NotificationChannelHandler;
 import org.gemsjax.client.communication.channel.handler.RequestChannelHandler;
 import org.gemsjax.client.module.handler.NotificationRequestModuleHandler;
-import org.gemsjax.shared.communication.message.friend.GetAllFriendsMessage;
 import org.gemsjax.shared.communication.message.notification.DeleteNotificationMessage;
 import org.gemsjax.shared.communication.message.notification.GetAllNotificationsAnswerMessage;
 import org.gemsjax.shared.communication.message.notification.GetAllNotificationsMessage;
@@ -24,6 +23,7 @@ import org.gemsjax.shared.communication.message.request.AdminExperimentRequest;
 import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.FriendshipRequest;
 import org.gemsjax.shared.communication.message.request.GetAllRequestsAnswerMessage;
+import org.gemsjax.shared.communication.message.request.GetAllRequestsMessage;
 import org.gemsjax.shared.communication.message.request.LiveAdminExperimentRequestMessage;
 import org.gemsjax.shared.communication.message.request.LiveCollaborationRequestMessage;
 import org.gemsjax.shared.communication.message.request.LiveFriendshipRequestMessage;
@@ -131,7 +131,7 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 		getAllCounter++;
 		lastGetAllRequestRefId = "GAR"+getAllCounter;
 		
-		requestChannel.send(new GetAllFriendsMessage(lastGetAllRequestRefId));
+		requestChannel.send(new GetAllRequestsMessage(lastGetAllRequestRefId));
 	}
 	
 	/**

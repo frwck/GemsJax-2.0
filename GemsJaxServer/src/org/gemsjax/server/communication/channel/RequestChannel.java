@@ -34,6 +34,7 @@ public class RequestChannel implements OutputChannel, InputChannel {
 	public RequestChannel(CommunicationConnection connection, OnlineUser user)
 	{
 		this.connection = connection;
+		connection.registerInputChannel(this);
 		this.regexFilter = RegExFactory.startWithTag(RequestMessage.TAG);
 		this.handlers = new LinkedHashSet<RequestChannelHandler>();
 		this.user = user;

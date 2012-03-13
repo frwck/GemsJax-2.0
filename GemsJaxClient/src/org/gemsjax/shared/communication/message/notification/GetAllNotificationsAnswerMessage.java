@@ -111,7 +111,7 @@ public class GetAllNotificationsAnswerMessage extends ReferenceableNotificationM
 				ATTRIBUTE_FRIENDSHIP_ACCEPTED+"=\""+n.isAccepted()+"\" />";
 				
 		
-		ret+="</"+SUBTAG_EXPERIMENT_REQUEST_RESULTS+">";
+		ret+="</"+SUBTAG_FRIENDSHIP_REQUEST_RESULTS+">";
 		return ret;
 	}
 	
