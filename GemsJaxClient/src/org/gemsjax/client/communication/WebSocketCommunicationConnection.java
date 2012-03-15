@@ -218,7 +218,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
 
         that._ws.onmessage = function(response) {
-            console.log("WebSocket _onmessage() data="+response.data);
+            console.log("WebSocket received: "+response.data);
            
             if (response.data) {
                 that.@org.gemsjax.client.communication.WebSocketCommunicationConnection::onMessage(Ljava/lang/String;)( response.data );

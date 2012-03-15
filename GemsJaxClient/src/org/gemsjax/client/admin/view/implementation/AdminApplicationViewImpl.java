@@ -5,13 +5,25 @@ import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.adminui.Footer;
 import org.gemsjax.client.admin.adminui.Header;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
+import org.gemsjax.client.admin.notification.NotificationManager;
+import org.gemsjax.client.admin.notification.ShortInfoNotification;
 import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.view.AdminUIView;
 import org.gemsjax.client.admin.view.NotificationRequestShortInfoView;
 import org.gemsjax.client.admin.view.QuickSearchView;
 import org.gemsjax.client.util.Console;
+import org.gemsjax.shared.communication.message.notification.CollaborationRequestNotification;
+import org.gemsjax.shared.communication.message.notification.ExperimentRequestNotification;
+import org.gemsjax.shared.communication.message.notification.FriendshipRequestNotification;
 import org.gemsjax.shared.communication.message.notification.LiveNotificationMessage;
+import org.gemsjax.shared.communication.message.notification.LiveQuickNotificationMessage;
+import org.gemsjax.shared.communication.message.notification.Notification;
+import org.gemsjax.shared.communication.message.notification.QuickNotification;
+import org.gemsjax.shared.communication.message.request.AdminExperimentRequest;
+import org.gemsjax.shared.communication.message.request.CollaborationRequest;
+import org.gemsjax.shared.communication.message.request.FriendshipRequest;
 import org.gemsjax.shared.communication.message.request.LiveRequestMessage;
+import org.gemsjax.shared.communication.message.request.Request;
 
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
@@ -172,15 +184,60 @@ public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView, N
 
 	@Override
 	public void showShortNotification(LiveNotificationMessage msg) {
-		// TODO implement
+		
+		Notification n = msg.getNotification();
+		String text = "You have received a new notification";
+		if (n instanceof QuickNotification)
+		switch (((QuickNotification) n).getType()){
+			case FRIENDSHIP_CANCELED: text = language.NotificationQuickFriendshipMessage()+" \""+((QuickNotification)n).getOptionalMessage()+"\"";
+			case COLLABORATEABLE_DELETED: text = (language.NotificationQuickCollaborationDeletedMessagePart1()+" \""+((QuickNotification)n).getOptionalMessage()+"\""+language.NotificationQuickCollaborationDeletedMessagePart2());
+			case EXPERIMENT_DELETED: text = (language.NotificationQuickExperimentDeletedMessagePart1()+" \""+((QuickNotification)n).getOptionalMessage()+"\""+language.NotificationQuickExperimentDeletedMessagePart2());
+		}
+		
+		else
+		if (n instanceof ExperimentRequestNotification)
+		{
+			boolean accept = ((ExperimentRequestNotification) n).isAccepted();
+			text = (((ExperimentRequestNotification) n).getDisplayName()+" "+(accept?language.NotificationAccepted():language.NotificationRejected())+ language.NotificationExperimentInvitation()+"\""+((ExperimentRequestNotification)n).getExperimentName()+"\"");
+		}
+		else
+		if (n instanceof CollaborationRequestNotification)
+		{
+			boolean accept = ((CollaborationRequestNotification) n).isAccepted();
+			text=(((CollaborationRequestNotification) n).getDisplayName()+" "+(accept?language.NotificationAccepted():language.NotificationRejected())+ language.NotificationCollaborationInvitation()+"\""+((CollaborationRequestNotification)n).getCollaborationName()+"\"");
+		}
+		if (n instanceof FriendshipRequestNotification)
+		{
+			boolean accept = ((FriendshipRequestNotification) n).isAccepted();
+			text = (((FriendshipRequestNotification) n).getDisplayName()+" "+(accept?language.NotificationAccepted():language.NotificationRejected())+ language.NotificationFriendshipInvitation());
+		}
+
+		
+		NotificationManager.getInstance().showShortInfoNotification(new ShortInfoNotification(text));
 		
 	}
 
 
 	@Override
 	public void showShortRequestNotification(LiveRequestMessage msg) {
-		// TODO implement
 		
+		String text = "You have received a new request";
+
+		Request r = msg.getRequest();
+		
+		
+		if (r instanceof AdminExperimentRequest)
+			text = (language.RequestExperimentInvitedMessage()+" \""+((AdminExperimentRequest)r).getExperimentName()+"\"");
+		
+		else
+		if (r instanceof CollaborationRequest)
+			text = (language.RequestCollaborationInvitedMessage()+" \""+((CollaborationRequest)r).getName()+"\"");
+		
+		else
+		if(r instanceof FriendshipRequest)
+			text = (r.getRequesterDisplayName()+" "+language.RequestFriendshipInvitedMessage());
+		
+		NotificationManager.getInstance().showShortInfoNotification(new ShortInfoNotification(text));
 	}
 
 

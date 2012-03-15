@@ -5,6 +5,7 @@ import org.gemsjax.client.util.Console;
 
 import sun.font.TextLabel;
 
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.widgets.AnimationCallback;
@@ -105,6 +106,8 @@ public class ShortInfoNotification extends Notification implements MouseOutHandl
 		
 		if (event.getSource() == closeButton)
 			close();
+		
+
 	}
 
 	
@@ -114,7 +117,8 @@ public class ShortInfoNotification extends Notification implements MouseOutHandl
 		return text.length()*TEXT_FONT_SIZE / (WIDTH-2*TEXT_PADDING);
 	}
 
-	
-	
-
+	@Override
+	public HandlerRegistration addClickHandler(ClickHandler h){
+		return textLabel.addClickHandler(h);
+	}
 }

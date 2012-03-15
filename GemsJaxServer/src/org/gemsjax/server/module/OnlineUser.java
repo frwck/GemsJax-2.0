@@ -9,6 +9,7 @@ import org.gemsjax.server.communication.channel.FriendsLiveChannel;
 import org.gemsjax.server.communication.channel.LogoutChannel;
 import org.gemsjax.server.communication.channel.NotificationChannel;
 import org.gemsjax.server.communication.channel.RequestChannel;
+import org.gemsjax.server.communication.channel.SearchChannel;
 import org.gemsjax.server.communication.channel.SimpleOutputChannel;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
@@ -171,6 +172,9 @@ public class OnlineUser {
 		NotificationChannel nc = new NotificationChannel(connection, u);
 		nc.addNotificationChannelHandler(NotificationModule.getInstance());
 		u.setNotificationChannel(nc);
+		
+		// SearchChannel
+		SearchChannel sc = new SearchChannel(connection, u);
 		
 		return u;
 	}

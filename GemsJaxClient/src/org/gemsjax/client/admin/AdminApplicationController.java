@@ -191,15 +191,6 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 			friendsPresenter = new FriendsPresenter(eventBus, null, friendsModule);
 			adminMainView = new AdminApplicationViewImpl(language);
 			applicationPresenter = new AdminApplicationPresenter(eventBus, adminMainView, adminMainView);
-
-			
-			new Timer(){
-				public void run(){
-					NotificationManager.getInstance().showShortInfoNotification(new ShortInfoNotification("Test Test Test Test Test text text text bla bla"));
-				}
-			}.scheduleRepeating(300);
-			// TODO remove this demo
-			
 		
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -333,24 +324,19 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 	@Override
 	public void onDoNewGlobalSerch(DoNewGlobalSearchEvent event) {
 		
-		try {
-			GlobalSearchResultViewImpl view = new GlobalSearchResultViewImpl(event.getSearchString(), getLanguage());
-			TabEnviroment.getInstance().addTab(view);
-			view.showLoading();
-			view.showContent();
-			CommunicationConnection c = new HttpPostCommunicationConnection(ServletPaths.SEARCH);
-			c.connect();
-			SearchChannel channel = new SearchChannel(c);
-			GlobalSearchModule searchModule = new GlobalSearchModule(authenticationModule.getCurrentlyAuthenticatedUser(),channel, friendsModule);
-			
-			GlobalSearchPresenter p = new GlobalSearchPresenter(eventBus, view, searchModule);
-			p.start(event.getSearchString());
-			
-		} catch (IOException e) {
-			// TODO Maybe the error type should be the real one 
-			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.LIVE_CONNECTION_CLOSED) );
-			e.printStackTrace();
-		}
+		GlobalSearchResultViewImpl view = new GlobalSearchResultViewImpl(event.getSearchString(), getLanguage());
+		TabEnviroment.getInstance().addTab(view);
+		view.showLoading();
+		view.showContent();
+		/*
+		CommunicationConnection c = new HttpPostCommunicationConnection(ServletPaths.SEARCH);
+		c.connect();
+		*/
+		SearchChannel channel = new SearchChannel(WebSocketCommunicationConnection.getInstance());
+		GlobalSearchModule searchModule = new GlobalSearchModule(authenticationModule.getCurrentlyAuthenticatedUser(),channel, friendsModule);
+		
+		GlobalSearchPresenter p = new GlobalSearchPresenter(eventBus, view, searchModule);
+		p.start(event.getSearchString());
 	}
 
 

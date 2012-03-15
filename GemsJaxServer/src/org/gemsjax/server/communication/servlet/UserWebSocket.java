@@ -60,7 +60,7 @@ import org.gemsjax.shared.communication.message.Message;
 		@Override
 		public void onMessage(String data) {
 		
-			
+			// TODO remove println
 			System.out.println("Received: "+data);
 			
 			InputMessage im = new InputMessage(200, data);

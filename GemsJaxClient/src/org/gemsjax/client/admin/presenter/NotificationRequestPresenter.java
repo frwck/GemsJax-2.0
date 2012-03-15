@@ -79,13 +79,16 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 	@Override
 	public void onLiveNotificationReceived(LiveNotificationMessage msg) {
 		shortView.showShortNotification(msg);	
+		shortView.setUnreadNotificationRequest(module.getUnreadNotificationCount());
 		view.addNotification(msg.getNotification());
+		
 	}
 
 
 	@Override
 	public void onLiveRequestReceived(LiveRequestMessage msg) {
 		shortView.showShortRequestNotification(msg);
+		shortView.setUnreadNotificationRequest(module.getUnreadNotificationCount());
 		view.addRequest(msg.getRequest());
 	}
 

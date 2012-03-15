@@ -39,16 +39,33 @@ public class SearchChannel implements InputChannel, OutputChannel{
 	private String regex;
 	private SearchMessageParser parser;
 	private HttpSession session;
+	private OnlineUser onlineUser;
 	
 	public SearchChannel(CommunicationConnection connection, HttpSession session)
+	{
+		this(connection);
+		this.session = session;
+	}
+	
+	
+	public SearchChannel(CommunicationConnection connection)
 	{
 		this.connection = connection;
 		connection.registerInputChannel(this);
 		regex = RegExFactory.startWithTag(ReferenceableSearchMessage.TAG);
 		parser = new SearchMessageParser();
-		this.session = session;
+		
 	}
 	
+	public SearchChannel(CommunicationConnection connection, OnlineUser ou)
+	{
+		this.onlineUser = ou;
+		this.connection = connection;
+		connection.registerInputChannel(this);
+		regex = RegExFactory.startWithTag(ReferenceableSearchMessage.TAG);
+		parser = new SearchMessageParser();
+		
+	}
 	
 	@Override
 	public void send(Message m) throws IOException {
@@ -72,7 +89,8 @@ public class SearchChannel implements InputChannel, OutputChannel{
 	@Override
 	public void onMessageReceived(InputMessage msg) {
 		
-		OnlineUser ou = Authenticator.isAuthenticated(session);
+		// 	OnlineUser ou = Authenticator.isAuthenticated(session); // No longer in use, because
+		OnlineUser ou = onlineUser;
 		
 		if (ou !=null && ou.getUser() instanceof RegisteredUser)
 		{
