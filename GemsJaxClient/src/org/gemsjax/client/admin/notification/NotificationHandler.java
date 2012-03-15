@@ -7,6 +7,6 @@ package org.gemsjax.client.admin.notification;
  */
 public interface NotificationHandler {
 	
-	public void onTipNotificationEvent(NotificationEvent evnet);
+	public void onNotificationEvent(NotificationEvent evnet);
 
 }

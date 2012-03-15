@@ -67,7 +67,7 @@ public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView, N
 	
 		HLayout headerCenteringLayout = new HLayout();
 		headerCenteringLayout.setWidth100();
-		headerCenteringLayout.setHeight(Header.headerHeight);
+		headerCenteringLayout.setHeight(Header.HEIGHT);
 		spacerHeaderLeft.setWidth("*");
 		spacerHeaderRight.setWidth("*");
 		

@@ -137,7 +137,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 				
 			case CREATE_CLASS:		
 				newClassButton.setActive(true); 
-				NotificationManager.getInstance().show(new TipNotification(language.MetaModelToolbarNewMetaClassTip(), null , 3000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE); 
+				NotificationManager.getInstance().showTipNotification(new TipNotification(language.MetaModelToolbarNewMetaClassTip(), null , 3000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE); 
 				
 			break;
 			case CREATE_RELATION:	newRelationButton.setActive(true); 
@@ -176,7 +176,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	@Override
 	public void showAnchorPlaceNotAllowed(Anchor a) {
 
-		NotificationManager.getInstance().show(new TipNotification(language.MetaModelAnchorPlaceNotAllowedTitle(), null , 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE); 
+		NotificationManager.getInstance().showTipNotification(new TipNotification(language.MetaModelAnchorPlaceNotAllowedTitle(), null , 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE); 
 		
 	}
 	

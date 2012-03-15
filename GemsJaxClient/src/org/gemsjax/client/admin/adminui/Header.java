@@ -30,7 +30,7 @@ public class Header extends HLayout{
 	/**
 	 * The height of this Header
 	 */
-	public static String headerHeight = "55px";
+	public static String HEIGHT = "55px";
 
 	private Img logo;
 	private UserBox userBox;
@@ -46,7 +46,7 @@ public class Header extends HLayout{
 		this.language = language;
 		
 		this.setWidth(AdminApplicationViewImpl.contentWidth);
-		this.setHeight(Header.headerHeight);
+		this.setHeight(Header.HEIGHT);
 		this.setMembersMargin(0);
 		this.setAlign(Alignment.CENTER);
 		

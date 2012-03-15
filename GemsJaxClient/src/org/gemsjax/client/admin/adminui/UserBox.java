@@ -68,7 +68,7 @@ public class UserBox extends HStack {
 		 */
 		public void setText(String text)
 		{
-			this.setContents("<a href=\"#\">"+text+"</a>");
+			this.setContents(text);
 		}
 
 

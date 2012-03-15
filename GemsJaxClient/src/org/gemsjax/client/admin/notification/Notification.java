@@ -26,7 +26,7 @@ public class Notification extends VStack{
 	
 	private String text;
 	private String title;
-	private Img image;
+	
 	
 
 	private NotificationPosition position;
@@ -66,7 +66,7 @@ public class Notification extends VStack{
 	protected void fireNotificationEvent(NotificationEvent event)
 	{
 		for (NotificationHandler h : handlers)
-			h.onTipNotificationEvent(event);
+			h.onNotificationEvent(event);
 	}
 	
 	/**
@@ -81,13 +81,6 @@ public class Notification extends VStack{
 		
 		if (this.text!=null && other.text==null)
 			return false;
-		
-		if ((this.image == null && other.image!= null) || (this.image!=null && other.image==null))
-			return false;
-		
-		if (this.image != null && !this.image.getSrc().equals(other.image.getSrc()))
-			return false;
-		
 		
 		if (!this.title.equals(other.title))
 			return false;
@@ -116,13 +109,6 @@ public class Notification extends VStack{
 		this.title = title;
 	}
 
-	public Img getImage() {
-		return image;
-	}
-
-	public void setImage(Img image) {
-		this.image = image;
-	}
 
 	public NotificationPosition getNotificationPosition() {
 		return position;
@@ -130,6 +116,22 @@ public class Notification extends VStack{
 
 	public void setPosition(NotificationPosition position) {
 		this.position = position;
+	}
+	
+	
+	public int getX(){
+		return this.getPageLeft();
+	}
+	
+	public int getY()
+	{
+		return this.getPageTop();
+	}
+	
+	public void setPosition(int x, int y)
+	{
+		this.setPageLeft(x);
+		this.setPageTop(y);
 	}
 	
 	

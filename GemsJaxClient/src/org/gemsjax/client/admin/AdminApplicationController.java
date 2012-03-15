@@ -63,6 +63,7 @@ import org.gemsjax.shared.user.RegisteredUser;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.util.SC;
@@ -191,6 +192,13 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 			adminMainView = new AdminApplicationViewImpl(language);
 			applicationPresenter = new AdminApplicationPresenter(eventBus, adminMainView, adminMainView);
 
+			
+			new Timer(){
+				public void run(){
+					NotificationManager.getInstance().showShortInfoNotification(new ShortInfoNotification("Test Test Test Test Test text text text bla bla"));
+				}
+			}.scheduleRepeating(300);
+			// TODO remove this demo
 			
 		
 		} catch (IOException e1) {
@@ -350,8 +358,6 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 	public void onLoginSuccessful(LoginSuccessfulEvent event) {
 		notificationRequestModle = new NotificationRequestModule(event.getUnreadNotificationRequestCount(), new NotificationChannel(WebSocketCommunicationConnection.getInstance()), new RequestChannel(WebSocketCommunicationConnection.getInstance()));
 		new NotificationRequestPresenter(notificationRequestModle, new NotificationRequestViewImpl(language.NotificationCenterTitle(),language), adminMainView, eventBus);
-	
-		NotificationManager.getInstance().show(new ShortInfoNotification("Test Test Test Test Test text text text bla bla"), AnimationEffect.FLY);
 		
 	}
 

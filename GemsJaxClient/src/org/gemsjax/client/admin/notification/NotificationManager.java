@@ -3,9 +3,14 @@ package org.gemsjax.client.admin.notification;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.gemsjax.client.admin.adminui.Header;
 import org.gemsjax.client.admin.notification.NotificationEvent.NotificationEventType;
+import org.gemsjax.client.admin.view.AdminUIView;
+import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 
 
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.Window;
 import com.smartgwt.client.types.AnimationEffect;
 
 /**
@@ -20,20 +25,68 @@ public class NotificationManager implements NotificationHandler{
 	
 	private static NotificationManager instance ;
 	
-	private List<Notification> activeOnScreenNotifications;
+	private TipNotification activeTipNotification;
 	
+	/**
+	 * Assumption: This list is always sorted on the y component of the absolute position of each {@link ShortInfoNotification}
+	 */
+	private List<ShortInfoNotification> activeShortNotifications;
+	
+	private int shortNotiStartX;
+	private int shortNotiStartY;
+	
+	/**
+	 * The space in pixel, between each short Notification
+	 */
+	private final int shortNotificationSpacer = 15;
 	
 	private NotificationManager()
 	{
-		activeOnScreenNotifications = new LinkedList<Notification>();
+		activeTipNotification = null;
+		activeShortNotifications = new LinkedList<ShortInfoNotification>();
+		
+		int percentWidth = Integer.parseInt(AdminApplicationViewImpl.contentWidth.split("%")[0]);
+		int contentWidth = Window.getClientWidth() / 100 * percentWidth;
+		int spaceLeft = (Window.getClientWidth()- contentWidth)/2;
+		
+		shortNotiStartX =  spaceLeft + contentWidth - ShortInfoNotification.WIDTH;
+		shortNotiStartY = Integer.parseInt(Header.HEIGHT.split("px")[0]);
 	}
 
 
 	@Override
-	public void onTipNotificationEvent(NotificationEvent event) {
+	public void onNotificationEvent(NotificationEvent event) {
 		
 		if (event.getType() == NotificationEventType.CLOSED)
-			activeOnScreenNotifications.remove(event.getSource());
+		{
+			if (event.getSource() == activeTipNotification)
+				activeTipNotification = null;
+			
+			else
+				onShortInfoClosed(event.getSource());
+		}
+				
+		
+	}
+	
+	
+	private void onShortInfoClosed(Notification n){
+		
+		activeShortNotifications.remove(n);
+		recalculateAllShortNotificationsY(n.getHeight()+shortNotificationSpacer);
+	}
+	
+	
+	private void recalculateAllShortNotificationsY(int heightOfRemoved){
+		
+		int delta = 0;
+		if (!activeShortNotifications.isEmpty())
+			delta = activeShortNotifications.get(0).getY() - shortNotiStartY - shortNotificationSpacer;
+		
+		for (ShortInfoNotification sn : activeShortNotifications){
+			
+			sn.animateMove(sn.getX(), sn.getY()-heightOfRemoved,null,130);
+		}
 		
 	}
 	
@@ -58,20 +111,45 @@ public class NotificationManager implements NotificationHandler{
 	 * @param notification
 	 * @param effect
 	 */
-	public void show(Notification notification, AnimationEffect effect)
+	public void showTipNotification(TipNotification notification, AnimationEffect effect)
 	{
 		// check if there is already the same TipNotification on screen
-		for (Notification n: activeOnScreenNotifications)
-		{
-			if (n.isSameAs(notification))
+		if (activeTipNotification != null){
+			if (notification.isSameAs(activeTipNotification))
 				return;
+			else
+			{
+				activeTipNotification.hide();
+				activeTipNotification = null;
+			}
 		}
 		
-		// TODO, calculate Position where the new TipNotification should be placed on screen
-		activeOnScreenNotifications.add(notification);
+		activeTipNotification = notification;
 		notification.addNotificationHandler(this);
 		notification.animateShow(effect);
+	}
+	
+	
+	public void showShortInfoNotification(ShortInfoNotification notification){
 		
+		notification.addNotificationHandler(this);
+		notification.setPosition(shortNotiStartX, calculateNextShortNotificationY());
+		activeShortNotifications.add(notification);
+		notification.animateShow(AnimationEffect.FADE);
+		
+		
+	}
+	
+	
+	private int calculateNextShortNotificationY(){
+		
+		if (activeShortNotifications.isEmpty())
+			return shortNotiStartY+shortNotificationSpacer;
+		else
+		{
+			ShortInfoNotification n = activeShortNotifications.get(activeShortNotifications.size()-1);
+			return n.getY() + n.getHeight() + shortNotificationSpacer;
+		}
 	}
 	
 	
