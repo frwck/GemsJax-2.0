@@ -5,6 +5,7 @@ import org.gemsjax.shared.communication.message.friend.Friend;
 import org.gemsjax.shared.communication.message.friend.FriendError;
 import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestAnswerMessage;
 import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestMessage;
+import org.gemsjax.shared.communication.message.search.UserResult;
 
 
 /**
@@ -31,23 +32,31 @@ public interface FriendsModuleHandler {
 	 * It would be nice, if the client displays a notification
 	 */
 	public void onNewFriendAdded(Friend f);
-	
-	/**
-	 * Called if an error Answer has been received from the server for the given
-	 * reference id
-	 */
-	public void onErrorAnswer(String referenceId, FriendError error, String additionalInfo);
-	
+
 	/**
 	 * Called if a successful answer from {@link FriendsModule#cancelFriendship(String, java.util.Set)} has been received
-	 * @param referenceId
+	 * @param exFriend
 	 */
-	public void onFriendshipsSuccessfulCanceled(String referenceId);
+	public void onCancelFriendshipsSuccessful(Friend exFriend);
 
 	/**
 	 * Called if the {@link NewFriendshipRequestMessage} has returned a {@link NewFriendshipRequestAnswerMessage} from server as response
 	 * @param referenceId
 	 */
-	public void onNewFriendshipRequestSuccessful(String referenceId);
+	public void onNewFriendshipRequestSuccessful(UserResult userWhoHasReceivedRequest);
+	
+	/**
+	 * Called, if a friendship could not be canceled
+	 * @param friendToUnfriend
+	 * @param error
+	 */
+	public void onCancelFriendshipError(Friend friendToUnfriend, FriendError error);
+	
+	/**
+	 * Called, if a new friendship request has not been accepted by the server
+	 * @param user
+	 * @param errror
+	 */
+	public void onNewFriendshipRequestError(UserResult user, FriendError errror);
 	
 }

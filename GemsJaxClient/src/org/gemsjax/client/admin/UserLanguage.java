@@ -346,6 +346,52 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Notification Center")
 	  String NotificationCenterTitle();
 	  
+	   
+	  @DefaultStringValue("A new friendship request has been send")
+	  String ManagageFriendshipRequestHasBeenSend();
+	  
+	  @DefaultStringValue("You are already befriended with")
+	  String ManageFriendshipAlreadyBefriended();
+	  
+	  @DefaultStringValue("An error has occurred. Please retry.")
+	  String ManageFriendshipParsingError();
+	  
+	  @DefaultStringValue("An database error has occurred. Please retry.")
+	  String ManageFriendshipDatabaseError();
+	  
+	  @DefaultStringValue("A friendship request has already been send, but is unanswered yet.")
+	  String ManageFriendshipAlreadyRequestedError();
+	  
+	  @DefaultStringValue("Something went wrong. The friend could not be found")
+	  String ManageFriendshipFriendIdError();
+	  
+	  @DefaultStringValue("An unexpected error has occurred. Please retry.")
+	  String ManageFriendshipUnexpectedError();
 	  
 	  
+	  @DefaultStringValue("Already friends")
+	  String ManageFriendshipAlreadyFriendsError();
+	  
+	  
+	  @DefaultStringValue("Friendship request sent to ")
+	  String ManageFriendshipRequestSuccessful();
+	  
+	  
+	  @DefaultStringValue("Friendship with")
+	  String ManageCancelFriendshipSuccessful1();
+	  
+	  
+	  @DefaultStringValue(" has been canceled")
+	  String ManageCancelFriendshipSuccessful2();
+	  
+	  @DefaultStringValue("Friendship with ")
+	  String ManageCancelFriendshipError1();
+	 
+	  @DefaultStringValue(" could not be canceled.")
+	  String ManageCancelFriendshipError2();
+	  
+	  
+	  @DefaultStringValue("Friendship request could not be sent to ")
+	  String ManageFriendshipReqeustError();
+	 
 }

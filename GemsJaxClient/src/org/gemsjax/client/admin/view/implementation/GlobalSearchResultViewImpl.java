@@ -242,7 +242,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 	public void setUserResult(Set<UserResult> userResults) {
 		
 		
-		userStack = new VStack();
+		userStack.clear();
 		
 		userStack.addMember(new Title(language.GlobalSearchUsersMenuTitle()));
 		
@@ -260,7 +260,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 	@Override
 	public void setFriendResult(Set<Friend> friendResults) {
 		
-		friendStack = new VStack();
+		friendStack.clear();
 		
 		
 		friendStack.addMember(new Title(language.GlobalSearchFriendsMenuTitle()));
@@ -280,7 +280,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 	@Override
 	public void setExperimentResult(Set<ExperimentResult> experimentResults) {
 		
-		experimentStack = new VStack();
+		experimentStack.clear();
 		
 		experimentStack.addMember(new Title(language.GlobalSearchExperimentsMenuTitle()));
 		

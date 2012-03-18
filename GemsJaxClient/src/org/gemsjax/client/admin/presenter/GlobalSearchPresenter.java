@@ -2,6 +2,7 @@ package org.gemsjax.client.admin.presenter;
 
 import java.io.IOException;
 
+import org.gemsjax.client.admin.presenter.event.ManageFriendshipEvent;
 import org.gemsjax.client.admin.view.GlobalSearchResultView;
 import org.gemsjax.client.admin.view.QuickSearchView.QuickSearchHanlder;
 import org.gemsjax.client.admin.view.handlers.FriendshipHandler;
@@ -93,14 +94,12 @@ public class GlobalSearchPresenter extends Presenter implements GlobalSearchModu
 
 	@Override
 	public void onUnfriendRequired(int friendId) {
-		// TODO Auto-generated method stub
-		
+		eventBus.fireEvent(new ManageFriendshipEvent(ManageFriendshipEvent.ManageFriendshipType.UNFRIEND, friendId));
 	}
 
 	@Override
 	public void onNewFriendshipRequired(int userId) {
-		// TODO Auto-generated method stub
-		
+		eventBus.fireEvent(new ManageFriendshipEvent(ManageFriendshipEvent.ManageFriendshipType.NEW_FRIENDSHIP, userId));
 	}
 
 	@Override

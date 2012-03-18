@@ -38,7 +38,6 @@ public class OnlineUser {
 	private RequestChannel requestChannel;
 	private NotificationChannel notificationChannel;
 
-	
 	private HttpSession httpSession;
 	
 	
