@@ -29,7 +29,7 @@ public class ManageFriendsViewImpl implements ManageFriendsView{
 		}
 
 		@Override
-		public void showYetBefriended() {
+		public void showYetBefriended(Friend friend) {
 			SC.warn(lang.ManageFriendshipAlreadyFriendsError());
 		}
 

@@ -230,7 +230,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 
 	@Override
 	public void setNotifications(Set<Notification> notifications) {
-		notificationStack.clear();
+		notificationStack.removeMembers(notificationStack.getMembers());
 		
 		
 		List<Notification> sorted = new ArrayList<Notification>(notifications);
@@ -256,7 +256,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 
 	@Override
 	public void setFriendshipRequests(Set<FriendshipRequest> requests) {
-		friendStack.clear();
+		friendStack.removeMembers(friendStack.getMembers());
 		
 		
 		List<FriendshipRequest> sortedRequests = new ArrayList<FriendshipRequest>(requests);
@@ -307,10 +307,8 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 
 	@Override
 	public void setCollaborationRequests(Set<CollaborationRequest> requests) {
-		collaborationStack.clear();
+		collaborationStack.removeMembers(collaborationStack.getMembers());
 		
-		
-
 		List<CollaborationRequest> sortedRequests = new ArrayList<CollaborationRequest>(requests);
 		
 		Collections.sort(sortedRequests, new Comparator<CollaborationRequest>() {

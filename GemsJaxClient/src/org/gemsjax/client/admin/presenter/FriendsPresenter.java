@@ -34,7 +34,7 @@ public class FriendsPresenter extends Presenter implements FriendsModuleHandler,
 		this.manageView = manageView;
 		this.friends = module;
 		friends.addFriendsModuleHandler(this);
-		eventBus.addHandler(LoginSuccessfulEvent.TYPE, this);
+		bind();
 		
 	}
 	
@@ -42,6 +42,8 @@ public class FriendsPresenter extends Presenter implements FriendsModuleHandler,
 	
 	private void bind()
 	{
+		eventBus.addHandler(LoginSuccessfulEvent.TYPE, this);
+		eventBus.addHandler(ManageFriendshipEvent.TYPE, this);
 	}
 
 
@@ -100,6 +102,14 @@ public class FriendsPresenter extends Presenter implements FriendsModuleHandler,
 		Friend f = friends.getFriendById(event.getUser().getUserId());
 		
 		if (f!=null)
+			manageView.showYetBefriended(f);
+		else
+			try{
+				friends.makeNewFriendshipRequest(event.getUser());
+			}
+			catch(IOException ex){
+				manageView.showUnexpectedError(ex);
+			}
 			
 		
 	}
@@ -108,7 +118,18 @@ public class FriendsPresenter extends Presenter implements FriendsModuleHandler,
 
 	@Override
 	public void onUnfriendRequired(ManageFriendshipEvent event) {
-		// TODO Auto-generated method stub
+		
+		Friend f= friends.getFriendById(event.getFriend().getId());
+		
+		if (f==null)
+			manageView.showCancelFriendshipError(null, FriendError.FRIEND_ID);
+		else
+			try{
+				friends.cancelFriendship(f);
+			}
+			catch(IOException ex){
+				manageView.showUnexpectedError(ex);
+			}
 		
 	}
 

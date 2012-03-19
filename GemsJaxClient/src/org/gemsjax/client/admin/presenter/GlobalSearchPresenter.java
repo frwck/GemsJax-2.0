@@ -10,8 +10,10 @@ import org.gemsjax.client.admin.view.handlers.ShowCollaborationHandler;
 import org.gemsjax.client.admin.view.handlers.ShowExperimentHandler;
 import org.gemsjax.client.module.GlobalSearchModule;
 import org.gemsjax.client.module.handler.GlobalSearchModuleHandler;
+import org.gemsjax.shared.communication.message.friend.Friend;
 import org.gemsjax.shared.communication.message.search.GlobalSearchResultSet;
 import org.gemsjax.shared.communication.message.search.SearchError;
+import org.gemsjax.shared.communication.message.search.UserResult;
 
 import com.google.gwt.event.shared.EventBus;
 
@@ -93,13 +95,13 @@ public class GlobalSearchPresenter extends Presenter implements GlobalSearchModu
 	}
 
 	@Override
-	public void onUnfriendRequired(int friendId) {
-		eventBus.fireEvent(new ManageFriendshipEvent(ManageFriendshipEvent.ManageFriendshipType.UNFRIEND, friendId));
+	public void onUnfriendRequired(Friend friend) {
+		eventBus.fireEvent(new ManageFriendshipEvent(ManageFriendshipEvent.ManageFriendshipType.UNFRIEND, friend));
 	}
 
 	@Override
-	public void onNewFriendshipRequired(int userId) {
-		eventBus.fireEvent(new ManageFriendshipEvent(ManageFriendshipEvent.ManageFriendshipType.NEW_FRIENDSHIP, userId));
+	public void onNewFriendshipRequired(UserResult user) {
+		eventBus.fireEvent(new ManageFriendshipEvent(ManageFriendshipEvent.ManageFriendshipType.NEW_FRIENDSHIP, user));
 	}
 
 	@Override

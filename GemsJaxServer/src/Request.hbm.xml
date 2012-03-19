@@ -4,7 +4,7 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-access="field">
-<class name="org.gemsjax.server.persistence.request.RequestImpl" table="Request">
+<class name="org.gemsjax.server.persistence.request.RequestImpl" table="Request" lazy="false" >
     <id name="id" type="long" column="id">
     	<generator class="increment" />
     </id>
@@ -13,23 +13,23 @@
     <property name="date" column="date" type="timestamp" not-null="true" />
     
     
-    <many-to-one name="sender" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_sender" not-null="true" />
+    <many-to-one name="sender" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_sender" not-null="true" lazy="false" />
     
-    <many-to-one name="receiver" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_receiver" not-null="true"/>
+    <many-to-one name="receiver" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id_receiver" not-null="true" lazy="false" />
     
-    <joined-subclass name="org.gemsjax.server.persistence.request.CollaborateRequestImpl" table="CollaborateRequest">
+    <joined-subclass name="org.gemsjax.server.persistence.request.CollaborateRequestImpl" table="CollaborateRequest" lazy="false">
         <key column="Request_id" />
-       	<many-to-one name="collaborateable" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" column="Collaborateable_id" not-null="true"  />
+       	<many-to-one name="collaborateable" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" column="Collaborateable_id" not-null="true" lazy="false" />
     </joined-subclass>
     
-     <joined-subclass name="org.gemsjax.server.persistence.request.AdministrateExperimentRequestImpl" table="AdministrateExperimentRequest">
+     <joined-subclass name="org.gemsjax.server.persistence.request.AdministrateExperimentRequestImpl" table="AdministrateExperimentRequest" lazy="false">
         <key column="Request_id" />
-       	<many-to-one name="experiment" class="org.gemsjax.server.persistence.experiment.ExperimentImpl" column="Experiment_id" not-null="true"  />
+       	<many-to-one name="experiment" class="org.gemsjax.server.persistence.experiment.ExperimentImpl" column="Experiment_id" not-null="true"  lazy="false" />
     </joined-subclass>
     
     
     
-    <joined-subclass name="org.gemsjax.server.persistence.request.FriendshipRequestImpl" table="FriendshipRequest">
+    <joined-subclass name="org.gemsjax.server.persistence.request.FriendshipRequestImpl" table="FriendshipRequest" lazy="false">
         <key column="Request_id" />
      </joined-subclass>
     

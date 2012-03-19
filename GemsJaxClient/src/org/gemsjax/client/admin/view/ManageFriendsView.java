@@ -7,7 +7,7 @@ public interface ManageFriendsView {
 	
 	public void showAlreadyBefriendedMessage(Friend friend);
 	
-	public void showYetBefriended();
+	public void showYetBefriended(Friend friend);
 	
 	
 	public void showUnexpectedError(Throwable t);

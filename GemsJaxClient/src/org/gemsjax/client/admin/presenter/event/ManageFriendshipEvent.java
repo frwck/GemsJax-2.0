@@ -1,6 +1,7 @@
 package org.gemsjax.client.admin.presenter.event;
 
 import org.gemsjax.client.admin.presenter.handler.ManageFriendshipHandler;
+import org.gemsjax.shared.communication.message.friend.Friend;
 import org.gemsjax.shared.communication.message.search.UserResult;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -24,6 +25,7 @@ public class ManageFriendshipEvent extends GwtEvent<ManageFriendshipHandler> {
 	
 	private ManageFriendshipType type;
 	private UserResult userResult;
+	private Friend friend;
 	
 	public ManageFriendshipEvent(ManageFriendshipType type, UserResult userResult)
 	{
@@ -31,8 +33,19 @@ public class ManageFriendshipEvent extends GwtEvent<ManageFriendshipHandler> {
 		this.type = type;
 	}
 	
+	public ManageFriendshipEvent(ManageFriendshipType type, Friend friend)
+	{
+		this.friend = friend;
+		this.type = type;
+	}
+	
+	
 	public UserResult getUser(){
 		return userResult;
+	}
+	
+	public Friend getFriend(){
+		return friend;
 	}
 	
 	@Override

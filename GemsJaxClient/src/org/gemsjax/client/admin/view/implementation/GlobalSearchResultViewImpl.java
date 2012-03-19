@@ -242,7 +242,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 	public void setUserResult(Set<UserResult> userResults) {
 		
 		
-		userStack.clear();
+		userStack.removeMembers(userStack.getMembers());
 		
 		userStack.addMember(new Title(language.GlobalSearchUsersMenuTitle()));
 		
@@ -260,7 +260,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 	@Override
 	public void setFriendResult(Set<Friend> friendResults) {
 		
-		friendStack.clear();
+		friendStack.removeMembers(friendStack.getMembers());
 		
 		
 		friendStack.addMember(new Title(language.GlobalSearchFriendsMenuTitle()));
@@ -280,7 +280,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 	@Override
 	public void setExperimentResult(Set<ExperimentResult> experimentResults) {
 		
-		experimentStack.clear();
+		experimentStack.removeMembers(experimentStack.getMembers());
 		
 		experimentStack.addMember(new Title(language.GlobalSearchExperimentsMenuTitle()));
 		
@@ -329,14 +329,14 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 	}
 	
 	
-	private void fireFriendShipRequest(int userId)
+	private void fireFriendShipRequest(UserResult user)
 	{
 		for (FriendshipHandler h: friendHandlers)
-			h.onNewFriendshipRequired(userId);
+			h.onNewFriendshipRequired(user);
 	}
 	
 	
-	private void fireUnfriend(int friendId)
+	private void fireUnfriend(Friend friendId)
 	{
 		for (FriendshipHandler h: friendHandlers)
 			h.onUnfriendRequired(friendId);
@@ -499,7 +499,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 				
 				@Override
 				public void onClick(ClickEvent event) {
-					fireFriendShipRequest(user.getUserId());
+					fireFriendShipRequest(user);
 				}
 			});
 			
@@ -547,7 +547,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 				
 				@Override
 				public void onClick(ClickEvent event) {
-					fireUnfriend(friend.getId());
+					fireUnfriend(friend);
 				}
 			});
 			

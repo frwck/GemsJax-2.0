@@ -22,6 +22,7 @@ import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
 import org.gemsjax.client.admin.presenter.handler.DoNewGlobalSearchHandler;
 import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
+import org.gemsjax.client.admin.presenter.handler.ManageFriendsViewImpl;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.view.implementation.CriticalErrorViewImpl;
@@ -188,7 +189,7 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 			// Important: first create the authenticationPresenter and than the AdminApplicationPresenter: So the LoginPresenter will receive LoginEvents as the first
 			authenticationPresenter = new AuthenticationPresenter(eventBus, new LoginViewImpl(language), new LogoutViewImpl(language), authenticationModule);
 			
-			friendsPresenter = new FriendsPresenter(eventBus, null, friendsModule);
+			friendsPresenter = new FriendsPresenter(eventBus, null, new ManageFriendsViewImpl(language), friendsModule);
 			adminMainView = new AdminApplicationViewImpl(language);
 			applicationPresenter = new AdminApplicationPresenter(eventBus, adminMainView, adminMainView);
 		

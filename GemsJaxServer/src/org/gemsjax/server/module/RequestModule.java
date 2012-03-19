@@ -202,7 +202,7 @@ public class RequestModule implements RequestChannelHandler{
 	@Override
 	public void onGetAllRequests(OnlineUser user, String referenceId) {
 		
-		List<Request> requests = dao.getAllRequestsBy((RegisteredUser)user.getUser());
+		List<Request> requests = dao.getAllRequestsFor((RegisteredUser)user.getUser());
 		Set<FriendshipRequest> friends = new LinkedHashSet<FriendshipRequest>();
 		Set<AdminExperimentRequest> experiments = new LinkedHashSet<AdminExperimentRequest>();
 		Set<CollaborationRequest> collaborations = new LinkedHashSet<CollaborationRequest>();
