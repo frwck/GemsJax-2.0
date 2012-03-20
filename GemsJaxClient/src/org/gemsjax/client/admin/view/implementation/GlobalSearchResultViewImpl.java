@@ -440,7 +440,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 		
 		modelStack = new VStack();
 		
-		modelStack.addMember(new Title(language.GlobalSearchMyMetaModelsTitle()));
+		modelStack.addMember(new Title(language.GlobalSearchMyModelsTitle()));
 		
 		if (userModel==null || userModel.isEmpty())
 			modelStack.addMember(new Label(language.GlobalSearchNoResult()));
@@ -453,7 +453,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 		
 		
 		
-		modelStack.addMember(new Title(language.GlobalSearchPublicMetaModelsTitle()));
+		modelStack.addMember(new Title(language.GlobalSearchPublicModelsTitle()));
 		
 		if (publicModels==null || publicModels.isEmpty())
 			modelStack.addMember(new Label(language.GlobalSearchNoResult()));

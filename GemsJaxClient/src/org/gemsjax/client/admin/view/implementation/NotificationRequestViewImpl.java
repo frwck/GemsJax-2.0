@@ -183,7 +183,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 	
 	private void doAccept(RequestListEntry r){
 		
-		VStack p = (VStack)r.getParent();
+		VStack p = r.parent;
 		p.setAnimateMembers(true);
 		
 		for (AnswerRequestHandler h: requestHandlers)
@@ -194,7 +194,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 	
 	
 	private void doReject(RequestListEntry r){
-		VStack p = (VStack)r.getParent();
+		VStack p = r.parent;
 		p.setAnimateMembers(true);
 		
 		for (AnswerRequestHandler h: requestHandlers)
@@ -274,7 +274,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		
 		int i =1;
 		for (Request r : requests){	
-			friendStack.addMember(new RequestListEntry(r),i);
+			friendStack.addMember(new RequestListEntry(r, friendStack),i);
 			i++;
 		}
 	}
@@ -294,13 +294,13 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		});
 		
 		// TODO any optimization would be great (not delete all and rebuild all)
-		experimentStack.clear();
+		experimentStack.removeMembers(experimentStack.getMembers());
 		
 		experimentStack.addMember(new RequestListEntry().createHeader());
 		
 		int i =1;
 		for (Request r : sortedRequests){	
-			experimentStack.addMember(new RequestListEntry(r),i);
+			experimentStack.addMember(new RequestListEntry(r, experimentStack),i);
 			i++;
 		}
 	}
@@ -325,7 +325,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		
 		int i =1;
 		for (Request r : sortedRequests){	
-			collaborationStack.addMember(new RequestListEntry(r),i);
+			collaborationStack.addMember(new RequestListEntry(r, collaborationStack),i);
 			i++;
 		}
 	}
@@ -356,6 +356,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 	private class RequestListEntry extends HStack {
 		
 		private Request request;
+		private VStack parent;
 		
 		
 		public HStack createHeader(){
@@ -397,10 +398,10 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		
 		
 		
-		public RequestListEntry(Request r)
+		public RequestListEntry(Request r, VStack parent)
 		{
 			this.request = r;
-			
+			this.parent = parent;
 			
 			// generate
 			this.setWidth100();
@@ -445,7 +446,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			
 			
 			
-			Button reject = new Button(language.RequestAccept());
+			Button reject = new Button(language.RequestReject());
 			reject.addClickHandler(new ClickHandler() {
 				
 				@Override
@@ -726,9 +727,9 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			}
 		}
 		if (index>=0)
-			friendStack.addMember(new RequestListEntry(r),index);
+			friendStack.addMember(new RequestListEntry(r, friendStack),index);
 		else	// This should never be the case
-			friendStack.addMember(new RequestListEntry(r));
+			friendStack.addMember(new RequestListEntry(r, friendStack));
 		
 		
 	}
@@ -753,9 +754,9 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			}
 		}
 		if (index>=0)
-			experimentStack.addMember(new RequestListEntry(r),index);
+			experimentStack.addMember(new RequestListEntry(r, experimentStack),index);
 		else	// This should never be the case
-			experimentStack.addMember(new RequestListEntry(r));
+			experimentStack.addMember(new RequestListEntry(r, experimentStack));
 		
 		
 	}
@@ -780,9 +781,9 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			}
 		}
 		if (index>=0)
-			collaborationStack.addMember(new RequestListEntry(r),index);
+			collaborationStack.addMember(new RequestListEntry(r, collaborationStack),index);
 		else	// This should never be the case
-			collaborationStack.addMember(new RequestListEntry(r));
+			collaborationStack.addMember(new RequestListEntry(r, collaborationStack));
 		
 		
 	}

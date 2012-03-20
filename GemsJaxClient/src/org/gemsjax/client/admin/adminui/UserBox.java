@@ -121,7 +121,7 @@ public class UserBox extends HStack {
 		
 		public void setCount(long count)
 		{
-			if (count<0){
+			if (count>0){
 				String content = "<table cellspacing=\"0\" cellpadding=\"0\" class=\"userbox-notifications-unread\"><tr>" +
 				"<td class=\"userbox-notifications-unread-border-left\"></td>" +
 				"<td class=\"userbox-notificatoins-unread-count\">"+count+"</td>" +

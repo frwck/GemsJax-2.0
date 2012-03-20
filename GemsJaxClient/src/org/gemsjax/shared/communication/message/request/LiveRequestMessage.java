@@ -28,7 +28,7 @@ public abstract class LiveRequestMessage extends RequestMessage{
 
 	protected String closingXml()
 	{
-		return super.closingXml()+"</"+TAG+">";
+		return "</"+TAG+">"+super.closingXml();
 	}
 	
 	public Request getRequest(){
