@@ -91,7 +91,7 @@ public class GetAllNotificationsAnswerMessage extends ReferenceableNotificationM
 		
 		for (QuickNotification n: quicknotificatins)
 			ret+="<"+SUBTAG_QUICKNOTIFICATION+" "+ATTRIBUTE_ID+"=\""+n.getId()+"\" "+
-				ATTRIBUTE_TIME+"=\""+n.getDate().getTime()+"\" "+ATTRIBUTE_READ+"\""+n.isRead()+"\" "+
+				ATTRIBUTE_TIME+"=\""+n.getDate().getTime()+"\" "+ATTRIBUTE_READ+"=\""+n.isRead()+"\" "+
 				ATTRIBUTE_QUICKNOTIFICATION_TYPE+"=\""+n.getType().toConstant()+"\" "+
 				ATTRIBUTE_QUICKNOTIFICATION_OPTIONAL+"=\""+n.getOptionalMessage()+"\" />";
 		
@@ -105,7 +105,7 @@ public class GetAllNotificationsAnswerMessage extends ReferenceableNotificationM
 		
 		for (FriendshipRequestNotification n: friendshipNotifications)
 			ret+="<"+SUBTAG_FRIENDSHIPNOTIFICATION+" "+ATTRIBUTE_ID+"=\""+n.getId()+"\" "+
-				ATTRIBUTE_TIME+"=\""+n.getDate().getTime()+"\" "+ATTRIBUTE_READ+"\""+n.isRead()+"\" "+
+				ATTRIBUTE_TIME+"=\""+n.getDate().getTime()+"\" "+ATTRIBUTE_READ+"=\""+n.isRead()+"\" "+
 				ATTRIBUTE_FRIENDSHIP_USERNAME+"=\""+n.getUsername()+"\" "+
 				ATTRIBUTE_FRIENDSHIP_DISPLAYNAME+"=\""+n.getDisplayName()+"\" "+
 				ATTRIBUTE_FRIENDSHIP_ACCEPTED+"=\""+n.isAccepted()+"\" />";
@@ -121,7 +121,7 @@ public class GetAllNotificationsAnswerMessage extends ReferenceableNotificationM
 		
 		for (ExperimentRequestNotification n: experimentNotifications)
 			ret+="<"+SUBTAG_EXPERIMENTNOTIFICATION+" "+ATTRIBUTE_ID+"=\""+n.getId()+"\" "+
-				ATTRIBUTE_TIME+"=\""+n.getDate().getTime()+"\" "+ATTRIBUTE_READ+"\""+n.isRead()+"\" "+
+				ATTRIBUTE_TIME+"=\""+n.getDate().getTime()+"\" "+ATTRIBUTE_READ+"=\""+n.isRead()+"\" "+
 				ATTRIBUTE_EXPERIMENT_USERNAME+"=\""+n.getUsername()+"\" "+
 				ATTRIBUTE_EXPERIMENT_DISPLAYNAME+"=\""+n.getDisplayName()+"\" "+
 				ATTRIBUTE_EXPERIMENT_ACCEPTED+"=\""+n.isAccepted()+"\" "+
@@ -139,7 +139,7 @@ public class GetAllNotificationsAnswerMessage extends ReferenceableNotificationM
 		
 		for (CollaborationRequestNotification n: collaborationNotifications)
 			ret+="<"+SUBTAG_COLLABORATIONNOTIFICATION+" "+ATTRIBUTE_ID+"=\""+n.getId()+"\" "+
-				ATTRIBUTE_TIME+"=\""+n.getDate().getTime()+"\" "+ATTRIBUTE_READ+"\""+n.isRead()+"\" "+
+				ATTRIBUTE_TIME+"=\""+n.getDate().getTime()+"\" "+ATTRIBUTE_READ+"=\""+n.isRead()+"\" "+
 				ATTRIBUTE_COLLABORATION_USERNAME+"=\""+n.getUsername()+"\" "+
 				ATTRIBUTE_COLLABORATION_DISPLAYNAME+"=\""+n.getDisplayName()+"\" "+
 				ATTRIBUTE_COLLABORATION_ACCEPTED+"=\""+n.isAccepted()+"\" "+

@@ -53,5 +53,28 @@ public class Friend {
 		return profilePicture;
 	}
 	
+	
+	@Override
+	public boolean equals(Object other) {
+		
+		if (this==other) return true;
+		
+		if ( !(other instanceof Friend) ) return false;
+		
+		final Friend that = (Friend) other;
+		
+		if (id != null && that.id != null)
+			return this.id.equals(that.id);
+		
+		return false;
+	}
+		
+	@Override
+	public int hashCode() {
+		if (id != null)
+			return id.hashCode();
+		else
+			return super.hashCode();
+	}
 
 }

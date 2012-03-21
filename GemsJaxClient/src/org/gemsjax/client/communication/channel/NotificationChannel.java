@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.gemsjax.client.communication.channel.handler.NotificationChannelHandler;
 import org.gemsjax.client.communication.parser.NotificationMessageParser;
+import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
@@ -19,6 +20,7 @@ import org.gemsjax.shared.communication.message.notification.NotificationMessage
 import org.gemsjax.shared.communication.message.notification.SuccessfulNotificationMessage;
 
 import com.google.gwt.regexp.shared.RegExp;
+import com.google.gwt.xml.client.DOMException;
 
 public class NotificationChannel implements InputChannel, OutputChannel {
 	
@@ -52,6 +54,7 @@ public class NotificationChannel implements InputChannel, OutputChannel {
 	@Override
 	public void onMessageReceived(InputMessage msg) {
 		
+		try{
 		NotificationMessage m = parser.parseMessage(msg.getText());
 		
 		if (m instanceof GetAllNotificationsAnswerMessage)
@@ -69,7 +72,12 @@ public class NotificationChannel implements InputChannel, OutputChannel {
 		if (m instanceof SuccessfulNotificationMessage)
 			for (NotificationChannelHandler h: handlers)
 				h.onNotificationSuccess(((SuccessfulNotificationMessage) m).getReferenceId());
-		
+		}
+		catch (DOMException e)
+		{
+			e.printStackTrace();
+			Console.logException(e);
+		}
 		
 	}
 

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.communication.message.notification.CollaborationRequestNotification;
 import org.gemsjax.shared.communication.message.notification.ExperimentRequestNotification;
 import org.gemsjax.shared.communication.message.notification.FriendshipRequestNotification;
@@ -65,7 +66,7 @@ public class NotificationMessageParser {
 		    	throw new DOMException(DOMException.SYNTAX_ERR, "No tag <"+NotificationMessage.TAG+"> found");
 		 
 		    if (surroundingElement.getLength()!=1)
-		      	throw new DOMException(DOMException.SYNTAX_ERR, "No or more than one <"+NotificationMessage.TAG+"> tag found");
+		      	throw new DOMException(DOMException.SYNTAX_ERR, "No or more than one <"+NotificationMessage.TAG+"> tag found. Count: "+surroundingElement.getLength());
 			
 		    
 		    
@@ -82,9 +83,8 @@ public class NotificationMessageParser {
 		    if(childNodes== null || childNodes.getLength() == 0)
 		      	throw new DOMException(DOMException.SYNTAX_ERR, "The <"+NotificationMessage.TAG+"> does not contain child tags");
 			
-		    
 		    if (childNodes.getLength()!=1)
-		    	throw new DOMException(DOMException.SYNTAX_ERR, "The <"+NotificationMessage.TAG+"> contains more that one child tags");
+		    	throw new DOMException(DOMException.SYNTAX_ERR, "The <"+NotificationMessage.TAG+"> contains more than one child tags. Count: ("+childNodes.getLength()+")");
 			
 		    Element childElement = (Element)childNodes.item(0);
 	

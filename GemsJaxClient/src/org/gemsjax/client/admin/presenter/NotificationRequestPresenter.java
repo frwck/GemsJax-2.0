@@ -153,7 +153,6 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 	public void onGetAllNotificationSuccessful() {
 		if (module.isInitializedWithGetAll())
 		{
-			
 			view.setAdministrateExperimentRequests(module.getExperimentRequests());
 			view.setCollaborationRequests(module.getCollaborationRequests());
 			view.setFriendshipRequests(module.getFriendshipRequests());

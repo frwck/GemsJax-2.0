@@ -79,6 +79,7 @@ public class RequestChannel implements OutputChannel, InputChannel {
 					h.onRejectRequest(user, ((RejectRequestMessage) rm).getRequestId(), rm.getReferenceId());
 			
 		} catch (SAXException e) {
+			e.printStackTrace();
 			try {
 				send(new  RequestErrorMessage(parser.getCurrentReferenceId(), RequestError.PARSING));
 			} catch (IOException e1) {
@@ -86,6 +87,7 @@ public class RequestChannel implements OutputChannel, InputChannel {
 				e1.printStackTrace();
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
 			try {
 				send(new  RequestErrorMessage(parser.getCurrentReferenceId(), RequestError.PARSING));
 			} catch (IOException e1) {

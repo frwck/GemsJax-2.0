@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.communication.message.request.AdminExperimentRequest;
 import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.FriendshipRequest;
@@ -60,6 +61,7 @@ public class RequestMessageParser {
 		   
 			
 		    Node systemElement = surroundingElement.item(0);
+		    Console.log("Element : "+systemElement.getNodeName());
 		    
 		    NodeList childNodes = systemElement.getChildNodes();
 		    
@@ -329,13 +331,13 @@ public class RequestMessageParser {
 		
 			
 			
-			// Experiments
+			// Friendships
 			NodeList surroundFrRes = e.getElementsByTagName(GetAllRequestsAnswerMessage.SUBTAG_FRIENDSHIP_REQUESTS);
 					
 			if (surroundFrRes.getLength()!=1)
 				throw new DOMException(DOMException.SYNTAX_ERR,"Expected exactly one <"+GetAllRequestsAnswerMessage.SUBTAG_FRIENDSHIP_REQUESTS+"> but got: "+surroundFrRes.getLength());
 			
-			cols = ((Element) surroundExpRes.item(0)).getElementsByTagName(GetAllRequestsAnswerMessage.SUBTAG_EXPERIMENT);
+			cols = ((Element) surroundFrRes.item(0)).getElementsByTagName(GetAllRequestsAnswerMessage.SUBTAG_FRIENDSHIP);
 			Set<FriendshipRequest> frRequests = new LinkedHashSet<FriendshipRequest>();
 			
 			

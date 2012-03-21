@@ -222,7 +222,7 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 	public long getUneradUnansweredCount()
 	{
 		if (isInitializedWithGetAll())
-			return friendshipRequests.size()+collaborationRequests.size()+friendshipRequests.size()+getUnreadNotificationCount();
+			return friendshipRequests.size()+collaborationRequests.size()+experimentRequests.size()+getUnreadNotificationCount();
 		
 		else
 			return initialNotificationCount;
@@ -267,6 +267,9 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 			experimentRequests = m.getExperimentRequests();
 			initialAllRequests = true;
 			fireUpdated();
+			
+			for (NotificationRequestModuleHandler h: handlers)
+				h.onGetAllRequestSuccessfull();
 		}
 	}
 
@@ -308,6 +311,10 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 		{
 			Request r = currentPendingRequests.get(referenceId);
 			currentPendingRequests.remove(referenceId);
+			
+			friendshipRequests.remove(r);
+			experimentRequests.remove(r);
+			collaborationRequests.remove(r);
 			
 			for (NotificationRequestModuleHandler h: handlers)
 				h.onRequestAnsweredSuccessfully(r);

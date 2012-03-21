@@ -792,10 +792,10 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 	public void setCount(int unreadNotifications, int friendshipRequests,
 			int experimentRequests, int collaborationRequests) {
 		
-		notificationButton.setText(language.NotificationTitle() +(unreadNotifications>0?"("+unreadNotifications+")":""));
-		friendshipButton.setText(language.RequestFriendshipTitle() +(friendshipRequests>0?"("+friendshipRequests+")":""));
-		experimentButton.setText(language.RequestExperimentTitle() +(experimentRequests>0?"("+experimentRequests+")":""));
-		collaborationButton.setText(language.RequestCollaborationTitle() +(collaborationRequests>0?"("+collaborationRequests+")":""));
+		notificationButton.setText(language.NotificationTitle() +(unreadNotifications>0?" ("+unreadNotifications+")":""));
+		friendshipButton.setText(language.RequestFriendshipTitle() +(friendshipRequests>0?" ("+friendshipRequests+")":""));
+		experimentButton.setText(language.RequestExperimentTitle() +(experimentRequests>0?" ("+experimentRequests+")":""));
+		collaborationButton.setText(language.RequestCollaborationTitle() +(collaborationRequests>0?" ("+collaborationRequests+")":""));
 		
 	}
 }

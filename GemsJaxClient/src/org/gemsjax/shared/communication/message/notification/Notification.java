@@ -2,9 +2,11 @@ package org.gemsjax.shared.communication.message.notification;
 
 import java.util.Date;
 
+import org.gemsjax.shared.communication.message.request.Request;
+
 public class Notification {
 
-	private long id;
+	private Long id;
 	private Date date;
 	private boolean read;
 	
@@ -26,4 +28,29 @@ public class Notification {
 	public boolean isRead() {
 		return read;
 	}
+	
+	
+	@Override
+	public boolean equals(Object other) {
+		
+		if (this==other) return true;
+		
+		if ( !(other instanceof Notification) ) return false;
+		
+		final Notification that = (Notification) other;
+		
+		if (id != null && that.id != null)
+			return this.id.equals(that.id);
+		
+		return false;
+	}
+		
+	@Override
+	public int hashCode() {
+		if (id != null)
+			return id.hashCode();
+		else
+			return super.hashCode();
+	}
+	
 }

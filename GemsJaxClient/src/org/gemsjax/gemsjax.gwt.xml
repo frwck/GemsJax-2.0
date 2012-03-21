@@ -35,6 +35,10 @@
 	<!-- compile only for chrome/safari  -->
 	<set-property name="user.agent" value="safari" />
 
+	<!-- Development mode -->
+	<set-property name="compiler.emulatedStack" value="true" />
+	<set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true" />
+	<set-configuration-property name="compiler.emulatedStack.recordLineNumbers" value="true" />
 	<!--  <inherits name="com.google.gwt.junit.JUnit"/> -->
 
 

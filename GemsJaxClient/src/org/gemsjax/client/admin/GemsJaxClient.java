@@ -52,12 +52,13 @@ public class GemsJaxClient implements EntryPoint {
 					}
 				});
 				
-			
-			
 			GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 				
 				@Override
 				public void onUncaughtException(Throwable e) {
+					
+					
+					Console.logException(e);
 					
 					String msg =e.toString() + " "+e.getLocalizedMessage() +" "+ e.getMessage()+" \n";
 					

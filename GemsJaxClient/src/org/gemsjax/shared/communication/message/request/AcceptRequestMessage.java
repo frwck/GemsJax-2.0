@@ -20,7 +20,7 @@ public class AcceptRequestMessage extends  ReferenceableRequestMessage{
 	@Override
 	public String toXml() {
 	
-		return super.openingXml()+"<"+TAG+" "+ATTRIBUTE_REFERENCE_ID+"=\""+requestId+"\" />"+super.closingXml();
+		return super.openingXml()+"<"+TAG+" "+ATTRIBUTE_REQUEST_ID+"=\""+requestId+"\" />"+super.closingXml();
 	}
 	
 	public long getRequestId()

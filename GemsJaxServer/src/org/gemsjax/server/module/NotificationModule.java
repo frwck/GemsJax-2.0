@@ -266,12 +266,12 @@ public class NotificationModule implements NotificationChannelHandler{
 				experiments.add(new ExperimentRequestNotification(n.getId(),n.getDate(),n.isRead(), ((ExperimentRequestNotificationImpl) n).getAcceptor().getDisplayedName(), ((ExperimentRequestNotificationImpl) n).getAcceptor().getUsername(), ((ExperimentRequestNotificationImpl) n).isAccepted(),((ExperimentRequestNotificationImpl) n).getExperiment().getId(), ((ExperimentRequestNotificationImpl) n).getExperiment().getName()));
 			
 			else
-			if (n instanceof FriendshipRequestImpl)
-				friends.add(new FriendshipRequestNotification(n.getId(), n.getDate(), n.isRead(), ((ExperimentRequestNotificationImpl) n).getAcceptor().getDisplayedName(), ((ExperimentRequestNotificationImpl) n).getAcceptor().getUsername(), ((ExperimentRequestNotificationImpl) n).isAccepted()));
+			if (n instanceof FriendshipRequestNotificationImpl)
+				friends.add(new FriendshipRequestNotification(n.getId(), n.getDate(), n.isRead(), ((FriendshipRequestNotificationImpl) n).getAcceptor().getDisplayedName(), ((FriendshipRequestNotificationImpl) n).getAcceptor().getUsername(), ((FriendshipRequestNotificationImpl) n).isAccepted()));
 		
 			else
-			if (n instanceof CollaborateRequestImpl)
-				collaborations.add(new CollaborationRequestNotification(n.getId(), n.getDate(), n.isRead(), ((ExperimentRequestNotificationImpl) n).getAcceptor().getDisplayedName(), ((ExperimentRequestNotificationImpl) n).getAcceptor().getUsername(),((ExperimentRequestNotificationImpl) n).isAccepted(), ((CollaborateRequestImpl) n).getCollaborateable().getId(), ((CollaborateRequestImpl) n).getCollaborateable().getName()));
+			if (n instanceof CollaborationRequestNotificationImpl)
+				collaborations.add(new CollaborationRequestNotification(n.getId(), n.getDate(), n.isRead(), ((CollaborationRequestNotificationImpl) n).getAcceptor().getDisplayedName(), ((CollaborationRequestNotificationImpl) n).getAcceptor().getUsername(),((CollaborationRequestNotificationImpl) n).isAccepted(), ((CollaborationRequestNotificationImpl) n).getCollaborateable().getId(), ((CollaborationRequestNotificationImpl) n).getCollaborateable().getName()));
 		}
 		
 		

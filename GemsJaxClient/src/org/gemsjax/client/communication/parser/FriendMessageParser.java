@@ -237,6 +237,9 @@ public class FriendMessageParser {
 			onState=current.getAttribute(AllFriendsAnswerMessage.ATTRIUBTE_ONLINE_STATE);
 			picture = current.getAttribute(AllFriendsAnswerMessage.ATTRIBUTE_PROFILE_PICTURE);
 			
+			if (picture == null || picture.isEmpty() || picture.equals("null"))
+				picture = null;
+			
 			if (idAtt == null)
 				throw new DOMException(DOMException.SYNTAX_ERR, "The id of a friend was null");
 			
