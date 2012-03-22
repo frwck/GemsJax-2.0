@@ -130,7 +130,7 @@ public class UserBox extends HStack {
 				"</tr></table>";
 				this.setContents(content);
 				this.setWidth((""+count).length()*9+10+10);
-				this.setVisible(true)
+				this.setVisible(true);
 			}
 			else
 				this.setVisible(false);
