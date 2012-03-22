@@ -17,6 +17,7 @@ import org.gemsjax.client.admin.tabs.LoadingTab;
 import org.gemsjax.client.admin.tabs.TwoColumnLayout;
 import org.gemsjax.client.admin.view.NotificationRequestView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
+import org.gemsjax.client.admin.widgets.Title;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.shared.communication.message.notification.CollaborationRequestNotification;
 import org.gemsjax.shared.communication.message.notification.ExperimentRequestNotification;
@@ -255,7 +256,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		});
 		
 		
-		notificationStack.addMember(new NotificationListEntry().createHeader());
+		notificationStack.addMember(new Title(language.NotificationTitle()));
 		
 		int i =1;
 		for (Notification n : sorted){	
@@ -280,7 +281,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			}
 		});
 		
-		friendStack.addMember(new RequestListEntry().createHeader());
+		friendStack.addMember(new Title(language.RequestFriendshipTitle()));
 		
 		int i =1;
 		for (Request r : requests){	
@@ -306,7 +307,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		// TODO any optimization would be great (not delete all and rebuild all)
 		experimentStack.removeMembers(experimentStack.getMembers());
 		
-		experimentStack.addMember(new RequestListEntry().createHeader());
+		experimentStack.addMember(new Title(language.RequestExperimentTitle()));
 		
 		int i =1;
 		for (Request r : sortedRequests){	
@@ -331,7 +332,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		});
 		
 		
-		collaborationStack.addMember(new RequestListEntry().createHeader());
+		collaborationStack.addMember(new Title(language.RequestCollaborationTitle()));
 		
 		int i =1;
 		for (Request r : sortedRequests){	

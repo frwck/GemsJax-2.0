@@ -66,7 +66,7 @@ public class RequestModule implements RequestChannelHandler{
 				RegisteredUser acceptor = (RegisteredUser) user.getUser();
 				
 				if (r instanceof FriendshipRequestImpl){
-					NotificationModule.getInstance().onFriendshipAccepted(r.getReceiver(), acceptor);
+					NotificationModule.getInstance().onFriendshipAccepted(r.getSender(), acceptor);
 					try {
 						FriendModule.getInstance().createFriendship(r.getSender(), r.getReceiver());
 					} catch (AlreadyBefriendedException e) {
@@ -76,11 +76,11 @@ public class RequestModule implements RequestChannelHandler{
 				}
 				else
 				if (r instanceof AdministrateExperimentRequestImpl)
-					NotificationModule.getInstance().onAdminExperimentAccepted(r.getReceiver(), acceptor, ((AdministrateExperimentRequestImpl) r).getExperiment());
+					NotificationModule.getInstance().onAdminExperimentAccepted(r.getSender(), acceptor, ((AdministrateExperimentRequestImpl) r).getExperiment());
 					//TODO implement
 				else
 				if (r instanceof CollaborateRequestImpl)
-					NotificationModule.getInstance().onCollaborationAccepted(r.getReceiver(), acceptor, ((CollaborateRequestImpl) r).getCollaborateable());
+					NotificationModule.getInstance().onCollaborationAccepted(r.getSender(), acceptor, ((CollaborateRequestImpl) r).getCollaborateable());
 					// TODO implement
 				
 				// finally delete the request and send a positive response
@@ -138,15 +138,15 @@ public class RequestModule implements RequestChannelHandler{
 			{
 				RegisteredUser acceptor = (RegisteredUser) user.getUser();
 				
-				if (r instanceof FriendshipRequest)
-					NotificationModule.getInstance().onFriendshipRejected(r.getReceiver(), acceptor);
+				if (r instanceof FriendshipRequestImpl)
+					NotificationModule.getInstance().onFriendshipRejected(r.getSender(), acceptor);
 				else
 				if (r instanceof AdministrateExperimentRequestImpl)
-					NotificationModule.getInstance().onAdminExperimentRejected(r.getReceiver(), acceptor, ((AdministrateExperimentRequestImpl) r).getExperiment());
+					NotificationModule.getInstance().onAdminExperimentRejected(r.getSender(), acceptor, ((AdministrateExperimentRequestImpl) r).getExperiment());
 			
 				else
 				if (r instanceof CollaborateRequestImpl)
-					NotificationModule.getInstance().onCollaborationRejected(r.getReceiver(), acceptor, ((CollaborateRequestImpl) r).getCollaborateable());
+					NotificationModule.getInstance().onCollaborationRejected(r.getSender(), acceptor, ((CollaborateRequestImpl) r).getCollaborateable());
 			
 				
 				// finally delete the request and send a positive response

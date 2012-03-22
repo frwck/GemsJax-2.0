@@ -197,7 +197,7 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 	 * @throws IOException
 	 */
 	public void markNotificationAsRead(Notification n) throws IOException{
-		String referenceId = generateReferenceId();
+		String referenceId = asReadNotificationRefIdPrefix+generateReferenceId();
 		currentPendingNotifications.put(referenceId, n);
 		requestChannel.send(new NotificationAsReadMessage(referenceId, n.getId()));
 	}
@@ -210,9 +210,9 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 	 * @throws IOException
 	 */
 	public void deleteNotification(Notification n) throws IOException{
-		String referenceId = generateReferenceId();
+		String referenceId = deleteNotificationRefIdPrefix+generateReferenceId();
 		currentPendingNotifications.put(referenceId, n);
-		requestChannel.send(new NotificationAsReadMessage(referenceId, n.getId()));
+		requestChannel.send(new DeleteNotificationMessage(referenceId, n.getId()));
 	}
 	
 	/**
@@ -338,7 +338,7 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 		else{
 			
 			Notification n = currentPendingNotifications.get(referenceId);
-			currentPendingNotifications.remove(n);
+			currentPendingNotifications.remove(referenceId);
 			
 			if (referenceId.startsWith(asReadNotificationRefIdPrefix))
 				for (NotificationRequestModuleHandler h: handlers)
@@ -362,7 +362,7 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 		else{
 			
 			Notification n = currentPendingNotifications.get(referenceId);
-			currentPendingNotifications.remove(n);
+			currentPendingNotifications.remove(referenceId);
 			
 			if (referenceId.startsWith(asReadNotificationRefIdPrefix)){
 				
@@ -391,6 +391,7 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 	public void onLiveNotificationReceived(LiveNotificationMessage msg) {
 		
 		notifications.add(msg.getNotification());
+		
 		fireUpdated();
 		
 		for (NotificationRequestModuleHandler h: handlers)

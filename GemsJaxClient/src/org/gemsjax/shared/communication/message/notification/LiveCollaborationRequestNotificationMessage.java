@@ -24,7 +24,7 @@ public class LiveCollaborationRequestNotificationMessage extends LiveNotificatio
 	
 	private String colToXml(){
 		return "<"+TAG+" "+ATTRIBUTE_ID+"=\""+notification.getId()+"\" "+
-				ATTRIBUTE_TIME+"=\""+notification.getDate().getTime()+"\" "+ATTRIBUTE_READ+"\""+notification.isRead()+"\" "+
+				ATTRIBUTE_TIME+"=\""+notification.getDate().getTime()+"\" "+ATTRIBUTE_READ+"=\""+notification.isRead()+"\" "+
 				ATTRIBUTE_COLLABORATION_USERNAME+"=\""+notification.getUsername()+"\" "+
 				ATTRIBUTE_COLLABORATION_DISPLAYNAME+"=\""+notification.getDisplayName()+"\" "+
 				ATTRIBUTE_COLLABORATION_ACCEPTED+"=\""+notification.isAccepted()+"\" "+

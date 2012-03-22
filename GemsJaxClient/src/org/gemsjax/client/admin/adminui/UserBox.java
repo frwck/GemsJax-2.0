@@ -4,6 +4,7 @@ import org.gemsjax.client.admin.UserLanguage;
 
 import com.smartgwt.client.widgets.events.MouseOverHandler;
 import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
@@ -129,7 +130,7 @@ public class UserBox extends HStack {
 				"</tr></table>";
 				this.setContents(content);
 				this.setWidth((""+count).length()*9+10+10);
-				this.setVisible(true);
+				this.setVisible(true)
 			}
 			else
 				this.setVisible(false);

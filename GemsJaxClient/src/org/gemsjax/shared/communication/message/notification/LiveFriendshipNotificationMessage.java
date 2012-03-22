@@ -7,7 +7,7 @@ package org.gemsjax.shared.communication.message.notification;
  */
 public class LiveFriendshipNotificationMessage extends LiveNotificationMessage{
 
-	public static final String TAG="live-quick";
+	public static final String TAG="live-fr";
 	
 	public static final String ATTRIBUTE_ID="id";
 	public static final String ATTRIBUTE_TIME="time";
@@ -27,7 +27,7 @@ public class LiveFriendshipNotificationMessage extends LiveNotificationMessage{
 	
 	private String notiToXml(){
 		return "<"+TAG+" "+ATTRIBUTE_ID+"=\""+notification.getId()+"\" "+
-				ATTRIBUTE_TIME+"=\""+notification.getDate().getTime()+"\" "+ATTRIBUTE_READ+"\""+notification.isRead()+"\" "+
+				ATTRIBUTE_TIME+"=\""+notification.getDate().getTime()+"\" "+ATTRIBUTE_READ+"=\""+notification.isRead()+"\" "+
 				ATTRIBUTE_USERNAME+"=\""+notification.getUsername()+"\" "+
 				ATTRIBUTE_DISPLAYNAME+"=\""+notification.getDisplayName()+"\" "+
 				ATTRIBUTE_ACCEPTED+"=\""+notification.isAccepted()+"\" />";

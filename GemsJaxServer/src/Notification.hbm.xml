@@ -31,10 +31,10 @@
     </joined-subclass>
     
     
-    <joined-subclass name="org.gemsjax.server.persistence.notification.FriendshipRequestNotificationImpl" table="FriendshipRequestNotification">
+    <joined-subclass name="org.gemsjax.server.persistence.notification.FriendshipRequestNotificationImpl" table="FriendshipRequestNotification" lazy="false">
         <key column="Request_id" />
         <property name="accepted" column="accepted" type="boolean" not-null="true" />
-       <many-to-one name="acceptor" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id" not-null="true"  />
+       <many-to-one name="acceptor" class="org.gemsjax.server.persistence.user.RegisteredUserImpl" column="User_id" not-null="true"  lazy="false"/>
     </joined-subclass>
 
     <joined-subclass name="org.gemsjax.server.persistence.notification.QuickNotificationImpl" table="QuickNotification" lazy="false">

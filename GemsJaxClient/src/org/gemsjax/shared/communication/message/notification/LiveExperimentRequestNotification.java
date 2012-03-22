@@ -30,7 +30,7 @@ public class LiveExperimentRequestNotification extends LiveNotificationMessage{
 	
 	private String expToXml(){
 		return "<"+TAG+" "+ATTRIBUTE_ID+"=\""+notification.getId()+"\" "+
-				ATTRIBUTE_TIME+"=\""+notification.getDate().getTime()+"\" "+ATTRIBUTE_READ+"\""+notification.isRead()+"\" "+
+				ATTRIBUTE_TIME+"=\""+notification.getDate().getTime()+"\" "+ATTRIBUTE_READ+"=\""+notification.isRead()+"\" "+
 				ATTRIBUTE_EXPERIMENT_USERNAME+"=\""+notification.getUsername()+"\" "+
 				ATTRIBUTE_EXPERIMENT_DISPLAYNAME+"=\""+notification.getDisplayName()+"\" "+
 				ATTRIBUTE_EXPERIMENT_ACCEPTED+"=\""+notification.isAccepted()+"\" "+

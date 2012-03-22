@@ -26,7 +26,7 @@ public class LiveQuickNotificationMessage extends LiveNotificationMessage{
 	
 	private String notiToXml(){
 		return "<"+TAG+" "+ATTRIBUTE_ID+"=\""+notification.getId()+"\" "+
-				ATTRIBUTE_TIME+"=\""+notification.getDate().getTime()+"\" "+ATTRIBUTE_READ+"\""+notification.isRead()+"\" "+
+				ATTRIBUTE_TIME+"=\""+notification.getDate().getTime()+"\" "+ATTRIBUTE_READ+"=\""+notification.isRead()+"\" "+
 				ATTRIBUTE_TYPE+"=\""+notification.getType().toConstant()+"\" "+
 				ATTRIBUTE_OPTIONAL+"=\""+notification.getOptionalMessage()+"\" />";
 	}

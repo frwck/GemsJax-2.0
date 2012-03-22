@@ -121,4 +121,10 @@ public class RegisteredUserImpl extends UserImpl implements RegisteredUser {
 		
 	}
 	
+	
+	public String toString(){
+		return "Registered User "+getId()+" "+username+" "+getDisplayedName();
+	}
+	
+	
 }
