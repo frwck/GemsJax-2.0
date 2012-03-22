@@ -99,4 +99,9 @@ public interface NotificationRequestView {
 	public void addRequest(Request r);
 	
 	public void setCount(int unreadNotifications, int friendshipRequests, int experimentRequests, int collaborationRequests);
+	
+	public void showMarkAsReadError(Notification n, NotificationError error);
+	
+	public void showDeleteError(Notification n, NotificationError error);
+	
 }

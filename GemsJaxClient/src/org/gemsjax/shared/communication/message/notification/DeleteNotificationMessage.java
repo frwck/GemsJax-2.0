@@ -18,7 +18,7 @@ public class DeleteNotificationMessage extends ReferenceableNotificationMessage{
 
 	@Override
 	public String toXml() {
-		return openingXml()+"<"+TAG+" "+ATTRIBUTE_REFERENCE_ID+"=\""+notificationId+"\" />"+closingXml();
+		return openingXml()+"<"+TAG+" "+ATTRIBUTE_NOTIFICATION_ID+"=\""+notificationId+"\" />"+closingXml();
 	}
 
 	public long getNotificationId(){

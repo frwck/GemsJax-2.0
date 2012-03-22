@@ -29,6 +29,11 @@ public class Notification {
 		return read;
 	}
 	
+	public void setRead(boolean read)
+	{
+		this.read = read;
+	}
+	
 	
 	@Override
 	public boolean equals(Object other) {

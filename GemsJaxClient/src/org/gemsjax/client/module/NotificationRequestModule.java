@@ -318,6 +318,8 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 			
 			for (NotificationRequestModuleHandler h: handlers)
 				h.onRequestAnsweredSuccessfully(r);
+			
+	
 		}
 		
 		
@@ -362,9 +364,13 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 			Notification n = currentPendingNotifications.get(referenceId);
 			currentPendingNotifications.remove(n);
 			
-			if (referenceId.startsWith(asReadNotificationRefIdPrefix))
+			if (referenceId.startsWith(asReadNotificationRefIdPrefix)){
+				
+				n.setRead(true);
 				for (NotificationRequestModuleHandler h: handlers)
 					h.onNotificationMarkedAsReadSuccessfully(n);
+				
+			}
 			else
 			if (referenceId.startsWith(deleteNotificationRefIdPrefix)){
 				for (NotificationRequestModuleHandler h: handlers)
@@ -459,5 +465,8 @@ public class NotificationRequestModule implements RequestChannelHandler, Notific
 	public Set<Notification> getNotifications() {
 		return notifications;
 	}
+	
+	
+	
 	
 }

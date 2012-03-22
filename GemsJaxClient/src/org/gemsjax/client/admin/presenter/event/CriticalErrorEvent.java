@@ -24,7 +24,12 @@ public class CriticalErrorEvent extends GwtEvent<CriticalErrorHandler> {
 		/**
 		 * Get all Notifications and request went completely wrong
 		 */
-		INITAIL_NOTIFICATION_REQUEST
+		INITAIL_NOTIFICATION_REQUEST,
+		
+		/**
+		 * The user is no longer logged in
+		 */
+		AUTHENTICATION
 	}
 	
 	

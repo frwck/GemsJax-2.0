@@ -37,6 +37,8 @@ import com.smartgwt.client.widgets.layout.VStack;
 
 public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSearchResultView{
 
+	private static final int ENTRY_HEIGHT = 40;
+	
 	
 	private final String NO_PROFILE_PICTURE_URL="/images/NoProfilePicture.jpg";
 	private final int PROFILE_PICTURE_WIDTH=40;
@@ -474,6 +476,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 			// generate
 			this.setWidth100();
 			this.setMargin(20);
+			this.setHeight(ENTRY_HEIGHT);
 			Img profile = new Img(user.getProfilePicture()==null?NO_PROFILE_PICTURE_URL:user.getProfilePicture());
 			profile.setWidth(PROFILE_PICTURE_WIDTH);
 			profile.setHeight(PROFILE_PICTURE_HEIGHT);
@@ -518,6 +521,8 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 			// generate
 			this.setWidth100();
 			this.setMargin(20);
+			this.setHeight(ENTRY_HEIGHT);
+			
 			Img profile = new Img(friend.getProfilePicture()==null?NO_PROFILE_PICTURE_URL:friend.getProfilePicture());
 			profile.setWidth(PROFILE_PICTURE_WIDTH);
 			profile.setHeight(PROFILE_PICTURE_HEIGHT);
@@ -566,6 +571,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 			// generate
 			this.setWidth100();
 			this.setMargin(20);
+			this.setHeight(ENTRY_HEIGHT);
 			
 			Label name = new Label(col.getName());
 			Label owner = new Label(col.getOwnerName());
@@ -604,6 +610,8 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 			// generate
 			this.setWidth100();
 			this.setMargin(20);
+			this.setHeight(ENTRY_HEIGHT);
+			
 			
 			Label name = new Label(col.getName());
 			name.setBaseStyle("GloabalSearchResultLabel");

@@ -79,7 +79,7 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 	@Override
 	public void onLiveNotificationReceived(LiveNotificationMessage msg) {
 		shortView.showShortNotification(msg);	
-		shortView.setUnreadNotificationRequest(module.getUnreadNotificationCount());
+		shortView.setUnreadNotificationRequest(module.getUneradUnansweredCount());
 		view.addNotification(msg.getNotification());
 		
 	}
@@ -88,7 +88,7 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 	@Override
 	public void onLiveRequestReceived(LiveRequestMessage msg) {
 		shortView.showShortRequestNotification(msg);
-		shortView.setUnreadNotificationRequest(module.getUnreadNotificationCount());
+		shortView.setUnreadNotificationRequest(module.getUneradUnansweredCount());
 		view.addRequest(msg.getRequest());
 	}
 
@@ -118,6 +118,9 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 	@Override
 	public void onGetAllRequestFailed(RequestError error) {
 		
+		if (error == RequestError.AUTHENTICATION)
+			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.AUTHENTICATION));
+		
 		view.showInitializeError();
 		
 	}
@@ -131,6 +134,9 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 
 	@Override
 	public void onRequestAnsweredFail(Request r, RequestError error) {
+		if (error == RequestError.AUTHENTICATION)
+			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.AUTHENTICATION));
+		
 		view.showRequestError(r, error);
 		view.addRequest(r);
 	}
@@ -144,6 +150,9 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 
 	@Override
 	public void onGetAllNotificationFailed(NotificationError error) {
+		if (error == NotificationError.AUTHENTICATION)
+			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.AUTHENTICATION));
+
 		view.showInitializeError();
 		
 	}
@@ -164,7 +173,10 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 
 	@Override
 	public void onNotificationDeleteError(Notification n, NotificationError error) {
-		view.showNotificationError(n, error);
+		if (error == NotificationError.AUTHENTICATION)
+			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.AUTHENTICATION));
+		
+		view.showDeleteError(n, error);
 		view.addNotification(n);	// Because the Notification has been removed previosly on the gui
 	}
 
@@ -178,9 +190,12 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 	@Override
 	public void onNotificationMarkedAsReadError(Notification n,
 			NotificationError error) {
+		
+		if (error == NotificationError.AUTHENTICATION)
+			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.AUTHENTICATION));
 
 		view.setNotificationAsRead(n, false);
-		view.showNotificationError(n, error);
+		view.showMarkAsReadError(n, error);
 	}
 
 
@@ -247,8 +262,5 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 	}
 	
 
-
-	
-	
 
 }

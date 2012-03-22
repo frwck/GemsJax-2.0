@@ -3,6 +3,8 @@ package org.gemsjax.client.admin.presenter;
 import java.io.IOException;
 
 import org.gemsjax.client.admin.AdminApplicationController;
+import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent;
+import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent.CriticalErrorType;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
 import org.gemsjax.client.admin.presenter.event.LogoutRequiredEvent;
@@ -21,6 +23,7 @@ import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginA
 import org.gemsjax.shared.communication.message.system.LogoutMessage.LogoutReason;
 import org.gemsjax.shared.user.RegisteredUser;
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HasWidgets;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
@@ -155,15 +158,14 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 	@Override
 	public void onLogoutRequired(LogoutRequiredEvent event) {
 		loginView.resetView();
-		
-		
+	
 		try {
 			authenticationModule.doLogout();
-			loginView.bringToFront();
 		} catch (IOException e) {
 			
-			loginView.bringToFront();
-			loginView.showSendError();
+		}
+		finally{
+			Window.Location.reload();
 		}
 	}
 	
@@ -173,8 +175,7 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 
 	@Override
 	public void onLogoutReceived(LogoutReason reason) {
-		loginView.resetView();
-		loginView.bringToFront();
+		eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.AUTHENTICATION));
 		logoutView.show(reason);
 	}
 

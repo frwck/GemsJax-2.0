@@ -77,5 +77,7 @@ public interface NotificationRequestModuleHandler {
 	public void onNotificationMarkedAsReadError(Notification n, NotificationError error);
 	
 	public void onNotificationMarkedAsReadSuccessfully(Notification n);
+	
+	
 
 }

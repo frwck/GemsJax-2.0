@@ -400,7 +400,7 @@ public class NotificationMessageParser {
 		if (surroundCollaborationRes.getLength()!=1)
 			throw new DOMException(DOMException.SYNTAX_ERR,"Expected exactly one <"+GetAllNotificationsAnswerMessage.SUBTAG_EXPERIMENT_REQUEST_RESULTS+"> but got: "+surroundCollaborationRes.getLength());
 		
-		NodeList exps = ((Element) surroundCollaborationRes.item(0)).getElementsByTagName(GetAllNotificationsAnswerMessage.SUBTAG_EXPERIMENTNOTIFICATION);
+		NodeList exps = ((Element) surroundExperimentRes.item(0)).getElementsByTagName(GetAllNotificationsAnswerMessage.SUBTAG_EXPERIMENTNOTIFICATION);
 		Set<ExperimentRequestNotification> expRequests = new LinkedHashSet<ExperimentRequestNotification>();
 		
 		for (int i =0; i<exps.getLength(); i++)
@@ -456,8 +456,9 @@ public class NotificationMessageParser {
 				if (surroundCollaborationRes.getLength()!=1)
 					throw new DOMException(DOMException.SYNTAX_ERR,"Expected exactly one <"+GetAllNotificationsAnswerMessage.SUBTAG_FRIENDSHIP_REQUEST_RESULTS+"> but got: "+surroundCollaborationRes.getLength());
 				
-				NodeList friends = ((Element) surroundCollaborationRes.item(0)).getElementsByTagName(GetAllNotificationsAnswerMessage.SUBTAG_FRIENDSHIPNOTIFICATION);
+				NodeList friends = ((Element) surroundFriendshipRes.item(0)).getElementsByTagName(GetAllNotificationsAnswerMessage.SUBTAG_FRIENDSHIPNOTIFICATION);
 				Set<FriendshipRequestNotification> frRequests = new LinkedHashSet<FriendshipRequestNotification>();
+				
 				
 				for (int i =0; i<friends.getLength(); i++)
 				{
@@ -501,7 +502,7 @@ public class NotificationMessageParser {
 				if (surroundCollaborationRes.getLength()!=1)
 					throw new DOMException(DOMException.SYNTAX_ERR,"Expected exactly one <"+GetAllNotificationsAnswerMessage.SUBTAG_QUICKNOTIFICATION_RESULTS+"> but got: "+surroundCollaborationRes.getLength());
 				
-				NodeList quicks = ((Element) surroundCollaborationRes.item(0)).getElementsByTagName(GetAllNotificationsAnswerMessage.SUBTAG_QUICKNOTIFICATION);
+				NodeList quicks = ((Element) quickRes.item(0)).getElementsByTagName(GetAllNotificationsAnswerMessage.SUBTAG_QUICKNOTIFICATION);
 				Set<QuickNotification> quickResults = new LinkedHashSet<QuickNotification>();
 				
 				for (int i =0; i<quicks.getLength(); i++)

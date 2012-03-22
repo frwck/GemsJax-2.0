@@ -273,6 +273,9 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Message")
 	  String RequestMessageLabel();
 	  
+
+	  @DefaultStringValue("An error has occrred. Please retry")
+	  String RequestError();
 	  
 	  @DefaultStringValue("Options")
 	  String RequestOptionsLabel();
@@ -293,7 +296,7 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Notifications")
 	  String NotificationTitle();
 	  
-	  @DefaultStringValue("Received:")
+	  @DefaultStringValue("Received")
 	  String NotificationDateLabel();
 	  
 	  @DefaultStringValue("Delete")
@@ -304,6 +307,12 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  
 	  @DefaultStringValue("Topic")
 	  String NotificationTopicLabel();
+	  
+	  @DefaultStringValue("Could not mark the notification as read")
+	  String NotificationMarkAsReadError();
+	  
+	  @DefaultStringValue("Could not delete the notification")
+	  String NotificationDeleteError();
 	  
 	  
 	  @DefaultStringValue("You are no longer befriended with ")

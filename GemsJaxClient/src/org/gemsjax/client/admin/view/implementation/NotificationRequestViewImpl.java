@@ -10,6 +10,9 @@ import java.util.Set;
 
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
+import org.gemsjax.client.admin.notification.NotificationManager;
+import org.gemsjax.client.admin.notification.TipNotification;
+import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
 import org.gemsjax.client.admin.tabs.LoadingTab;
 import org.gemsjax.client.admin.tabs.TwoColumnLayout;
 import org.gemsjax.client.admin.view.NotificationRequestView;
@@ -27,6 +30,7 @@ import org.gemsjax.shared.communication.message.request.FriendshipRequest;
 import org.gemsjax.shared.communication.message.request.Request;
 import org.gemsjax.shared.communication.message.request.RequestError;
 
+import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.util.DateUtil;
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
@@ -39,6 +43,7 @@ import com.smartgwt.client.widgets.layout.VStack;
 
 public class NotificationRequestViewImpl extends LoadingTab implements NotificationRequestView{
 
+	private int ENTRY_HEIGHT = 40;
 	
 	private Set<AnswerRequestHandler> requestHandlers;
 	private Set<ChangeNotificationHandler> notificationHandlers;
@@ -89,11 +94,16 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		collaborationStack.setAnimateMembers(true);
 		experimentStack.setAnimateMembers(true);
 		
+		notificationStack.setMembersMargin(0);
+		friendStack.setMembersMargin(0);
+		collaborationStack.setMembersMargin(0);
+		experimentStack.setMembersMargin(0);
 		
 		errorStack = new VStack();
 		errorStack.addMember(new Label(language.NotificationErrorLoading()));
 		retryLoadingButton = new Button(language.NotificationErrorRestartLoading());
 		errorStack.addMember(retryLoadingButton);
+		
 		
 		layout = new TwoColumnLayout();
 		layout.setLeftColumn(bigMenuButtonBar, false);
@@ -338,7 +348,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		for (ChangeNotificationHandler h: notificationHandlers)
 			h.onNotificationAsRead(n.notification);
 		
-		notificationStack.removeMember(n);
+		n.setAsRead(true);
 		
 	}
 	
@@ -364,6 +374,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			header.setWidth100();
 			header.setMargin(20);
 			header.setBackgroundColor("#CFCFCF");
+			header.setHeight(ENTRY_HEIGHT);
 			
 			Label date = new Label(language.RequestDateLabel());
 			date.setBaseStyle("RequestListHeaderEntry");
@@ -406,6 +417,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			// generate
 			this.setWidth100();
 			this.setMargin(20);
+			this.setHeight(ENTRY_HEIGHT);
 			
 			Label date = new Label(DateUtil.format(request.getDate()));
 			date.setBaseStyle("RequestListEntry");
@@ -474,36 +486,39 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 	private class NotificationListEntry extends HStack {
 		
 		private Notification notification;
-		
+		private Button asReadButton;
 		
 		public HStack createHeader(){
 			HStack header = new HStack();
 			header.setWidth100();
 			header.setMargin(20);
 			header.setBackgroundColor("#CFCFCF");
+			header.setHeight(ENTRY_HEIGHT);
+			
+			this.setHeight(ENTRY_HEIGHT);
 			
 			Label date = new Label(language.NotificationDateLabel());
 			date.setBaseStyle("NotificationListHeaderEntry");
 			date.setWidth("10%");
 			
 			
-			Label from = new Label(language.NotificationTopicLabel());
-			from.setBaseStyle("NotificationListHeaderEntry");
+			Label topic = new Label(language.NotificationTopicLabel());
+			topic.setBaseStyle("NotificationListHeaderEntry");
 			date.setWidth("60%");
 			
-			Label msg = new Label(language.NotificationMarkAsRead());
-			msg.setBaseStyle("NotificationListHeaderEntry");
-			msg.setWidth("15%");
+			Label asRead = new Label(language.NotificationMarkAsRead());
+			asRead.setBaseStyle("NotificationListHeaderEntry");
+			asRead.setWidth("15%");
 			
-			Label options = new Label(language.NotificationDelete());
-			options.setBaseStyle("NotificationListHeaderEntry");
-			options.setWidth("15%");
+			Label delete = new Label(language.NotificationDelete());
+			delete.setBaseStyle("NotificationListHeaderEntry");
+			delete.setWidth("15%");
 			
 
 			header.addMember(date);
-			header.addMember(msg);
-			header.addMember(from);
-			header.addMember(options);
+			header.addMember(topic);
+			header.addMember(asRead);
+			header.addMember(delete);
 			
 			return header;
 		}
@@ -519,12 +534,13 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		{
 			this.notification = n;
 			
-			setAsRead(n.isRead());
 			
+			this.setHeight(ENTRY_HEIGHT);
 			
 			// generate
 			this.setWidth100();
 			this.setMargin(20);
+			this.setHeight(ENTRY_HEIGHT);
 			
 			Label date = new Label(DateUtil.format(notification.getDate()));
 			date.setBaseStyle("RequestListEntry");
@@ -565,7 +581,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			
 			
 			
-			Button asReadButton = new Button(language.NotificationMarkAsRead());
+			asReadButton = new Button(language.NotificationMarkAsRead());
 			asReadButton.addClickHandler(new ClickHandler() {
 				
 				@Override
@@ -577,8 +593,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			asReadButton.setWidth("15%");
 			
 			
-			
-			Button deleteNotification = new Button(language.RequestAccept());
+			Button deleteNotification = new Button(language.NotificationDelete());
 			deleteNotification.addClickHandler(new ClickHandler() {
 				
 				@Override
@@ -594,16 +609,22 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			this.addMember(asReadButton);
 			this.addMember(deleteNotification);
 			
+			setAsRead(n.isRead());
+			
 		}
 		
 		
 		
 		public void setAsRead(boolean read)
 		{
-			if (read)
+			if (read){
 				this.setBackgroundColor("white");
-			else
+				asReadButton.setVisible(false);			
+				}
+			else{
 				this.setBackgroundColor("#E6E6E6");
+				asReadButton.setVisible(true);	
+			}
 		}
 		
 	}
@@ -614,14 +635,11 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 
 	@Override
 	public void showRequestError(Request r, RequestError error) {
-		// TODO Auto-generated method stub
-		
+		NotificationManager.getInstance().showTipNotification(new TipNotification(language.RequestError(),null, 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE);	
 	}
 
 	@Override
 	public void showNotificationError(Notification n, NotificationError error) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -797,5 +815,16 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		experimentButton.setText(language.RequestExperimentTitle() +(experimentRequests>0?" ("+experimentRequests+")":""));
 		collaborationButton.setText(language.RequestCollaborationTitle() +(collaborationRequests>0?" ("+collaborationRequests+")":""));
 		
+	}
+
+	@Override
+	public void showMarkAsReadError(Notification n, NotificationError error) {
+		NotificationManager.getInstance().showTipNotification(new TipNotification(language.NotificationMarkAsReadError(), null, 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE);
+	}
+
+	@Override
+	public void showDeleteError(Notification n, NotificationError error) {
+
+		NotificationManager.getInstance().showTipNotification(new TipNotification(language.NotificationDeleteError(), null, 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE);
 	}
 }
