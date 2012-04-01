@@ -64,7 +64,7 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 	public NotificationRequestViewImpl(String title, UserLanguage lang) {
 		super(title, lang);
 		this.language = lang;
-		
+		setCanClose(true);
 		
 		requestHandlers = new LinkedHashSet<AnswerRequestHandler>();
 		notificationHandlers = new LinkedHashSet<ChangeNotificationHandler>();
@@ -109,10 +109,10 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 		layout = new TwoColumnLayout();
 		layout.setLeftColumn(bigMenuButtonBar, false);
 		layout.setRightColumn(rightViewContainer, false);
-		this.setContent(layout);
 		
 		notificationButton.setActive(true);
 		showNotifications();
+		this.setContent(layout);
 		
 	}
 	
@@ -650,6 +650,9 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 			te.setSelectedTab(this);
 		else
 			te.addTab(this);
+		
+		this.showContent();
+		
 	}
 
 	@Override

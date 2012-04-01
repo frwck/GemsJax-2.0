@@ -100,8 +100,8 @@ public class LoadingTab extends Tab{
 	 */
 	public void showLoading()
 	{
-		
-		TabEnviroment.getInstance().updateTab(this, loadingCanvas);
+		this.setPane(loadingCanvas);
+		//TabEnviroment.getInstance().updateTab(this, loadingCanvas);
 		showingLoading= true;
 		
 	}
@@ -113,8 +113,8 @@ public class LoadingTab extends Tab{
 	{
 		if (content != null) 
 		{
-
-			TabEnviroment.getInstance().updateTab(this, content);
+			this.setPane(content);
+			//TabEnviroment.getInstance().updateTab(this, content);
 		}
 			
 		
@@ -135,7 +135,7 @@ public class LoadingTab extends Tab{
 	
 	
 	public void showErrorContent(Canvas errorCanvas){
-		TabEnviroment.getInstance().updateTab(this, errorCanvas);
+		this.setPane(errorCanvas);
 	}
 	
 		

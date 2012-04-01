@@ -24,6 +24,7 @@ import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.FriendshipRequest;
 import org.gemsjax.shared.communication.message.request.LiveRequestMessage;
 import org.gemsjax.shared.communication.message.request.Request;
+import org.gemsjax.shared.user.User;
 
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
@@ -238,6 +239,12 @@ public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView, N
 			text = (r.getRequesterDisplayName()+" "+language.RequestFriendshipInvitedMessage());
 		
 		NotificationManager.getInstance().showShortInfoNotification(new ShortInfoNotification(text));
+	}
+
+
+	@Override
+	public void setUser(User user) {
+		header.setUser(user);
 	}
 
 

@@ -1,6 +1,6 @@
 package org.gemsjax.shared.communication.message.search;
 
-import org.gemsjax.shared.communication.message.collaboration.CollaborationType;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborationType;
  
 
 

@@ -70,7 +70,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 	
 	public GlobalSearchResultViewImpl(String title, UserLanguage lang) {
 		super(title, lang);
-		
+		setCanClose(true);
 		
 		friendHandlers = new LinkedHashSet<FriendshipHandler>();
 		collaborationHandlers = new LinkedHashSet<ShowCollaborationHandler>();

@@ -2,6 +2,7 @@ package org.gemsjax.client.admin.adminui;
 
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
+import org.gemsjax.shared.user.User;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Canvas;
@@ -129,6 +130,10 @@ public class Header extends HLayout{
 		return searchField;
 	}
 	
+	
+	public void setUser(User user){
+		userBox.setUser(user);
+	}
 	
 	
 }

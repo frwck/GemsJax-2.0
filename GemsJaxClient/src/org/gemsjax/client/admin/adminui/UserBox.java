@@ -1,6 +1,7 @@
 package org.gemsjax.client.admin.adminui;
 
 import org.gemsjax.client.admin.UserLanguage;
+import org.gemsjax.shared.user.User;
 
 import com.smartgwt.client.widgets.events.MouseOverHandler;
 import com.smartgwt.client.types.Alignment;
@@ -27,22 +28,69 @@ import com.smartgwt.client.widgets.layout.HStack;
  */
 public class UserBox extends HStack {
 
+	
+	
 	/**
 	 * A Item which is simply a GUI Component (a {@link Label}) and can contain html and text
 	 * and has the CSS style "userbox-item" (defined in /css/GemsJax.css).
 	 * @author Hannes Dorfmann
 	 *
 	 */
-	private class UserBoxItem extends Label implements MouseOverHandler, MouseOutHandler
+	private class UserBoxItem extends Label 
 	{
-		private static final String defaultStyle = "userbox-item";
-		private static final String hoverStyle = "userbox-item-hover";
+		/**
+		 * Create a new UserBoxItem with the CSS Style userbox-item (defined in /css/GemsJax.css) and do some other styling things like Centering, Padding
+		 */
+		public UserBoxItem()
+		{
+			super();
+			this.setStyleName("userbox-item");
+			this.setAlign(Alignment.CENTER);
+			this.setValign(VerticalAlignment.CENTER);
+		}
+		
+		
+		/**
+		 * Create a new UserBoxItem with the CSS Style userbox-item (defined in /css/GemsJax.css) and do some other styling things like Centering
+		 */
+		public UserBoxItem(String contents)
+		{
+			this();
+			this.setContents(contents);
+			this.setText(contents);
+		}
+		
+		/**
+		 * Set the displayable text
+		 * @param text
+		 */
+		public void setText(String text)
+		{
+			this.setContents(text);
+		}
+
+
+		
+	}
+	
+	
+	
+	/**
+	 * A Item which is simply a GUI Component (a {@link Label}) and can contain html and text
+	 * and has the CSS style "userbox-item" (defined in /css/GemsJax.css).
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	private class UserBoxMenuItem extends UserBoxItem implements MouseOverHandler, MouseOutHandler
+	{
+		private static final String defaultStyle = "userbox-menuitem";
+		private static final String hoverStyle = "userbox-menuitem-hover";
 		
 		
 		/**
 		 * Create a new UserBoxItem with the CSS Style userbox-item (defined in /css/GemsJax.css) and do some other styling things like Centering, Padding
 		 */
-		public UserBoxItem()
+		public UserBoxMenuItem()
 		{
 			super();
 			this.setStyleName(defaultStyle);
@@ -56,7 +104,7 @@ public class UserBox extends HStack {
 		/**
 		 * Create a new UserBoxItem with the CSS Style userbox-item (defined in /css/GemsJax.css) and do some other styling things like Centering
 		 */
-		public UserBoxItem(String contents)
+		public UserBoxMenuItem(String contents)
 		{
 			this();
 			this.setContents(contents);
@@ -145,7 +193,7 @@ public class UserBox extends HStack {
 	private UserBoxItem experimentsItem;
 	private UserBoxItem settingsItem;
 	private UserBoxItem logoutItem;
-	private UserBoxItem dashBoardItem;
+	private UserBoxItem welcomeItem;
 	private UserLanguage language;
 	private NotificationCountLabel notificationCountLabel;
 	
@@ -165,16 +213,16 @@ public class UserBox extends HStack {
 		borderLeft.setHeight(37);
 		
 		
-		notificationsItem = new UserBoxItem(language.NotificationsMenuItem());
-		metaModelsItem= new UserBoxItem(language.MetaModelsMenuItem());
-		experimentsItem = new UserBoxItem(language.ExperimentsMenuItem());
-		settingsItem = new UserBoxItem(language.SettingsMenuItem());
-		logoutItem = new UserBoxItem(language.Logout());
-		dashBoardItem = new UserBoxItem("<a href=\"#\">welcome</a>");
+		notificationsItem = new UserBoxMenuItem(language.NotificationsMenuItem());
+		metaModelsItem= new UserBoxMenuItem(language.MetaModelsMenuItem());
+		experimentsItem = new UserBoxMenuItem(language.ExperimentsMenuItem());
+		settingsItem = new UserBoxMenuItem(language.SettingsMenuItem());
+		logoutItem = new UserBoxMenuItem(language.Logout());
+		welcomeItem = new UserBoxItem("Welcome");
 		
 		this.addMember(borderLeft);
 		//TODO display username
-		this.addMember(dashBoardItem);
+		this.addMember(welcomeItem);
 		
 		this.addMember(new UserBoxItemSeparator());
 		this.addMember(metaModelsItem);
@@ -200,6 +248,10 @@ public class UserBox extends HStack {
 		
 	}
 	
+	public void setUser(User u){
+		welcomeItem.setText(u == null?"":u.getDisplayedName());
+	}
+	
 	
 	public void setNotificationRequestCount(long count){
 		notificationCountLabel.setCount(count);
@@ -207,7 +259,7 @@ public class UserBox extends HStack {
 	
 	public HasClickHandlers getDashBoardMenuItem()
 	{
-		return dashBoardItem;
+		return welcomeItem;
 	}
 	
 	

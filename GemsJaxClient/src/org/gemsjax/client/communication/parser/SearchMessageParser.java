@@ -3,7 +3,7 @@ package org.gemsjax.client.communication.parser;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.gemsjax.shared.communication.message.collaboration.CollaborationType;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborationType;
 import org.gemsjax.shared.communication.message.friend.FriendErrorAnswerMessage;
 import org.gemsjax.shared.communication.message.search.CollaborationResult;
 import org.gemsjax.shared.communication.message.search.ExperimentResult;

@@ -1,17 +1,16 @@
-package org.gemsjax.shared.communication.message.collaboration;
+package org.gemsjax.shared.communication.message.collaborateablefile;
 
 import java.util.Set;
 
-import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.CommunicationConstants;
-import org.gemsjax.shared.communication.message.collaboration.CollaborationType;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborationType;
 
 /**
  * Create a new {@link CollaborateableType}
  * @author Hannes Dorfmann
  *
  */
-public class NewCollaborateableMessage extends CollaborateableAdministrationMessage {
+public class NewCollaborateableFileMessage extends ReferenceableCollaborateableFileMessage {
 	
 	
 	public static final String TAG = "new";
@@ -24,20 +23,21 @@ public class NewCollaborateableMessage extends CollaborateableAdministrationMess
 	public static final String SUBTAG_COLLABORATORS="collaborators";
 	public static final String SUBTAG_ADMINS="admins";
 	
-	public static final String ATTRIBUTE_ADD_COLABORATOR="add";
-	public static final String ATTRIBUTE_ADD_COLLABORATOR_ID="id";
-	public static final String ATTRIUBTE_ADD_ADMIN="add";
-	public static final String ATTRIBUTE_ADD_ADMIN_ID="id";
+	public static final String SUBSUBTAG_ADD_COLLABORATOR="add";
+	public static final String ATTRIBUTE_COLLABORATOR_ID="id";
+	public static final String SUBSUBTAG_ADD_ADMIN="add";
+	public static final String ATTRIBUTE_ADMIN_ID="id";
 	
 	private boolean _public;
 	private String name;
-	private Set<String> adminIds;
-	private Set<String> collaboratorIds;
+	private Set<Integer> adminIds;
+	private Set<Integer> collaboratorIds;
 	private CollaborationType type;
 	private String keywords;
 	
-	public NewCollaborateableMessage(String name, CollaborationType type, Set<String> administratorIds, Set<String> collaboratorIds, boolean _public, String keywords)
+	public NewCollaborateableFileMessage(String referenceId, String name, CollaborationType type, Set<Integer> administratorIds, Set<Integer> collaboratorIds, boolean _public, String keywords)
 	{
+		super(referenceId);
 		this._public = _public;
 		this.name = name;
 		this.adminIds = administratorIds;
@@ -60,11 +60,11 @@ public class NewCollaborateableMessage extends CollaborateableAdministrationMess
 		return name;
 	}
 
-	public Set<String> getAdministratorIds() {
+	public Set<Integer> getAdministratorIds() {
 		return adminIds;
 	}
 
-	public Set<String> getCollaboratorIds() {
+	public Set<Integer> getCollaboratorIds() {
 		return collaboratorIds;
 	}
 	
@@ -83,30 +83,31 @@ public class NewCollaborateableMessage extends CollaborateableAdministrationMess
 	
 	@Override
 	public String toXml() {
-		String x="<"+super.TAG+">";
+		String x=super.openingXml();
 		
 		x+="<"+TAG+" "+ATTRIBUTE_NAME+"=\""+name +"\" " +ATTRIBUTE_PUBLIC+"=\""+Boolean.toString(_public)+"\" "+ATTRIBUTE_TYPE+"=\""+collaborateableTypeToString()+"\">";
 		
-		if (keywords!=null && !keywords.isEmpty())
-			x+= "<"+SUBTAG_KEYWORDS+">"+keywords+"</"+SUBTAG_KEYWORDS+">";
 		
+		x+= "<"+SUBTAG_KEYWORDS+">";
+		if (keywords!=null && !keywords.isEmpty())x+=keywords;
+		x+="</"+SUBTAG_KEYWORDS+">";
+		
+		x+="<"+SUBTAG_COLLABORATORS+">";
 		if (collaboratorIds!=null && !collaboratorIds.isEmpty()){
-			x+="<"+SUBTAG_COLLABORATORS+">";
-				for (String id : collaboratorIds)
-					x+="<"+ATTRIBUTE_ADD_COLABORATOR+" "+ATTRIBUTE_ADD_COLLABORATOR_ID+"\""+id+"\" />";
-			x+="</"+SUBTAG_COLLABORATORS+">";
+				for (Integer id : collaboratorIds)
+					x+="<"+SUBSUBTAG_ADD_COLLABORATOR+" "+ATTRIBUTE_COLLABORATOR_ID+"=\""+id+"\" />";
 		}
 		
+		x+="</"+SUBTAG_COLLABORATORS+">";
 		
+		x+="<"+SUBTAG_ADMINS+">";
 		if (adminIds!=null && !adminIds.isEmpty()){
-			x+="<"+SUBTAG_ADMINS+">";
-				for (String id : adminIds)
-					x+="<"+ATTRIBUTE_ADD_ADMIN_ID+" "+ATTRIBUTE_ADD_ADMIN_ID+"\""+id+"\" />";
-			x+="</"+SUBTAG_ADMINS+">";
+				for (Integer id : adminIds)
+					x+="<"+ATTRIBUTE_ADMIN_ID+" "+ATTRIBUTE_ADMIN_ID+"=\""+id+"\" />";
 		}
+		x+="</"+SUBTAG_ADMINS+">";
 		
-		
-		x+="</"+TAG+"></"+super.TAG+">";
+		x+="</"+TAG+">"+super.closingXml();
 		return x;
 	}
 

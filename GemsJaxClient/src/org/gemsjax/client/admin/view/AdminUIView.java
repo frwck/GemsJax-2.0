@@ -1,5 +1,7 @@
 package org.gemsjax.client.admin.view;
 
+import org.gemsjax.shared.user.User;
+
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 public interface AdminUIView {
@@ -49,8 +51,8 @@ public interface AdminUIView {
 	/**
 	 * Set the username of the user which is already logged in
 	 * @param username
-	 
-	public void setUsername(String username);
-	*/
+	 */
+	public void setUser(User user);
+	
 	
 }

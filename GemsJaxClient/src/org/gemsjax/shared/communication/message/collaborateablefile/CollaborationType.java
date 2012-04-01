@@ -1,4 +1,4 @@
-package org.gemsjax.shared.communication.message.collaboration;
+package org.gemsjax.shared.communication.message.collaborateablefile;
 
 import org.gemsjax.shared.communication.CommunicationConstants;
 

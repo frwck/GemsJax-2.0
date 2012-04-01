@@ -19,7 +19,7 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
-import org.gemsjax.shared.communication.message.collaboration.CollaborationType;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborationType;
 import org.gemsjax.shared.communication.message.search.CollaborationResult;
 import org.gemsjax.shared.communication.message.search.ExperimentResult;
 import org.gemsjax.shared.communication.message.search.GlobalSearchMessage;
@@ -176,7 +176,6 @@ public class SearchChannel implements InputChannel, OutputChannel{
 			er.add(new ExperimentResult(e.getId(), e.getName(), e.getOwner().getDisplayedName(), coAdmin));
 			
 		}
-		
 		
 		
 		return new GlobalSearchResultMessage(refId, ur, cr, er);

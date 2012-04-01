@@ -29,12 +29,25 @@ The style for the userbox
 	height:37px;
 	background:#FFF url(/images/userbox-background.png) repeat-x;
 	font: normal normal normal 13.34px/normal helvetica, arial, freesans, clean, sans-serif;
+	color:#333333;
+	text-decoration:none;
+	cursor:default;
+}
+
+
+/** 
+The style for the userbox
+*/
+.userbox-menuitem{
+	height:37px;
+	background:#FFF url(/images/userbox-background.png) repeat-x;
+	font: normal normal normal 13.34px/normal helvetica, arial, freesans, clean, sans-serif;
 	color:#4183C4;
 	text-decoration:none;
 	cursor:default;
 }
 
-.userbox-item-hover{
+.userbox-menuitem-hover{
 	height:37px;
 	background:#FFF url(/images/userbox-background.png) repeat-x;
 	font: normal normal normal 13.34px/normal helvetica, arial, freesans, clean, sans-serif;

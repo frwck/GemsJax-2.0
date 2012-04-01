@@ -1,7 +1,7 @@
 package org.gemsjax.shared.communication;
 
 import org.gemsjax.shared.communication.message.CommunicationError;
-import org.gemsjax.shared.communication.message.collaboration.NewCollaborateableMessage;
+import org.gemsjax.shared.communication.message.collaborateablefile.NewCollaborateableFileMessage;
 import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestAnswerMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
@@ -206,13 +206,13 @@ public class CommunicationConstants {
 		private CollaborateableType(){}
 		
 		/**
-		 * The communication constant mapped to {@link NewCollaborateableMessage.CollaborateableType#METAMODEL}
+		 * The communication constant mapped to {@link NewCollaborateableFileMessage.CollaborateableType#METAMODEL}
 		 */
 		public static final String TYPE_METAMODEL ="MetaModel";
 		
 
 		/**
-		 * The communication constant mapped to {@link NewCollaborateableMessage.CollaborateableType#MODEL}
+		 * The communication constant mapped to {@link NewCollaborateableFileMessage.CollaborateableType#MODEL}
 		 */
 		public static final String TYPE_MODEL = "Model";
 
