@@ -299,6 +299,22 @@ public class CommunicationConstants {
 		
 	}
 	
+	/**
+	 * This class contains the constants for the  {@link CollaborateableFileError}
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	public class CollaborateableFileError{
+		private CollaborateableFileError(){}
+		
+		public static final String NAME_MISSING = "name";
+		public static final String AUTHENTICATION = "authentication";
+		public static final String PERMISSION_DENIED ="permission";
+		public static final String PARSING = "parsing";
+		public static final String DATABASE = "database";
+		public static final String NOT_FOUND = "not_found";
+	}
+	
 	
 
 }

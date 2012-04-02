@@ -10,12 +10,6 @@ import org.gemsjax.shared.communication.message.collaborateablefile.GetAllCollab
 import org.gemsjax.shared.communication.message.collaborateablefile.NewCollaborateableFileMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.ReferenceableCollaborateableFileMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.UpdateCollaborateableFileMessage;
-import org.gemsjax.shared.communication.message.notification.DeleteNotificationMessage;
-import org.gemsjax.shared.communication.message.notification.GetAllNotificationsMessage;
-import org.gemsjax.shared.communication.message.notification.NotificationAsReadMessage;
-import org.gemsjax.shared.communication.message.notification.NotificationMessage;
-import org.gemsjax.shared.communication.message.notification.ReferenceableNotificationMessage;
-import org.hibernate.sql.Update;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -26,7 +20,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
  * 
  * @author Hannes Dorfmann
  */
-public class CollaborationFileMessageParser extends AbstractContentHandler {
+public class CollaboratableFileMessageParser extends AbstractContentHandler {
 	
 	private boolean startFile, endFile;
 	private boolean startNew, endNew;
@@ -56,7 +50,7 @@ public class CollaborationFileMessageParser extends AbstractContentHandler {
 	
 	
 	
-	public CollaborationFileMessageParser(){	
+	public CollaboratableFileMessageParser(){	
 		
 	}
 	
