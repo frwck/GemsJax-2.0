@@ -19,7 +19,7 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
-import org.gemsjax.shared.communication.message.collaborateablefile.CollaborationType;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 import org.gemsjax.shared.communication.message.search.CollaborationResult;
 import org.gemsjax.shared.communication.message.search.ExperimentResult;
 import org.gemsjax.shared.communication.message.search.GlobalSearchMessage;
@@ -160,11 +160,11 @@ public class SearchChannel implements InputChannel, OutputChannel{
 		for (Collaborateable c: collaborateables)
 		{
 			boolean pub = c.getPublicPermission()!=Collaborateable.NO_PERMISSION;
-			CollaborationType t ;
+			CollaborateableType t ;
 			if (c instanceof MetaModel)
-				t = CollaborationType.METAMODEL;
+				t = CollaborateableType.METAMODEL;
 			else
-				t = CollaborationType.MODEL;
+				t = CollaborateableType.MODEL;
 			
 			cr.add(new CollaborationResult(c.getId(), c.getName(), c.getOwner().getDisplayedName(), pub, t));
 		}	

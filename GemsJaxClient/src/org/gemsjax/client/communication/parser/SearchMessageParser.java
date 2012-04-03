@@ -3,7 +3,7 @@ package org.gemsjax.client.communication.parser;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.gemsjax.shared.communication.message.collaborateablefile.CollaborationType;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 import org.gemsjax.shared.communication.message.friend.FriendErrorAnswerMessage;
 import org.gemsjax.shared.communication.message.search.CollaborationResult;
 import org.gemsjax.shared.communication.message.search.ExperimentResult;
@@ -93,7 +93,7 @@ public class SearchMessageParser {
 		int id;
 		String displayName, username, profilePicture, name, ownerName;
 		boolean _public, coAdmin;
-		CollaborationType colType;
+		CollaborateableType colType;
 		
 		// Users
 		NodeList surroundUserRes = e.getElementsByTagName(GlobalSearchResultMessage.SUBTAG_USER_RESULT);
@@ -161,7 +161,7 @@ public class SearchMessageParser {
 			if (ownerName== null)
 				throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the name of the owner of a collaborateable. Value: "+c.getAttribute(GlobalSearchResultMessage.ATTRIBUTE_COLLABORATEABLE_OWNER_NAME));
 		
-			colType = CollaborationType.fromConstant(c.getAttribute(GlobalSearchResultMessage.ATTRIBUTE_COLLABORATEABLE_TYPE));
+			colType = CollaborateableType.fromConstant(c.getAttribute(GlobalSearchResultMessage.ATTRIBUTE_COLLABORATEABLE_TYPE));
 			if (colType == null)
 				throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the collaboration type. Value: "+c.getAttribute(GlobalSearchResultMessage.ATTRIBUTE_COLLABORATEABLE_TYPE));
 		

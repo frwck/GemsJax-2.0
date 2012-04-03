@@ -3,7 +3,7 @@ package org.gemsjax.shared.communication.message.collaborateablefile;
 import java.util.Set;
 
 import org.gemsjax.shared.communication.CommunicationConstants;
-import org.gemsjax.shared.communication.message.collaborateablefile.CollaborationType;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 
 /**
  * Create a new {@link CollaborateableType}
@@ -32,10 +32,10 @@ public class NewCollaborateableFileMessage extends ReferenceableCollaborateableF
 	private String name;
 	private Set<Integer> adminIds;
 	private Set<Integer> collaboratorIds;
-	private CollaborationType type;
+	private CollaborateableType type;
 	private String keywords;
 	
-	public NewCollaborateableFileMessage(String referenceId, String name, CollaborationType type, Set<Integer> administratorIds, Set<Integer> collaboratorIds, boolean _public, String keywords)
+	public NewCollaborateableFileMessage(String referenceId, String name, CollaborateableType type, Set<Integer> administratorIds, Set<Integer> collaboratorIds, boolean _public, String keywords)
 	{
 		super(referenceId);
 		this._public = _public;
@@ -46,7 +46,7 @@ public class NewCollaborateableFileMessage extends ReferenceableCollaborateableF
 	}
 	
 	
-	public CollaborationType getCollaborateableType()
+	public CollaborateableType getCollaborateableType()
 	{
 		return type;
 	}
@@ -68,24 +68,20 @@ public class NewCollaborateableFileMessage extends ReferenceableCollaborateableF
 		return collaboratorIds;
 	}
 	
-	
-	private String collaborateableTypeToString()
-	{
-		switch(type)
-		{
-			case METAMODEL: return CommunicationConstants.CollaborateableType.TYPE_METAMODEL;
-			case MODEL: return CommunicationConstants.CollaborateableType.TYPE_MODEL;
-		}
-		
-		return null;
+	public String getKeywords(){
+		return keywords;
 	}
-
+	
+	public CollaborateableType getType(){
+		return type;
+	}
+	
 	
 	@Override
 	public String toXml() {
 		String x=super.openingXml();
 		
-		x+="<"+TAG+" "+ATTRIBUTE_NAME+"=\""+name +"\" " +ATTRIBUTE_PUBLIC+"=\""+Boolean.toString(_public)+"\" "+ATTRIBUTE_TYPE+"=\""+collaborateableTypeToString()+"\">";
+		x+="<"+TAG+" "+ATTRIBUTE_NAME+"=\""+name +"\" " +ATTRIBUTE_PUBLIC+"=\""+Boolean.toString(_public)+"\" "+ATTRIBUTE_TYPE+"=\""+type.toConstant()+"\">";
 		
 		
 		x+= "<"+SUBTAG_KEYWORDS+">";

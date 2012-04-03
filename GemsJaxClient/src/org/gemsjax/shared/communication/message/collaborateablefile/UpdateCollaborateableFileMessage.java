@@ -144,5 +144,10 @@ public class UpdateCollaborateableFileMessage extends ReferenceableCollaborateab
 		this.removeCollaboratorIds = removeCollaboratorIds;
 	}
 	
+	public int getCollaborateableId(){
+		return collaborateableId;
+	}
+	
+	
 	
 }

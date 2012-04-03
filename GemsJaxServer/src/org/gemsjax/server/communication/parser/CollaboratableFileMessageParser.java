@@ -5,7 +5,7 @@ import java.io.StringReader;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.gemsjax.shared.communication.message.collaborateablefile.CollaborationType;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 import org.gemsjax.shared.communication.message.collaborateablefile.GetAllCollaborateablesMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.NewCollaborateableFileMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.ReferenceableCollaborateableFileMessage;
@@ -37,7 +37,7 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 	
 	private String referenceId;
 	
-	private CollaborationType type;
+	private CollaborateableType type;
 	private String name;
 	private Boolean _public;
 	private String keywords;
@@ -181,7 +181,7 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 			startNew = true;
 			name = atts.getValue(NewCollaborateableFileMessage.ATTRIBUTE_NAME);
 			_public = Boolean.parseBoolean(NewCollaborateableFileMessage.ATTRIBUTE_PUBLIC);
-			type = CollaborationType.fromConstant(atts.getValue(NewCollaborateableFileMessage.ATTRIBUTE_TYPE));
+			type = CollaborateableType.fromConstant(atts.getValue(NewCollaborateableFileMessage.ATTRIBUTE_TYPE));
 			if (type==null)
 				throw new SAXException("Could not parse or dertermine the CollabortaionType");
 		}

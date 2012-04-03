@@ -1,6 +1,6 @@
 package org.gemsjax.shared.communication.message.search;
 
-import org.gemsjax.shared.communication.message.collaborateablefile.CollaborationType;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
  
 
 
@@ -9,10 +9,10 @@ public class CollaborationResult {
 	private String name;
 	private String ownerName;
 	private int id;
-	private CollaborationType type;
+	private CollaborateableType type;
 	private boolean _public;
 	
-	public CollaborationResult(int id, String name, String ownerName, boolean _public,  CollaborationType type)
+	public CollaborationResult(int id, String name, String ownerName, boolean _public,  CollaborateableType type)
 	{
 		this.name = name;
 		this.ownerName = ownerName;
@@ -34,7 +34,7 @@ public class CollaborationResult {
 	}
 	
 	
-	public CollaborationType getType()
+	public CollaborateableType getType()
 	{
 		return type;
 	}

@@ -2,14 +2,14 @@ package org.gemsjax.shared.communication.message.collaborateablefile;
 
 import org.gemsjax.shared.communication.CommunicationConstants;
 
-public enum CollaborationType {
+public enum CollaborateableType {
 	
 	MODEL,
 	METAMODEL
 	;
 	
 	/**
-	 * Converts a {@link CollaborationType} to its {@link CommunicationConstants.CollaborateableType} constant
+	 * Converts a {@link CollaborateableType} to its {@link CommunicationConstants.CollaborateableType} constant
 	 * @return
 	 */
 	public String toConstant()
@@ -25,11 +25,11 @@ public enum CollaborationType {
 	
 	
 	/**
-	 * Converts a {@link CommunicationConstants.CollaborateableType} to its {@link CollaborationType} enum
+	 * Converts a {@link CommunicationConstants.CollaborateableType} to its {@link CollaborateableType} enum
 	 * @param c
 	 * @return
 	 */
-	public static CollaborationType fromConstant(String c)
+	public static CollaborateableType fromConstant(String c)
 	{
 		if (c.equals(CommunicationConstants.CollaborateableType.TYPE_METAMODEL))
 			return METAMODEL;
