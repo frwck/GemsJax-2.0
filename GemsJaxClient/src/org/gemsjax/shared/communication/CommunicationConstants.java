@@ -1,10 +1,12 @@
 package org.gemsjax.shared.communication;
 
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.collaborateablefile.NewCollaborateableFileMessage;
 import org.gemsjax.shared.communication.message.friend.NewFriendshipRequestAnswerMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
+import org.gemsjax.shared.user.User;
 import org.gemsjax.shared.user.UserOnlineState;
 
 /**
@@ -313,6 +315,31 @@ public class CommunicationConstants {
 		public static final String PARSING = "parsing";
 		public static final String DATABASE = "database";
 		public static final String NOT_FOUND = "not_found";
+	}
+	
+	
+	/**
+	 * This are the constants for {@link Collaborateable.Permission}s.
+	 * @author Hannes Dorfmann
+	 *
+	 */
+	public class CollaborateablePermission{
+		
+		private CollaborateablePermission(){}
+		/**
+		 * No public access granted. That means, that only the owner and the collaborative working {@link User} (invited) have access to this {@link Collaborateable}
+		 */
+		public static final int PRIVATE = 0;
+		/**
+		 * Every {@link User} can access this with reading permission. Changing this {@link Collaborateable} is not possible except the owner {@link User}
+		 * and the other collaborative working {@link User} (invited).
+		 */
+		public static final int READ_ONLY = 1;
+		
+		/**
+		 * This means, that every user can make a copy of this {@link Collaborateable}
+		 */
+		public static final int COPYABLE = 2;
 	}
 	
 	

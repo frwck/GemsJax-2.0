@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
+import org.gemsjax.server.communication.channel.CollaborateableFileChannel;
 import org.gemsjax.server.communication.channel.FriendsLiveChannel;
 import org.gemsjax.server.communication.channel.LogoutChannel;
 import org.gemsjax.server.communication.channel.NotificationChannel;
@@ -37,6 +38,8 @@ public class OnlineUser {
 	private Set<InputChannel> inputChannels;
 	private RequestChannel requestChannel;
 	private NotificationChannel notificationChannel;
+	
+	private CollaborateableFileChannel collaborateableFileChannel;
 
 	private HttpSession httpSession;
 	
@@ -175,6 +178,11 @@ public class OnlineUser {
 		// SearchChannel
 		SearchChannel sc = new SearchChannel(connection, u);
 		
+		// CollaborateableFileChannel
+		CollaborateableFileChannel collFileChannel = new CollaborateableFileChannel(connection, u);
+		collFileChannel.addCollaborateableFileChannelHandler(CollaboratableFileModule.getInstance());
+		u.setCollaborateableFileChannel(collFileChannel);
+		
 		return u;
 	}
 	
@@ -255,6 +263,16 @@ public class OnlineUser {
 
 	public void setNotificationChannel(NotificationChannel notificationChannel) {
 		this.notificationChannel = notificationChannel;
+	}
+
+
+	public CollaborateableFileChannel getCollaborateableFileChannel() {
+		return collaborateableFileChannel;
+	}
+
+
+	public void setCollaborateableFileChannel(CollaborateableFileChannel collaborateableFileChannel) {
+		this.collaborateableFileChannel = collaborateableFileChannel;
 	}
 	
 	

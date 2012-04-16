@@ -8,7 +8,7 @@ import org.gemsjax.shared.communication.message.collaborateablefile.Collaboratea
 
 public interface CollaborateableFileChannelHandler {
 
-	public abstract void onCreateNewCollaborateableFile(OnlineUser owner, String name, String keywords,  CollaborateableType type, boolean _public, Set<Integer> admins, Set<Integer> collaborators);
+	public abstract void onCreateNewCollaborateableFile(String referenceId, OnlineUser owner, String name, String keywords,  CollaborateableType type, Collaborateable.Permission permission,  Set<Integer> collaborators);
 	/**
 	 * Update a {@link Collaborateable} to the following parameters. If a parameter is null, the old parameter value should not be overridden.
 	 * @param changeRequester
@@ -20,12 +20,12 @@ public interface CollaborateableFileChannelHandler {
 	 * @param admins
 	 * @param collaborators
 	 */
-	public abstract void onUpdateCollaborateableFile(OnlineUser changeRequester, int collaborateableId, String name, String keywords, boolean _public, Set<Integer> addAdmins, Set<Integer> removeAdmins, Set<Integer> addCollaborators, Set<Integer> removeCollaborators);
+	public abstract void onUpdateCollaborateableFile(String referenceId, OnlineUser changeRequester, int collaborateableId, String name, String keywords, Collaborateable.Permission permission, Set<Integer> addCollaborators, Set<Integer> removeCollaborators);
 	
 	/**
 	 * Get all collaborateableFiles, of a certain user
 	 * @param requester
 	 */
-	public abstract void onGetAllCollaborateableFiles(OnlineUser requester);
+	public abstract void onGetAllCollaborateableFiles(String referenceId, OnlineUser requester);
 	
 }

@@ -2,11 +2,14 @@ package org.gemsjax.client.admin.presenter;
 
 import org.gemsjax.client.admin.presenter.event.DoNewGlobalSearchEvent;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
+import org.gemsjax.client.admin.presenter.event.ShowAllMetaModelsRequestedEvent;
 import org.gemsjax.client.admin.presenter.event.ShowNotificationRequestCenterRequiredEvent;
 import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
+import org.gemsjax.client.admin.presenter.handler.ShowAllMetaModelRequestedHandler;
 import org.gemsjax.client.admin.view.AdminUIView;
 import org.gemsjax.client.admin.view.QuickSearchView;
 import org.gemsjax.client.admin.view.QuickSearchView.QuickSearchHanlder;
+import org.gemsjax.client.admin.view.implementation.AllMetaModelsViewImpl;
 import org.gemsjax.shared.user.RegisteredUser;
 
 import com.google.gwt.event.shared.EventBus;
@@ -38,6 +41,15 @@ public class AdminApplicationPresenter extends Presenter implements QuickSearchH
 			@Override
 			public void onClick(ClickEvent event) {
 				onNotificationRequestCenterClicked();
+			}
+		});
+		
+		
+		view.getUserMenuMetaModels().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				onMetaModelsClicked();
 			}
 		});
 		
@@ -82,6 +94,9 @@ public class AdminApplicationPresenter extends Presenter implements QuickSearchH
 	}
 
 	
-	
+	private void onMetaModelsClicked(){
+		eventBus.fireEvent(new ShowAllMetaModelsRequestedEvent());
+	}
 
+	
 }

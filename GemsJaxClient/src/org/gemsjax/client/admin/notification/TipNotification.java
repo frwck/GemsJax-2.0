@@ -35,10 +35,12 @@ public class TipNotification extends Notification implements ResizeHandler{
 		
 		Window.addResizeHandler(this);
 		
-		Label titleLabel = new Label("<h1>"+title+"</h1>");
-		titleLabel.setHeight(38);
-		
-		this.addMember(titleLabel);
+		if (title!=null && !title.isEmpty()){
+			Label titleLabel = new Label("<h1>"+title+"</h1>");
+			titleLabel.setHeight(38);
+			
+			this.addMember(titleLabel);
+		}
 		
 		if (text!=null && !text.equals(""))
 		{
@@ -65,6 +67,9 @@ public class TipNotification extends Notification implements ResizeHandler{
 	
 	private int calculateWidth(boolean title, String str)
 	{
+		if (str ==null || str.isEmpty())
+			return 0;
+		
 		int width =0;
 		if (title)
 		{
@@ -81,7 +86,7 @@ public class TipNotification extends Notification implements ResizeHandler{
 					case 'B':
 					case 'M':	
 					case 'O':
-					case 'Ö': width+=26; break;
+					case 'ï¿½': width+=26; break;
 						 
 					case 'S':
 					case 'A':
@@ -118,7 +123,7 @@ public class TipNotification extends Notification implements ResizeHandler{
 					case 'B':
 					case 'M':	
 					case 'O':
-					case 'Ö': width+=18; break;
+					case 'ï¿½': width+=18; break;
 						 
 					case 'S':
 					case 'A':
@@ -200,7 +205,12 @@ public class TipNotification extends Notification implements ResizeHandler{
 				this.setPageLeft((Window.getClientWidth()-this.getWidth())/2);
 				this.setPageTop((Window.getClientHeight()-this.getHeight()) -bottomPositionSpacer);
 				
-			break;
+				break;
+			
+			case CENTER:
+				this.setPageLeft((Window.getClientWidth()-this.getWidth())/2);
+				this.setPageTop(Window.getClientHeight()/2-getHeight()/2);
+				break;
 		}
 		
 	}

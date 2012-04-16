@@ -19,12 +19,15 @@ public class CollaborateableImpl implements Collaborateable
 	private Set<User> users;
 	private Set<Transaction> transactions;
 	private Map<User, Integer> vectorClock;
+	private Permission permission;
 	private int publicPermission;
 	
 	/**
 	 * This field is reserved for hibernate to filter a MetaModel from a MetaModel that is part of an Experiment
 	 */
 	private boolean forExperiment;
+	
+	
 	
 	public CollaborateableImpl()
 	{
@@ -95,14 +98,15 @@ public class CollaborateableImpl implements Collaborateable
 
 
 	@Override
-	public int getPublicPermission() {
-		return publicPermission;
+	public Permission getPublicPermission() {
+		return Collaborateable.Permission.fromConstant(publicPermission);
 	}
 
 
 	@Override
-	public void setPublicPermission(int permission) {
-		publicPermission = permission;
+	public void setPublicPermission(Permission permission) {
+		
+		publicPermission = permission.toConstant();
 	}
 
 

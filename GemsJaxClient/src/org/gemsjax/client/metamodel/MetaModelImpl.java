@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
@@ -29,7 +30,6 @@ import org.gemsjax.shared.user.User;
 public class MetaModelImpl implements MetaModel{
 	
 	private String name;
-	
 	private int id;
 	
 	private List<MetaClass> metaClasses;
@@ -39,9 +39,10 @@ public class MetaModelImpl implements MetaModel{
 	private String keywords;
 	private Set<User> users;
 	
+	
 	private Map<User, Integer> vectorClock;
 	
-	private int publicPermission;
+	private Collaborateable.Permission permission;
 	
 	private Set<Transaction> transactions;
 	
@@ -66,6 +67,7 @@ public class MetaModelImpl implements MetaModel{
 		idMap = new HashMap<String, MetaModelElement>();	
 		attributes = new ArrayList<MetaAttribute>();
 		users = new LinkedHashSet<User>();
+		
 		transactions = new LinkedHashSet<Transaction>();
 		vectorClock = new HashMap<User, Integer>();
 	}
@@ -212,15 +214,7 @@ public class MetaModelImpl implements MetaModel{
 		return null;
 	}
 
-	@Override
-	public int getPublicPermission() {
-		return publicPermission;
-	}
-
-	@Override
-	public void setPublicPermission(int permission) {
-		this.publicPermission = permission;
-	}
+	
 
 	@Override
 	public void setOwner(RegisteredUser owner) {
@@ -230,6 +224,18 @@ public class MetaModelImpl implements MetaModel{
 	@Override
 	public Set<Model> getModels() {
 		return models;
+	}
+
+	
+
+	@Override
+	public Permission getPublicPermission() {
+		return permission;
+	}
+
+	@Override
+	public void setPublicPermission(Permission permission) {
+		this.permission = permission;
 	}
 	
 }

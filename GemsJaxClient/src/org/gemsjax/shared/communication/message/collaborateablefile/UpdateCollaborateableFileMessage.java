@@ -14,7 +14,7 @@ public class UpdateCollaborateableFileMessage extends ReferenceableCollaborateab
 	public static final String TAG ="update";
 	
 	public static final String SUBTAG_NAME="name";
-	public static final String SUBTAG_PUBLIC="public";
+	public static final String SUBTAG_PERMISSION="permission";
 	public static final String SUBTAG_KEYWORDS="keywords";
 	public static final String SUBTAG_COLLABORATORS="collaborators";
 	public static final String SUBTAG_ADMINS="admins";
@@ -22,16 +22,11 @@ public class UpdateCollaborateableFileMessage extends ReferenceableCollaborateab
 	public static final String SUBSUBTAG_ADD_COLLABORATOR="add";
 	public static final String SUBSUBTAG_REMOVE_COLLABORATOR="remove";
 	public static final String ATTRIBUTE_COLLABORATOR_ID="id";
-	public static final String SUBSUBTAG_ADD_ADMIN="add";
-	public static final String SUBSUBTAG_REMOVE_ADMIN="remove";
-	public static final String ATTRIBUTE_ADMIN_ID="id";
 	public static final String ATTRIBUTE_COLLABORATEABLE_ID="col-id";
 	
 	private String name;
-	private Boolean _public;
+	private Collaborateable.Permission permission;
 	private String keywords;
-	private Set<Integer> addAdminIds;
-	private Set<Integer> removeAdminIds;
 	private Set<Integer> addCollaboratorIds;
 	private Set<Integer> removeCollaboratorIds;
 	private int collaborateableId;
@@ -48,28 +43,14 @@ public class UpdateCollaborateableFileMessage extends ReferenceableCollaborateab
 		if (name!=null)
 			r+="<"+SUBTAG_NAME+">"+name+"</"+SUBTAG_NAME+">";
 		
-		if (_public!=null)
-			r+="<"+SUBTAG_PUBLIC+">"+_public+"</"+SUBTAG_PUBLIC+">";
+		if (permission!=null)
+			r+="<"+SUBTAG_PERMISSION+">"+permission.toConstant()+"</"+SUBTAG_PERMISSION+">";
 		
 		if (keywords!=null)
 			r+="<"+SUBTAG_KEYWORDS+">"+keywords+"</"+SUBTAG_KEYWORDS+">";
 		
-		if (addAdminIds!=null || removeAdminIds!=null)
-		{
-			r+="<"+SUBTAG_ADMINS+">";
-			if (addAdminIds!=null)
-				for (Integer id: addAdminIds)
-					r+="<"+SUBSUBTAG_ADD_ADMIN+" "+ATTRIBUTE_ADMIN_ID+"=\""+id+"\" />";
-			
-			if (removeAdminIds!=null)
-				for (Integer id: removeAdminIds)
-					r+="<"+SUBSUBTAG_REMOVE_ADMIN+" "+ATTRIBUTE_ADMIN_ID+"=\""+id+"\" />";
-			
-			r+="</"+SUBTAG_ADMINS+">";
-		}
 		
-		
-		if (addCollaboratorIds!=null || removeAdminIds!=null)
+		if (addCollaboratorIds!=null || removeCollaboratorIds!=null)
 		{
 			r+="<"+SUBTAG_COLLABORATORS+">";
 			if (addCollaboratorIds!=null)
@@ -77,7 +58,7 @@ public class UpdateCollaborateableFileMessage extends ReferenceableCollaborateab
 					r+="<"+SUBSUBTAG_ADD_COLLABORATOR+" "+ATTRIBUTE_COLLABORATOR_ID+"=\""+id+"\" />";
 			
 			if (removeCollaboratorIds!=null)
-				for (Integer id: removeAdminIds)
+				for (Integer id: removeCollaboratorIds)
 					r+="<"+SUBSUBTAG_REMOVE_COLLABORATOR+" "+ATTRIBUTE_COLLABORATOR_ID+"=\""+id+"\" />";
 			
 			r+="</"+SUBTAG_COLLABORATORS+">";
@@ -96,12 +77,12 @@ public class UpdateCollaborateableFileMessage extends ReferenceableCollaborateab
 		this.name = name;
 	}
 
-	public boolean isPublic() {
-		return _public;
+	public Collaborateable.Permission getPermission() {
+		return permission;
 	}
 
-	public void setPublic(boolean _public) {
-		this._public = _public;
+	public void setPermission(Collaborateable.Permission permission) {
+		this.permission = permission;
 	}
 
 	public String getKeywords() {
@@ -110,22 +91,6 @@ public class UpdateCollaborateableFileMessage extends ReferenceableCollaborateab
 
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
-	}
-
-	public Set<Integer> getAddAdminIds() {
-		return addAdminIds;
-	}
-
-	public void setAddAdminIds(Set<Integer> addAdminIds) {
-		this.addAdminIds = addAdminIds;
-	}
-
-	public Set<Integer> getRemoveAdminIds() {
-		return removeAdminIds;
-	}
-
-	public void setRemoveAdminIds(Set<Integer> removeAdminIds) {
-		this.removeAdminIds = removeAdminIds;
 	}
 
 	public Set<Integer> getAddCollaboratorIds() {

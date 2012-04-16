@@ -98,4 +98,7 @@ public interface UserDAO {
 	
 	public abstract void cancelFriendship(RegisteredUser cancler, RegisteredUser exfriend) throws DAOException;
 
+	
+	public abstract Set<User> getUserByIds(Set<Integer> ids);
+	
 }

@@ -2,6 +2,7 @@ package org.gemsjax.shared.communication.message.collaborateablefile;
 
 import java.util.Set;
 
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.CommunicationConstants;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 
@@ -15,33 +16,28 @@ public class NewCollaborateableFileMessage extends ReferenceableCollaborateableF
 	
 	public static final String TAG = "new";
 	public static final String ATTRIBUTE_NAME="name";
-	public static final String ATTRIBUTE_PUBLIC="public";
+	public static final String ATTRIBUTE_PERMISSION="permission";
 	public static final String ATTRIBUTE_TYPE="type";
 	
 	
 	public static final String SUBTAG_KEYWORDS="keywords";
 	public static final String SUBTAG_COLLABORATORS="collaborators";
-	public static final String SUBTAG_ADMINS="admins";
 	
 	public static final String SUBSUBTAG_ADD_COLLABORATOR="add";
 	public static final String ATTRIBUTE_COLLABORATOR_ID="id";
-	public static final String SUBSUBTAG_ADD_ADMIN="add";
-	public static final String ATTRIBUTE_ADMIN_ID="id";
 	
-	private boolean _public;
+	private Collaborateable.Permission permission;
 	private String name;
-	private Set<Integer> adminIds;
+	
 	private Set<Integer> collaboratorIds;
 	private CollaborateableType type;
 	private String keywords;
 	
-	public NewCollaborateableFileMessage(String referenceId, String name, CollaborateableType type, Set<Integer> administratorIds, Set<Integer> collaboratorIds, boolean _public, String keywords)
+	public NewCollaborateableFileMessage(String referenceId, String name, CollaborateableType type, Set<Integer> administratorIds, Collaborateable.Permission permission, String keywords)
 	{
 		super(referenceId);
-		this._public = _public;
+		this.permission = permission;
 		this.name = name;
-		this.adminIds = administratorIds;
-		this.collaboratorIds = collaboratorIds;
 		this.keywords = keywords;
 	}
 	
@@ -52,17 +48,14 @@ public class NewCollaborateableFileMessage extends ReferenceableCollaborateableF
 	}
 	
 
-	public boolean isPublic() {	
-		return _public;
+	public Collaborateable.Permission getPermission() {	
+		return permission;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public Set<Integer> getAdministratorIds() {
-		return adminIds;
-	}
 
 	public Set<Integer> getCollaboratorIds() {
 		return collaboratorIds;
@@ -81,7 +74,7 @@ public class NewCollaborateableFileMessage extends ReferenceableCollaborateableF
 	public String toXml() {
 		String x=super.openingXml();
 		
-		x+="<"+TAG+" "+ATTRIBUTE_NAME+"=\""+name +"\" " +ATTRIBUTE_PUBLIC+"=\""+Boolean.toString(_public)+"\" "+ATTRIBUTE_TYPE+"=\""+type.toConstant()+"\">";
+		x+="<"+TAG+" "+ATTRIBUTE_NAME+"=\""+name +"\" " +ATTRIBUTE_PERMISSION+"=\""+permission+"\" "+ATTRIBUTE_TYPE+"=\""+type.toConstant()+"\">";
 		
 		
 		x+= "<"+SUBTAG_KEYWORDS+">";
@@ -95,13 +88,6 @@ public class NewCollaborateableFileMessage extends ReferenceableCollaborateableF
 		}
 		
 		x+="</"+SUBTAG_COLLABORATORS+">";
-		
-		x+="<"+SUBTAG_ADMINS+">";
-		if (adminIds!=null && !adminIds.isEmpty()){
-				for (Integer id : adminIds)
-					x+="<"+ATTRIBUTE_ADMIN_ID+" "+ATTRIBUTE_ADMIN_ID+"=\""+id+"\" />";
-		}
-		x+="</"+SUBTAG_ADMINS+">";
 		
 		x+="</"+TAG+">"+super.closingXml();
 		return x;

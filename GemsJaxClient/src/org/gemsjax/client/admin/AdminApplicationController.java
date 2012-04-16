@@ -6,6 +6,8 @@ import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.notification.NotificationManager;
 import org.gemsjax.client.admin.notification.ShortInfoNotification;
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
+import org.gemsjax.client.admin.presenter.AllMetaModelsPresenter;
+import org.gemsjax.client.admin.presenter.CreateMetaModelPresenter;
 import org.gemsjax.client.admin.presenter.CriticalErrorPresenter;
 import org.gemsjax.client.admin.presenter.FriendsPresenter;
 import org.gemsjax.client.admin.presenter.GlobalSearchPresenter;
@@ -15,16 +17,23 @@ import org.gemsjax.client.admin.presenter.MetaModelPresenter;
 import org.gemsjax.client.admin.presenter.NotificationRequestPresenter;
 import org.gemsjax.client.admin.presenter.Presenter;
 import org.gemsjax.client.admin.presenter.RegistrationPresenter;
+import org.gemsjax.client.admin.presenter.event.CreateNewMetaModelRequiredEvent;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent.CriticalErrorType;
 import org.gemsjax.client.admin.presenter.event.DoNewGlobalSearchEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
+import org.gemsjax.client.admin.presenter.event.ShowAllMetaModelsRequestedEvent;
+import org.gemsjax.client.admin.presenter.handler.CreateNewMetaModelRequiredHandler;
 import org.gemsjax.client.admin.presenter.handler.DoNewGlobalSearchHandler;
 import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
 import org.gemsjax.client.admin.presenter.handler.ManageFriendsViewImpl;
+import org.gemsjax.client.admin.presenter.handler.ShowAllMetaModelRequestedHandler;
+import org.gemsjax.client.admin.view.CreateMetaModelView;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
+import org.gemsjax.client.admin.view.implementation.AllMetaModelsViewImpl;
+import org.gemsjax.client.admin.view.implementation.CreateMetaModelViewImpl;
 import org.gemsjax.client.admin.view.implementation.CriticalErrorViewImpl;
 import org.gemsjax.client.admin.view.implementation.GlobalSearchResultViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
@@ -75,7 +84,7 @@ import com.smartgwt.client.util.SC;
  * @author Hannes Dorfmann
  *
  */
-public class AdminApplicationController  implements DoNewGlobalSearchHandler, LoginSuccessfulHandler {
+public class AdminApplicationController  implements DoNewGlobalSearchHandler, LoginSuccessfulHandler, ShowAllMetaModelRequestedHandler, CreateNewMetaModelRequiredHandler {
 	
 	/**
 	 * Singleton instance
@@ -135,6 +144,8 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 	{
 		eventBus.addHandler(DoNewGlobalSearchEvent.TYPE, this);
 		eventBus.addHandler(LoginSuccessfulEvent.TYPE, this);
+		eventBus.addHandler(ShowAllMetaModelsRequestedEvent.TYPE, this);
+		eventBus.addHandler(CreateNewMetaModelRequiredEvent.TYPE,this);
 	}
 
 	
@@ -348,6 +359,17 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 		
 	}
 
-	
+	@Override
+	public void onShowAllMetaModelsRequested(ShowAllMetaModelsRequestedEvent e) {
+		AllMetaModelsViewImpl view = new AllMetaModelsViewImpl(language.AllMetaModelsTitle(), language);
+		AllMetaModelsPresenter p = new AllMetaModelsPresenter(eventBus, view);
+	}
+
+
+	@Override
+	public void onCreateNewMetaModelRequired() {
+		CreateMetaModelView view = new CreateMetaModelViewImpl(language, friendsModule);
+		CreateMetaModelPresenter p = new CreateMetaModelPresenter(eventBus, view);
+	}
 	
 }

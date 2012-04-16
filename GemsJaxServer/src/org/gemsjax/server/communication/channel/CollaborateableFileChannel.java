@@ -70,18 +70,18 @@ public class CollaborateableFileChannel implements InputChannel, OutputChannel{
 			
 			if (msg instanceof GetAllCollaborateablesMessage)
 				for (CollaborateableFileChannelHandler h: handlers)
-					h.onGetAllCollaborateableFiles(onlineUser);
+					h.onGetAllCollaborateableFiles(msg.getReferenceId(), onlineUser);
 			else
 			if (msg instanceof NewCollaborateableFileMessage){
 				NewCollaborateableFileMessage m = (NewCollaborateableFileMessage)msg;
 				for (CollaborateableFileChannelHandler h: handlers)
-					h.onCreateNewCollaborateableFile(onlineUser, m.getName(), m.getKeywords(), m.getType(), m.isPublic(), m.getAdministratorIds(), m.getCollaboratorIds());
+					h.onCreateNewCollaborateableFile(m.getReferenceId(), onlineUser, m.getName(), m.getKeywords(), m.getType(), m.getPermission(), m.getCollaboratorIds());
 			}
 			else
 			if (msg instanceof UpdateCollaborateableFileMessage){
 				UpdateCollaborateableFileMessage m = (UpdateCollaborateableFileMessage) msg;
 				for (CollaborateableFileChannelHandler h: handlers)
-					h.onUpdateCollaborateableFile(onlineUser, m.getCollaborateableId(), m.getName(), m.getKeywords(), m.isPublic(), m.getAddAdminIds(), m.getRemoveAdminIds(), m.getAddCollaboratorIds(), m.getRemoveCollaboratorIds());
+					h.onUpdateCollaborateableFile(m.getReferenceId(), onlineUser, m.getCollaborateableId(), m.getName(), m.getKeywords(), m.getPermission(), m.getAddCollaboratorIds(), m.getRemoveCollaboratorIds());
 			}
 			
 			

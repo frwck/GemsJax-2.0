@@ -92,4 +92,14 @@ public class FieldVerifier {
 	}
 	
 	
+	/**
+	 * Checks, if the passed string, is a valid name for collaborateable files
+	 * @param toCheck
+	 * @return
+	 */
+	public static boolean isValidCollaborateableName(String toCheck){
+		
+		return true;
+	}
+	
 }

@@ -1,7 +1,9 @@
 package org.gemsjax.client.admin.widgets;
 
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.Canvas;
@@ -26,6 +28,14 @@ import com.smartgwt.client.widgets.layout.VStack;
  *
  */
 public class StepByStepWizard {
+	
+	public interface WizardHandler{
+		/**
+		 * Called if the finish has been reached.
+		 */
+		public void onFinishReached();
+	}
+	
 	
 	/**
 	 * This is a helper class, that maps a Step-Section to its children-content
@@ -71,22 +81,38 @@ public class StepByStepWizard {
 	
 	private Canvas currentContent;
 	
+	private Set<WizardHandler> handlers;
+	
 	public StepByStepWizard() {
 		
 	
 		stepSectionList= new LinkedList<StepSection>();
 		currentStepSectionIndex = 0;
 		notActiveSectionStepOpacity = 30;
+		handlers = new LinkedHashSet<StepByStepWizard.WizardHandler>();
 		
 		wizardStack= new VStack();
 		stepSectionLayout = new HLayout();
 		stepSectionLayout.setWidth100();
+		stepSectionLayout.setHeight(40);
 		
 		wizardStack.addMember(stepSectionLayout);
-		wizardStack.setAnimateMembers(true);
+		wizardStack.setAnimateMembers(false);
+	
 		
 	}
 	
+	public void setStepSectionHeight(int height){
+		stepSectionLayout.setHeight(height);
+	}
+	
+	public void addWizardHandler(WizardHandler h){
+		handlers.add(h);
+	}
+	
+	public void removeWizardHandler(WizardHandler h){
+		handlers.remove(h);
+	}
 	
 	/**
 	 * Add a Step, section
@@ -160,7 +186,8 @@ public class StepByStepWizard {
 			else
 			{
 			// otherwise the end has been reached
-			Window.alert("End reached "+currentStepSectionIndex+" "+ currentStepSection.currentChildIndex);
+				for (WizardHandler h : handlers)
+					h.onFinishReached();
 			}
 		}
 			
@@ -280,6 +307,15 @@ public class StepByStepWizard {
 	public void setHeight100()
 	{
 		wizardStack.setHeight100();
+	}
+	
+	public void setWidth(int w)
+	{
+		wizardStack.setWidth(w);
+	}
+	
+	public void setHeight(int h){
+		wizardStack.setHeight(h);
 	}
 	
 

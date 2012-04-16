@@ -17,6 +17,7 @@ import org.gemsjax.server.persistence.request.AdministrateExperimentRequestImpl;
 import org.gemsjax.server.persistence.request.CollaborateRequestImpl;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;
 import org.gemsjax.shared.request.CollaborateRequest;
@@ -144,7 +145,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 				metaModel.getUsers().add(owner);Model persistent = null;
 				
 				metaModel.setForExperiment(false);
-				metaModel.setPublicPermission(Collaborateable.NO_PERMISSION);
+				metaModel.setPublicPermission(Collaborateable.Permission.PRIVATE);
 				session.save(metaModel);
 				
 				owner.getOwnedCollaborateables().add(metaModel);
@@ -182,7 +183,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		{	
 			session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
-				col.setPublicPermission(Collaborateable.NO_PERMISSION);
+				col.setPublicPermission(Collaborateable.Permission.PRIVATE);
 			session.update(col);
 			tx.commit();
 			session.flush();
@@ -410,7 +411,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 				model.setMetaModel(metaModel);
 				model.getUsers().add(owner);
 				model.setForExperiment(false);
-				model.setPublicPermission(Collaborateable.NO_PERMISSION);
+				model.setPublicPermission(Collaborateable.Permission.PRIVATE);
 				session.save(model);
 				
 				owner.getCollaborateables().add(model);
@@ -533,6 +534,135 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 	    List<Collaborateable> result = query.list();
 	    
 	    return new LinkedHashSet<Collaborateable>(result);
+	}
+
+
+	@Override
+	public Collaborateable createCollaborateable(RegisteredUser owner,
+			String name, String keywords, CollaborateableType type,
+			Collaborateable.Permission permission, Set<User> collaborators)
+			throws DAOException {
+		
+		
+		
+		Transaction tx = null;
+		Session session = null;
+		
+		try
+		{	
+
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+			
+			CollaborateableImpl collaborateable = null;
+			
+			if (type == CollaborateableType.METAMODEL)
+				collaborateable = new MetaModelImpl();
+			
+			else
+			if (type == CollaborateableType.MODEL)
+				collaborateable = new ModelImpl();
+			
+			collaborateable.setName(name);
+			collaborateable.setOwner(owner);
+			collaborateable.setKeywords(keywords);
+			collaborateable.setPublicPermission(permission);
+		
+			collaborateable.getUsers().add(owner);
+			if (collaborators!=null) collaborateable.getUsers().addAll(collaborators);
+		
+			collaborateable.setForExperiment(false);
+			collaborateable.setPublicPermission(permission);
+			session.save(collaborateable);
+			
+			owner.getOwnedCollaborateables().add(collaborateable);
+			owner.getCollaborateables().add(collaborateable);
+			session.update(owner);
+		
+			for (User u : collaborators){
+				u.getCollaborateables().add(collaborateable);
+				session.update(u);
+			}
+			
+			tx.commit();
+			session.flush();
+			session.close();
+			
+			
+			return collaborateable;
+			
+		}
+		catch (HibernateException e)
+		{
+			if (tx != null)
+				tx.rollback();
+			
+			if (session!= null)
+				session.close();
+			
+			throw new DAOException(e, "Could not create a new MetaModel");
+		}
+		
+		
+		
+	}
+
+
+	@Override
+	public void updateCollaborateable(Collaborateable collaborateable, String name,
+			String keywords, Collaborateable.Permission permission, Set<User> addCollaborators,
+			Set<User> removeCollaborators) throws DAOException {
+		
+		
+		
+		Transaction tx = null;
+		Session session = null;
+		
+		try
+		{	
+
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+			
+			if (name != null) collaborateable.setName(name);
+			if (keywords!=null) collaborateable.setKeywords(keywords);
+			if (permission!=null) collaborateable.setPublicPermission(permission);
+			if (removeCollaborators!=null) collaborateable.getUsers().removeAll(addCollaborators);
+			if (addCollaborators!=null) collaborateable.getUsers().addAll(addCollaborators);
+			
+			session.update(collaborateable);
+			
+			for (User u : addCollaborators){
+				u.getCollaborateables().add(collaborateable);
+				session.update(u);
+			}
+			
+			for (User u : removeCollaborators){
+				u.getCollaborateables().remove(collaborateable);
+				session.update(u);
+			}
+			
+			
+			tx.commit();
+			session.flush();
+			session.close();
+			
+			
+		}
+		catch (HibernateException e)
+		{
+			if (tx != null)
+				tx.rollback();
+			
+			if (session!= null)
+				session.close();
+			
+			throw new DAOException(e, "Could not create a new MetaModel");
+		}
+		
+		
+		
+		
 	}
 	
 	

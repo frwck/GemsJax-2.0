@@ -29,7 +29,7 @@ public abstract class ReferenceableCollaborateableFileMessage implements Message
 		return "</"+TAG+">";
 	}
 	
-	public String gerReferenceId(){
+	public String getReferenceId(){
 		return referenceId;
 	}
 }

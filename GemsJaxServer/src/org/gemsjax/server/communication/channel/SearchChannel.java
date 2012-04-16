@@ -159,7 +159,7 @@ public class SearchChannel implements InputChannel, OutputChannel{
 		Set<CollaborationResult> cr = new LinkedHashSet<CollaborationResult>();
 		for (Collaborateable c: collaborateables)
 		{
-			boolean pub = c.getPublicPermission()!=Collaborateable.NO_PERMISSION;
+			boolean pub = c.getPublicPermission()!=Collaborateable.Permission.PRIVATE;
 			CollaborateableType t ;
 			if (c instanceof MetaModel)
 				t = CollaborateableType.METAMODEL;

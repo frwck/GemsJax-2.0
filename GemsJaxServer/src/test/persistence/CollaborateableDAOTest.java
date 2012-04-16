@@ -83,7 +83,7 @@ public class CollaborateableDAOTest {
 			createdCollaborateables.add(m);
 			
 			assertTrue(m.getName().equals(name+i));
-			assertTrue(m.getPublicPermission() == Collaborateable.NO_PERMISSION);
+			assertTrue(m.getPublicPermission() == Collaborateable.Permission.PRIVATE);
 			assertTrue(m.getOwner() == owner1);
 			assertTrue(owner1.getCollaborateables().contains(m));
 			assertTrue(dao.getMetaModelById(m.getId()).getId() == m.getId());
@@ -216,7 +216,7 @@ public class CollaborateableDAOTest {
 			models.add(m);
 			
 			assertTrue( m.getName().equals(name+i));
-			assertTrue(m.getPublicPermission() == Collaborateable.NO_PERMISSION);
+			assertTrue(m.getPublicPermission() == Collaborateable.Permission.PRIVATE);
 			assertTrue(m.getOwner() == owner1);
 			assertTrue(m.getMetaModel() == baseModel);
 			assertTrue(dao.getModelById(m.getId()).getId() == m.getId());

@@ -460,6 +460,30 @@ public class HibernateUserDAO implements UserDAO {
 	    
 	    return new LinkedHashSet<RegisteredUser>(result);
 	}
+
+	@Override
+	public Set<User> getUserByIds(Set<Integer> ids) {
+		
+		if (ids== null || ids.isEmpty())
+			return null;
+		
+		boolean first = true;
+		String where="";
+		for (Integer id : ids)
+			if (first){
+				where+="id="+id;
+				first = false;
+			}
+			else
+				where+=" OR id="+id;
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Query query = session.createQuery( "FROM UserImpl WHERE "+where);
+	  
+	    List<UserImpl> result = query.list();
+	    
+	    return new LinkedHashSet<User>(result);
+	}
 	
 	
 	

@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.gemsjax.shared.collaboration.command.Command;
+import org.gemsjax.shared.communication.CommunicationConstants;
+import org.gemsjax.shared.communication.CommunicationConstants.CollaborateablePermission;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
 
@@ -17,22 +19,48 @@ import org.gemsjax.shared.user.User;
  */
 public interface Collaborateable{
 
-	
+	public enum Permission{
+		
 		/**
 		 * No public access granted. That means, that only the owner and the collaborative working {@link User} (invited) have access to this {@link Collaborateable}
 		 */
-		public static int NO_PERMISSION = 0;
+		PRIVATE,
 		/**
 		 * Every {@link User} can access this with reading permission. Changing this {@link Collaborateable} is not possible except the owner {@link User}
 		 * and the other collaborative working {@link User} (invited).
 		 */
-		public static int READ_ONLY_PERMISSION = 1;
+		READ_ONLY,
 		
 		/**
 		 * This means, that every user can make a copy of this {@link Collaborateable}
 		 */
-		public static int COPYABLE_PERMISSION = 2;
-	
+		COPYABLE;
+		
+		
+		public Integer toConstant(){
+			switch (this){
+			case PRIVATE: return CommunicationConstants.CollaborateablePermission.PRIVATE;
+			case READ_ONLY: return CommunicationConstants.CollaborateablePermission.READ_ONLY;
+			case COPYABLE: return CommunicationConstants.CollaborateablePermission.COPYABLE;
+			}
+			
+			return null;
+		}
+		
+		public static Permission fromConstant(int permission)
+		{
+			if (permission == CollaborateablePermission.PRIVATE)
+				return PRIVATE;
+			
+			if (permission== CollaborateablePermission.COPYABLE)
+				return COPYABLE;
+			
+			if (permission == CollaborateablePermission.READ_ONLY)
+				return READ_ONLY;
+			
+			return null;
+		}
+	}
 	
 	/**
 	 * Get the unique ID.
@@ -73,6 +101,7 @@ public interface Collaborateable{
 	 */
 	public Set<User> getUsers();
 	
+	
 	/**
 	 * Get a map that contains the vector clock values.
 	 * <b>NOTE:</b> if a {@link User} is not present in this map, then you can assume the vector clock value is 0 (zero) 
@@ -102,13 +131,13 @@ public interface Collaborateable{
 	 * Get the {@link PublicPermission}
 	 * @return
 	 */
-	public int getPublicPermission();
+	public Permission getPublicPermission();
 	
 	/**
 	 * @see #getPublicPermission()
 	 * @param permission
 	 */
-	public void setPublicPermission(int permission);
+	public void setPublicPermission(Permission permission);
 	
 	
 }

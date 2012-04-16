@@ -58,6 +58,7 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	   * @see FieldVerifier#isValidUsername(String)
 	   * @return
 	   */
+		
 	  @DefaultStringValue("The Input is not a valid username.")
 	  String IsNotValidUsernameMessage();
 	  
@@ -402,5 +403,55 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  
 	  @DefaultStringValue("Friendship request could not be sent to ")
 	  String ManageFriendshipReqeustError();
+	  
+	  @DefaultStringValue("This wizard will lead you step by step through the creation progress. As first step, you have to fill in a name and a optional description of the new meta model.")
+	  String CreateMetaModelNameDescriptionIntro();
+	  
+
+	  @DefaultStringValue("As next step select your friends that should be invited to work with you on this meta model.")
+	  String CreateMetaModelCollaboratorIntro();
+	  
+	  @DefaultStringValue("finish")
+	  String CreateMetaModelFinish();
+	  
+	  @DefaultStringValue("Description")
+	  String CreateMetaModelDescription();
 	 
+	  @DefaultStringValue("New meta model")
+	  String CreateMetaModelTitle();
+	  
+	  @DefaultStringValue("Name")
+	  String CreateMetaModelName();
+	  
+	  @DefaultStringValue("close")
+	  String CreateMetaModelCloseButton();
+	  
+	  @DefaultStringValue("continue")
+	  String CreateMetaModelNext();
+	  
+	  @DefaultStringValue("Meta model has been created successfully")
+	  String CreateMetaModelSuccessful();
+	  
+	  @DefaultStringValue("An error has occurred. Please retry.")
+	  String CreateMetaModelCreationError();
+	  
+	  @DefaultStringValue("A valid name must be set")
+	  String CreateMetaModelErrorName();
+	  
+	  
+	  @DefaultStringValue("My meta models")
+	  String AllMetaModelsTitle();
+	  
+	  @DefaultStringValue("No meta model found")
+	  String AllMetaModelsEmpty();
+	   
+	  @DefaultStringValue("New")
+	  String AllMetaModelsNew();
+	  
+	  @DefaultStringValue("Friends name:")
+	  String FriendChooserListEnterName();
+	  
+	  
+	  
+	  
 }

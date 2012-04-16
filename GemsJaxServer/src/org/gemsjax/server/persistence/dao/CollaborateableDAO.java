@@ -5,6 +5,7 @@ import java.util.Set;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;
 import org.gemsjax.shared.user.RegisteredUser;
@@ -30,6 +31,45 @@ public interface CollaborateableDAO {
 	 */
 	public abstract MetaModel createMetaModel(String name, RegisteredUser owner)
 			throws DAOException;
+	
+	
+	/**
+	 * Creates a 
+	 * @param owner
+	 * @param name
+	 * @param keywords
+	 * @param type
+	 * @param permission
+	 * @param admins
+	 * @param collaborators
+	 * @return
+	 * @throws DAOException
+	 */
+	public abstract Collaborateable createCollaborateable( RegisteredUser owner, String name, String keywords, 
+			CollaborateableType type, Collaborateable.Permission permission,
+			 Set<User> collaborators)
+			throws DAOException;
+	
+	
+	/**
+	 * Updates a Collaborateable with the specified parameters. If a parameter is set to null, this value
+	 * will not be updated.
+	 * @param c {@link Collaborateable}
+	 * @param name
+	 * @param keywords
+	 * @param _public
+	 * @param addAdmins
+	 * @param removeAdmins
+	 * @param addCollaborators
+	 * @param removeCollaborators
+	 * @throws DAOException
+	 */
+	public abstract void updateCollaborateable(Collaborateable c, String name, String keywords,
+			Collaborateable.Permission permission, 
+			Set<User> addCollaborators, Set<User> removeCollaborators) throws DAOException;
+	
+	
+	
 
 	/**
 	 * Set the public permission of an {@link Collaborateable}

@@ -138,6 +138,59 @@ This is the CSS style for the class Title
 }
 
 
+
+.widget-option-button
+{
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	color:#666;
+	font: 14px/normal helvetica, arial, freesans, clean, sans-serif;
+	font-weight:bold;
+	border: 1px solid #C0C0C0;
+	background-color: #F9F9F9;
+	text-align:center;
+	vertical-align:middle;
+	cursor:pointer;
+	padding:5px 5px;
+	
+}
+
+.widget-option-button-mouseover
+{
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	color:#FFF;
+	font: 14px/normal helvetica, arial, freesans, clean, sans-serif;
+	font-weight:bold;
+	border: 1px solid #4183C4;
+	background-color: #3C99EA;
+	text-align:center;
+	vertical-align:middle;
+	cursor:pointer;
+	padding:5px 5px;
+	
+}
+
+.widget-option-button-active
+{
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	color:#333;
+	font: 14px/normal helvetica, arial, freesans, clean, sans-serif;
+	font-weight:bold;
+	border: 1px solid #FFAA00;
+	background-color: #FFF13A;
+	text-align:center;
+	vertical-align:middle;
+	cursor:auto;
+	padding:5px 5px;
+}
+
+
+
 .widget-big-menu-button
 {
 	-webkit-border-radius: 4px;
@@ -375,4 +428,19 @@ This is the CSS style for the class Title
 	text-align: left;
 	vertical-align: middle;
 }
+
+.ModalDialogBackground
+{
+	background-color:#151515;
+	
+}
+
+.ModalDialog{
+	background-color: white;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	border:none;
+}
+
 
