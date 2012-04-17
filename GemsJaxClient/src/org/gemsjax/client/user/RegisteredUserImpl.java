@@ -9,6 +9,10 @@ import org.gemsjax.shared.user.UserOnlineState;
 
 public class RegisteredUserImpl implements RegisteredUser{
 
+	
+	public static final String NO_PROFILE_PICTURE_URL="/images/NoProfilePicture.jpg";
+	
+	
 	private Integer id;
 	private String displayedName;
 	private UserOnlineState onlineState;

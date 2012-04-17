@@ -448,8 +448,18 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("New")
 	  String AllMetaModelsNew();
 	  
-	  @DefaultStringValue("Friends name:")
+	  @DefaultStringValue("Friends name")
 	  String FriendChooserListEnterName();
+	  
+	  @DefaultStringValue("Please choose")
+	  String FriendChooserAmbigousDailogTitle();
+	  
+	  @DefaultStringValue("The inserted name is ambiguous. Please choose:")
+	  String FriendChooserAmbigousDailogIntro();
+	  
+	  
+	  @DefaultStringValue("No one found")
+	  String FriendChooserNoOneFound();
 	  
 	  
 	  

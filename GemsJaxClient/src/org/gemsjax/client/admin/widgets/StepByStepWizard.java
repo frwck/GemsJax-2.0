@@ -94,7 +94,7 @@ public class StepByStepWizard {
 		wizardStack= new VStack();
 		stepSectionLayout = new HLayout();
 		stepSectionLayout.setWidth100();
-		stepSectionLayout.setHeight(40);
+		stepSectionLayout.setHeight(30);
 		
 		wizardStack.addMember(stepSectionLayout);
 		wizardStack.setAnimateMembers(false);

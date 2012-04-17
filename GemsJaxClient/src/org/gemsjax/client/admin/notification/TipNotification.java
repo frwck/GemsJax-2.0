@@ -29,6 +29,7 @@ public class TipNotification extends Notification implements ResizeHandler{
 		this.setMembersMargin(5);
 		
 		
+		
 		setText(text);
 		setTitle(title);
 		setPosition(position);
@@ -61,7 +62,7 @@ public class TipNotification extends Notification implements ResizeHandler{
 			
 		}.schedule(timeToHide);
 		
-		
+		this.bringToFront();
 		
 	}
 	

@@ -68,6 +68,7 @@ public class CreateMetaModelViewImpl extends ModalDialog implements CreateMetaMo
 		header.addMember(t);
 		header.addMember(close);
 		header.setWidth100();
+		header.setHeight(30);
 		
 		content.addMember(header);
 		content.addMember(wizard.getDisplayableContent());
@@ -78,21 +79,21 @@ public class CreateMetaModelViewImpl extends ModalDialog implements CreateMetaMo
 		Label collaboratorSection = new Label("Step 2: Collaborators");
 		
 		nameSection.setWidth(200);
-		nameSection.setHeight(40);
+		nameSection.setHeight(20);
 		collaboratorSection.setWidth(200);
-		collaboratorSection.setHeight(40);
+		collaboratorSection.setHeight(20);
 		wizard.setMarginBetweenSectionAndContent(30);
 		wizard.setStepSectionMargin(5);
 		wizard.addStepSection(nameSection, createFirstStep());
 		wizard.addStepSection(collaboratorSection, createSecondStep());
-		wizard.setHeight(400);
+//		wizard.setHeight(400);
 		wizard.setWidth(510);
 		wizard.startFromBegin();
 		
 		
 		this.addItem(content);
 		this.setWidth(510);
-		this.setHeight(520);
+		this.setHeight(450);
 		this.centerInPage();
 	}
 	

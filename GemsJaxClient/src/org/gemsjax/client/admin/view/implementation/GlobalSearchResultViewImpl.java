@@ -15,6 +15,7 @@ import org.gemsjax.client.admin.view.handlers.ShowExperimentHandler;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.Title;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
+import org.gemsjax.client.user.RegisteredUserImpl;
 import org.gemsjax.shared.communication.message.friend.Friend;
 import org.gemsjax.shared.communication.message.search.CollaborationResult;
 import org.gemsjax.shared.communication.message.search.ExperimentResult;
@@ -40,7 +41,7 @@ public class GlobalSearchResultViewImpl extends LoadingTab implements GlobalSear
 	private static final int ENTRY_HEIGHT = 40;
 	
 	
-	private final String NO_PROFILE_PICTURE_URL="/images/NoProfilePicture.jpg";
+	private final String NO_PROFILE_PICTURE_URL=RegisteredUserImpl.NO_PROFILE_PICTURE_URL;
 	private final int PROFILE_PICTURE_WIDTH=40;
 	private final int PROFILE_PICTURE_HEIGHT=40;
 	
