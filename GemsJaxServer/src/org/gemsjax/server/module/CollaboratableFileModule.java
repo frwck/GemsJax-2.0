@@ -77,9 +77,12 @@ public class CollaboratableFileModule implements CollaborateableFileChannelHandl
 	
 
 
-	@Override
-	public void onGetAllCollaborateableFiles(String referenceId, OnlineUser requester) {
-		// TODO Auto-generated method stub
+	@Override// TODO Auto-generated method stub
+	
+	public void onGetAllCollaborateableFiles(String referenceId, CollaborateableType type, OnlineUser requester) {
+		
+		
+		
 		
 	}
 

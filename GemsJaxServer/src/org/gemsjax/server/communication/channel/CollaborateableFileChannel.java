@@ -70,7 +70,7 @@ public class CollaborateableFileChannel implements InputChannel, OutputChannel{
 			
 			if (msg instanceof GetAllCollaborateablesMessage)
 				for (CollaborateableFileChannelHandler h: handlers)
-					h.onGetAllCollaborateableFiles(msg.getReferenceId(), onlineUser);
+					h.onGetAllCollaborateableFiles(msg.getReferenceId(), ((GetAllCollaborateablesMessage)msg).getType(), onlineUser);
 			else
 			if (msg instanceof NewCollaborateableFileMessage){
 				NewCollaborateableFileMessage m = (NewCollaborateableFileMessage)msg;

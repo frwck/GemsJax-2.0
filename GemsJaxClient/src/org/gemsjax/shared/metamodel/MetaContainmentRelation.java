@@ -1,6 +1,5 @@
 package org.gemsjax.shared.metamodel;
 
-import org.gemsjax.shared.model.ModelClass;
 import org.gemsjax.shared.Constants;
 
 /**

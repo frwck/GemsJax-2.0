@@ -18,6 +18,7 @@ import org.gemsjax.server.persistence.request.CollaborateRequestImpl;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
+import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;
 import org.gemsjax.shared.request.CollaborateRequest;
@@ -663,6 +664,40 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		
 		
 		
+	}
+
+
+	@Override
+	public Set<MetaModel> getMetaModelsOf(RegisteredUser user) {
+		
+		String sql = "SELECT c FROM MetaModelImpl c WHERE (c.owner = :user OR :user in elements(c.users)) ";
+	
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Query query = session.createQuery( sql );
+		query.setParameter("user", user);
+		
+	    List<MetaModel> result = query.list();
+    
+	    return new LinkedHashSet<MetaModel>(result);
+    
+	}
+
+
+	@Override
+	public Set<Model> getModelsOf(RegisteredUser user) {
+		
+		String sql = "SELECT c FROM ModelImpl c WHERE (c.owner = :user OR :user in elements(c.users)) ";
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Query query = session.createQuery( sql );
+		query.setParameter("user", user);
+		
+	    List<Model> result = query.list();
+    
+	    return new LinkedHashSet<Model>(result);
+	    
 	}
 	
 	

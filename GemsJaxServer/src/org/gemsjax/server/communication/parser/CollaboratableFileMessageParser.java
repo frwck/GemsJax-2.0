@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
+import org.gemsjax.shared.communication.message.collaborateablefile.GetAllCollaborateablesAnswerMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.GetAllCollaborateablesMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.NewCollaborateableFileMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.ReferenceableCollaborateableFileMessage;
@@ -94,10 +95,10 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 	    	
 	    
 	    if (startGetAll && endGetAll){
-	    	if (referenceId!=null)
-	    		return new GetAllCollaborateablesMessage(referenceId);
+	    	if (referenceId!=null && type!=null)
+	    		return new GetAllCollaborateablesMessage(referenceId, type);
 	    	else
-	    		throw new SAXException("Reference Id was null");
+	    		throw new SAXException("Reference Id was null or collaborateable type was null");
 	    }
 	    throw new SAXException("Unexcpected Parse error: Could not determine the type of the received message");
 	}
@@ -207,8 +208,12 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 			}
 		}
 		else
-		if (localName.equals(GetAllCollaborateablesMessage.TAG))
+		if (localName.equals(GetAllCollaborateablesMessage.TAG)){
 			startGetAll = true;
+			type = CollaborateableType.fromConstant(atts.getValue(GetAllCollaborateablesAnswerMessage.ATTRIBUTE_TYPE));
+			if (type == null)
+				throw new SAXException("Collaborateable Type was null");
+		}
 		else
 		if (startNew){ // if its a new messages
 			
@@ -307,6 +312,7 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 		type = null;
 		permission = null;
 		keywords = null;
+		type = null;
 		
 	}
 	

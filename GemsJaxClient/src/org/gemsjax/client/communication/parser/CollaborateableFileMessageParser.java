@@ -1,9 +1,19 @@
 package org.gemsjax.client.communication.parser;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.gemsjax.client.metamodel.MetaModelImpl;
+import org.gemsjax.client.model.ModelImpl;
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableFileError;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableFileErrorMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableFileSuccessfulMessage;
+import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
+import org.gemsjax.shared.communication.message.collaborateablefile.GetAllCollaborateablesAnswerMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.ReferenceableCollaborateableFileMessage;
+import org.gemsjax.shared.metamodel.MetaModel;
+
 import com.google.gwt.xml.client.DOMException;
 import com.google.gwt.xml.client.Document;
 import com.google.gwt.xml.client.Element;
@@ -52,6 +62,9 @@ public class CollaborateableFileMessageParser {
 		    else
 		    if (childElement.getTagName().equals(CollaborateableFileErrorMessage.TAG))
 		    	return parseErrorMessage(referenceId, childElement);
+		    else
+		    	if (childElement.getTagName().equals(GetAllCollaborateablesAnswerMessage.TAG))
+		    		return parseGetAllMessage(referenceId, childElement);
 		  
 				   
 		    
@@ -74,6 +87,68 @@ public class CollaborateableFileMessageParser {
 	private ReferenceableCollaborateableFileMessage parseSuccessfulMessage(String referenceId, Element e) throws DOMException
 	{
 		return new CollaborateableFileSuccessfulMessage(referenceId);
+		
+	}
+	
+	private ReferenceableCollaborateableFileMessage parseGetAllMessage(String referenceId, Element e) throws DOMException{
+		NodeList results = e.getChildNodes();
+		
+		CollaborateableType t = CollaborateableType.fromConstant( e.getAttribute(GetAllCollaborateablesAnswerMessage.ATTRIBUTE_TYPE) );
+
+		if (t == CollaborateableType.METAMODEL){
+			
+			Set<Collaborateable> collaborateables = new LinkedHashSet<Collaborateable>();
+			
+			if (t!=null)
+				throw new DOMException(DOMException.SYNTAX_ERR,"Type was null");
+			
+			
+			for (int i =0; i<results.getLength(); i++){
+				
+				Element res = (Element) results.item(i);
+				
+				if (!res.getTagName().equals(GetAllCollaborateablesAnswerMessage.SUBTAG_RESULT))
+					throw new DOMException(DOMException.SYNTAX_ERR,"Expected <" + GetAllCollaborateablesAnswerMessage.SUBTAG_RESULT +"> but got: "+res.getTagName() );
+				
+				String name = res.getAttribute(GetAllCollaborateablesAnswerMessage.ATTRIBUTE_NAME);
+				int id = Integer.parseInt(res.getAttribute(GetAllCollaborateablesAnswerMessage.ATTRIBUTE_ID));
+				
+				collaborateables.add(new MetaModelImpl(id, name));
+			}
+			
+			
+			return new GetAllCollaborateablesAnswerMessage(referenceId, t, collaborateables);
+		}
+		
+		
+		else
+			if (t == CollaborateableType.MODEL){
+				
+				Set<Collaborateable> collaborateables = new LinkedHashSet<Collaborateable>();
+				
+				if (t!=null)
+					throw new DOMException(DOMException.SYNTAX_ERR,"Type was null");
+				
+				
+				for (int i =0; i<results.getLength(); i++){
+					
+					Element res = (Element) results.item(i);
+					
+					if (!res.getTagName().equals(GetAllCollaborateablesAnswerMessage.SUBTAG_RESULT))
+						throw new DOMException(DOMException.SYNTAX_ERR,"Expected <" + GetAllCollaborateablesAnswerMessage.SUBTAG_RESULT +"> but got: "+res.getTagName() );
+					
+					String name = res.getAttribute(GetAllCollaborateablesAnswerMessage.ATTRIBUTE_NAME);
+					int id = Integer.parseInt(res.getAttribute(GetAllCollaborateablesAnswerMessage.ATTRIBUTE_ID));
+					
+					collaborateables.add(new ModelImpl(id, name));
+				}
+				
+				
+				return new GetAllCollaborateablesAnswerMessage(referenceId, t, collaborateables);
+			}
+		
+		
+		throw new DOMException(DOMException.SYNTAX_ERR,"Unknown Collaborateable type");
 		
 	}
 	

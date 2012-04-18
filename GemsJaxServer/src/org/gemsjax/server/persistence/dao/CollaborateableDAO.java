@@ -176,4 +176,20 @@ public interface CollaborateableDAO {
 	 */
 	public abstract Set<Collaborateable> getBySearch(String searchString, RegisteredUser requester);
 	
+	/**
+	 * Get all {@link MetaModel}s owned by a user or the user is a collaborator
+	 * @param user
+	 * @return
+	 */
+	public abstract Set<MetaModel> getMetaModelsOf(RegisteredUser user);
+	
+	
+	/**
+	 * Get all {@link Model}s owned by a user or the user is a collaborator
+	 * @param user
+	 * @return
+	 */
+	public abstract Set<Model> getModelsOf(RegisteredUser user);
+	
+	
 }

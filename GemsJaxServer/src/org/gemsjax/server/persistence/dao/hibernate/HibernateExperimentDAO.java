@@ -854,8 +854,7 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 	public Set<Experiment> getBySearch(String searchString, RegisteredUser requester) {
 		
 		String search = "%"+searchString.toLowerCase()+"%";
-		System.out.println(requester+"   -    "+ search);
-		String sql = "SELECT c FROM ExperimentImpl c WHERE (c.owner = :user OR :user in elements(c.administrators)) AND (c.description like :searchString OR c.name like :searchString)";
+			String sql = "SELECT c FROM ExperimentImpl c WHERE (c.owner = :user OR :user in elements(c.administrators)) AND (c.description like :searchString OR c.name like :searchString)";
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		

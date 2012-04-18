@@ -26,6 +26,6 @@ public interface CollaborateableFileChannelHandler {
 	 * Get all collaborateableFiles, of a certain user
 	 * @param requester
 	 */
-	public abstract void onGetAllCollaborateableFiles(String referenceId, OnlineUser requester);
+	public abstract void onGetAllCollaborateableFiles(String referenceId, CollaborateableType type, OnlineUser requester);
 	
 }
