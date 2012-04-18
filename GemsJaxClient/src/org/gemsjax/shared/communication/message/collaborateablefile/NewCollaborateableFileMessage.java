@@ -33,12 +33,13 @@ public class NewCollaborateableFileMessage extends ReferenceableCollaborateableF
 	private CollaborateableType type;
 	private String keywords;
 	
-	public NewCollaborateableFileMessage(String referenceId, String name, CollaborateableType type, Set<Integer> administratorIds, Collaborateable.Permission permission, String keywords)
+	public NewCollaborateableFileMessage(String referenceId, String name, CollaborateableType type, Set<Integer> collaborators, Collaborateable.Permission permission, String keywords)
 	{
 		super(referenceId);
 		this.permission = permission;
 		this.name = name;
 		this.keywords = keywords;
+		this.collaboratorIds = collaborators;
 	}
 	
 	

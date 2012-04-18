@@ -1,5 +1,10 @@
 package org.gemsjax.client.admin.view.implementation;
 
+import java.util.LinkedHashMap;
+import java.util.Set;
+
+import net.sourceforge.htmlunit.corejs.javascript.Token.CommentType;
+
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.view.CreateMetaModelView;
 import org.gemsjax.client.admin.widgets.FriendChooserList;
@@ -10,6 +15,9 @@ import org.gemsjax.client.admin.widgets.StepByStepWizard.WizardHandler;
 import org.gemsjax.client.admin.widgets.Title;
 import org.gemsjax.client.module.FriendsModule;
 import org.gemsjax.shared.FieldVerifier;
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.collaboration.Collaborateable.Permission;
+import org.gemsjax.shared.communication.CommunicationConstants;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableFileError;
 import org.gemsjax.shared.communication.message.friend.Friend;
 
@@ -23,6 +31,8 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.ComboBoxItem;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextAreaItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -36,8 +46,12 @@ public class CreateMetaModelViewImpl extends ModalDialog implements CreateMetaMo
 	
 	private TextItem nameField;
 	private TextAreaItem description;
+//	private SelectItem permissionField;
 	private FriendChooserList collaborateorChooserList;
 	private FriendsModule friendsModule;
+	
+//	private LinkedHashMap<Integer, String> permissionValues;
+	
 	
 	
 	public CreateMetaModelViewImpl(UserLanguage lang, FriendsModule friendsModule){
@@ -105,13 +119,34 @@ public class CreateMetaModelViewImpl extends ModalDialog implements CreateMetaMo
 		nameField.setName("itemName");  
 		nameField.setTitle(lang.CreateMetaModelName());  
         nameField.setWidth("100%");
+        
+        /*
+        permissionField = new SelectItem();
+        permissionField.setName("permission");
+        permissionValues = new LinkedHashMap<Integer, String>();
+        permissionValues.put(CommunicationConstants.CollaborateablePermission.PRIVATE, lang.CollaborateablePermissionPrivate() );
+        permissionValues.put(CommunicationConstants.CollaborateablePermission.READ_ONLY, lang.CollaborateablePermissionReadOnly());
+        permissionValues.put(CommunicationConstants.CollaborateablePermission.COPYABLE, lang.CollaborateablePermissionCopyable());
+        
+        permissionField.setValueMap(permissionValues);
+        permissionField.setDefaultValue(lang.CollaborateablePermissionPrivate());
+        
+        permissionField.setTooltip(lang.CollaborateablePermissionHint());
+        
+        
+        permissionField.setTitle(lang.CreateMetaModelPermission());
+        permissionField.setWidth("100%");
+        
+        */
 		
         description = new TextAreaItem();  
         description.setName("description");  
         description.setTitle(lang.CreateMetaModelDescription()); 
         description.setWidth("100%");
         
-        form.setItems(nameField, description);
+        
+        
+        form.setItems(nameField,  description);
 		form.setWidth100();
 		
 		VStack stack = new VStack();
@@ -171,9 +206,8 @@ public class CreateMetaModelViewImpl extends ModalDialog implements CreateMetaMo
 	}
 
 	@Override
-	public Friend getCollaborators() {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Friend> getCollaborators() {
+		return collaborateorChooserList.getSelectedFriends();
 	}
 
 
@@ -207,6 +241,13 @@ public class CreateMetaModelViewImpl extends ModalDialog implements CreateMetaMo
 	public void onErrorOccurred(CollaborateableFileError error){
 		//TODO show a more specific error message
 		SC.say(lang.CreateMetaModelCreationError());
+	}
+
+
+
+	@Override
+	public Permission getPermission() {
+		return Permission.PRIVATE;
 	}
 
 }

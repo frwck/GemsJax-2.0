@@ -423,6 +423,9 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Name")
 	  String CreateMetaModelName();
 	  
+	  @DefaultStringValue("Permission")
+	  String CreateMetaModelPermission();
+	  
 	  @DefaultStringValue("close")
 	  String CreateMetaModelCloseButton();
 	  
@@ -437,6 +440,24 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  
 	  @DefaultStringValue("A valid name must be set")
 	  String CreateMetaModelErrorName();
+	  
+	  @DefaultStringValue("Private")
+	  String CollaborateablePermissionPrivate();
+	  
+	  @DefaultStringValue("Public - Read Only")
+	  String CollaborateablePermissionReadOnly();
+	  
+	  
+	  @DefaultStringValue("Public - Copyable")
+	  String CollaborateablePermissionCopyable();
+	  
+	  
+	  @DefaultStringValue("<b>Private:</b> This file is only visible and accessible to you and all collaborators<br />"+
+			  			  "<b>Public - Read Only:</b> This file is visible to everybody, but can only be modified by you and the collaborators"+
+			  			  "<b>Public - Copyable:</b> This file is visible to everybody and everybody can make a copy of this file")
+	  String CollaborateablePermissionHint();
+	  
+	  
 	  
 	  
 	  @DefaultStringValue("My meta models")
@@ -457,9 +478,12 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("The inserted name is ambiguous. Please choose:")
 	  String FriendChooserAmbigousDailogIntro();
 	  
-	  
 	  @DefaultStringValue("No one found")
 	  String FriendChooserNoOneFound();
+	  
+	  @DefaultStringValue("Friend is already in list")
+	  String FriendChooserAlreadyInList();
+	  
 	  
 	  
 	  

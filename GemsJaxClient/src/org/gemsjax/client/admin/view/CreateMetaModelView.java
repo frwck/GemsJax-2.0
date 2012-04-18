@@ -1,6 +1,9 @@
 package org.gemsjax.client.admin.view;
 
+import java.util.Set;
+
 import org.gemsjax.client.admin.widgets.StepByStepWizard.WizardHandler;
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableFileError;
 import org.gemsjax.shared.communication.message.friend.Friend;
 
@@ -11,7 +14,7 @@ public interface CreateMetaModelView {
 	
 	public String getName();
 	
-	public Friend getCollaborators();
+	public Set<Friend> getCollaborators();
 	
 	public String getDescription();
 
@@ -21,5 +24,7 @@ public interface CreateMetaModelView {
 	public void onSuccessfulCreated();
 	
 	public void onErrorOccurred(CollaborateableFileError error);
+	
+	public Collaborateable.Permission getPermission();
 	
 }

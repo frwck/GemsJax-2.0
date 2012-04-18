@@ -22,4 +22,7 @@ public class CollaborateableFileErrorMessage extends ReferenceableCollaborateabl
 		return super.openingXml()+"<"+TAG+" "+ATTRIBUTE_REASON+"=\""+error.toConstant()+"\"/>"+super.closingXml();
 	}
 
+	public CollaborateableFileError getError(){
+		return error;
+	}
 }

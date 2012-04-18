@@ -84,7 +84,6 @@ public class StepByStepWizard {
 	private Set<WizardHandler> handlers;
 	
 	public StepByStepWizard() {
-		
 	
 		stepSectionList= new LinkedList<StepSection>();
 		currentStepSectionIndex = 0;

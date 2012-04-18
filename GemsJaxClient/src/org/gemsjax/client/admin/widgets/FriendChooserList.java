@@ -379,7 +379,14 @@ public class FriendChooserList extends VStack implements FriendsModuleHandler, A
 		
 		RecordList l = list.getDataAsRecordList();
 		
-		// TODO add check if Friend is already in list
+		for (Record r: l.toArray())
+			if (r instanceof FriendListGridRecord)
+				if (((FriendListGridRecord) r).getFriend().equals(f))
+				{
+					NotificationManager.getInstance().showTipNotification(new TipNotification(lang.FriendChooserAlreadyInList(), null, 1500, NotificationPosition.CENTER), AnimationEffect.FADE);
+					return;
+				}
+		
 		l.add(new FriendListGridRecord(f));
 		list.setData(l);
 	}

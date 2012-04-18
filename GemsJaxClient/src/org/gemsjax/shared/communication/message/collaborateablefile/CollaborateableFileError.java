@@ -30,7 +30,7 @@ public enum CollaborateableFileError {
 		return null;
 	}
 
-	public CollaborateableFileError fromConstant(String c){
+	public static CollaborateableFileError fromConstant(String c){
 		
 		if (c.equals(CommunicationConstants.CollaborateableFileError.NAME_MISSING))
 			return NAME_MISSING;
