@@ -99,7 +99,7 @@ public class CollaborateableFileMessageParser {
 			
 			Set<Collaborateable> collaborateables = new LinkedHashSet<Collaborateable>();
 			
-			if (t!=null)
+			if (t==null)
 				throw new DOMException(DOMException.SYNTAX_ERR,"Type was null");
 			
 			
@@ -126,7 +126,7 @@ public class CollaborateableFileMessageParser {
 				
 				Set<Collaborateable> collaborateables = new LinkedHashSet<Collaborateable>();
 				
-				if (t!=null)
+				if (t==null)
 					throw new DOMException(DOMException.SYNTAX_ERR,"Type was null");
 				
 				

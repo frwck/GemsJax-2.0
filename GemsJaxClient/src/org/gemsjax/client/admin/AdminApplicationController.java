@@ -46,6 +46,7 @@ import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.communication.HttpPostCommunicationConnection;
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 import org.gemsjax.client.communication.channel.AuthenticationChannel;
+import org.gemsjax.client.communication.channel.CollaborateableFileChannel;
 import org.gemsjax.client.communication.channel.FriendsLiveChannel;
 import org.gemsjax.client.communication.channel.NotificationChannel;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
@@ -53,6 +54,7 @@ import org.gemsjax.client.communication.channel.RequestChannel;
 import org.gemsjax.client.communication.channel.SearchChannel;
 import org.gemsjax.client.metamodel.factory.MetaFactory;
 import org.gemsjax.client.module.AuthenticationModule;
+import org.gemsjax.client.module.CollaborateableFileModule;
 import org.gemsjax.client.module.FriendsModule;
 import org.gemsjax.client.module.GlobalSearchModule;
 import org.gemsjax.client.module.NotificationRequestModule;
@@ -361,15 +363,15 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 
 	@Override
 	public void onShowAllMetaModelsRequested(ShowAllMetaModelsRequestedEvent e) {
-		AllMetaModelsViewImpl view = new AllMetaModelsViewImpl(language.AllMetaModelsTitle(), language);
-		AllMetaModelsPresenter p = new AllMetaModelsPresenter(eventBus, view);
+		AllMetaModelsViewImpl view = new AllMetaModelsViewImpl(language.AllMetaModelsTitle(), language, eventBus);
+		AllMetaModelsPresenter p = new AllMetaModelsPresenter(eventBus, view, new CollaborateableFileModule<MetaModel>(new CollaborateableFileChannel<MetaModel>(WebSocketCommunicationConnection.getInstance())));
 	}
 
 
 	@Override
 	public void onCreateNewMetaModelRequired() {
 		CreateMetaModelView view = new CreateMetaModelViewImpl(language, friendsModule);
-		CreateMetaModelPresenter p = new CreateMetaModelPresenter(eventBus, view);
+		CreateMetaModelPresenter p = new CreateMetaModelPresenter(eventBus, view, new CollaborateableFileModule<MetaModel>(new CollaborateableFileChannel<MetaModel>(WebSocketCommunicationConnection.getInstance())));
 	}
 	
 }

@@ -11,11 +11,11 @@ import org.gemsjax.shared.communication.message.Message;
  * @author Hannes Dorfmann
  *
  */
-public class SimpleOutputChannel implements OutputChannel{
+public class StandardOutputChannel implements OutputChannel{
 
 	private CommunicationConnection communicationConnection;
 	
-	public SimpleOutputChannel(CommunicationConnection connection)
+	public StandardOutputChannel(CommunicationConnection connection)
 	{
 		this.communicationConnection = connection;
 	}

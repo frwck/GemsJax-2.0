@@ -11,7 +11,7 @@ import org.gemsjax.server.communication.channel.LogoutChannel;
 import org.gemsjax.server.communication.channel.NotificationChannel;
 import org.gemsjax.server.communication.channel.RequestChannel;
 import org.gemsjax.server.communication.channel.SearchChannel;
-import org.gemsjax.server.communication.channel.SimpleOutputChannel;
+import org.gemsjax.server.communication.channel.StandardOutputChannel;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.OutputChannel;
@@ -71,12 +71,18 @@ public class OnlineUser {
 		return user;
 	}
 
-	public OutputChannel getOutputChannel() {
+	/**
+	 * This Channel can be used, to send any kind of message to a {@link User}, which is not clearly part of another 
+	 * {@link OutputChannel} like {@link NotificationChannel}, {@link FriendsLiveChannel}, {@link RequestChannel}, etc.
+	 * 
+	 * @return
+	 */
+	public OutputChannel getStandardOutputChannel() {
 		return outputChannel;
 	}
 
 
-	public void setOutputChannel(OutputChannel outputChannel) {
+	public void setStandardOutputChannel(OutputChannel outputChannel) {
 		this.outputChannel = outputChannel;
 	}
 	
@@ -138,7 +144,7 @@ public class OnlineUser {
 	
 
 	/**
-	 * Create a {@link OnlineUser} with a {@link SimpleOutputChannel} and all needed {@link InputChannel}s:
+	 * Create a {@link OnlineUser} with a {@link StandardOutputChannel} and all needed {@link InputChannel}s:
 	 * <ul>
 	 * <li> </li>
 	 * </ul>
@@ -153,7 +159,7 @@ public class OnlineUser {
 		setClosedListener(connection);
 		
 		// Set the output Channels
-		u.setOutputChannel(new SimpleOutputChannel(connection));
+		u.setStandardOutputChannel(new StandardOutputChannel(connection));
 		
 		// LogoutChannel
 		setLogoutChannel(u, connection);
@@ -188,7 +194,7 @@ public class OnlineUser {
 	
 	
 	/**
-	 * Create a {@link OnlineUser} for an experiment participant with a {@link SimpleOutputChannel} and  for the Experiment needed {@link InputChannel}s:
+	 * Create a {@link OnlineUser} for an experiment participant with a {@link StandardOutputChannel} and  for the Experiment needed {@link InputChannel}s:
 	 * <ul>
 	 * <li> </li>
 	 * </ul>
@@ -203,7 +209,7 @@ public class OnlineUser {
 		setClosedListener(connection);
 		
 		// Set the output Channels
-		u.setOutputChannel(new SimpleOutputChannel(connection));
+		u.setStandardOutputChannel(new StandardOutputChannel(connection));
 		
 		// Set LogoutChannel
 		setLogoutChannel(u, connection);

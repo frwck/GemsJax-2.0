@@ -6,6 +6,9 @@ import java.util.Set;
 import net.sourceforge.htmlunit.corejs.javascript.Token.CommentType;
 
 import org.gemsjax.client.admin.UserLanguage;
+import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
+import org.gemsjax.client.admin.notification.NotificationManager;
+import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.view.CreateMetaModelView;
 import org.gemsjax.client.admin.widgets.FriendChooserList;
 import org.gemsjax.client.admin.widgets.ModalDialog;
@@ -238,16 +241,32 @@ public class CreateMetaModelViewImpl extends ModalDialog implements CreateMetaMo
 		this.hide();
 	}
 	
-	public void onErrorOccurred(CollaborateableFileError error){
+	public void showErrorOccurred(CollaborateableFileError error){
 		//TODO show a more specific error message
+		SC.say(lang.CreateMetaModelCreationError());
+	}
+
+	
+	
+
+
+	@Override
+	public Permission getPermission() {
+		return Permission.PRIVATE;
+	}
+
+
+
+	@Override
+	public void showUnexpectedError() {
 		SC.say(lang.CreateMetaModelCreationError());
 	}
 
 
 
 	@Override
-	public Permission getPermission() {
-		return Permission.PRIVATE;
+	public void showSuccessfulCreatedMessage() {
+		NotificationManager.getInstance().showTipNotification(new TipNotification("Successful", "New Meta Model has been created", 2000, NotificationPosition.CENTER), AnimationEffect.FADE);	
 	}
 
 }

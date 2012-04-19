@@ -469,6 +469,11 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("New")
 	  String AllMetaModelsNew();
 	  
+	  @DefaultStringValue("Refresh")
+	  String AllMetaModelsRefresh();
+	  
+	  
+	  
 	  @DefaultStringValue("Friends name")
 	  String FriendChooserListEnterName();
 	  

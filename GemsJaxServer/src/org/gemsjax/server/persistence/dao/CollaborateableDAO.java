@@ -181,7 +181,7 @@ public interface CollaborateableDAO {
 	 * @param user
 	 * @return
 	 */
-	public abstract Set<MetaModel> getMetaModelsOf(RegisteredUser user);
+	public abstract Set<Collaborateable> getMetaModelsOf(RegisteredUser user);
 	
 	
 	/**
@@ -189,7 +189,7 @@ public interface CollaborateableDAO {
 	 * @param user
 	 * @return
 	 */
-	public abstract Set<Model> getModelsOf(RegisteredUser user);
+	public abstract Set<Collaborateable> getModelsOf(RegisteredUser user);
 	
 	
 }

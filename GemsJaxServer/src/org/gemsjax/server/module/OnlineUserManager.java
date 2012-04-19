@@ -71,7 +71,7 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 		if (o == null) 
 			return null;
 	
-		return o.getOutputChannel();
+		return o.getStandardOutputChannel();
 	}
 	
 	

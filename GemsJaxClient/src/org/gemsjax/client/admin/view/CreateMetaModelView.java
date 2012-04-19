@@ -23,8 +23,12 @@ public interface CreateMetaModelView {
 	
 	public void onSuccessfulCreated();
 	
-	public void onErrorOccurred(CollaborateableFileError error);
+	public void showErrorOccurred(CollaborateableFileError error);
+	
+	public void showUnexpectedError();
 	
 	public Collaborateable.Permission getPermission();
+	
+	public void showSuccessfulCreatedMessage();
 	
 }

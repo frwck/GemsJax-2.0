@@ -65,7 +65,6 @@ public class CollaborateableFileChannel implements InputChannel, OutputChannel{
 		CollaboratableFileMessageParser parser = new CollaboratableFileMessageParser();
 		
 		try {
-			
 			ReferenceableCollaborateableFileMessage msg = parser.parse(arg0.getText());
 			
 			if (msg instanceof GetAllCollaborateablesMessage)

@@ -25,8 +25,6 @@ public class CollaborateableFileModule<T extends Collaborateable> implements Col
 
 	private CollaborateableFileChannel channel;
 	
-	private T instanceHelper;
-	
 	private int lastRefIdCounter =0;
 	
 	private String lastGetAllReferenceId;
@@ -54,7 +52,7 @@ public class CollaborateableFileModule<T extends Collaborateable> implements Col
 	}
 	
 	
-	public void createNew(String name, String description, Collaborateable.Permission permission, Set<Friend> collaborators) throws IOException{
+	public void createNew(String name, String description, CollaborateableType type,  Collaborateable.Permission permission, Set<Friend> collaborators) throws IOException{
 		
 		Set<Integer> collaboratorIds = new LinkedHashSet<Integer>();
 		
@@ -62,13 +60,7 @@ public class CollaborateableFileModule<T extends Collaborateable> implements Col
 			collaboratorIds.add(f.getId());
 		
 		String referenceId = generateNextReferenceId();
-		if (instanceHelper instanceof MetaModel){
-			channel.send(new NewCollaborateableFileMessage(referenceId, name, CollaborateableType.METAMODEL, collaboratorIds, permission, description));
-		}
-		else
-		if (instanceHelper instanceof Model){
-			channel.send(new NewCollaborateableFileMessage(referenceId, name, CollaborateableType.MODEL, collaboratorIds, permission, description));
-		}
+		channel.send(new NewCollaborateableFileMessage(referenceId, name, type, collaboratorIds, permission, description));
 		
 		pendingCreateReferenceIds.add(referenceId);
 	}

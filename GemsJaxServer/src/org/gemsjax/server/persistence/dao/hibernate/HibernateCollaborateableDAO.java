@@ -668,7 +668,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 
 
 	@Override
-	public Set<MetaModel> getMetaModelsOf(RegisteredUser user) {
+	public Set<Collaborateable> getMetaModelsOf(RegisteredUser user) {
 		
 		String sql = "SELECT c FROM MetaModelImpl c WHERE (c.owner = :user OR :user in elements(c.users)) ";
 	
@@ -679,13 +679,13 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		
 	    List<MetaModel> result = query.list();
     
-	    return new LinkedHashSet<MetaModel>(result);
+	    return new LinkedHashSet<Collaborateable>(result);
     
 	}
 
 
 	@Override
-	public Set<Model> getModelsOf(RegisteredUser user) {
+	public Set<Collaborateable> getModelsOf(RegisteredUser user) {
 		
 		String sql = "SELECT c FROM ModelImpl c WHERE (c.owner = :user OR :user in elements(c.users)) ";
 		
@@ -696,7 +696,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		
 	    List<Model> result = query.list();
     
-	    return new LinkedHashSet<Model>(result);
+	    return new LinkedHashSet<Collaborateable>(result);
 	    
 	}
 	

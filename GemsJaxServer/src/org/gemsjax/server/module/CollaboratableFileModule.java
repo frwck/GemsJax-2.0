@@ -14,6 +14,8 @@ import org.gemsjax.shared.communication.message.collaborateablefile.Collaboratea
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableFileErrorMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableFileSuccessfulMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
+import org.gemsjax.shared.communication.message.collaborateablefile.GetAllCollaborateablesAnswerMessage;
+import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
 
@@ -82,6 +84,35 @@ public class CollaboratableFileModule implements CollaborateableFileChannelHandl
 	public void onGetAllCollaborateableFiles(String referenceId, CollaborateableType type, OnlineUser requester) {
 		
 		
+		RegisteredUser user = (RegisteredUser) requester.getUser();
+		
+		if (type == CollaborateableType.METAMODEL){
+			
+			Set<Collaborateable> metaModels = dao.getMetaModelsOf(user);
+			
+			try {
+				requester.getStandardOutputChannel().send(new GetAllCollaborateablesAnswerMessage(referenceId, type, metaModels));
+			} catch (IOException e) {
+				// What to do if message can not be send
+				e.printStackTrace();
+			}
+			
+			
+		}
+		else
+		if (type == CollaborateableType.MODEL){
+			
+			Set<Collaborateable> models = dao.getModelsOf(user);
+			
+			try {
+				requester.getStandardOutputChannel().send(new GetAllCollaborateablesAnswerMessage(referenceId, type, models));
+			} catch (IOException e) {
+				// What to do if message can not be send
+				e.printStackTrace();
+			}
+			
+		}
+		
 		
 		
 	}
@@ -92,7 +123,7 @@ public class CollaboratableFileModule implements CollaborateableFileChannelHandl
 			int collaborateableId, String name, String keywords,
 			Collaborateable.Permission permission, 
 			Set<Integer> addCollaborators, Set<Integer> removeCollaborators) {
-		// TODO Auto-generated method stub
+		// TODO Not implemented yet
 		
 	}
 
