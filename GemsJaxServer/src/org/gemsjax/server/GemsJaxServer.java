@@ -25,8 +25,9 @@ public class GemsJaxServer {
 	    	 return;
 	     }
 
+	     System.setProperty("DEBUG", "true");
 	     Server server = new Server(8081);
-        
+	     
 
 
 	     String warUrl = args[0];

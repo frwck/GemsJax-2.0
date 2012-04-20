@@ -77,7 +77,7 @@ public class NewCollaborateableFileMessage extends ReferenceableCollaborateableF
 	public String toXml() {
 		String x=super.openingXml();
 		
- 		x+="<"+TAG+" "+ATTRIBUTE_NAME+"=\""+name +"\" " +ATTRIBUTE_PERMISSION+"=\""+permission+"\" "+ATTRIBUTE_TYPE+"=\""+type.toConstant()+"\">";
+ 		x+="<"+TAG+" "+ATTRIBUTE_NAME+"=\""+name +"\" " +ATTRIBUTE_PERMISSION+"=\""+permission.toConstant()+"\" "+ATTRIBUTE_TYPE+"=\""+type.toConstant()+"\">";
 		
 		
 		x+= "<"+SUBTAG_KEYWORDS+">";

@@ -2,16 +2,13 @@ package org.gemsjax.client.admin;
 
 
 import java.io.IOException;
-import org.gemsjax.client.communication.WebSocketCommunicationConnection;
-import org.gemsjax.client.util.Console;
-import org.gemsjax.shared.communication.message.system.LoginMessage;
 
+import org.gemsjax.client.communication.WebSocketCommunicationConnection;
+import org.gemsjax.client.test.TestRunner;
+import org.gemsjax.client.util.Console;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
-import com.google.gwt.event.logical.shared.AttachEvent;
-import com.google.gwt.event.logical.shared.AttachEvent.Handler;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.core.KeyIdentifier;
 import com.smartgwt.client.util.KeyCallback;
 import com.smartgwt.client.util.Page;
@@ -51,6 +48,21 @@ public class GemsJaxClient implements EntryPoint {
 						SC.debugger();
 					}
 				});
+				
+				
+				
+				KeyIdentifier testRunnerKey = new KeyIdentifier();
+				testRunnerKey.setAltKey(true);
+				testRunnerKey.setKeyName("T");
+	
+				Page.registerKey(testRunnerKey, new KeyCallback() {
+					public void execute(String keyName) {
+						new TestRunner();
+					}
+				});
+				
+				
+				
 				
 			GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 				

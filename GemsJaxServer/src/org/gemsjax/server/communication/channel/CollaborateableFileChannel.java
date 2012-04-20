@@ -86,6 +86,9 @@ public class CollaborateableFileChannel implements InputChannel, OutputChannel{
 			
 			
 		} catch (SAXException e) {
+			
+			e.printStackTrace();
+			
 			try {
 				send (new CollaborateableFileErrorMessage(parser.getCurrentReferenceId(), CollaborateableFileError.PARSING));
 			} catch (IOException e1) {

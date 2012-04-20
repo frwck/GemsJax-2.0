@@ -580,6 +580,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 			owner.getCollaborateables().add(collaborateable);
 			session.update(owner);
 		
+			if (collaborators != null)
 			for (User u : collaborators){
 				u.getCollaborateables().add(collaborateable);
 				session.update(u);
@@ -595,6 +596,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		}
 		catch (HibernateException e)
 		{
+			e.printStackTrace();
 			if (tx != null)
 				tx.rollback();
 			

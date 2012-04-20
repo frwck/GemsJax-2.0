@@ -45,6 +45,8 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 	private Set<Integer> removeCollaboratorIds;
 	private Integer collaborateableId;
 	
+	private CollaborateableType newType;
+	
 	
 	
 	
@@ -71,10 +73,10 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 	   
 	    if (startNew && endNew) 
 	    {
-	    	if (referenceId!=null)	
-	    		return new NewCollaborateableFileMessage(referenceId, name, type,  addCollaboratorIds, permission, keywords);
+	    	if (referenceId!=null && newType != null)	
+	    		return new NewCollaborateableFileMessage(referenceId, name, newType,  addCollaboratorIds, permission, keywords);
 	    	else
-	    		throw new SAXException("reference id is null");
+	    		throw new SAXException("reference id or type is null ");
 	    }
 	    
 	    if (startUpdate && endUpdate)
@@ -125,7 +127,7 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 		if (localName.equals(GetAllCollaborateablesMessage.TAG))
 			endGetAll = true;
 		else
-		if (endNew){ // if its a new messages
+		if (startNew){ // if its a new messages
 			
 			if (localName.equals(NewCollaborateableFileMessage.SUBTAG_KEYWORDS)){
 				endKeywords = true;
@@ -138,7 +140,7 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 			
 		}
 		else
-		if (endUpdate){ // if its a update message
+		if (startUpdate){ // if its a update message
 			if (localName.equals(UpdateCollaborateableFileMessage.SUBTAG_KEYWORDS)){
 				endKeywords = true;
 				keywords = getCurrentValue();
@@ -192,8 +194,8 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 				throw new SAXException("Could not parse the permission. Value is: "+atts.getValue(NewCollaborateableFileMessage.ATTRIBUTE_PERMISSION));
 			}
 			
-			type = CollaborateableType.fromConstant(atts.getValue(NewCollaborateableFileMessage.ATTRIBUTE_TYPE));
-			if (type==null)
+			newType = CollaborateableType.fromConstant(atts.getValue(NewCollaborateableFileMessage.ATTRIBUTE_TYPE));
+			if (newType==null)
 				throw new SAXException("Could not parse or dertermine the CollabortaionType");
 		}
 		else
@@ -228,10 +230,10 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 			else
 			if (localName.equals(NewCollaborateableFileMessage.SUBSUBTAG_ADD_COLLABORATOR))
 				try{
-					addCollaboratorIds.add(Integer.parseInt(NewCollaborateableFileMessage.ATTRIBUTE_COLLABORATOR_ID));
+					addCollaboratorIds.add(Integer.parseInt(atts.getValue(NewCollaborateableFileMessage.ATTRIBUTE_COLLABORATOR_ID)));
 				}
 				catch(NumberFormatException e){
-					throw new SAXException("Could not parse a Collaborator ID");
+					throw new SAXException("Could not parse a Collaborator ID"  );
 				}
 		}
 		else
@@ -300,6 +302,7 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 		endGetAll = false;
 		
 		
+		
 		startCollaborators = false;
 		endCollaborators = false;
 		startPermission = false;
@@ -310,6 +313,7 @@ public class CollaboratableFileMessageParser extends AbstractContentHandler {
 		addCollaboratorIds = new LinkedHashSet<Integer>();
 		removeCollaboratorIds = new LinkedHashSet<Integer>();
 		type = null;
+		newType = null;
 		permission = null;
 		keywords = null;
 		type = null;

@@ -6,6 +6,8 @@ import java.util.Set;
 import org.gemsjax.server.communication.channel.handler.CollaborateableFileChannelHandler;
 import org.gemsjax.server.persistence.dao.CollaborateableDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.exception.AlreadyAssignedException;
+import org.gemsjax.server.persistence.dao.exception.AlreadyExistsException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateCollaborateableDAO;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
@@ -57,9 +59,23 @@ public class CollaboratableFileModule implements CollaborateableFileChannelHandl
 			collUsers = userDAO.getUserByIds(collaborators);
 		
 		try {
-			Collaborateable collaborateable = dao.createCollaborateable((RegisteredUser)owner.getUser(), name, keywords, type, permission, collUsers);
+			Collaborateable collaborateable = dao.createCollaborateable((RegisteredUser)owner.getUser(), name, keywords, type, permission, null);
+			
 			owner.getCollaborateableFileChannel().send(new CollaborateableFileSuccessfulMessage(referenceId));
-		
+			
+			for (User u : collUsers){
+				// Make a request
+				try {
+					RequestModule.getInstance().createCollaborationRequest((RegisteredUser)owner.getUser(), (RegisteredUser)u, collaborateable);
+				} catch (AlreadyExistsException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (AlreadyAssignedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
 		} catch (DAOException e) {
 			
 			try {
@@ -67,6 +83,8 @@ public class CollaboratableFileModule implements CollaborateableFileChannelHandl
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
+			
+			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO What to do if message can not be sent
 			e.printStackTrace();
