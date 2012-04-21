@@ -343,5 +343,28 @@ public class CommunicationConstants {
 	}
 	
 	
+	
+	public class ExperimentError{
+		private ExperimentError(){};
+		
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.experiment.ExperimentError#AUTHENTICATION}
+		 */
+		public static final String AUTEHNTICATION = "authentication";
+
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.experiment.ExperimentError#PARSE}
+		 */
+		public static final String PARSE ="parse";
+
+		/**
+		 * Mapped to {@link org.gemsjax.shared.communication.message.experiment.ExperimentError#DATABASE}
+		 */
+		public static final String DATABASE ="database";
+		
+		
+	}
+	
+	
 
 }
