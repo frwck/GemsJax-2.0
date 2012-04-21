@@ -93,6 +93,7 @@ public class CollaborateableFileMessageParser {
 	private ReferenceableCollaborateableFileMessage parseGetAllMessage(String referenceId, Element e) throws DOMException{
 		NodeList results = e.getChildNodes();
 		
+		
 		CollaborateableType t = CollaborateableType.fromConstant( e.getAttribute(GetAllCollaborateablesAnswerMessage.ATTRIBUTE_TYPE) );
 
 		if (t == CollaborateableType.METAMODEL){

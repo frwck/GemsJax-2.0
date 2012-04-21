@@ -10,6 +10,7 @@ import org.gemsjax.client.util.Console;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.core.KeyIdentifier;
 import com.smartgwt.client.util.KeyCallback;
 import com.smartgwt.client.util.Page;
@@ -89,6 +90,18 @@ public class GemsJaxClient implements EntryPoint {
 		
 		AdminApplicationController adminApplicationcontroller = AdminApplicationController.getInstance();
 		adminApplicationcontroller.start();
+		
+		Timer t = new Timer(){
+
+			@Override
+			public void run() {
+				new TestRunner(new CollaborationFileMessageTest());
+			}
+			
+			
+		};
+		
+		t.schedule(4000);
 		
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
