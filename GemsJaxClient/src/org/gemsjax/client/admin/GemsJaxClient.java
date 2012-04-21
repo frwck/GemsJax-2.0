@@ -91,18 +91,6 @@ public class GemsJaxClient implements EntryPoint {
 		AdminApplicationController adminApplicationcontroller = AdminApplicationController.getInstance();
 		adminApplicationcontroller.start();
 		
-		Timer t = new Timer(){
-
-			@Override
-			public void run() {
-				new TestRunner(new CollaborationFileMessageTest());
-			}
-			
-			
-		};
-		
-		t.schedule(4000);
-		
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
