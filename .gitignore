@@ -2,3 +2,6 @@
 /.metadata
 /GemsJaxClient/.gwt-tmp
 /GemsJaxClient/gwt-unitCache
+/GemsJaxClient/.settings
+/GemsJaxClient/.classpath
+/GemsJaxClient/.project
