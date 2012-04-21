@@ -4,7 +4,8 @@ package org.gemsjax.client.admin;
 import java.io.IOException;
 
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
-import org.gemsjax.client.test.TestRunner;
+import org.gemsjax.client.tests.TestRunner;
+import org.gemsjax.client.tests.testcases.CollaborationFileMessageTest;
 import org.gemsjax.client.util.Console;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -57,7 +58,7 @@ public class GemsJaxClient implements EntryPoint {
 	
 				Page.registerKey(testRunnerKey, new KeyCallback() {
 					public void execute(String keyName) {
-						new TestRunner();
+						new TestRunner(new CollaborationFileMessageTest());
 					}
 				});
 				
