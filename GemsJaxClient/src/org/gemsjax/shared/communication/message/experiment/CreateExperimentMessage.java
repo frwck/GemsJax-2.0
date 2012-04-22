@@ -1,11 +1,7 @@
 package org.gemsjax.shared.communication.message.experiment;
 
-import java.util.Date;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.gemsjax.client.experiment.ExperimentGroupImpl;
-import org.gemsjax.client.experiment.ExperimentInvitationImpl;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;
 
