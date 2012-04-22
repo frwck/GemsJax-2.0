@@ -90,6 +90,7 @@ public class NotificationRequestPresenter extends Presenter implements Notificat
 		shortView.showShortRequestNotification(msg);
 		shortView.setUnreadNotificationRequest(module.getUneradUnansweredCount());
 		view.addRequest(msg.getRequest());
+		
 	}
 
 

@@ -53,6 +53,7 @@ public class CreateMetaModelPresenter extends Presenter implements WizardHandler
 	public void onNewCreateSuccessful() {
 		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
 		view.showSuccessfulCreatedMessage();
+		view.hide();
 	}
 
 

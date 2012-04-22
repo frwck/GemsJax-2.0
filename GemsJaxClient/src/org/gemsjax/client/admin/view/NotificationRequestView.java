@@ -2,11 +2,13 @@ package org.gemsjax.client.admin.view;
 
 import java.util.Set;
 
+import org.gemsjax.shared.communication.message.notification.LiveNotificationMessage;
 import org.gemsjax.shared.communication.message.notification.Notification;
 import org.gemsjax.shared.communication.message.notification.NotificationError;
 import org.gemsjax.shared.communication.message.request.AdminExperimentRequest;
 import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.FriendshipRequest;
+import org.gemsjax.shared.communication.message.request.LiveRequestMessage;
 import org.gemsjax.shared.communication.message.request.Request;
 import org.gemsjax.shared.communication.message.request.RequestError;
 
@@ -103,5 +105,9 @@ public interface NotificationRequestView {
 	public void showMarkAsReadError(Notification n, NotificationError error);
 	
 	public void showDeleteError(Notification n, NotificationError error);
+	
+	public void showLiveShortRequestNotification(LiveRequestMessage r);
+	
+	public void showLiveShortNotification(LiveNotificationMessage n);
 	
 }

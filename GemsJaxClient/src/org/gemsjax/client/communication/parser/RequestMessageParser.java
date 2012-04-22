@@ -113,7 +113,7 @@ public class RequestMessageParser {
 	    if (childNodes.getLength()!=1)
 	    	throw new DOMException(DOMException.SYNTAX_ERR, "The <"+LiveRequestMessage.TAG+"> contains more that one child tags");
 		
-	    Element childElement = (Element)childNodes.item(0);
+	   
 	    
 		
 		try{
@@ -140,12 +140,14 @@ public class RequestMessageParser {
 			throw new DOMException(DOMException.SYNTAX_ERR,"Could not parse the username. Value: "+e.getAttribute(LiveRequestMessage.ATTRIBUTE_REQUESTER_USERNAME));
 	
 		
+		 Element childElement = (Element)childNodes.item(0);
+		 
 		
 		if (childElement.getTagName().equals(LiveAdminExperimentRequestMessage.TAG))
 			return parseLiveExperiment(childElement, reqId, date, displayName, username);
 		else
 		if (childElement.getTagName().equals(LiveCollaborationRequestMessage.TAG))
-			return parseLiveExperiment(childElement, reqId, date, displayName, username);
+			return parseLiveCollaboration(childElement, reqId, date, displayName, username);
 		else
 		if (childElement.getTagName().equals(LiveFriendshipRequestMessage.TAG))
 			return new LiveFriendshipRequestMessage(new FriendshipRequest(reqId, displayName, username, date));

@@ -11,6 +11,7 @@ import java.util.Set;
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.notification.NotificationManager;
+import org.gemsjax.client.admin.notification.ShortInfoNotification;
 import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
 import org.gemsjax.client.admin.tabs.LoadingTab;
@@ -22,12 +23,14 @@ import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.shared.communication.message.notification.CollaborationRequestNotification;
 import org.gemsjax.shared.communication.message.notification.ExperimentRequestNotification;
 import org.gemsjax.shared.communication.message.notification.FriendshipRequestNotification;
+import org.gemsjax.shared.communication.message.notification.LiveNotificationMessage;
 import org.gemsjax.shared.communication.message.notification.Notification;
 import org.gemsjax.shared.communication.message.notification.NotificationError;
 import org.gemsjax.shared.communication.message.notification.QuickNotification;
 import org.gemsjax.shared.communication.message.request.AdminExperimentRequest;
 import org.gemsjax.shared.communication.message.request.CollaborationRequest;
 import org.gemsjax.shared.communication.message.request.FriendshipRequest;
+import org.gemsjax.shared.communication.message.request.LiveRequestMessage;
 import org.gemsjax.shared.communication.message.request.Request;
 import org.gemsjax.shared.communication.message.request.RequestError;
 
@@ -730,6 +733,8 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 	}
 	
 	
+	
+	
 	private void addFriendshipRequest(FriendshipRequest r)
 	{
 		int index = -1;
@@ -830,5 +835,15 @@ public class NotificationRequestViewImpl extends LoadingTab implements Notificat
 	public void showDeleteError(Notification n, NotificationError error) {
 
 		NotificationManager.getInstance().showTipNotification(new TipNotification(language.NotificationDeleteError(), null, 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE);
+	}
+
+	@Override
+	public void showLiveShortRequestNotification(LiveRequestMessage r) {
+		NotificationManager.getInstance().showShortInfoNotification(new ShortInfoNotification("New Request received"));
+	}
+
+	@Override
+	public void showLiveShortNotification(LiveNotificationMessage n) {
+		NotificationManager.getInstance().showShortInfoNotification(new ShortInfoNotification("New Notification received"));
 	}
 }
