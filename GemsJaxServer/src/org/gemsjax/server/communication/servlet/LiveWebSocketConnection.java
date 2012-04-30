@@ -4,7 +4,9 @@ package org.gemsjax.server.communication.servlet;
 
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
@@ -15,6 +17,7 @@ import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.MessageType;
 
 
 
@@ -24,7 +27,7 @@ import org.gemsjax.shared.communication.message.Message;
 	 * @author Hannes Dorfmann
 	 *
 	 */
-	public class UserWebSocket implements CommunicationConnection, WebSocket.OnTextMessage {
+	public class LiveWebSocketConnection implements CommunicationConnection, WebSocket.OnTextMessage {
 
 		private Connection connection;
 		private HttpSession session;
@@ -34,9 +37,11 @@ import org.gemsjax.shared.communication.message.Message;
 		private Set<ClosedListener> closedListeners;
 		private Set<EstablishedListener> establishedListeners;
 		private Set<ErrorListener> errorListeners;
+		
+		private Map<MessageType<?>, Set<InputChannel>> inputChannelMap;
 
 		
-		public UserWebSocket(HttpSession session)
+		public LiveWebSocketConnection(HttpSession session)
 		{
 			this.session = session;
 			connection = null;
@@ -44,6 +49,9 @@ import org.gemsjax.shared.communication.message.Message;
 			closedListeners = new LinkedHashSet<ClosedListener>();
 			establishedListeners = new LinkedHashSet<EstablishedListener>();
 			errorListeners = new LinkedHashSet<CommunicationConnection.ErrorListener>();
+			
+			inputChannelMap = new LinkedHashMap<MessageType<?>, Set<InputChannel>>();
+			
 		}
 		
 		@Override
@@ -93,7 +101,12 @@ import org.gemsjax.shared.communication.message.Message;
 
 		@Override
 		public void deregisterInputChannel(InputChannel c) {
+			
 			inputChannels.remove(c);
+			
+			for (Map.Entry<MessageType<?>, Set<InputChannel>> e : inputChannelMap.entrySet())
+				e.getValue().remove(c);
+			
 		}
 
 		@Override
@@ -178,6 +191,24 @@ import org.gemsjax.shared.communication.message.Message;
 		public HttpSession getSession()
 		{
 			return session;
+		}
+		
+		
+		@Override
+		public void registerInputChannel(InputChannel c, MessageType<?> type) {
+			
+			if (!inputChannelMap.containsKey(type)){ // key is not already there
+				Set<InputChannel> channels =  new LinkedHashSet<InputChannel>();
+				
+				channels.add(c);
+				
+				inputChannelMap.put(type, channels);
+			}
+			else
+			{	// Key is already present, so append the channel to the list
+				Set<InputChannel> channels = inputChannelMap.get(type);
+				channels.add(c);
+			}
 		}
 
 	}

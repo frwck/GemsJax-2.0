@@ -13,14 +13,10 @@ import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.MessageType;
 
 public class TestWebSocketConnection implements CommunicationConnection {
 
-
-	
-	
-	
-	
 	private WebSocketClient ws;
 	
 	
@@ -271,6 +267,15 @@ public class TestWebSocketConnection implements CommunicationConnection {
 		@Override
 		public void removeErrorListener(ErrorListener listener) {
 			errorListeners.remove(listener);
+		}
+
+
+
+
+		@Override
+		public void registerInputChannel(InputChannel arg0, MessageType<?> arg1) {
+			// TODO Auto-generated method stub
+			
 		}
 	
 	

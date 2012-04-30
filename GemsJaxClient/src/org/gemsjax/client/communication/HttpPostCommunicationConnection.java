@@ -1,7 +1,9 @@
 package org.gemsjax.client.communication;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.gemsjax.client.util.Console;
@@ -9,6 +11,7 @@ import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.MessageType;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -37,10 +40,14 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 	private RequestBuilder builder;
 	private Request request;
 	
+	@Deprecated
 	private Set<InputChannel> inputChannels;
 	private Set<ClosedListener> closedListeners;
 	private Set<EstablishedListener> establishedListeners;
 	private Set<ErrorListener> errorListeners;
+	
+	private Map<MessageType<?>, Set<InputChannel>> inputChannelMap;
+	
 	
 	public HttpPostCommunicationConnection(String serverUrl)
 	{
@@ -50,6 +57,7 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 		closedListeners = new LinkedHashSet<ClosedListener>();
 		establishedListeners = new LinkedHashSet<EstablishedListener>();
 		errorListeners = new LinkedHashSet<CommunicationConnection.ErrorListener>();
+		inputChannelMap = new LinkedHashMap<MessageType<?>, Set<InputChannel>>();
 	}
 	
 	@Override
@@ -207,5 +215,23 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 	@Override
 	public void removeErrorListener(ErrorListener listener) {
 		errorListeners.remove(listener);
+	}
+	
+	
+	@Override
+	public void registerInputChannel(InputChannel c, MessageType<?> type) {
+		
+		if (!inputChannelMap.containsKey(type)){ // key is not already there
+			Set<InputChannel> channels =  new LinkedHashSet<InputChannel>();
+			
+			channels.add(c);
+			
+			inputChannelMap.put(type, channels);
+		}
+		else
+		{	// Key is already present, so append the channel to the list
+			Set<InputChannel> channels = inputChannelMap.get(type);
+			channels.add(c);
+		}
 	}
 }

@@ -1,5 +1,8 @@
 package org.gemsjax.shared.communication.message.friend;
 
+import org.gemsjax.shared.communication.message.MessageType;
+import org.gemsjax.shared.communication.message.experiment.ReferenceableExperimentMessage;
+
 /** 
  * This kind of message extends the {@link FriendMessage} to add a simple reference id to those kind of messages,
  * that need a response/answer from the server. <br /><br />
@@ -53,6 +56,9 @@ public abstract  class ReferenceableFriendMessage  extends FriendMessage{
 	
 	private String referenceId;
 	
+	
+	
+	
 	public ReferenceableFriendMessage(String referenceId)
 	{
 		this.referenceId = referenceId;
@@ -67,5 +73,6 @@ public abstract  class ReferenceableFriendMessage  extends FriendMessage{
 	{
 		return referenceId;
 	}
+	
 	
 }

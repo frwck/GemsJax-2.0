@@ -1,7 +1,9 @@
 package org.gemsjax.client.communication;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.gemsjax.shared.ServletPaths;
@@ -9,6 +11,7 @@ import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.MessageType;
 import org.gemsjax.shared.communication.message.system.KeepAliveMessage;
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.util.SC;
@@ -71,10 +74,13 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	
 	private final boolean useSsl = false;
 	
+	@Deprecated
 	private Set<InputChannel> inputChannels;
 	private Set<ClosedListener> closedListeners;
 	private Set<EstablishedListener> establishedListeners;
 	private Set<ErrorListener> errorListeners;
+	
+	private Map<MessageType<?>, Set<InputChannel>> inputChannelMap;
 	
 	private KeepAliveTimer keepAliveTimer = null;
 	
@@ -86,6 +92,9 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
         establishedListeners = new LinkedHashSet<EstablishedListener>();
         closedListeners = new LinkedHashSet<ClosedListener>();
         errorListeners = new LinkedHashSet<CommunicationConnection.ErrorListener>();
+        
+        inputChannelMap = new LinkedHashMap<MessageType<?>, Set<InputChannel>>();
+        
     }
     
    
@@ -268,6 +277,9 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	@Override
 	public void deregisterInputChannel(InputChannel c) {
 		inputChannels.remove(c);
+		
+		for (Map.Entry<MessageType<?>, Set<InputChannel>> e : inputChannelMap.entrySet())
+			e.getValue().remove(c);
 	}
 
 
@@ -413,6 +425,26 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	@Override
 	public void removeErrorListener(ErrorListener listener) {
 		errorListeners.remove(listener);
+	}
+
+
+
+
+	@Override
+	public void registerInputChannel(InputChannel c, MessageType<?> type) {
+		
+		if (!inputChannelMap.containsKey(type)){ // key is not already there
+			Set<InputChannel> channels =  new LinkedHashSet<InputChannel>();
+			
+			channels.add(c);
+			
+			inputChannelMap.put(type, channels);
+		}
+		else
+		{	// Key is already present, so append the channel to the list
+			Set<InputChannel> channels = inputChannelMap.get(type);
+			channels.add(c);
+		}
 	}
 
 }

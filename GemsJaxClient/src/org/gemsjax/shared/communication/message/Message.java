@@ -26,6 +26,7 @@ public interface Message {
 	 * POST parametername and parametervalue pair and sent to the server as follows:<br />
 	 * POST_PARAMETER=message.toXml()
 	 */
+	@Deprecated
 	public static final String POST_PARAMETER_NAME = "msg";
 	
 	
@@ -34,7 +35,11 @@ public interface Message {
 	 * This xml representation is send via the {@link OutputChannel#send(Message)} to the {@link User}
 	 * @return
 	 */
+	@Deprecated
 	public abstract String toXml();
+	
+	
+	public abstract MessageType<?> getMessageType();
 	
 
 }

@@ -191,7 +191,7 @@ public class UserBox extends HStack {
 	private UserBoxItem notificationsItem;
 	private UserBoxItem metaModelsItem;
 	private UserBoxItem experimentsItem;
-	private UserBoxItem settingsItem;
+	private UserBoxItem modelsItem;
 	private UserBoxItem logoutItem;
 	private UserBoxItem welcomeItem;
 	private UserLanguage language;
@@ -216,7 +216,7 @@ public class UserBox extends HStack {
 		notificationsItem = new UserBoxMenuItem(language.NotificationsMenuItem());
 		metaModelsItem= new UserBoxMenuItem(language.MetaModelsMenuItem());
 		experimentsItem = new UserBoxMenuItem(language.ExperimentsMenuItem());
-		settingsItem = new UserBoxMenuItem(language.SettingsMenuItem());
+		modelsItem = new UserBoxMenuItem(language.ModelsMenuItem());
 		logoutItem = new UserBoxMenuItem(language.Logout());
 		welcomeItem = new UserBoxItem("Welcome");
 		
@@ -227,13 +227,13 @@ public class UserBox extends HStack {
 		this.addMember(new UserBoxItemSeparator());
 		this.addMember(metaModelsItem);
 		this.addMember(new UserBoxItemSeparator());
+		this.addMember(modelsItem);
+		this.addMember(new UserBoxItemSeparator());
 		this.addMember(experimentsItem);
 		this.addMember(new UserBoxItemSeparator());
 		this.addMember(notificationsItem);
 		this.notificationCountLabel = new NotificationCountLabel();
 		this.addMember(notificationCountLabel);
-		this.addMember(new UserBoxItemSeparator());
-		this.addMember(settingsItem);
 		this.addMember(new UserBoxItemSeparator());
 		this.addMember(logoutItem);
 		this.addMember(borderRight);
@@ -282,7 +282,7 @@ public class UserBox extends HStack {
 	
 	public HasClickHandlers getSettingsItem()
 	{
-		return settingsItem;
+		return modelsItem;
 	}
 	
 	

@@ -21,7 +21,7 @@ public class LiveCommunicationWebSocketServlet extends WebSocketServlet {
 	@Override
 	public WebSocket doWebSocketConnect(HttpServletRequest request, String arg1) {
 		System.out.println("WebSocket "+request.getSession(true).getId());
-		return new UserWebSocket(request.getSession());
+		return new LiveWebSocketConnection(request.getSession());
 	}
 	
   protected void doGet(HttpServletRequest request, HttpServletResponse response)   throws ServletException ,IOException 

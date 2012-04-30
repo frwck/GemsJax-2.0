@@ -2,7 +2,9 @@ package org.gemsjax.server.communication;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServlet;
@@ -14,6 +16,7 @@ import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.MessageType;
 
 /**
  * This is a {@link CommunicationConnection} for the classic HTTP POST and GET.
@@ -46,6 +49,8 @@ public class HttpCommunicationConnection implements CommunicationConnection{
 	private Set<ClosedListener> closedListeners;
 //	private Set<ErrorListener> errorListeners;
 	
+	private Map<MessageType<?>, Set<InputChannel>> inputChannelMap;
+	
 	public HttpCommunicationConnection(HttpServletRequest request, HttpServletResponse response)
 	{
 		this.request = request;
@@ -58,6 +63,8 @@ public class HttpCommunicationConnection implements CommunicationConnection{
 		establishedListeners = new LinkedHashSet<CommunicationConnection.EstablishedListener>();
 		closedListeners = new LinkedHashSet<CommunicationConnection.ClosedListener>();
 //		errorListeners = new LinkedHashSet<CommunicationConnection.ErrorListener>();
+		
+		inputChannelMap = new LinkedHashMap<MessageType<?>, Set<InputChannel>>();
 		
 	}
 	
@@ -234,5 +241,23 @@ public class HttpCommunicationConnection implements CommunicationConnection{
 	public int getResponseStatusCode()
 	{
 		return response.getStatus();
+	}
+	
+	
+	@Override
+	public void registerInputChannel(InputChannel c, MessageType<?> type) {
+		
+		if (!inputChannelMap.containsKey(type)){ // key is not already there
+			Set<InputChannel> channels =  new LinkedHashSet<InputChannel>();
+			
+			channels.add(c);
+			
+			inputChannelMap.put(type, channels);
+		}
+		else
+		{	// Key is already present, so append the channel to the list
+			Set<InputChannel> channels = inputChannelMap.get(type);
+			channels.add(c);
+		}
 	}
 }

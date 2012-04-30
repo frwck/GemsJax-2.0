@@ -7,7 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.gemsjax.server.communication.channel.handler.LogoutChannelHandler;
-import org.gemsjax.server.communication.servlet.UserWebSocket;
+import org.gemsjax.server.communication.servlet.LiveWebSocketConnection;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.CommunicationConnection.ClosedListener;
 import org.gemsjax.shared.communication.channel.OutputChannel;
@@ -160,8 +160,8 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 
 	@Override
 	public void onClose(CommunicationConnection connection) {
-		if (connection instanceof UserWebSocket){
-			OnlineUser ou = getOnlineUser(((UserWebSocket) connection).getSession());
+		if (connection instanceof LiveWebSocketConnection){
+			OnlineUser ou = getOnlineUser(((LiveWebSocketConnection) connection).getSession());
 			
 			if (ou != null)
 			{

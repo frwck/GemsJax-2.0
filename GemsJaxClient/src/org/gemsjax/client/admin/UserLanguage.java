@@ -76,6 +76,10 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  String MetaModelsMenuItem();
 	  
 	  
+	  @DefaultStringValue("models")
+	  String ModelsMenuItem();
+	  
+	  
 	  
 	  // Experiments
 

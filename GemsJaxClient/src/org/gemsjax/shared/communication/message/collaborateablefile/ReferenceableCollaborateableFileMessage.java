@@ -1,6 +1,7 @@
 package org.gemsjax.shared.communication.message.collaborateablefile;
 
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.MessageType;
 
 /**
  * The abstract super class for every collaborateable administration message, like creating , deleting and editing collaborateables.
@@ -8,7 +9,7 @@ import org.gemsjax.shared.communication.message.Message;
  * @author Hannes Dorfmann
  *
  */
-public abstract class ReferenceableCollaborateableFileMessage implements Message{
+public abstract class ReferenceableCollaborateableFileMessage extends CollaborateableFileMessage{
 	
 	public static final String TAG ="col-file";
 	public static final String ATTRIBUTE_REFERENCE_ID ="ref-id";
@@ -32,4 +33,5 @@ public abstract class ReferenceableCollaborateableFileMessage implements Message
 	public String getReferenceId(){
 		return referenceId;
 	}
+	
 }

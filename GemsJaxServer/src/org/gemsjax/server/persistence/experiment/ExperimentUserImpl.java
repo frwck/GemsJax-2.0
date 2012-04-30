@@ -7,6 +7,7 @@ import org.gemsjax.shared.user.ExperimentUser;
 
 public class ExperimentUserImpl extends UserImpl implements ExperimentUser {
 
+	// TODO change to validation number
 	private String username;
 	private ExperimentGroup experimentGroup;
 	private String passwordHash;

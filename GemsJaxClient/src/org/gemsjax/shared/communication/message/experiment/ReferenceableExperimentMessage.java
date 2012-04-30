@@ -1,6 +1,8 @@
 package org.gemsjax.shared.communication.message.experiment;
 
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.MessageType;
+import org.gemsjax.shared.communication.message.collaborateablefile.ReferenceableCollaborateableFileMessage;
 
 
 /**
@@ -13,10 +15,11 @@ import org.gemsjax.shared.communication.message.Message;
  * @author Hannes Dorfmann
  *
  */
-public abstract class ReferenceableExperimentMessage implements Message{
+public abstract class ReferenceableExperimentMessage extends ExperimentMessage{
 
 	public static final String TAG = "exp";
 	public static final String ATTRIBUTE_REFERENCE_ID ="ref-id";
+	
 	
 	private String referenceId;
 	

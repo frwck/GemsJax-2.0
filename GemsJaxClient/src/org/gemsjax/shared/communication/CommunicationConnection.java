@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.MessageType;
 
 /**
  * Is the abstract API interface, that provides communication with the underlying network object like a socket.
@@ -140,7 +141,12 @@ public interface CommunicationConnection {
 	 * <b>So registering a {@link InputChannel} to a {@link CommunicationConnection} is the only way to receive {@link Message}s</b>
 	 * @param c
 	 */
+	@Deprecated
 	public void registerInputChannel(InputChannel c);
+	
+	
+	public void registerInputChannel(InputChannel c, MessageType<?> type);
+	
 	
 	/**
 	 * Deregister a {@link InputChannel}
