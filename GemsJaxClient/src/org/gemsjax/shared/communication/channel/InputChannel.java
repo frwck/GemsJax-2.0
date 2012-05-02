@@ -4,6 +4,7 @@ package org.gemsjax.shared.communication.channel;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.message.Message;
 
+
 /**
  * A {@link InputChannel} is registered to the {@link CommunicationConnection} to receive incoming messages (wrapped by the class {@link InputMessage}).
  * The {@link CommunicationConnection} forwards incoming messages ({@link InputMessage}) to every registered {@link InputChannel}, 
@@ -23,7 +24,10 @@ public interface InputChannel {
 	 * <b>Notice:</b> This method is only called, if ({@link #isMatchingFilter()}) returns true.
 	 * @param msg The {@link InputMessage} which wraps the incoming data
 	 */
+	@Deprecated
 	public void onMessageReceived(InputMessage msg);
+
+	public void onMessageRecieved(Message msg);
 	
 	
 	/**
@@ -34,6 +38,7 @@ public interface InputChannel {
 	 * @param msg The textual protocol message
 	 * @return
 	 */
+	@Deprecated
 	public boolean isMatchingFilter(String msg);
 	
 }

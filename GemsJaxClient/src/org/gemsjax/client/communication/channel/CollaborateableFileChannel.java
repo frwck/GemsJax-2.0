@@ -69,6 +69,12 @@ public class CollaborateableFileChannel<T extends Collaborateable> implements In
 	public boolean isMatchingFilter(String msg) {
 		return regEx.test(msg);
 	}
+
+	@Override
+	public void onMessageRecieved(Message msg) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

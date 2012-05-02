@@ -175,6 +175,13 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 	public boolean isMatchingFilter(String msg) {
 		return regEx.test(msg);
 	}
+
+
+	@Override
+	public void onMessageRecieved(Message msg) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 

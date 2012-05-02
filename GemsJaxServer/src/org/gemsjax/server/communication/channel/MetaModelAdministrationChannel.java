@@ -36,4 +36,11 @@ public class MetaModelAdministrationChannel implements InputChannel, OutputChann
 		
 	}
 
+
+	@Override
+	public void onMessageRecieved(Message arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

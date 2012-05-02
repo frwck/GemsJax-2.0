@@ -165,5 +165,11 @@ public class FriendsLiveChannel implements InputChannel, OutputChannel{
 		for (FriendsChannelHandler h: handlers)
 			h.onNewFriendshipRequest(user, friendId, referenceId);
 	}
+
+	@Override
+	public void onMessageRecieved(Message arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

@@ -56,4 +56,11 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 		
 	}
 
+
+	@Override
+	public void onMessageRecieved(Message msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

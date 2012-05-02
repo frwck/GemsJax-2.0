@@ -99,4 +99,10 @@ public class NotificationChannel implements InputChannel, OutputChannel{
 		
 	}
 
+	@Override
+	public void onMessageRecieved(Message arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

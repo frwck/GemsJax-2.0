@@ -103,4 +103,11 @@ public class RequestChannel implements OutputChannel, InputChannel {
 		connection.send(m);
 	}
 
+
+	@Override
+	public void onMessageRecieved(Message arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

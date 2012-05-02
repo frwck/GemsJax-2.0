@@ -178,4 +178,10 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 		send(new LogoutMessage(LogoutReason.CLIENT_USER_LOGOUT));
 	}
 
+	@Override
+	public void onMessageRecieved(Message msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

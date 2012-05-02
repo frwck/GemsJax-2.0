@@ -183,6 +183,12 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 	public void send(Message message) throws IOException {
 		communicationConnection.send(message);
 	}
+
+	@Override
+	public void onMessageRecieved(Message arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 }

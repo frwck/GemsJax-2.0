@@ -90,5 +90,11 @@ public class RequestChannel implements InputChannel, OutputChannel{
 	public boolean isMatchingFilter(String msg) {
 		return filer.test(msg);
 	}
+
+	@Override
+	public void onMessageRecieved(Message msg) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

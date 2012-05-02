@@ -145,6 +145,13 @@ public class RegistrationChannel implements InputChannel, OutputChannel, ErrorLi
 			h.onError(t);
 	}
 
+
+	@Override
+	public void onMessageRecieved(Message msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 	

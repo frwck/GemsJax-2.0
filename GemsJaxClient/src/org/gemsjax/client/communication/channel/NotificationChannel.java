@@ -86,4 +86,11 @@ public class NotificationChannel implements InputChannel, OutputChannel {
 		return regEx.test(msg);
 	}
 
+
+	@Override
+	public void onMessageRecieved(Message msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

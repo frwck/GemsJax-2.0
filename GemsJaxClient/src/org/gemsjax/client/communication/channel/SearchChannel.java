@@ -115,4 +115,10 @@ public class SearchChannel implements InputChannel, OutputChannel, ErrorListener
 		
 	}
 
+	@Override
+	public void onMessageRecieved(Message msg) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
