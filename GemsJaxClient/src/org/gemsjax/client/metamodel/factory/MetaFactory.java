@@ -41,7 +41,7 @@ public class MetaFactory {
 	
 	private static synchronized  String nextID()
 	{
-		return UUID.uuid().toString();
+		return UUID.generate().toString();
 	}
 	
 	/**

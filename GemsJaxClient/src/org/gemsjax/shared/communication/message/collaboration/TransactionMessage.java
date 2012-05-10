@@ -31,25 +31,37 @@ import org.gemsjax.shared.collaboration.Transaction;
  */
 public class TransactionMessage extends CollaborationMessage {
 
-	public static final String TAG = "tx";
-	public static final String ATTRIBUTE_ID="id";
-	public static final String SUBTAG_VECTOR_CLOCK = "vc";
-	public static final String SUBSUBTAG_VECTOR_CLOCK_ENTRY="val";
-	public static final String SUBTAG_COMMANDS = "commands";
-	
 	private Transaction transaction;
 	
-	public TransactionMessage(int collaborateableId, Transaction transaction) {
-		super(collaborateableId);
-		
-		this.transaction = transaction;
+	
+	public TransactionMessage(){
 		
 	}
+	
+	public TransactionMessage(Transaction transaction) {
+		this.transaction = transaction;
+	}
 
+	
+	
+	
 	@Override
 	public String toXml() {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public Transaction getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(Transaction transaction) {
+		this.transaction = transaction;
+	}
+	
+	
+	
+	
+	
 
 }

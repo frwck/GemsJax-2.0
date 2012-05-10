@@ -67,7 +67,7 @@ public class UUID {
 	 * Generate a RFC4122, version 4 ID. Example:
 	 * "92329D39-6F5C-4520-ABFC-AAB64544E172"
 	 */
-	public static String uuid() {
+	public static String generate() {
 		char[] uuid = new char[36];
 		int r;
 

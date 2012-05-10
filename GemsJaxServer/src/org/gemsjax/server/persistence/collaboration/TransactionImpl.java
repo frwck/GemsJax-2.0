@@ -1,6 +1,8 @@
 package org.gemsjax.server.persistence.collaboration;
 
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.eclipse.jetty.websocket.WebSocket;
 import org.gemsjax.server.persistence.user.UserImpl;
@@ -117,28 +119,13 @@ public class TransactionImpl implements Transaction {
 		this.collaborateable = collaborateable;
 	}
 	
-	@Override
-	public Set<Command> getCommands() {
-		return commands;
-	}
+
 
 	public void setCommands(Set<Command> commands) {
 		this.commands = commands;
 	}
 	
 	
-	/**
-	 * Transform this {@link TransactionImpl} to a XML representation (also the containing {@link Command}s by calling {@link Command#toXML()}.
-	 * The XML representation is used to be send between the client, server and other clients via {@link WebSocket}s and is parsed by the receiver with a
-	 * {@link TransactionParser}.
-	 * @return
-	 */
-	@Override
-	public String toXML()
-	{
-		//TODO implement
-		return null;
-	}
 
 
 	@Override
@@ -185,5 +172,68 @@ public class TransactionImpl implements Transaction {
 			return id.hashCode();
 		else
 			return super.hashCode();
+	}
+
+
+	@Override
+	public int getCollaborateableId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public int getUserId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public Map<Integer, Long> getVectorClock() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public long getVectorClockEnrty(int arg0) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void setCollaborateableId(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setCommands(List<Command> arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setUserId(int arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void setVectorClockEntry(int arg0, long arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public List<Command> getCommands() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

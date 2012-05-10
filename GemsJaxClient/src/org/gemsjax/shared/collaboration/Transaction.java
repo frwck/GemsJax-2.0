@@ -1,5 +1,7 @@
 package org.gemsjax.shared.collaboration;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.gemsjax.shared.collaboration.command.Command;
@@ -43,33 +45,29 @@ public interface Transaction {
 	 */
 	public void removeCommand(Command c);
 	
+	
+	public void setCommands(List<Command> commands);
+	
 	/**
-	 * Get a Set with all {@link Command}s that are executed whith this transaction.
+	 * Get a list with all {@link Command}s that are executed whith this transaction.
 	 * <b>Notice:</b> For the implementation should be used {@link LinkedHashSet}, because {@link LinkedHashSet} contains the order.
 	 * @return
 	 */
-	public Set<Command> getCommands();
+	public List<Command> getCommands();
 	
 	/**
 	 * Get the {@link Collaborateable} on which this {@link Transaction} is executed
 	 */
 	public Collaborateable getCollaborateable();
 	
+	public int getCollaborateableId();
+	public void setCollaborateableId(int id);
+	
 	/**
 	 * Set the {@link Collaborateable} on which this {@link Transaction} is executed
 	 * @param c
 	 */
 	public void setCollaborateable(Collaborateable c);
-	
-	
-	/**
-	 * Transform this {@link Transaction} to a XML representation (also the containing {@link Command}s by calling {@link Command#toXML()}.
-	 * The XML representation is used to be send between the client, server and other clients via {@link WebSocket}s and is parsed by the receiver with a
-	 * {@link TransactionParser}.
-	 * @return
-	 */
-	public String toXML();
-	
 	
 	/**
 	 * Get the {@link User} who has created this {@link Transaction}
@@ -82,6 +80,14 @@ public interface Transaction {
 	 * @param u
 	 */
 	public void setUser(User u);
+	
+	public int getUserId();
+	public void setUserId(int userId);
+	
+	public long getVectorClockEnrty(int userId);
+	public void setVectorClockEntry(int userId, long value);
+	
+	public Map<Integer, Long> getVectorClock();
 	
 
 }
