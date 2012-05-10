@@ -52,7 +52,6 @@ import org.gemsjax.client.communication.channel.NotificationChannel;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
 import org.gemsjax.client.communication.channel.RequestChannel;
 import org.gemsjax.client.communication.channel.SearchChannel;
-import org.gemsjax.client.metamodel.factory.MetaFactory;
 import org.gemsjax.client.module.AuthenticationModule;
 import org.gemsjax.client.module.CollaborateableFileModule;
 import org.gemsjax.client.module.FriendsModule;
@@ -70,6 +69,7 @@ import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
 import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
 import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion;
+import org.gemsjax.shared.metamodel.impl.MetaFactory;
 import org.gemsjax.shared.user.RegisteredUser;
 
 import com.google.gwt.core.client.GWT;

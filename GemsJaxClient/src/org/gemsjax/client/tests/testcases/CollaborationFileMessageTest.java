@@ -4,13 +4,13 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.gemsjax.client.communication.parser.CollaborateableFileMessageParser;
-import org.gemsjax.client.metamodel.MetaModelImpl;
 import org.gemsjax.client.tests.UnitTest;
 import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 import org.gemsjax.shared.communication.message.collaborateablefile.GetAllCollaborateablesAnswerMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.ReferenceableCollaborateableFileMessage;
+import org.gemsjax.shared.metamodel.impl.MetaModelImpl;
 
 public class CollaborationFileMessageTest extends UnitTest {
 

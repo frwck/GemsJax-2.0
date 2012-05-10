@@ -1,6 +1,11 @@
 package org.gemsjax.shared.communication.message.collaboration;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
+import org.gemsjax.shared.communication.serialisation.Archive;
 
 /**
  * This kind of is sent from client to server and the server will forward this message to all other clients.
@@ -34,6 +39,8 @@ public class TransactionMessage extends CollaborationMessage {
 	private Transaction transaction;
 	
 	
+	
+	
 	public TransactionMessage(){
 		
 	}
@@ -60,7 +67,10 @@ public class TransactionMessage extends CollaborationMessage {
 	}
 	
 	
-	
+	@Override
+	public void serialize(Archive a) throws Exception {
+		transaction = a.serialize("transaction", transaction).value;
+	}
 	
 	
 

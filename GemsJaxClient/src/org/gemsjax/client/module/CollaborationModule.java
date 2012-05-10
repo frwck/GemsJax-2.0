@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.gemsjax.client.communication.channel.CollaborationChannel;
@@ -18,30 +19,31 @@ import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
+import org.gemsjax.shared.user.User;
 
 
 public class CollaborationModule implements CollaborationChannelHandler{
 	
-	private int collaborateableId;
 	private Collaborateable collaborateable;
 	private CollaborationChannel channel;
 	private List<Transaction> transactions;
 	private Map<Integer, Long> vectorClock;
-	
 	private Set<CollaborationModuleHandler> handlers;
+	private TransactionProcessor transactionProcessor;
 	
+	private User user;
 	
-	private int  myUserId;
-	
-	public CollaborationModule(int myUserId, int collaborateableId, CollaborationChannel channel){
-		this.collaborateableId = collaborateableId;
-		this.myUserId = myUserId;
+	public CollaborationModule(User user, Collaborateable collaborateable, CollaborationChannel channel){
+		this.collaborateable = collaborateable;
+		this.user = user;
 		this.channel = channel;
 		
 		this.handlers = new LinkedHashSet<CollaborationModuleHandler>();
 		
 		transactions = new LinkedList<Transaction>();
-		vectorClock = new ConcurrentHashMap<Integer, Long>();
+		vectorClock = new TreeMap<Integer, Long>();
+		
+		this.transactionProcessor = new TransactionProcessor(user);
 		
 		channel.addCollaborationChannelHandler(this);
 		
@@ -99,19 +101,22 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	}
 	
 	
-	public synchronized void sendTransaction(List<Command> commands) throws IOException{
+	public synchronized void sendAndCommitTransaction(List<Command> commands) throws IOException{
+		
 		Transaction tx = new TransactionImpl(UUID.generate());
 		tx.setCommands(commands);
-		tx.setUserId(myUserId);
-		tx.setCollaborateableId(collaborateableId);
+		tx.setUserId(user.getId());
+		tx.setCollaborateableId(collaborateable.getId());
 		
-		long value = getVectorClockValue(myUserId) + 1;
-		vectorClock.put(myUserId, value);
+		long value = getVectorClockValue(user.getId()) + 1;
+		vectorClock.put(user.getId(), value);
+		
 		
 		for (Entry<Integer, Long> e : vectorClock.entrySet())
 			tx.setVectorClockEntry(e.getKey(), e.getValue());
 	
 		channel.send(new TransactionMessage(tx));
+		transactionProcessor.executeTransaction(tx);
 		
 	}
 	

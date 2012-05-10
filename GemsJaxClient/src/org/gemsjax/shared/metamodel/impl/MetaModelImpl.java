@@ -1,4 +1,4 @@
-package org.gemsjax.client.metamodel;
+package org.gemsjax.shared.metamodel.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;

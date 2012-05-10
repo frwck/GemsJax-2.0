@@ -10,6 +10,8 @@ import java.util.Set;
 import org.gemsjax.client.communication.channel.CollaborationChannel;
 import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
+import org.gemsjax.client.user.RegisteredUserImpl;
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.communication.CommunicationConnection;
@@ -17,6 +19,9 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.MessageType;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
+import org.gemsjax.shared.metamodel.impl.MetaFactory;
+import org.gemsjax.shared.user.User;
+import org.gemsjax.shared.user.UserOnlineState;
 
 
 
@@ -195,12 +200,14 @@ class VectorClockProcess extends Thread implements CollaborationModuleHandler{
 	public VectorClockProcess(int userId, int collaborateableId, FakeCommunicationConnection connection)
 	{
 		this.userId = userId;
+		User u = new RegisteredUserImpl(userId, "displayedName", UserOnlineState.ONLINE);
 		this.collaborateableId = collaborateableId;
 		
 		connection.inputChannelDeliveryHelper.add(this);
+		Collaborateable c = MetaFactory.createMetaModel(1, "name");
 		
-		channel = new CollaborationChannel(connection);
-		module = new CollaborationModule(userId, collaborateableId, channel);
+		channel = new CollaborationChannel(connection, c);
+		module = new CollaborationModule(u, c, channel);
 		module.addCollaborationModuleHandler(this);
 	}
 	
@@ -210,7 +217,7 @@ class VectorClockProcess extends Thread implements CollaborationModuleHandler{
 		while(true)
 		
 		try {
-			module.sendTransaction(new LinkedList<Command>());
+			module.sendAndCommitTransaction(new LinkedList<Command>());
 			this.sleep(3000);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

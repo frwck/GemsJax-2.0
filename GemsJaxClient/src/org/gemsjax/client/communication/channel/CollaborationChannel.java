@@ -26,9 +26,11 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	
 	private Set<CollaborationChannelHandler> handlers;
 	private CommunicationConnection connection;
+	private Collaborateable collaborateable;
 	
-	public CollaborationChannel(CommunicationConnection connection)
+	public CollaborationChannel(CommunicationConnection connection, Collaborateable collaborateable)
 	{
+		this.collaborateable = collaborateable;
 		this.handlers = new LinkedHashSet<CollaborationChannelHandler>();
 		this.connection = connection;
 		connection.registerInputChannel(this, CollaborationMessage.TYPE);
@@ -65,10 +67,11 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	@Override
 	public void onMessageRecieved(Message msg) {
 		
-		if (msg instanceof TransactionMessage)
+		if (msg instanceof TransactionMessage && ((TransactionMessage) msg).getTransaction().getCollaborateableId() == collaborateable.getId()){
+			
 			for (CollaborationChannelHandler h: handlers)
-				h.onTransactionReceived(((TransactionMessage) msg).getTransaction());
-		
+				h.onTransactionReceived(((TransactionMessage)msg).getTransaction());
+		}
 		
 		// TODO other messages
 		

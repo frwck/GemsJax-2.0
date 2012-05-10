@@ -3,7 +3,6 @@ package org.gemsjax.client.communication.parser;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.gemsjax.client.metamodel.MetaModelImpl;
 import org.gemsjax.client.model.ModelImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableFileError;
@@ -13,6 +12,7 @@ import org.gemsjax.shared.communication.message.collaborateablefile.Collaboratea
 import org.gemsjax.shared.communication.message.collaborateablefile.GetAllCollaborateablesAnswerMessage;
 import org.gemsjax.shared.communication.message.collaborateablefile.ReferenceableCollaborateableFileMessage;
 import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.impl.MetaModelImpl;
 
 import com.google.gwt.xml.client.DOMException;
 import com.google.gwt.xml.client.Document;

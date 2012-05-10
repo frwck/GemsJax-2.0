@@ -1,5 +1,6 @@
 package org.gemsjax.shared.collaboration.command;
 
+import org.gemsjax.shared.communication.serialisation.Serializable;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;
@@ -12,12 +13,10 @@ import org.gemsjax.shared.model.Model;
  * @author Hannes Dorfmann
  *
  */
-public interface Command {
+public interface Command extends Serializable{
 
 	public void execute();
 	
 	public void undo();
-	
-	public String toXML();
 	
 }

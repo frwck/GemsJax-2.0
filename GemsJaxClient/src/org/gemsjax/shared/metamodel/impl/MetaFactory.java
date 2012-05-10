@@ -1,14 +1,8 @@
-package org.gemsjax.client.metamodel.factory;
+package org.gemsjax.shared.metamodel.impl;
 
 
 import java.util.List;
 
-import org.gemsjax.client.metamodel.MetaAttributeImpl;
-import org.gemsjax.client.metamodel.MetaBaseTypeImpl;
-import org.gemsjax.client.metamodel.MetaClassImpl;
-import org.gemsjax.client.metamodel.MetaConnectionImpl;
-import org.gemsjax.client.metamodel.MetaInheritanceImpl;
-import org.gemsjax.client.metamodel.MetaModelImpl;
 import org.gemsjax.client.util.UUID;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.metamodel.MetaAttribute;

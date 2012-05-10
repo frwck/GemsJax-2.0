@@ -4,6 +4,7 @@ package org.gemsjax.client.admin;
 import java.io.IOException;
 
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
+import org.gemsjax.client.module.TransactionProcessor;
 import org.gemsjax.client.tests.TestRunner;
 import org.gemsjax.client.tests.testcases.CollaborationFileMessageTest;
 import org.gemsjax.client.util.Console;

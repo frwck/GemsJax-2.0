@@ -1,9 +1,8 @@
-package org.gemsjax.client.metamodel;
+package org.gemsjax.shared.metamodel.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gemsjax.client.metamodel.factory.MetaFactory;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;

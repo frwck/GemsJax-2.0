@@ -15,11 +15,12 @@ import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.IconLoadHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
-import org.gemsjax.client.metamodel.MetaConnectionImpl;
-import org.gemsjax.client.metamodel.MetaClassImpl;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaConnection;
+import org.gemsjax.shared.metamodel.impl.MetaClassImpl;
+import org.gemsjax.shared.metamodel.impl.MetaConnectionImpl;
+
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.ImageElement;
 import com.google.gwt.event.dom.client.LoadEvent;

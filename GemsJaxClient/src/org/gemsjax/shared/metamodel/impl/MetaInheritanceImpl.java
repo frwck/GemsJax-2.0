@@ -1,4 +1,4 @@
-package org.gemsjax.client.metamodel;
+package org.gemsjax.shared.metamodel.impl;
 
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.metamodel.MetaClass;

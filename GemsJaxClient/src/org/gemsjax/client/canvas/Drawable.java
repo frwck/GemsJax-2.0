@@ -1,7 +1,7 @@
 package org.gemsjax.client.canvas;
 
-import org.gemsjax.client.metamodel.MetaConnectionImpl;
-import org.gemsjax.client.metamodel.MetaClassImpl;
+import org.gemsjax.shared.metamodel.impl.MetaClassImpl;
+import org.gemsjax.shared.metamodel.impl.MetaConnectionImpl;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 
