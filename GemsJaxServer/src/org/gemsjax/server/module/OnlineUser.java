@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.servlet.http.HttpSession;
 
 import org.gemsjax.server.communication.channel.CollaborateableFileChannel;
+import org.gemsjax.server.communication.channel.CollaborationChannel;
 import org.gemsjax.server.communication.channel.FriendsLiveChannel;
 import org.gemsjax.server.communication.channel.LogoutChannel;
 import org.gemsjax.server.communication.channel.NotificationChannel;
@@ -38,7 +39,7 @@ public class OnlineUser {
 	private Set<InputChannel> inputChannels;
 	private RequestChannel requestChannel;
 	private NotificationChannel notificationChannel;
-	
+	private CollaborationChannel collaborationChannel;
 	private CollaborateableFileChannel collaborateableFileChannel;
 
 	private HttpSession httpSession;
@@ -189,6 +190,11 @@ public class OnlineUser {
 		collFileChannel.addCollaborateableFileChannelHandler(CollaboratableFileModule.getInstance());
 		u.setCollaborateableFileChannel(collFileChannel);
 		
+		// collaborationChannel
+		CollaborationChannel colChannel = new CollaborationChannel(connection, u);
+		colChannel.addCollaborationChannelHandler(CollaborationModule.getInstance());
+		u.setCollaborationChannel(colChannel);
+		
 		return u;
 	}
 	
@@ -213,6 +219,12 @@ public class OnlineUser {
 		
 		// Set LogoutChannel
 		setLogoutChannel(u, connection);
+		
+		
+		// collaborationChannel
+		CollaborationChannel colChannel = new CollaborationChannel(connection, u);
+		colChannel.addCollaborationChannelHandler(CollaborationModule.getInstance());
+		u.setCollaborationChannel(colChannel);
 		
 		return u;
 	}
@@ -279,6 +291,16 @@ public class OnlineUser {
 
 	public void setCollaborateableFileChannel(CollaborateableFileChannel collaborateableFileChannel) {
 		this.collaborateableFileChannel = collaborateableFileChannel;
+	}
+
+
+	public CollaborationChannel getCollaborationChannel() {
+		return collaborationChannel;
+	}
+
+
+	public void setCollaborationChannel(CollaborationChannel collaborationChannel) {
+		this.collaborationChannel = collaborationChannel;
 	}
 	
 	

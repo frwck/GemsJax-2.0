@@ -3,13 +3,9 @@ package org.gemsjax.shared.metamodel.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gemsjax.client.canvas.MetaConnectionDrawable;
-import org.gemsjax.client.canvas.MetaClassDrawable;
-import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.Point;
 import org.gemsjax.shared.metamodel.MetaAttribute;
-import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;

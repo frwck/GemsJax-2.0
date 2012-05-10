@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,11 +14,30 @@ import javax.servlet.http.HttpSession;
 
 import org.eclipse.jetty.websocket.WebSocket;
 import org.gemsjax.server.communication.channel.UserAuthenticationChannel;
+import org.gemsjax.server.communication.serialisation.XmlLoadingArchive;
+import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.MessageType;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableErrorMessage;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableMessage;
+import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
+import org.gemsjax.shared.communication.message.collaboration.UnsubscribeCollaborateableMessage;
+import org.gemsjax.shared.communication.serialisation.ObjectFactory;
+import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashMapInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashSetInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.LinkedListInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableErrorMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.TransactionMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.UnsubscribeCollaborateableMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.test.Other;
+import org.gemsjax.shared.communication.serialisation.test.OtherInstantiator;
+import org.gemsjax.shared.communication.serialisation.test.Person;
+import org.gemsjax.shared.communication.serialisation.test.PersonInstatiator;
 
 
 
@@ -40,6 +60,7 @@ import org.gemsjax.shared.communication.message.MessageType;
 		
 		private Map<MessageType<?>, Set<InputChannel>> inputChannelMap;
 
+		private static ObjectFactory objectFactory;
 		
 		public LiveWebSocketConnection(HttpSession session)
 		{
@@ -51,8 +72,33 @@ import org.gemsjax.shared.communication.message.MessageType;
 			errorListeners = new LinkedHashSet<CommunicationConnection.ErrorListener>();
 			
 			inputChannelMap = new LinkedHashMap<MessageType<?>, Set<InputChannel>>();
+			intiObjectFactory();
+		}
+		
+		
+		private void intiObjectFactory(){
+		
+			if (objectFactory == null){
+				
+				objectFactory = new ObjectFactory();
+				synchronized(objectFactory){
+					objectFactory.register(LinkedHashSet.class.getName(), new LinkedHashSetInstantiator());
+					objectFactory.register(LinkedList.class.getName(), new LinkedListInstantiator());
+					objectFactory.register(LinkedHashMap.class.getName(), new LinkedHashMapInstantiator());
+				
+					// CollaboarionMessages
+					objectFactory.register(SubscribeCollaborateableMessage.class.getName(), new SubscribeCollaborateableMessageInstantiator());
+					objectFactory.register(UnsubscribeCollaborateableMessage.class.getName(), new UnsubscribeCollaborateableMessageInstantiator());
+					objectFactory.register(TransactionMessage.class.getName(), new TransactionMessageInstantiator());
+					objectFactory.register(TransactionImpl.class.getName(), new TransactionInstantiator());
+					
+					// Commands
+					
+				}
+			}
 			
 		}
+		
 		
 		@Override
 		public void onOpen(Connection con) {
@@ -71,13 +117,27 @@ import org.gemsjax.shared.communication.message.MessageType;
 			// TODO remove println
 			System.out.println("Received: "+data);
 			
-			InputMessage im = new InputMessage(200, data);
 			
-	    	for (InputChannel c: inputChannels)
-	        {
-	        	if (c.isMatchingFilter(data))
-	        		c.onMessageReceived(im);
-	        }
+			try {
+				XmlLoadingArchive archive = new XmlLoadingArchive(data, objectFactory);
+				Message m = (Message)archive.deserialize();
+				deliverReceivedMessage(m);
+				
+			} catch (Exception e) {
+				
+				// TODO remove deprecated stuff (backward compatibility)
+				InputMessage im = new InputMessage(200, data);
+				
+		    	for (InputChannel c: inputChannels)
+		        {
+		        	if (c.isMatchingFilter(data))
+		        		c.onMessageReceived(im);
+		        }
+		    	
+			}
+			
+			
+			
 	    	
 		}
 		
@@ -211,7 +271,15 @@ import org.gemsjax.shared.communication.message.MessageType;
 			}
 		}
 
+	
+	
+	
+	private void deliverReceivedMessage(Message m){
+		Set<InputChannel> channels = inputChannelMap.get(m.getMessageType());
+		
+		for (InputChannel c : channels)
+			c.onMessageRecieved(m);
 	}
 
-	
+}
 

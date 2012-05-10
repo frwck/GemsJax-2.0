@@ -3,8 +3,8 @@ package org.gemsjax.shared.metamodel.impl;
 
 import java.util.List;
 
-import org.gemsjax.client.util.UUID;
 import org.gemsjax.shared.AnchorPoint;
+import org.gemsjax.shared.UUID;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -12,7 +12,6 @@ import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
-import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
 import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion;
 

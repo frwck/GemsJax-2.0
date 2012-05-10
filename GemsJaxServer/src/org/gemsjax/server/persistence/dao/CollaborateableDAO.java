@@ -192,4 +192,6 @@ public interface CollaborateableDAO {
 	public abstract Set<Collaborateable> getModelsOf(RegisteredUser user);
 	
 	
+	public abstract Collaborateable getCollaborateable(int id) throws NotFoundException;
+	
 }

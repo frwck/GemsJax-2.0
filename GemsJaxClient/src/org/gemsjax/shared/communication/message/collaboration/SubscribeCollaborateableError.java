@@ -5,6 +5,7 @@ public enum SubscribeCollaborateableError {
 	AUTHENTICATION,
 	PERMISSION_DENIED,
 	DATABASE,
-	PARSING
+	PARSING,
+	NOT_FOUND
 	
 }

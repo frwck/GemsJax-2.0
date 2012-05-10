@@ -1,4 +1,4 @@
-package org.gemsjax.client.util;
+package org.gemsjax.shared;
 
 /*
 File: Math.uuid.js

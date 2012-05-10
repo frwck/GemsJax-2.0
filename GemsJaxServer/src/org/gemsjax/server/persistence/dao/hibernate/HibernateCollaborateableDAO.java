@@ -701,6 +701,21 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 	    return new LinkedHashSet<Collaborateable>(result);
 	    
 	}
+
+
+	@Override
+	public Collaborateable getCollaborateable(int id) throws NotFoundException {
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		Collaborateable m = (CollaborateableImpl)session.get(CollaborateableImpl.class, id);
+		session.close();
+		
+		if (m == null)
+			throw new NotFoundException();
+		
+		else
+			return m;
+	
+	}
 	
 	
 	

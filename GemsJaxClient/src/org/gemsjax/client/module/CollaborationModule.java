@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.gemsjax.client.communication.channel.CollaborationChannel;
 import org.gemsjax.client.communication.channel.handler.CollaborationChannelHandler;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
-import org.gemsjax.client.util.UUID;
+import org.gemsjax.shared.UUID;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.collaboration.TransactionImpl;
