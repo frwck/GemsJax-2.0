@@ -107,7 +107,7 @@ public interface Collaborateable{
 	 * <b>NOTE:</b> if a {@link User} is not present in this map, then you can assume the vector clock value is 0 (zero) 
 	 * @return
 	 */
-	public Map<User,Integer> getVectorClock();
+	public Map<Integer, Long> getVectorClock();
 	
 	/**
 	 * Used for the search system

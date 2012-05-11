@@ -484,6 +484,18 @@ public class HibernateUserDAO implements UserDAO {
 	    
 	    return new LinkedHashSet<User>(result);
 	}
+
+	@Override
+	public User getUserById(int id) throws NotFoundException {
+			Session session = HibernateUtil.getSessionFactory().openSession();
+			User u = (UserImpl)session.get(UserImpl.class, id);
+		session.close();
+		
+		if (u== null)
+			throw new NotFoundException();
+		
+		return u;
+	}
 	
 	
 	

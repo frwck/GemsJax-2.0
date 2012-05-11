@@ -55,7 +55,7 @@ public class ModelImpl implements Model{
 	}
 
 	@Override
-	public Map<User, Integer> getVectorClock() {
+	public Map<Integer, Long> getVectorClock() {
 		// TODO Auto-generated method stub
 		return null;
 	}

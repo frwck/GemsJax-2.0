@@ -18,13 +18,18 @@ import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.collaboration.command.Command;
+import org.gemsjax.shared.communication.message.collaboration.Collaborator;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableError;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
+import org.gemsjax.shared.communication.message.collaboration.UnsubscribeCollaborateableMessage;
 import org.gemsjax.shared.user.User;
 
 
 public class CollaborationModule implements CollaborationChannelHandler{
 	
-	private Collaborateable collaborateable;
+//	private Collaborateable collaborateable;
+	private int collaborateableId;
 	private CollaborationChannel channel;
 	private List<Transaction> transactions;
 	private Map<Integer, Long> vectorClock;
@@ -32,9 +37,14 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	private TransactionProcessor transactionProcessor;
 	
 	private User user;
+	private static int moduleIdCounter = 0;
+	private int moduleId;
 	
-	public CollaborationModule(User user, Collaborateable collaborateable, CollaborationChannel channel){
-		this.collaborateable = collaborateable;
+	private String subscribeReferenceId;
+	private int refIdCounter = 0;
+	
+	public CollaborationModule(User user, int collaborateableId, CollaborationChannel channel){
+		this.collaborateableId = collaborateableId;
 		this.user = user;
 		this.channel = channel;
 		
@@ -46,8 +56,14 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		this.transactionProcessor = new TransactionProcessor(user);
 		
 		channel.addCollaborationChannelHandler(this);
-		
-		
+		moduleIdCounter++;
+		moduleId = moduleIdCounter;
+	}
+	
+	
+	private String nextRefId(){
+		refIdCounter++;
+		return this.toString()+"-"+refIdCounter;
 	}
 	
 	
@@ -106,7 +122,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		Transaction tx = new TransactionImpl(UUID.generate());
 		tx.setCommands(commands);
 		tx.setUserId(user.getId());
-		tx.setCollaborateableId(collaborateable.getId());
+		tx.setCollaborateableId(collaborateableId);
 		
 		long value = getVectorClockValue(user.getId()) + 1;
 		vectorClock.put(user.getId(), value);
@@ -132,6 +148,68 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	@Override
 	public String toString(){
 		return super.toString()+" VC : "+vectorClock;
+		
+	}
+
+	
+	public void subscribe() throws IOException{
+		String refId = nextRefId();
+		SubscribeCollaborateableMessage msg = new SubscribeCollaborateableMessage();
+		msg.setReferenceId(refId);
+		msg.setCollaborateableId(collaborateableId);
+		channel.send(msg);
+	}
+	
+	
+	public void unsubscribe() throws IOException{
+		String refId = nextRefId();
+		UnsubscribeCollaborateableMessage msg = new UnsubscribeCollaborateableMessage();
+		msg.setReferenceId(refId);
+		msg.setCollaborateableId(collaborateableId);
+		channel.send(msg);
+	}
+	
+
+	@Override
+	public void onSubscribeSuccessful(String referenceId,
+			List<Transaction> transactions, List<Collaborator> collaborators) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onSubscribeError(String referenceId,
+			SubscribeCollaborateableError error) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onTransactionError(String transactionId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onUnsubscribeSuccessful(String referenceId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onCollaboratorJoined(Collaborator c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onCollaboratorLeft(Collaborator c) {
+		// TODO Auto-generated method stub
 		
 	}
 	

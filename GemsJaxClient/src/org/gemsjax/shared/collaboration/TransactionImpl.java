@@ -137,5 +137,10 @@ public class TransactionImpl implements Transaction{
 	public Map<Integer, Long> getVectorClock() {
 		return vectorClock;
 	}
+
+
+	public void setId(String id) {
+		this.id = id;
+	}
 	
 }

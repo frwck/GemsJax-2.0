@@ -10,6 +10,7 @@ public class SubscribeCollaborateableSuccessfulMessage extends ReferenceableColl
 
 	private List<Transaction> transactions;
 	private List<Collaborator> collaborators;
+	private int collaborateableId;
 	
 	public SubscribeCollaborateableSuccessfulMessage(){
 		
@@ -36,6 +37,7 @@ public class SubscribeCollaborateableSuccessfulMessage extends ReferenceableColl
 		super.serialize(a);
 		transactions = a.serialize("transactions", transactions).value;
 		collaborators = a.serialize("collaborators", collaborators).value;
+		collaborateableId = a.serialize("collaborateableId", collaborateableId).value;
 	}
 	
 	public List<Transaction> getTransactions() {
@@ -43,6 +45,22 @@ public class SubscribeCollaborateableSuccessfulMessage extends ReferenceableColl
 	}
 	public void setTransactions(List<Transaction> transactions) {
 		this.transactions = transactions;
+	}
+
+	public List<Collaborator> getCollaborators() {
+		return collaborators;
+	}
+
+	public void setCollaborators(List<Collaborator> collaborators) {
+		this.collaborators = collaborators;
+	}
+
+	public int getCollaborateableId() {
+		return collaborateableId;
+	}
+
+	public void setCollaborateableId(int collaborateableId) {
+		this.collaborateableId = collaborateableId;
 	}
 	
 

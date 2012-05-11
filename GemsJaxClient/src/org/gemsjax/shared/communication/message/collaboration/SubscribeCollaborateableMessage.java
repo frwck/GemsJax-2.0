@@ -2,7 +2,7 @@ package org.gemsjax.shared.communication.message.collaboration;
 
 import org.gemsjax.shared.communication.serialisation.Archive;
 
-public class SubscribeCollaborateableMessage extends CollaborationMessage {
+public class SubscribeCollaborateableMessage extends ReferenceableCollaborationMessage {
 
 	private int collaborateableId;
 	
@@ -22,6 +22,7 @@ public class SubscribeCollaborateableMessage extends CollaborationMessage {
 
 	@Override
 	public void serialize(Archive a) throws Exception {
+		super.serialize(a);
 		collaborateableId = a.serialize("collaborateableId", collaborateableId).value;
 	}
 

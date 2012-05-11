@@ -1,12 +1,11 @@
-package org.gemsjax.shared.communication.message;
+package org.gemsjax.shared.communication.message.collaboration;
 
-import org.gemsjax.shared.communication.message.collaboration.CollaborationMessage;
-import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.communication.serialisation.Archive;
 
 public class CollaboratorJoinedMessage extends CollaborationMessage{
 
 	private Collaborator collaborator;
+	private int collaborateableId;
 	
 	public CollaboratorJoinedMessage() {}
 	
@@ -32,5 +31,13 @@ public class CollaboratorJoinedMessage extends CollaborationMessage{
 
 	public void setCollaborator(Collaborator collaborator) {
 		this.collaborator = collaborator;
+	}
+
+	public int getCollaborateableId() {
+		return collaborateableId;
+	}
+
+	public void setCollaborateableId(int collaborateableId) {
+		this.collaborateableId = collaborateableId;
 	}
 }

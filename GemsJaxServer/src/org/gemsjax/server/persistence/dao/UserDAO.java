@@ -101,4 +101,6 @@ public interface UserDAO {
 	
 	public abstract Set<User> getUserByIds(Set<Integer> ids);
 	
+	public abstract User getUserById(int id) throws NotFoundException;
+	
 }

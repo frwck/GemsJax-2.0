@@ -1,12 +1,15 @@
 package org.gemsjax.client.admin;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.notification.NotificationManager;
 import org.gemsjax.client.admin.notification.ShortInfoNotification;
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
 import org.gemsjax.client.admin.presenter.AllMetaModelsPresenter;
+import org.gemsjax.client.admin.presenter.CollaborationPresenter;
 import org.gemsjax.client.admin.presenter.CreateMetaModelPresenter;
 import org.gemsjax.client.admin.presenter.CriticalErrorPresenter;
 import org.gemsjax.client.admin.presenter.FriendsPresenter;
@@ -24,11 +27,13 @@ import org.gemsjax.client.admin.presenter.event.DoNewGlobalSearchEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
 import org.gemsjax.client.admin.presenter.event.ShowAllMetaModelsRequestedEvent;
+import org.gemsjax.client.admin.presenter.event.ShowMetaModelRequiredEvent;
 import org.gemsjax.client.admin.presenter.handler.CreateNewMetaModelRequiredHandler;
 import org.gemsjax.client.admin.presenter.handler.DoNewGlobalSearchHandler;
 import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
 import org.gemsjax.client.admin.presenter.handler.ManageFriendsViewImpl;
 import org.gemsjax.client.admin.presenter.handler.ShowAllMetaModelRequestedHandler;
+import org.gemsjax.client.admin.presenter.handler.ShowMetaModelRequiredHandler;
 import org.gemsjax.client.admin.view.CreateMetaModelView;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
@@ -47,6 +52,7 @@ import org.gemsjax.client.communication.HttpPostCommunicationConnection;
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 import org.gemsjax.client.communication.channel.AuthenticationChannel;
 import org.gemsjax.client.communication.channel.CollaborateableFileChannel;
+import org.gemsjax.client.communication.channel.CollaborationChannel;
 import org.gemsjax.client.communication.channel.FriendsLiveChannel;
 import org.gemsjax.client.communication.channel.NotificationChannel;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
@@ -54,6 +60,7 @@ import org.gemsjax.client.communication.channel.RequestChannel;
 import org.gemsjax.client.communication.channel.SearchChannel;
 import org.gemsjax.client.module.AuthenticationModule;
 import org.gemsjax.client.module.CollaborateableFileModule;
+import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.module.FriendsModule;
 import org.gemsjax.client.module.GlobalSearchModule;
 import org.gemsjax.client.module.NotificationRequestModule;
@@ -86,7 +93,7 @@ import com.smartgwt.client.util.SC;
  * @author Hannes Dorfmann
  *
  */
-public class AdminApplicationController  implements DoNewGlobalSearchHandler, LoginSuccessfulHandler, ShowAllMetaModelRequestedHandler, CreateNewMetaModelRequiredHandler {
+public class AdminApplicationController  implements ShowMetaModelRequiredHandler, DoNewGlobalSearchHandler, LoginSuccessfulHandler, ShowAllMetaModelRequestedHandler, CreateNewMetaModelRequiredHandler {
 	
 	/**
 	 * Singleton instance
@@ -132,12 +139,15 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 	
 	private NotificationRequestModule notificationRequestModle;
 	
+	private Map<Integer, CollaborationPresenter> collaborations;
+	
 	
 	private AdminApplicationController()
 	{
 		eventBus = new SimpleEventBus();
 		authenticationModule = new AuthenticationModule(new AuthenticationChannel(WebSocketCommunicationConnection.getInstance()));
 		friendsModule = new FriendsModule(new FriendsLiveChannel(WebSocketCommunicationConnection.getInstance()));
+		collaborations = new LinkedHashMap<Integer, CollaborationPresenter>();
 		bindPresenterEvents();
 	}
 	
@@ -148,6 +158,7 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 		eventBus.addHandler(LoginSuccessfulEvent.TYPE, this);
 		eventBus.addHandler(ShowAllMetaModelsRequestedEvent.TYPE, this);
 		eventBus.addHandler(CreateNewMetaModelRequiredEvent.TYPE,this);
+		eventBus.addHandler(ShowMetaModelRequiredEvent.TYPE, this);
 	}
 
 	
@@ -372,6 +383,27 @@ public class AdminApplicationController  implements DoNewGlobalSearchHandler, Lo
 	public void onCreateNewMetaModelRequired() {
 		CreateMetaModelView view = new CreateMetaModelViewImpl(language, friendsModule);
 		CreateMetaModelPresenter p = new CreateMetaModelPresenter(eventBus, view, new CollaborateableFileModule<MetaModel>(new CollaborateableFileChannel<MetaModel>(WebSocketCommunicationConnection.getInstance())));
+	}
+
+
+	@Override
+	public void onShowMetaModelRequired(int collaborateableId) {
+		CollaborationPresenter p = collaborations.get(collaborateableId);
+		
+		if (p != null)
+			p.showView();
+		else
+		{
+			CollaborationModule module = new CollaborationModule(authenticationModule.getCurrentlyAuthenticatedUser(), collaborateableId, new CollaborationChannel(WebSocketCommunicationConnection.getInstance(), collaborateableId));
+			
+			try {
+				p = new CollaborationPresenter(eventBus, module);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	}
 	
 }

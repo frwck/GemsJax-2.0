@@ -2,11 +2,11 @@ package org.gemsjax.shared.communication.serialisation.instantiators.message;
 
 import org.gemsjax.shared.communication.serialisation.ObjectInstantiator;
 
-public class CollaboratorLeftMessage implements ObjectInstantiator{
+public class CollaboratorLeftMessageInstantiator implements ObjectInstantiator{
 
 	@Override
 	public Object newInstance() {
-		return new CollaboratorLeftMessage();
+		return new CollaboratorLeftMessageInstantiator();
 	}
 
 }

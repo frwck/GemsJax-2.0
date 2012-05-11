@@ -13,6 +13,10 @@ import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.collaboration.CollaborationMessage;
+import org.gemsjax.shared.communication.message.collaboration.CollaboratorJoinedMessage;
+import org.gemsjax.shared.communication.message.collaboration.CollaboratorLeftMessage;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableErrorMessage;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableSuccessfulMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
 
 
@@ -26,11 +30,12 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	
 	private Set<CollaborationChannelHandler> handlers;
 	private CommunicationConnection connection;
-	private Collaborateable collaborateable;
+//	private Collaborateable collaborateable;
+	private int collaborateableId;
 	
-	public CollaborationChannel(CommunicationConnection connection, Collaborateable collaborateable)
+	public CollaborationChannel(CommunicationConnection connection, int collaborateableId)
 	{
-		this.collaborateable = collaborateable;
+		this.collaborateableId = collaborateableId;
 		this.handlers = new LinkedHashSet<CollaborationChannelHandler>();
 		this.connection = connection;
 		connection.registerInputChannel(this, CollaborationMessage.TYPE);
@@ -67,13 +72,40 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	@Override
 	public void onMessageRecieved(Message msg) {
 		
-		if (msg instanceof TransactionMessage && ((TransactionMessage) msg).getTransaction().getCollaborateableId() == collaborateable.getId()){
+		if (msg instanceof TransactionMessage && ((TransactionMessage) msg).getTransaction().getCollaborateableId() == collaborateableId){
 			
 			for (CollaborationChannelHandler h: handlers)
 				h.onTransactionReceived(((TransactionMessage)msg).getTransaction());
 		}
-		
-		// TODO other messages
+		else
+		if (msg instanceof SubscribeCollaborateableSuccessfulMessage && ((SubscribeCollaborateableSuccessfulMessage)msg).getCollaborateableId() == collaborateableId)
+		{
+			SubscribeCollaborateableSuccessfulMessage m = (SubscribeCollaborateableSuccessfulMessage) msg;
+			for (CollaborationChannelHandler h: handlers)
+				h.onSubscribeSuccessful(m.getReferenceId(), m.getTransactions(), m.getCollaborators());
+		}
+		else
+		if (msg instanceof SubscribeCollaborateableErrorMessage && ((SubscribeCollaborateableErrorMessage)msg).getCollaborateableId() == collaborateableId)
+		{
+			SubscribeCollaborateableErrorMessage m = (SubscribeCollaborateableErrorMessage) msg;
+			for (CollaborationChannelHandler h: handlers)
+				h.onSubscribeError(m.getReferenceId(),m.getError());
+		}	
+		else
+		if (msg instanceof CollaboratorJoinedMessage && ((CollaboratorJoinedMessage)msg).getCollaborateableId() == collaborateableId)
+		{
+			CollaboratorJoinedMessage m = (CollaboratorJoinedMessage) msg;
+			for (CollaborationChannelHandler h: handlers)
+				h.onCollaboratorJoined(m.getCollaborator());
+		}	
+		else
+		if (msg instanceof CollaboratorLeftMessage && ((CollaboratorJoinedMessage)msg).getCollaborateableId() == collaborateableId)
+		{
+			CollaboratorLeftMessage m = (CollaboratorLeftMessage) msg;
+			for (CollaborationChannelHandler h: handlers)
+				h.onCollaboratorLeft(m.getCollaborator());
+		}	
+		// TODO other Messages
 		
 	}
 

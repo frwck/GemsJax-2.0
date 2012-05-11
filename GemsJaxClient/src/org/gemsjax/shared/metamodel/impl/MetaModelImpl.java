@@ -40,7 +40,7 @@ public class MetaModelImpl implements MetaModel{
 	private Set<User> users;
 	
 	
-	private Map<User, Integer> vectorClock;
+	private Map<Integer, Long> vectorClock;
 	
 	private Collaborateable.Permission permission;
 	
@@ -69,7 +69,7 @@ public class MetaModelImpl implements MetaModel{
 		users = new LinkedHashSet<User>();
 		
 		transactions = new LinkedHashSet<Transaction>();
-		vectorClock = new HashMap<User, Integer>();
+		vectorClock = new HashMap<Integer, Long>();
 	}
 	
 	/**
@@ -199,7 +199,7 @@ public class MetaModelImpl implements MetaModel{
 	}
 
 	@Override
-	public Map<User,Integer> getVectorClock() {
+	public Map<Integer, Long> getVectorClock() {
 		return vectorClock;
 	}
 
@@ -210,8 +210,7 @@ public class MetaModelImpl implements MetaModel{
 
 	@Override
 	public Set<Transaction> getTransactions() {
-		// TODO Auto-generated method stub
-		return null;
+		return transactions;
 	}
 
 	

@@ -8,6 +8,9 @@ import javax.servlet.http.HttpSession;
 
 import org.gemsjax.server.communication.channel.handler.LogoutChannelHandler;
 import org.gemsjax.server.communication.servlet.LiveWebSocketConnection;
+import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.exception.NotFoundException;
+import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.CommunicationConnection.ClosedListener;
 import org.gemsjax.shared.communication.channel.OutputChannel;
@@ -42,6 +45,7 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 	 */
 	private Map<String, OnlineUser > onlineUserSessionMap;
 	
+	private UserDAO dao ;
 	
 	/**
 	 * The private constructor, used to create the singleton instance
@@ -50,6 +54,7 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 	{
 		onlineUserIdMap = new HashMap<Integer, OnlineUser>();
 		onlineUserSessionMap = new HashMap<String, OnlineUser>();
+		dao = new HibernateUserDAO();
 	}
 	
 	
@@ -169,6 +174,17 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 			}
 		}
 		
+	}
+	
+	
+	public User getOrLoadUser(int userId) throws NotFoundException{
+		OnlineUser ou = getOnlineUser(userId);
+		
+		if (ou != null)
+			return ou.getUser();
+		else
+			return dao.getUserById(userId);
+			
 	}
 	
 	

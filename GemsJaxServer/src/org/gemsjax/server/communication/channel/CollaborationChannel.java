@@ -12,6 +12,8 @@ import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.collaboration.CollaborationMessage;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableMessage;
+import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
 
 public class CollaborationChannel implements InputChannel, OutputChannel {
 
@@ -41,8 +43,7 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	
 	@Override
 	public void send(Message arg0) throws IOException {
-		// TODO Auto-generated method stub
-		
+		connection.send(arg0);
 	}
 
 	@Override
@@ -58,8 +59,22 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	}
 
 	@Override
-	public void onMessageRecieved(Message arg0) {
-		// TODO Auto-generated method stub
+	public void onMessageRecieved(Message m) {
+	
+		if (m instanceof TransactionMessage)
+			for(CollaborationChannelHandler h : handlers)
+				h.onTransactionReceived(((TransactionMessage) m).getTransaction(), user);
+		
+		else
+		if (m instanceof SubscribeCollaborateableMessage)
+			for(CollaborationChannelHandler h : handlers)
+				h.onSubscribe(((SubscribeCollaborateableMessage) m).getCollaborateableId(), ((SubscribeCollaborateableMessage) m).getReferenceId(), user);
+		
+		else
+		if (m instanceof SubscribeCollaborateableMessage)
+			for(CollaborationChannelHandler h : handlers)
+				h.onSubscribe(((SubscribeCollaborateableMessage) m).getCollaborateableId(), ((SubscribeCollaborateableMessage) m).getReferenceId(), user);
+	
 		
 	}
 

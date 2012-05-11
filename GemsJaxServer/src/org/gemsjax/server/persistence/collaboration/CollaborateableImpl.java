@@ -18,7 +18,7 @@ public class CollaborateableImpl implements Collaborateable
 	private RegisteredUser owner;
 	private Set<User> users;
 	private Set<Transaction> transactions;
-	private Map<User, Integer> vectorClock;
+	private Map<Integer, Long> vectorClock;
 	private Permission permission;
 	private int publicPermission;
 	
@@ -32,7 +32,7 @@ public class CollaborateableImpl implements Collaborateable
 	public CollaborateableImpl()
 	{
 		users = new LinkedHashSet<User>();
-		vectorClock = new HashMap<User, Integer>();
+		vectorClock = new HashMap<Integer, Long>();
 		transactions = new LinkedHashSet<Transaction>();
 	}
 
@@ -41,7 +41,7 @@ public class CollaborateableImpl implements Collaborateable
 	public int getId() {
 		return id;
 	}
-
+	
 
 	@Override
 	public String getKeywords() {
@@ -74,7 +74,7 @@ public class CollaborateableImpl implements Collaborateable
 
 
 	@Override
-	public Map<User,Integer> getVectorClock() {
+	public Map<Integer,Long> getVectorClock() {
 		return vectorClock;
 	}
 

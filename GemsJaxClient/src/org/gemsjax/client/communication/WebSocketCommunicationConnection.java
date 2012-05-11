@@ -3,16 +3,38 @@ package org.gemsjax.client.communication;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
+import org.gemsjax.client.communication.serialisation.GwtXmlLoadingArchive;
 import org.gemsjax.shared.ServletPaths;
+import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.MessageType;
+import org.gemsjax.shared.communication.message.collaboration.CollaboratorJoinedMessage;
+import org.gemsjax.shared.communication.message.collaboration.CollaboratorLeftMessage;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableMessage;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableSuccessfulMessage;
+import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
+import org.gemsjax.shared.communication.message.collaboration.UnsubscribeCollaborateableMessage;
 import org.gemsjax.shared.communication.message.system.KeepAliveMessage;
+import org.gemsjax.shared.communication.serialisation.ObjectFactory;
+import org.gemsjax.shared.communication.serialisation.XmlSavingArchive;
+import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashMapInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashSetInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.LinkedListInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorJoinedMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorLeftMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableSuccessfulMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.TransactionMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.UnsubscribeCollaborateableMessageInstantiator;
+
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.util.SC;
 
@@ -86,6 +108,8 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 	
 	private boolean keepAlive = true;
 	private boolean isConnected = false;
+	
+	private ObjectFactory objectFactory;
 	 
     private WebSocketCommunicationConnection() {
         inputChannels = new LinkedHashSet<InputChannel>();
@@ -95,7 +119,34 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
         
         inputChannelMap = new LinkedHashMap<MessageType<?>, Set<InputChannel>>();
         
+        intiObjectFactory();
     }
+    
+    
+
+	private void intiObjectFactory(){
+		objectFactory = new ObjectFactory();
+			
+		objectFactory.register(LinkedHashSet.class.getName(), new LinkedHashSetInstantiator());
+		objectFactory.register(LinkedList.class.getName(), new LinkedListInstantiator());
+		objectFactory.register(LinkedHashMap.class.getName(), new LinkedHashMapInstantiator());
+	
+		// CollaboarionMessages
+		objectFactory.register(SubscribeCollaborateableSuccessfulMessage.class.getName(), new SubscribeCollaborateableSuccessfulMessageInstantiator());
+		objectFactory.register(UnsubscribeCollaborateableMessage.class.getName(), new UnsubscribeCollaborateableMessageInstantiator());
+		objectFactory.register(TransactionMessage.class.getName(), new TransactionMessageInstantiator());
+		objectFactory.register(TransactionImpl.class.getName(), new TransactionInstantiator());
+		objectFactory.register(CollaboratorJoinedMessage.class.getName(), new CollaboratorJoinedMessageInstantiator());
+		objectFactory.register(CollaboratorLeftMessage.class.getName(), new CollaboratorLeftMessageInstantiator());
+		
+		
+		// Commands
+		
+		
+			
+		}
+		
+	
     
    
     
@@ -142,18 +193,35 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
     }
 
     
-    private void onMessage(String message) {
+    private void onMessage(String data) {
        
-    	InputMessage im = new InputMessage(200, message);
-    	
-    	for (InputChannel c: inputChannels)
-        {
-    		if (c.isMatchingFilter(message))
-    			c.onMessageReceived(im);
-        }
-    	
+    	try {
+			GwtXmlLoadingArchive archive = new GwtXmlLoadingArchive(data, objectFactory);
+			Message m = (Message)archive.deserialize();
+			deliverReceivedMessage(m);
+			
+		} catch (Exception e) {
+			
+			// TODO remove deprecated stuff (backward compatibility)
+			InputMessage im = new InputMessage(200, data);
+			
+	    	for (InputChannel c: inputChannels)
+	        {
+	        	if (c.isMatchingFilter(data))
+	        		c.onMessageReceived(im);
+	        }
+		}
+	    		
     }
     
+	private void deliverReceivedMessage(Message m){
+		Set<InputChannel> channels = inputChannelMap.get(m.getMessageType());
+		
+		for (InputChannel c : channels)
+			c.onMessageRecieved(m);
+	}
+    	
+    	
     private void onWebSocketNotSupported() throws IOException
     {
     	throw new IOException("WebSockets are not supported by this Browser");
@@ -368,7 +436,23 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 
 	@Override
 	public void send(Message message) throws IOException {
-		doSend(message.toXml());
+		
+		String toSend="";
+		
+		if (message.toXml() == null){
+			XmlSavingArchive archive = new XmlSavingArchive();
+			try {
+				archive.serialize(message);
+				toSend = archive.toXml();
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new IOException(e);
+			}
+		}
+		else
+			toSend = message.toXml();
+		
+		doSend(toSend);
 	}
 
 

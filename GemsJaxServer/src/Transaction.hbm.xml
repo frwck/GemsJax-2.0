@@ -12,12 +12,24 @@
     
     <property name="sequenceNumber" column="sequenceNumber" type="int" />
    
+    
+    
+      <!--  The vector clock mapping  -->
+	<map name="vectorClock" table="VectorClockEntry" cascade="delete">
+		<key column="Transaction_id" />
+		<index-many-to-many column="User_id" class="org.gemsjax.server.persistence.user.UserImpl" />
+		<element column="value" type="long" />
+	</map>
+    
+    
     <set name="commands" table="Command" lazy="false" fetch="select" cascade="all-delete-orphan" inverse = "true" order-by="sequence"  >
             <key>
                 <column name="Transaction_id" not-null="true" />
             </key>
             <one-to-many class="org.gemsjax.server.persistence.collaboration.command.CommandImpl" />
     </set>
+    
+    
     
     
     <many-to-one name="user" class="org.gemsjax.server.persistence.user.UserImpl" fetch="select">

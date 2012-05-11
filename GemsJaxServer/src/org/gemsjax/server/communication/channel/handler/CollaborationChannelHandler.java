@@ -7,8 +7,8 @@ public interface CollaborationChannelHandler {
 	
 	public void onTransactionReceived(Transaction tx, OnlineUser sender);
 	
-	public void onSubscribe(int collaborateableId, OnlineUser sender);
+	public void onSubscribe(int collaborateableId, String refId, OnlineUser sender);
 	
-	public void onUnsubscribe(int collaboratebaleId, OnlineUser sender);
+	public void onUnsubscribe(int collaboratebaleId, String refId, OnlineUser sender);
 
 }

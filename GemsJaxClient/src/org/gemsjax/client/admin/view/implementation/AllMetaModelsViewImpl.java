@@ -97,7 +97,7 @@ public class AllMetaModelsViewImpl extends LoadingTab implements AllMetaModelsVi
 	public void showIt() {
 		TabEnviroment.getInstance().addTab(this);
 		TabEnviroment.getInstance().setSelectedTab(this);
-		TabEnviroment.getInstance().draw();
+		TabEnviroment.getInstance().redraw();
 	}
 
 	@Override

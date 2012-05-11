@@ -1,5 +1,6 @@
 package org.gemsjax.server.persistence.collaboration;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class TransactionImpl implements Transaction {
 	private String id;
 
 	private int sequenceNumber;
+	private Map<User, Long> vectorClock;
 
 	
 	/**
@@ -47,6 +49,7 @@ public class TransactionImpl implements Transaction {
 	public TransactionImpl()
 	{
 		commands = new LinkedHashSet<Command>();
+		vectorClock = new LinkedHashMap<User, Long>();
 	}
 	
 	
@@ -56,6 +59,10 @@ public class TransactionImpl implements Transaction {
 		this.id = id;
 		this.collaborateable = collaborateable;
 		
+	}
+	
+	public Map<User, Long> getUserVectorClock(){
+		return vectorClock;
 	}
 	
 	/**
@@ -235,5 +242,10 @@ public class TransactionImpl implements Transaction {
 	public List<Command> getCommands() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	public void setId(String id) {
+		this.id = id;
 	}
 }

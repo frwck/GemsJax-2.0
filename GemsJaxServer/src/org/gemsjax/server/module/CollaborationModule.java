@@ -1,21 +1,27 @@
 package org.gemsjax.server.module;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.gemsjax.server.communication.channel.handler.CollaborationChannelHandler;
+import org.gemsjax.server.persistence.collaboration.TransactionImpl;
 import org.gemsjax.server.persistence.dao.CollaborateableDAO;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateCollaborateableDAO;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
-import org.gemsjax.shared.communication.message.CollaboratorJoinedMessage;
+import org.gemsjax.shared.communication.message.collaboration.CollaboratorJoinedMessage;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableError;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableErrorMessage;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableMessage;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableSuccessfulMessage;
+import org.gemsjax.shared.user.User;
 
 public class CollaborationModule implements CollaborationChannelHandler {
 	
@@ -43,12 +49,12 @@ public class CollaborationModule implements CollaborationChannelHandler {
 	}
 
 	@Override
-	public void onSubscribe(int collaborateableId, OnlineUser sender) {
+	public void onSubscribe(int collaborateableId, String refId, OnlineUser sender) {
 		
 		try {
 			Collaborateable c = getOrLoadCollaborateable(collaborateableId);
 			
-			if (c.getUsers().contains(sender.getUser()))
+			if (c.getUsers().contains(sender.getUser()) || c.getOwner().equals(sender.getUser()))
 			{
 				Set<OnlineUser> subscribers = subscriptions.get(collaborateableId);
 				if (subscribers == null) // The first User who subscribes
@@ -71,6 +77,28 @@ public class CollaborationModule implements CollaborationChannelHandler {
 							
 				}
 				
+				// Generate answer message
+				
+				SubscribeCollaborateableSuccessfulMessage m = new SubscribeCollaborateableSuccessfulMessage();
+				m.setReferenceId(refId);
+				m.setCollaborateableId(collaborateableId);
+				
+				LinkedList<Transaction> transactions = new LinkedList<Transaction>();
+				for (Transaction t : c.getTransactions())
+				{
+					transactions.add(transformToClientFormat((TransactionImpl) t));
+				}
+				
+				m.setTransactions(transactions);
+				
+				List<Collaborator> collaborators = new LinkedList<Collaborator>();
+				for (OnlineUser u : subscribers)
+					if (u != sender)
+						collaborators.add(new Collaborator(u.getId(), u.getUser().getDisplayedName()));
+				
+				m.setCollaborators(collaborators);
+				sender.getCollaborationChannel().send(m);
+				
 			}
 			else // Not a collaborative user, 
 			{
@@ -92,8 +120,16 @@ public class CollaborationModule implements CollaborationChannelHandler {
 	}
 
 	@Override
-	public void onUnsubscribe(int collaboratebaleId, OnlineUser sender) {
+	public void onUnsubscribe(int collaboratebaleId, String refId, OnlineUser sender) {
 		
+		Set<OnlineUser> subscribers =subscriptions.get(collaboratebaleId);
+		
+		if (subscribers != null)
+			subscribers.remove(sender);
+		
+		
+		if (subscribers.isEmpty())
+			collaborateables.remove(collaboratebaleId);
 		
 	}
 	
@@ -113,6 +149,45 @@ public class CollaborationModule implements CollaborationChannelHandler {
 		
 	}
 	
+	
+	
+	
+	
+	private org.gemsjax.shared.collaboration.TransactionImpl transformToClientFormat(TransactionImpl t){
+		
+		org.gemsjax.shared.collaboration.TransactionImpl tx = new org.gemsjax.shared.collaboration.TransactionImpl();
+		tx.setUserId(t.getUserId());
+		tx.setCollaborateableId(t.getCollaborateableId());
+		tx.setCommands(t.getCommands());
+		
+		for (Map.Entry<User, Long> e : t.getUserVectorClock().entrySet()) {
+			tx.setVectorClockEntry(e.getKey().getId(), e.getValue());
+		}
+		
+		tx.setId(t.getId());
+		
+		return tx;
+	}
+	
+	
+	
+	private TransactionImpl transformToServerFormat(org.gemsjax.shared.collaboration.TransactionImpl t) throws NotFoundException{
+		
+		
+		TransactionImpl tx = new TransactionImpl();
+		tx.setUserId(t.getUserId());
+		tx.setUser(OnlineUserManager.getInstance().getOrLoadUser(t.getUserId()));
+		tx.setCollaborateableId(t.getCollaborateableId());
+		tx.setCommands(t.getCommands());
+		
+		for (Map.Entry<Integer, Long> e : t.getVectorClock().entrySet()) {
+			tx.getUserVectorClock().put(OnlineUserManager.getInstance().getOrLoadUser(e.getKey()), e.getValue());
+		}
+		
+		tx.setId(t.getId());
+		
+		return tx;
+	}
 	
 	
 
