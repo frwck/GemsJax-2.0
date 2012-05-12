@@ -40,6 +40,8 @@ import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.PlaceHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
+import org.gemsjax.client.module.CollaborationModule;
+import org.gemsjax.client.module.handler.CollaborationModuleHandler;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
@@ -56,21 +58,24 @@ import com.smartgwt.client.widgets.tab.Tab;
  * @author Hannes Dorfmann
  *
  */
-public class MetaModelPresenter extends Presenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler, PlaceHandler{
+public class MetaModelPresenter extends Presenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler, PlaceHandler, CollaborationModuleHandler{
 	
 	private MetaModel metaModel;
 	private MetaModelView view;
+	private CollaborationModule module;
 
-	public MetaModelPresenter(EventBus eventBus, MetaModelView view, MetaModel metaModel) {
+	public MetaModelPresenter(EventBus eventBus, MetaModelView view, CollaborationModule module) {
 		super(eventBus);
 		
-		this.metaModel = metaModel;
 		this.view = view;
+		
+		this.module = module;
 		
 		TabEnviroment.getInstance().addTab((Tab)view);
 		
 		bind();
 		generateInitialDrawables();
+		
 	}
 	
 	
@@ -580,6 +585,19 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 		
 		
 		view.redrawMetaModelCanvas();
+	}
+
+
+	@Override
+	public void onCollaborateableUpdated() {
+		
+	}
+
+
+	@Override
+	public void onInitialDataReceived() {
+		metaModel = (MetaModel) module.getCollaborateable();
+		generateInitialDrawables();
 	}
 	
 

@@ -81,7 +81,7 @@ public class RequestModule implements RequestChannelHandler{
 				else
 				if (r instanceof CollaborateRequestImpl)
 					NotificationModule.getInstance().onCollaborationAccepted(r.getSender(), acceptor, ((CollaborateRequestImpl) r).getCollaborateable());
-					// TODO implement
+					CollaboratableFileModule.getInstance().addCollaborator(acceptor, ((CollaborateRequestImpl)r).getCollaborateable());
 				
 				// finally delete the request and send a positive response
 				dao.deleteRequest(r);
@@ -107,6 +107,7 @@ public class RequestModule implements RequestChannelHandler{
 			
 		} catch (DAOException e) {
 			
+			e.printStackTrace();
 			try {
 				user.getRequestChannel().send(new RequestErrorMessage(referenceId, RequestError.DATABASE));
 			} catch (IOException e1) {

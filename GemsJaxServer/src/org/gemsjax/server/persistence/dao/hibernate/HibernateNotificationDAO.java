@@ -284,7 +284,10 @@ public class HibernateNotificationDAO implements NotificationDAO{
 			Query query = session.createQuery( "SELECT count(*) FROM NotificationImpl WHERE receiver = :receiverUser AND read=false");
 			query.setEntity("receiverUser", user);
 			
-			return (Long) query.list().get(0);
+			Long l =  (Long) query.list().get(0);
+			
+			session.close();
+			return l;
 		
 	}
 

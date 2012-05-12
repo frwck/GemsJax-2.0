@@ -329,16 +329,19 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 			tx = session.beginTransaction();
 				c.getUsers().add(u);
 				u.getCollaborateables().add(c);
-				
-				session.update(u);
-				session.update(c);
+				User um = (User) session.merge(u);
+				Collaborateable cm = (Collaborateable)session.merge(c);
+				session.saveOrUpdate(um);
+				session.saveOrUpdate(cm);
 			tx.commit();
 			session.flush();
 			session.close();
 			
+			
 		}
 		catch (HibernateException e)
 		{
+			e.printStackTrace(); 
 			if (tx != null)
 				tx.rollback();
 		
@@ -533,7 +536,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		query.setParameter("searchString",search);
 	    
 	    List<Collaborateable> result = query.list();
-	    
+	    session.close();
 	    return new LinkedHashSet<Collaborateable>(result);
 	}
 
@@ -680,7 +683,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		query.setParameter("user", user);
 		
 	    List<MetaModel> result = query.list();
-    
+	    session.close();
 	    return new LinkedHashSet<Collaborateable>(result);
     
 	}
@@ -697,7 +700,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		query.setParameter("user", user);
 		
 	    List<Model> result = query.list();
-    
+	    session.close();
 	    return new LinkedHashSet<Collaborateable>(result);
 	    
 	}

@@ -457,7 +457,7 @@ public class HibernateUserDAO implements UserDAO {
 	    query.setParameter("criteria",searchCriteria);
 	    
 	    List<RegisteredUserImpl> result = query.list();
-	    
+	    session.close();
 	    return new LinkedHashSet<RegisteredUser>(result);
 	}
 
@@ -481,7 +481,7 @@ public class HibernateUserDAO implements UserDAO {
 		Query query = session.createQuery( "FROM UserImpl WHERE "+where);
 	  
 	    List<UserImpl> result = query.list();
-	    
+	    session.close();
 	    return new LinkedHashSet<User>(result);
 	}
 

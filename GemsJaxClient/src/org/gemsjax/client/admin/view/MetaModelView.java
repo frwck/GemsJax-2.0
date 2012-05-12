@@ -12,7 +12,7 @@ import org.gemsjax.shared.metamodel.MetaModelElement;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 
-public interface MetaModelView {
+public interface MetaModelView extends CollaborateableView{
 	
 	/**
 	 * Get the toolbar button for creating a new meta-class

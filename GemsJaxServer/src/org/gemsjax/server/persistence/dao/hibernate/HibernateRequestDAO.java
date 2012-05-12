@@ -282,6 +282,7 @@ public class HibernateRequestDAO implements RequestDAO{
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 		Request u = (RequestImpl)session.get(RequestImpl.class, id);
+		session.clear();
 		session.close();
 		
 		if (u== null)
@@ -301,7 +302,9 @@ public class HibernateRequestDAO implements RequestDAO{
 		Query query = session.createQuery( "SELECT count(*) FROM RequestImpl WHERE receiver = :receiverUser");
 		query.setEntity("receiverUser", user);
 		
-		return (Long) query.list().get(0);
+		Long l =  (Long) query.list().get(0);
+		session.close();
+		return l;
 	}
 
 

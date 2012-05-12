@@ -2,14 +2,9 @@ package org.gemsjax.client.module;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.gemsjax.client.communication.channel.CollaborationChannel;
 import org.gemsjax.client.communication.channel.handler.CollaborationChannelHandler;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
@@ -30,9 +25,8 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	
 //	private Collaborateable collaborateable;
 	private int collaborateableId;
+	private Collaborateable collaborateable;
 	private CollaborationChannel channel;
-	private List<Transaction> transactions;
-	private Map<Integer, Long> vectorClock;
 	private Set<CollaborationModuleHandler> handlers;
 	private TransactionProcessor transactionProcessor;
 	
@@ -43,17 +37,16 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	private String subscribeReferenceId;
 	private int refIdCounter = 0;
 	
-	public CollaborationModule(User user, int collaborateableId, CollaborationChannel channel){
-		this.collaborateableId = collaborateableId;
+	public CollaborationModule(User user, Collaborateable collaborateable, CollaborationChannel channel){
+		this.collaborateableId = collaborateable.getId();
+		this.collaborateable = collaborateable;
 		this.user = user;
 		this.channel = channel;
 		
 		this.handlers = new LinkedHashSet<CollaborationModuleHandler>();
 		
-		transactions = new LinkedList<Transaction>();
-		vectorClock = new TreeMap<Integer, Long>();
 		
-		this.transactionProcessor = new TransactionProcessor(user);
+		this.transactionProcessor = new TransactionProcessor(user,collaborateable);
 		
 		channel.addCollaborationChannelHandler(this);
 		moduleIdCounter++;
@@ -102,13 +95,13 @@ public class CollaborationModule implements CollaborationChannelHandler{
 			long currentVal = getVectorClockValue(e.getKey());
 			
 			if (receivedVal>currentVal)
-				vectorClock.put(e.getKey(), receivedVal);
+				collaborateable.getVectorClock().put(e.getKey(), receivedVal);
 		}
 	}
 	
 	
 	private long getVectorClockValue(int userId){
-		Long value = vectorClock.get(userId);
+		Long value = collaborateable.getVectorClock().get(userId);
 		if ( value==null)
 			return 0;
 		else
@@ -125,10 +118,10 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		tx.setCollaborateableId(collaborateableId);
 		
 		long value = getVectorClockValue(user.getId()) + 1;
-		vectorClock.put(user.getId(), value);
+		collaborateable.getVectorClock().put(user.getId(), value);
 		
 		
-		for (Entry<Integer, Long> e : vectorClock.entrySet())
+		for (Entry<Integer, Long> e : collaborateable.getVectorClock().entrySet())
 			tx.setVectorClockEntry(e.getKey(), e.getValue());
 	
 		channel.send(new TransactionMessage(tx));
@@ -147,7 +140,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	
 	@Override
 	public String toString(){
-		return super.toString()+" VC : "+vectorClock;
+		return super.toString()+" VC : "+collaborateable.getVectorClock();
 		
 	}
 
@@ -169,6 +162,9 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		channel.send(msg);
 	}
 	
+	public Collaborateable getCollaborateable(){
+		return collaborateable;
+	}
 
 	@Override
 	public void onSubscribeSuccessful(String referenceId,

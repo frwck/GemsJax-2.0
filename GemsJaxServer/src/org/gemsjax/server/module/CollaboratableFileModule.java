@@ -144,6 +144,13 @@ public class CollaboratableFileModule implements CollaborateableFileChannelHandl
 		// TODO Not implemented yet
 		
 	}
+	
+	
+	
+	
+	public void addCollaborator(User u, Collaborateable c) throws DAOException{
+		dao.addCollaborativeUser(c, u);
+	}
 
 	
 	

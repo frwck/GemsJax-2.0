@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.gemsjax.client.user.RegisteredUserImpl;
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.user.User;
@@ -63,11 +64,12 @@ public class TransactionProcessor {
 	
 	private List<Transaction> history;
 	private User user;
+	private Collaborateable collaborateable;
 	
-	public TransactionProcessor(User user){
+	public TransactionProcessor(User user, Collaborateable collaborateable){
 		history = new LinkedList<Transaction>();
 		this.user = user;
-		
+		this.collaborateable = collaborateable;
 	}
 	
 	
@@ -118,7 +120,7 @@ public class TransactionProcessor {
 		
 	}
 	
-	
+	/*
 	public static void main(String args[]){
 		
 		TransactionProcessor tp = new TransactionProcessor(new RegisteredUserImpl(1, "displayedName", UserOnlineState.OFFLINE ));
@@ -147,6 +149,6 @@ public class TransactionProcessor {
 		
 	}
 	
-	
+	*/
 
 }
