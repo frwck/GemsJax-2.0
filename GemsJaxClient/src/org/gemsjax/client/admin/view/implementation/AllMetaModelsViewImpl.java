@@ -122,7 +122,8 @@ public class AllMetaModelsViewImpl extends LoadingTab implements AllMetaModelsVi
 	public void onClick(ClickEvent event) {
 		if (event.getSource() instanceof MetaModelItem){
 			int id = ((MetaModelItem)(event.getSource())).getMetaModel().getId();
-			eventBus.fireEvent(new ShowMetaModelRequiredEvent(id));
+			String name = ((MetaModelItem)(event.getSource())).getMetaModel().getName();
+			eventBus.fireEvent(new ShowMetaModelRequiredEvent(id, name));
 		}
 	}
 

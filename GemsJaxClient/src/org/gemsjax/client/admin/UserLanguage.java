@@ -109,6 +109,9 @@ public interface UserLanguage extends com.google.gwt.i18n.client.Constants{
 	  @DefaultStringValue("Inheritance")
 	  String MetaModelToolbarInheritance();
 	  
+	  @DefaultStringValue("Containment")
+	  String MetaModelToolbarContainment();
+	  
 	  @DefaultStringValue("Select the class, where the relation starts")
 	  String MetaModelToolbarRelationTip1();
 	  

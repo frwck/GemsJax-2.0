@@ -29,6 +29,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	private CollaborationChannel channel;
 	private Set<CollaborationModuleHandler> handlers;
 	private TransactionProcessor transactionProcessor;
+	private Set<Collaborator> collaborators;
 	
 	private User user;
 	private static int moduleIdCounter = 0;
@@ -44,6 +45,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		this.channel = channel;
 		
 		this.handlers = new LinkedHashSet<CollaborationModuleHandler>();
+		this.collaborators = new LinkedHashSet<Collaborator>();
 		
 		
 		this.transactionProcessor = new TransactionProcessor(user,collaborateable);
@@ -56,7 +58,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	
 	private String nextRefId(){
 		refIdCounter++;
-		return this.toString()+"-"+refIdCounter;
+		return "ColMod"+moduleId+"-"+refIdCounter;
 	}
 	
 	
@@ -146,9 +148,9 @@ public class CollaborationModule implements CollaborationChannelHandler{
 
 	
 	public void subscribe() throws IOException{
-		String refId = nextRefId();
+		subscribeReferenceId = nextRefId();
 		SubscribeCollaborateableMessage msg = new SubscribeCollaborateableMessage();
-		msg.setReferenceId(refId);
+		msg.setReferenceId(subscribeReferenceId);
 		msg.setCollaborateableId(collaborateableId);
 		channel.send(msg);
 	}
@@ -169,7 +171,29 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	@Override
 	public void onSubscribeSuccessful(String referenceId,
 			List<Transaction> transactions, List<Collaborator> collaborators) {
-		// TODO Auto-generated method stub
+		
+		if (subscribeReferenceId.equals(referenceId)){
+			for (Transaction t : transactions){
+				transactionProcessor.executeTransaction(t);
+				mergeMaxVectorClocks(t);
+			}
+			
+			
+			this.collaborators.addAll(collaborators);
+			
+			for (CollaborationModuleHandler h : handlers)
+			{
+				for (Collaborator c: collaborators)
+					h.onCollaboratorJoined(c);
+				
+				h.onCollaborateableUpdated();
+				h.onCollaborateableInitialized();
+			}
+			
+			
+			
+			
+		}
 		
 	}
 
@@ -191,22 +215,24 @@ public class CollaborationModule implements CollaborationChannelHandler{
 
 	@Override
 	public void onUnsubscribeSuccessful(String referenceId) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 
 	@Override
 	public void onCollaboratorJoined(Collaborator c) {
-		// TODO Auto-generated method stub
-		
+		collaborators.add(c);
+		for(CollaborationModuleHandler h : handlers)
+			h.onCollaboratorJoined(c);
 	}
 
 
 	@Override
 	public void onCollaboratorLeft(Collaborator c) {
-		// TODO Auto-generated method stub
-		
+		collaborators.remove(c);
+		for (CollaborationModuleHandler h : handlers)
+			h.onCollaboratorLeft(c);
 	}
 	
 	

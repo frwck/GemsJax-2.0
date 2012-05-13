@@ -16,12 +16,13 @@ import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.communication.message.collaboration.CollaboratorJoinedMessage;
+import org.gemsjax.shared.communication.message.collaboration.CollaboratorLeftMessage;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableError;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableErrorMessage;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableSuccessfulMessage;
 import org.gemsjax.shared.user.User;
 
-public class CollaborationModule implements CollaborationChannelHandler {
+public class CollaborationModule implements CollaborationChannelHandler{
 	
 	private Map<Integer, Collaborateable> collaborateables;
 	private Map<Integer, Set<OnlineUser> > subscriptions;
@@ -67,7 +68,9 @@ public class CollaborationModule implements CollaborationChannelHandler {
 					// Inform all the other subscribers
 					for (OnlineUser u : subscribers)
 						try{
-							u.getCollaborationChannel().send(new CollaboratorJoinedMessage(new Collaborator(sender.getId(), sender.getUser().getDisplayedName())));
+							CollaboratorJoinedMessage m =new CollaboratorJoinedMessage(new Collaborator(sender.getId(), sender.getUser().getDisplayedName()));
+							m.setCollaborateableId(collaborateableId);
+							u.getCollaborationChannel().send(m);
 						}
 						catch(IOException e) {}
 					
@@ -130,6 +133,42 @@ public class CollaborationModule implements CollaborationChannelHandler {
 			collaborateables.remove(collaboratebaleId);
 		
 	}
+	
+	
+	
+	public void unSubscribeAllOf(OnlineUser user){
+		
+		for (Collaborateable c : user.getUser().getCollaborateables())
+		{
+			Set<OnlineUser> subscribers =subscriptions.get(c.getId());
+			
+			if(subscribers == null)
+				continue;
+			
+			subscribers.remove(user);
+			
+			
+			CollaboratorLeftMessage m = new CollaboratorLeftMessage();
+			m.setCollaborator(new Collaborator(user.getId(), user.getUser().getDisplayedName()));
+			m.setCollaborateableId(c.getId());
+			
+			for (OnlineUser u : subscribers){
+				try {
+					u.getCollaborationChannel().send(m);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			
+			
+			if (subscribers.isEmpty())
+				collaborateables.remove(c.getId());
+		}
+	}
+	
+	
 	
 	
 	

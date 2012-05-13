@@ -77,5 +77,10 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	
 		
 	}
+	
+	
+	public CommunicationConnection getConnection(){
+		return connection;
+	}
 
 }

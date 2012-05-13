@@ -5,6 +5,6 @@ import com.google.gwt.event.shared.EventHandler;
 
 public interface ShowMetaModelRequiredHandler extends EventHandler {
 
-	public void onShowMetaModelRequired(int metaModelId);
+	void onShowMetaModelRequired(int collaborateableId, String name);
 	
 }

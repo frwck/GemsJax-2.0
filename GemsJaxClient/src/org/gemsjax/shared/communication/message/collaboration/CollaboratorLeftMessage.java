@@ -5,7 +5,7 @@ import org.gemsjax.shared.communication.serialisation.Archive;
 public class CollaboratorLeftMessage extends CollaborationMessage{
 
 	private Collaborator collaborator;
-	
+	private int collaborateableId;
 	
 	public CollaboratorLeftMessage() {}
 	
@@ -16,6 +16,7 @@ public class CollaboratorLeftMessage extends CollaborationMessage{
 	@Override
 	public void serialize(Archive a) throws Exception {
 		collaborator = a.serialize("collaborator",collaborator).value;	
+		collaborateableId = a.serialize("collaboratorId", collaborateableId).value;
 	}
 
 	@Override
@@ -30,5 +31,13 @@ public class CollaboratorLeftMessage extends CollaborationMessage{
 
 	public void setCollaborator(Collaborator collaborator) {
 		this.collaborator = collaborator;
+	}
+
+	public int getCollaborateableId() {
+		return collaborateableId;
+	}
+
+	public void setCollaborateableId(int colId) {
+		this.collaborateableId = colId;
 	}
 }

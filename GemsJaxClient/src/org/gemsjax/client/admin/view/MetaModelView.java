@@ -7,6 +7,7 @@ import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
+import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.metamodel.MetaModelElement;
 
 import com.smartgwt.client.widgets.events.HasClickHandlers;
@@ -36,6 +37,9 @@ public interface MetaModelView extends CollaborateableView{
 	 * @return
 	 */
 	public HasClickHandlers getNewInheritanceButton();
+	
+	
+	public HasClickHandlers getNewContainmentButton();
 	
 	
 	/**
@@ -77,5 +81,19 @@ public interface MetaModelView extends CollaborateableView{
 	 * @param a
 	 */
 	public void showAnchorPlaceNotAllowed(Anchor a);
+	
+	
+	public void showLoading();
+	
+	public void showContent();
 
+	/**
+	 * Remove all Drawables from the Canvas
+	 */
+	public void clearDrawables();
+	
+	
+	public void addCollaborator(Collaborator c);
+	
+	public void removeCollaborator(Collaborator c);
 }

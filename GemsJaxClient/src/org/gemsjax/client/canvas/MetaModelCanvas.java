@@ -61,10 +61,14 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		 */
 		CREATE_RELATION,
 		
+		CREATE_CONTAINMENT,
+		
 		/**
 		 * That means, that the user is only allowed to display the meta-model, but not to edit it.
 		 */
 		READ_ONLY
+		
+
 	}
 	
 	

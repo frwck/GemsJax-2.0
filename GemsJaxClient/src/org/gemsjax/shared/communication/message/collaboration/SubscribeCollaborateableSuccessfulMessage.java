@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.communication.serialisation.Archive;
+import org.gemsjax.shared.communication.serialisation.Serializable;
 
-public class SubscribeCollaborateableSuccessfulMessage extends ReferenceableCollaborationMessage{
+public class SubscribeCollaborateableSuccessfulMessage extends ReferenceableCollaborationMessage implements Serializable{
 
 	private List<Transaction> transactions;
 	private List<Collaborator> collaborators;

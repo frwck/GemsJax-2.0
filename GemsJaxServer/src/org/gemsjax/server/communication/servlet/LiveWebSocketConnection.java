@@ -47,6 +47,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 		private Connection connection;
 		private HttpSession session;
 		
+		
 		private Set<InputChannel> inputChannels;
 		
 		private Set<ClosedListener> closedListeners;

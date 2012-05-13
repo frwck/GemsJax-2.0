@@ -1,36 +1,32 @@
 package org.gemsjax.client.admin.presenter;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
-import org.gemsjax.client.admin.notification.TipNotification;
-import org.gemsjax.client.admin.notification.NotificationManager;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.DockableAnchor;
 import org.gemsjax.client.canvas.Drawable;
-import org.gemsjax.client.canvas.MetaConnectionBox;
-import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
+import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.MetaInheritanceDrawable;
-import org.gemsjax.client.canvas.Moveable;
-import org.gemsjax.client.canvas.ResizeArea;
-import org.gemsjax.client.canvas.Resizeable;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
+import org.gemsjax.client.canvas.Moveable;
 import org.gemsjax.client.canvas.events.ClickEvent;
 import org.gemsjax.client.canvas.events.FocusEvent;
+import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.events.IconLoadEvent;
 import org.gemsjax.client.canvas.events.MouseOutEvent;
 import org.gemsjax.client.canvas.events.MouseOverEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
-import org.gemsjax.client.canvas.events.PlaceEvent;
-import org.gemsjax.client.canvas.events.ResizeEvent;
-import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
+import org.gemsjax.client.canvas.events.PlaceEvent;
 import org.gemsjax.client.canvas.events.PlaceEvent.PlaceEventType;
+import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
@@ -43,13 +39,13 @@ import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
 import org.gemsjax.shared.AnchorPoint;
+import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
 
 import com.google.gwt.event.shared.EventBus;
-import com.smartgwt.client.docs.Debugging;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.tab.Tab;
 
@@ -58,23 +54,25 @@ import com.smartgwt.client.widgets.tab.Tab;
  * @author Hannes Dorfmann
  *
  */
-public class MetaModelPresenter extends Presenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler, PlaceHandler, CollaborationModuleHandler{
+public class MetaModelPresenter extends CollaborationPresenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler, PlaceHandler, CollaborationModuleHandler{
 	
 	private MetaModel metaModel;
 	private MetaModelView view;
 	private CollaborationModule module;
 
-	public MetaModelPresenter(EventBus eventBus, MetaModelView view, CollaborationModule module) {
+	public MetaModelPresenter(EventBus eventBus, MetaModelView view, MetaModel metaModel, CollaborationModule module) throws IOException {
 		super(eventBus);
 		
 		this.view = view;
-		
+		view.showLoading();
+		this.metaModel = metaModel;
 		this.module = module;
+		module.addCollaborationModuleHandler(this);
+		module.subscribe();
 		
 		TabEnviroment.getInstance().addTab((Tab)view);
 		
 		bind();
-		generateInitialDrawables();
 		
 	}
 	
@@ -112,11 +110,20 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 				view.setCanvasEditingMode(EditingMode.NORMAL);
 			}
 		});
+		
+		
+		view.getNewContainmentButton().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
+			
+			@Override
+			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
+				view.setCanvasEditingMode(EditingMode.CREATE_CONTAINMENT);
+			}
+		});
 	}
 	
 	
 	
-	private void generateInitialDrawables()
+	private void generateDrawables()
 	{
 		
 		try {
@@ -590,14 +597,32 @@ public class MetaModelPresenter extends Presenter implements ClickHandler,FocusH
 
 	@Override
 	public void onCollaborateableUpdated() {
-		
+		view.clearDrawables();
+		generateDrawables();
 	}
 
 
 	@Override
-	public void onInitialDataReceived() {
-		metaModel = (MetaModel) module.getCollaborateable();
-		generateInitialDrawables();
+	public void onCollaborateableInitialized() {
+		view.showContent();
+	}
+
+
+	@Override
+	public void showView() {
+		// TODO implement
+	}
+
+
+	@Override
+	public void onCollaboratorJoined(Collaborator c) {
+		view.addCollaborator(c);
+	}
+
+
+	@Override
+	public void onCollaboratorLeft(Collaborator c) {
+		view.removeCollaborator(c);
 	}
 	
 

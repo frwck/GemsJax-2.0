@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.gemsjax.client.communication.serialisation.GwtXmlLoadingArchive;
+import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.communication.CommunicationConnection;
@@ -15,6 +16,7 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.MessageType;
+import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.communication.message.collaboration.CollaboratorJoinedMessage;
 import org.gemsjax.shared.communication.message.collaboration.CollaboratorLeftMessage;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableMessage;
@@ -27,6 +29,7 @@ import org.gemsjax.shared.communication.serialisation.XmlSavingArchive;
 import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashMapInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashSetInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.LinkedListInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.CollaboratorInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorJoinedMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorLeftMessageInstantiator;
@@ -138,7 +141,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(TransactionImpl.class.getName(), new TransactionInstantiator());
 		objectFactory.register(CollaboratorJoinedMessage.class.getName(), new CollaboratorJoinedMessageInstantiator());
 		objectFactory.register(CollaboratorLeftMessage.class.getName(), new CollaboratorLeftMessageInstantiator());
-		
+		objectFactory.register(Collaborator.class.getName(), new CollaboratorInstantiator());
 		
 		// Commands
 		
@@ -201,10 +204,12 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 			deliverReceivedMessage(m);
 			
 		} catch (Exception e) {
+			Console.log(e.getMessage());
 			
 			// TODO remove deprecated stuff (backward compatibility)
 			InputMessage im = new InputMessage(200, data);
 			
+			e.printStackTrace();
 	    	for (InputChannel c: inputChannels)
 	        {
 	        	if (c.isMatchingFilter(data))

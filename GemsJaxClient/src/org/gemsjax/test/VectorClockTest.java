@@ -18,6 +18,7 @@ import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.MessageType;
+import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
 import org.gemsjax.shared.metamodel.impl.MetaFactory;
 import org.gemsjax.shared.user.User;
@@ -207,7 +208,7 @@ class VectorClockProcess extends Thread implements CollaborationModuleHandler{
 		Collaborateable c = MetaFactory.createMetaModel(1, "name");
 		
 		channel = new CollaborationChannel(connection, c.getId());
-		module = new CollaborationModule(u, c.getId(), channel);
+		module = new CollaborationModule(u, c, channel);
 		module.addCollaborationModuleHandler(this);
 	}
 	
@@ -232,6 +233,24 @@ class VectorClockProcess extends Thread implements CollaborationModuleHandler{
 	@Override
 	public void onCollaborateableUpdated() {
 		System.out.println("User "+userId+" "+ module);
+	}
+
+	@Override
+	public void onCollaborateableInitialized() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onCollaboratorJoined(Collaborator c) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onCollaboratorLeft(Collaborator c) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

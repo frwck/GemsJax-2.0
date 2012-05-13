@@ -8,9 +8,11 @@ public class ShowMetaModelRequiredEvent extends GwtEvent<ShowMetaModelRequiredHa
 	public static Type<ShowMetaModelRequiredHandler>TYPE = new Type<ShowMetaModelRequiredHandler>();
 	
 	private int metaModelId;
+	private String name;
 	
-	public ShowMetaModelRequiredEvent(int metaModelId){
+	public ShowMetaModelRequiredEvent(int metaModelId, String name){
 		this.metaModelId = metaModelId;
+		this.name = name;
 	}
 
 	@Override
@@ -20,6 +22,6 @@ public class ShowMetaModelRequiredEvent extends GwtEvent<ShowMetaModelRequiredHa
 
 	@Override
 	protected void dispatch(ShowMetaModelRequiredHandler handler) {
-		handler.onShowMetaModelRequired(metaModelId);
+		handler.onShowMetaModelRequired(metaModelId, name);
 	}
 }

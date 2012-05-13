@@ -99,7 +99,7 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 				h.onCollaboratorJoined(m.getCollaborator());
 		}	
 		else
-		if (msg instanceof CollaboratorLeftMessage && ((CollaboratorJoinedMessage)msg).getCollaborateableId() == collaborateableId)
+		if (msg instanceof CollaboratorLeftMessage && ((CollaboratorLeftMessage)msg).getCollaborateableId() == collaborateableId)
 		{
 			CollaboratorLeftMessage m = (CollaboratorLeftMessage) msg;
 			for (CollaborationChannelHandler h: handlers)

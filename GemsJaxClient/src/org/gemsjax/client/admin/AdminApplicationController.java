@@ -36,6 +36,7 @@ import org.gemsjax.client.admin.presenter.handler.ShowAllMetaModelRequestedHandl
 import org.gemsjax.client.admin.presenter.handler.ShowMetaModelRequiredHandler;
 import org.gemsjax.client.admin.view.CreateMetaModelView;
 import org.gemsjax.client.admin.view.LoadingView;
+import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
 import org.gemsjax.client.admin.view.implementation.AllMetaModelsViewImpl;
 import org.gemsjax.client.admin.view.implementation.CreateMetaModelViewImpl;
@@ -77,6 +78,7 @@ import org.gemsjax.shared.metamodel.exception.MetaClassException;
 import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
 import org.gemsjax.shared.metamodel.exception.MetaInheritanceExcepetion;
 import org.gemsjax.shared.metamodel.impl.MetaFactory;
+import org.gemsjax.shared.metamodel.impl.MetaModelImpl;
 import org.gemsjax.shared.user.RegisteredUser;
 
 import com.google.gwt.core.client.GWT;
@@ -387,18 +389,28 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 
 
 	@Override
-	public void onShowMetaModelRequired(int collaborateableId) {
+	public void onShowMetaModelRequired(int collaborateableId, String name) {
 		CollaborationPresenter p = collaborations.get(collaborateableId);
 		
 		if (p != null)
 			p.showView();
 		else
 		{
-			CollaborationModule module = new CollaborationModule(authenticationModule.getCurrentlyAuthenticatedUser(), collaborateableId, new CollaborationChannel(WebSocketCommunicationConnection.getInstance(), collaborateableId));
+			MetaModel mm = new MetaModelImpl(collaborateableId, name);
+			
+			CollaborationModule module = new CollaborationModule(authenticationModule.getCurrentlyAuthenticatedUser(), mm, new CollaborationChannel(WebSocketCommunicationConnection.getInstance(), collaborateableId));
 			
 			try {
-				p = new CollaborationPresenter(eventBus, module);
+			
+				MetaModelView view = new MetaModelViewImpl(name, language);
+			
+			
+				p = new MetaModelPresenter(eventBus,view , mm,  module);
+				collaborations.put(collaborateableId, p);
 			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (CanvasSupportException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

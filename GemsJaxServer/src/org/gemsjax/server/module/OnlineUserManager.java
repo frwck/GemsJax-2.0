@@ -3,6 +3,7 @@ package org.gemsjax.server.module;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpSession;
 
@@ -40,6 +41,8 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 	 */
 	private Map<Integer, OnlineUser> onlineUserIdMap;
 	
+	private Map<CommunicationConnection, OnlineUser> connectionOnlineUserMap;
+	
 	/**
 	 * This Map maps a HttpSession id ({@link HttpSession#getId()}) to his {@link OnlineUser}  
 	 */
@@ -52,8 +55,9 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 	 */
 	private OnlineUserManager()
 	{
-		onlineUserIdMap = new HashMap<Integer, OnlineUser>();
-		onlineUserSessionMap = new HashMap<String, OnlineUser>();
+		onlineUserIdMap = new ConcurrentHashMap<Integer, OnlineUser>();
+		onlineUserSessionMap = new ConcurrentHashMap<String, OnlineUser>();
+		connectionOnlineUserMap = new ConcurrentHashMap<CommunicationConnection, OnlineUser>();
 		dao = new HibernateUserDAO();
 	}
 	
@@ -114,6 +118,7 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 	public void addOnlineUser(OnlineUser user)
 	{
 		
+		
 		OnlineUser existingOnlineUser = onlineUserIdMap.get(user.getId());
 		
 		if (existingOnlineUser != null)
@@ -130,6 +135,7 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 			finally
 			{
 				doLogout(existingOnlineUser);
+				connectionOnlineUserMap.remove(existingOnlineUser.getCollaborationChannel().getConnection());
 			}
 			
 		}
@@ -137,6 +143,7 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 		
 		onlineUserIdMap.put(user.getId(), user);
 		onlineUserSessionMap.put(user.getHttpSession().getId(), user);
+		connectionOnlineUserMap.put(user.getCollaborationChannel().getConnection(), user);
 		
 	}
 
@@ -152,6 +159,8 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 		ou.getLogoutChannel().removeLogoutChannelHandler(this);
 		ou.getFriendChannel().removeFriendsChanneslHandler(FriendModule.getInstance());
 		
+		CollaborationModule.getInstance().unSubscribeAllOf(ou);
+		
 		
 	}
 	
@@ -159,6 +168,7 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 	@Override
 	public void onLogoutReceived(OnlineUser user) {
 		doLogout(user);
+		
 	}
 
 
@@ -166,12 +176,15 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 	@Override
 	public void onClose(CommunicationConnection connection) {
 		if (connection instanceof LiveWebSocketConnection){
-			OnlineUser ou = getOnlineUser(((LiveWebSocketConnection) connection).getSession());
+			OnlineUser ou = connectionOnlineUserMap.get(connection);
 			
 			if (ou != null)
 			{
 				doLogout(ou);
 			}
+			
+			CollaborationModule.getInstance().unSubscribeAllOf(ou);
+			
 		}
 		
 	}

@@ -7,6 +7,7 @@ import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
 import com.google.gwt.user.client.Window;
+import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -80,6 +81,8 @@ public class BufferedCanvas extends VLayout {
 
 		this.setWidth100();
 		this.setHeight100();
+		
+		this.setOverflow(Overflow.SCROLL);
 		
 		// TODO needed?
 /*
@@ -255,6 +258,11 @@ public class BufferedCanvas extends VLayout {
 		return canvas;
 	}
 
+	
+	
+	public void clearDrawables(){
+		drawableStorage.clear();
+	}
 
 
 

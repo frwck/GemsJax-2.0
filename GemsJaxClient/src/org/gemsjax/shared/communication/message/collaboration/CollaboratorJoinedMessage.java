@@ -22,6 +22,7 @@ public class CollaboratorJoinedMessage extends CollaborationMessage{
 	@Override
 	public void serialize(Archive a) throws Exception {
 		collaborator = a.serialize("collaborator",collaborator).value;	
+		collaborateableId = a.serialize("collaborateableId", collaborateableId).value;
 	}
 
 	

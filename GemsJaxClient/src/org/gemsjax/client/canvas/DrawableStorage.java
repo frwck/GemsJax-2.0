@@ -133,4 +133,9 @@ public class DrawableStorage {
 		
 		
 	}
+
+
+	public void clear() {
+		elements.clear();
+	}
 }

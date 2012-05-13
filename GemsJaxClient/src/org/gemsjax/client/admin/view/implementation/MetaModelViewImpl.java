@@ -1,12 +1,11 @@
 package org.gemsjax.client.admin.view.implementation;
 
 import org.gemsjax.client.admin.UserLanguage;
-
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
-import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.notification.NotificationManager;
+import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.tabs.LoadingTab;
 import org.gemsjax.client.admin.tabs.TwoColumnLayout;
 import org.gemsjax.client.admin.view.MetaModelView;
@@ -14,16 +13,43 @@ import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.CanvasSupportException;
-import org.gemsjax.client.canvas.MetaConnectionDrawable;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
+import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.metamodel.MetaModelElement;
-
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.types.AnimationEffect;
+import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
+import com.smartgwt.client.widgets.grid.ListGrid;
+import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.layout.HLayout;
+
+
+
+class CollaboratorListRecord extends ListGridRecord{
+	
+	private Collaborator collaborator;
+	
+	public CollaboratorListRecord(Collaborator collaborator){
+		this.collaborator = collaborator;
+		
+		setAttribute("displayedName", collaborator.getDisplayedName());
+		setAttribute("id", collaborator.getUserId());
+	}
+	
+	
+	public Collaborator getCollaborator(){
+		return collaborator;
+	}
+	
+	
+}
+
+
 
 /**
  * This is the implementation for the Meta-Model editing Tab.
@@ -36,12 +62,16 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 
 	private TipNotification tipNotification;
-	private BigMenuButton mouseButton, newClassButton, newRelationButton, newInheritanceButton;
+	private BigMenuButton mouseButton, newClassButton, newRelationButton, newInheritanceButton, newContainmentButton;
 	private MetaModelCanvas canvas;
 	
 	private TwoColumnLayout layout;
 	
 	private UserLanguage language;
+	private HLayout detailsView;
+	
+	final ListGrid collaboratorsList;
+	
 	
 	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException 
 	{
@@ -50,30 +80,57 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		this.language = language;
 		
 		layout = new TwoColumnLayout();
+		layout.setWidth100();
+		layout.setHeight100();
 		
 		generateToolStrip(language);
 		
+		detailsView = new HLayout();
+		detailsView.setWidth(150);
+		detailsView.setHeight100();
+		
 		canvas = new MetaModelCanvas();
-		layout.setRightColumn(canvas, true);
+		
+		collaboratorsList = new ListGrid();
+		collaboratorsList.setTitle("Collaborators");
+		collaboratorsList.setCanEdit(false);
+		collaboratorsList.setHeight(200);
+		collaboratorsList.setWidth100();
+		ListGridField collaboratorField = new ListGridField("displayedName", "Collaborators");
+		collaboratorsList.setFields(collaboratorField);
+		collaboratorsList.setData(new CollaboratorListRecord[]{});
+		detailsView.addMember(collaboratorsList);
+		
+		TwoColumnLayout canvasDetailContainer = new TwoColumnLayout();
+		canvasDetailContainer.setWidth100();
+		canvasDetailContainer.setHeight100();
+		canvasDetailContainer.setLeftColumn(canvas, true);
+		canvasDetailContainer.setRightColumn(detailsView, true);
+		
+		layout.setRightColumn(canvasDetailContainer, true);
 		
 		// TODO set it to the corresponding MetaModel settings (check for READ_ONLY)
 		setCanvasEditingMode(EditingMode.NORMAL);
 		
+
+		canvas.setWidth("*");
 		canvas.initCanvasSize();
 		canvas.redrawCanvas();
 		
 		//this.getLayout().setOverflow(Overflow.HIDDEN);
 
 		//canvas.setOverflow(Overflow.SCROLL);
+		//layout.setOverflow(Overflow.HIDDEN);
 		this.setContent(layout);
-		this.showContent();
+		this.showLoading();
+		this.setCanClose(true);
 
 	}
 	
 	private void generateToolStrip(UserLanguage language)
 	{
 		
-		VerticalBigMenuButtonBar toolbar = new VerticalBigMenuButtonBar(120,10);
+		VerticalBigMenuButtonBar toolbar = new VerticalBigMenuButtonBar(100,10);
 	
 		//toolbar.setMargin(5);
 		toolbar.setMembersMargin(10);
@@ -82,12 +139,14 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		newClassButton = new BigMenuButton(language.MetaModelToolbarNewMetaClass(),"/images/icons/class.png"); 
 		newRelationButton = new BigMenuButton(language.MetaModelToolbarRelation(),"/images/icons/relation.png"); 
 		newInheritanceButton = new BigMenuButton(language.MetaModelToolbarInheritance(),"/images/icons/inheritance.png"); 	
+		newContainmentButton = new BigMenuButton(language.MetaModelToolbarContainment(),"/images/icons/containment.png"); 	
 		
 		
-		mouseButton.setHeight(100);
-		newClassButton.setHeight(100);
-		newRelationButton.setHeight(100);
-		newInheritanceButton.setHeight(100);
+		mouseButton.setHeight(90);
+		newClassButton.setHeight(90);
+		newRelationButton.setHeight(90);
+		newInheritanceButton.setHeight(90);
+		newContainmentButton.setHeight(90);
 		
 		
 		
@@ -95,6 +154,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		toolbar.addMember(newClassButton);
 		toolbar.addMember(newRelationButton);
 		toolbar.addMember(newInheritanceButton);
+		toolbar.addMember(newContainmentButton);
 		
 		
 	    layout.setLeftColumn(toolbar, true);
@@ -179,6 +239,46 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		NotificationManager.getInstance().showTipNotification(new TipNotification(language.MetaModelAnchorPlaceNotAllowedTitle(), null , 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE); 
 		
 	}
-	
 
+	@Override
+	public void clearDrawables() {
+		canvas.clearDrawables();
+	}
+
+	@Override
+	public HasClickHandlers getNewContainmentButton() {
+		return newContainmentButton;
+	}
+
+	@Override
+	public void addCollaborator(Collaborator c) {
+		for (ListGridRecord r : collaboratorsList.getRecords()){
+			CollaboratorListRecord cr = (CollaboratorListRecord)r;
+			if (cr.getCollaborator().getUserId()==c.getUserId())
+				return;
+					
+		}
+		
+		collaboratorsList.addData(new CollaboratorListRecord(c));
+		collaboratorsList.redraw();
+	}
+
+	@Override
+	public void removeCollaborator(Collaborator c) {
+		ListGridRecord found = null;
+		for (ListGridRecord r : collaboratorsList.getRecords()){
+			CollaboratorListRecord cr = (CollaboratorListRecord)r;
+			if (cr.getCollaborator().getUserId()==c.getUserId()){
+				found = r;
+				break;
+			}
+					
+		}
+		if (found!=null)
+			collaboratorsList.removeData(found);
+		
+		collaboratorsList.redraw();
+	}
+	
+	
 }
