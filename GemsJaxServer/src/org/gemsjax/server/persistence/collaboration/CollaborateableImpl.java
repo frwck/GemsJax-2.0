@@ -4,8 +4,10 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
+import org.gemsjax.shared.collaboration.Collaborateable.Permission;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
 

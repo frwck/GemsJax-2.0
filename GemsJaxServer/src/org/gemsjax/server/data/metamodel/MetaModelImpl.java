@@ -3,9 +3,9 @@ package org.gemsjax.server.data.metamodel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.gemsjax.server.persistence.collaboration.CollaborateableImpl;
 import org.gemsjax.shared.metamodel.MetaAttribute;

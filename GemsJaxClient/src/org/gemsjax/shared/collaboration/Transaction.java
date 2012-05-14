@@ -27,12 +27,13 @@ public interface Transaction {
 	/**
 	 * Calling commit will "execute" this transaction on the {@link Collaborateable}, which means, that the {@link Command}s were executed in the given order
 	 * by calling {@link Command#execute()} to manipulate data. After the commit the {@link Collaborateable} is in an atomic state.
+	 * @throws SemanticException 
 	 */
-	public void commit();
+	public void commit() throws SemanticException;
 	/**
 	 * Calling this method will "undo" all the changes that were previously done on the {@link Collaborateable}.
 	 */
-	public void rollback();
+	public void rollback() throws SemanticException;
 	/**
 	 * Add a command to this transaction by inserting the command at the last position in the command list
 	 * @param c

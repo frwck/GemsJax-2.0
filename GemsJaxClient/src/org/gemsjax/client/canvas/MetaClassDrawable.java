@@ -1034,5 +1034,9 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 	
 	
 	
+	public MetaClass getMetaClass(){
+		return metaClass;
+	}
+	
 	
 }

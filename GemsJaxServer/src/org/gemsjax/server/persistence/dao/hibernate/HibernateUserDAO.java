@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.gemsjax.server.persistence.HibernateUtil;
-import org.gemsjax.server.persistence.collaboration.CollaborateableImpl;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.AlreadyBefriendedException;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
@@ -14,7 +13,6 @@ import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
-import org.gemsjax.server.persistence.experiment.ExperimentImpl;
 import org.gemsjax.server.persistence.notification.NotificationImpl;
 import org.gemsjax.server.persistence.request.RequestImpl;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
@@ -24,14 +22,11 @@ import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.LockOptions;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
-import org.jboss.cache.commands.read.GetNodeCommand;
 
 public class HibernateUserDAO implements UserDAO {
 	

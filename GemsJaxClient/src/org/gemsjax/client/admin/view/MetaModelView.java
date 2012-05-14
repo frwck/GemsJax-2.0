@@ -1,6 +1,8 @@
 package org.gemsjax.client.admin.view;
 
 
+import java.util.List;
+
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.notification.Notification;
 import org.gemsjax.client.canvas.Anchor;
@@ -8,6 +10,9 @@ import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
+import org.gemsjax.shared.metamodel.MetaBaseType;
+import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModelElement;
 
 import com.smartgwt.client.widgets.events.HasClickHandlers;
@@ -96,4 +101,12 @@ public interface MetaModelView extends CollaborateableView{
 	public void addCollaborator(Collaborator c);
 	
 	public void removeCollaborator(Collaborator c);
+	
+	
+	public void setMetaClassDetail(MetaClass metaClass);
+	
+	public void setMetaConnectionDetail(MetaConnection metaConnection);
+	
+	public void setMetaBaseTypes(List<MetaBaseType> types);
+	
 }

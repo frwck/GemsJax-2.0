@@ -1,7 +1,5 @@
-package org.gemsjax.server.persistence.collaboration.command;
+package org.gemsjax.shared.collaboration.command;
 
-import org.gemsjax.server.persistence.collaboration.CollaborateableImpl;
-import org.gemsjax.shared.collaboration.command.Command;
 
 public abstract class CommandImpl implements Command {
 	

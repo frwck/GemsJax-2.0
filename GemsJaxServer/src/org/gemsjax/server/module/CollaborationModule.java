@@ -20,12 +20,16 @@ import org.gemsjax.shared.communication.message.collaboration.CollaboratorLeftMe
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableError;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableErrorMessage;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableSuccessfulMessage;
+import org.gemsjax.shared.metamodel.MetaBaseType;
+import org.gemsjax.shared.metamodel.impl.MetaBaseTypeImpl;
 import org.gemsjax.shared.user.User;
 
 public class CollaborationModule implements CollaborationChannelHandler{
 	
 	private Map<Integer, Collaborateable> collaborateables;
 	private Map<Integer, Set<OnlineUser> > subscriptions;
+	
+	private List<MetaBaseType> metaBaseTypes;
 	
 	private CollaborateableDAO dao;
 	
@@ -36,6 +40,18 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		collaborateables = new ConcurrentHashMap<Integer, Collaborateable>();
 		subscriptions = new ConcurrentHashMap<Integer, Set<OnlineUser>>();
 		dao = new HibernateCollaborateableDAO();
+		
+		generateMetaBaseTypes();
+	}
+	
+	private void generateMetaBaseTypes(){
+
+		metaBaseTypes = new LinkedList<MetaBaseType>();
+		metaBaseTypes.add(new MetaBaseTypeImpl("1", "String"));
+		metaBaseTypes.add(new MetaBaseTypeImpl("2", "Integer"));
+		metaBaseTypes.add(new MetaBaseTypeImpl("3", "Float"));
+		metaBaseTypes.add(new MetaBaseTypeImpl("4", "Boolean"));
+		
 	}
 	
 	public static CollaborationModule getInstance(){
@@ -83,6 +99,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 				SubscribeCollaborateableSuccessfulMessage m = new SubscribeCollaborateableSuccessfulMessage();
 				m.setReferenceId(refId);
 				m.setCollaborateableId(collaborateableId);
+				m.setMetaBaseTypes(metaBaseTypes);
 				
 				LinkedList<Transaction> transactions = new LinkedList<Transaction>();
 				for (Transaction t : c.getTransactions())
@@ -210,11 +227,12 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	
 	private TransactionImpl transformToServerFormat(org.gemsjax.shared.collaboration.TransactionImpl t) throws NotFoundException{
 		
-		
 		TransactionImpl tx = new TransactionImpl();
+		tx.setId(t.getId());
 		tx.setUserId(t.getUserId());
 		tx.setUser(OnlineUserManager.getInstance().getOrLoadUser(t.getUserId()));
 		tx.setCollaborateableId(t.getCollaborateableId());
+		tx.setCollaborateable(getOrLoadCollaborateable(t.getCollaborateableId()));
 		tx.setCommands(t.getCommands());
 		
 		for (Map.Entry<Integer, Long> e : t.getVectorClock().entrySet()) {

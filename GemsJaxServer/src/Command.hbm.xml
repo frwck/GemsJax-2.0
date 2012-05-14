@@ -4,34 +4,26 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-access="field">
-<class name="org.gemsjax.server.persistence.collaboration.command.CommandImpl" table="Command">
+<class name="org.gemsjax.shared.collaboration.command.CommandImpl" table="Command">
     <id name="id" type="string" column="id">
     	<!-- No generator needed since id will generated on client side with uuid -->
     </id>
     
     <property name="sequenceNumber" column="sequenceNumber" type="int" not-null="true" />
     
+
+    
+    
+    
+    <joined-subclass name=" org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand" table="CreateMetaClassCommand">
+        <key column="Command_id"/>
+        <property name="name" column="name" type="string" />
+        <property name="x" column="x" type="double" />
+        <property name="y" column="y" type="double" />
+        <property name="width" column="width" type="double" />
+        <property name="height" column="height" type="double" />
+    </joined-subclass>
    
-   <!-- 
-    <joined-subclass name="org.gemsjax.server.data.metamodel.MetaModelImpl" table="MetaModel">
-        <key column="Collaborateable_id"/>
-        <property name="forExperiment" column="forExperiment" type="boolean" />
-    </joined-subclass>
-    
-    
-    
-    
-    <joined-subclass name="org.gemsjax.server.persistence.experiment.ExperimentUserImpl" table="ExperimentUser">
-        <key column="user_id"/>
-        <property name="username" column="username" type="string" />
-        <property name="passwordHash" column="password" type="string" />
-        
-        <many-to-one name="experimentGroup" class="org.gemsjax.server.persistence.experiment.ExperimentGroupImpl" fetch="select">
-            <column name="ExperimentGroup_id" not-null="true" />
-        </many-to-one>
-        
-    </joined-subclass>
-     -->
     
          
 </class>

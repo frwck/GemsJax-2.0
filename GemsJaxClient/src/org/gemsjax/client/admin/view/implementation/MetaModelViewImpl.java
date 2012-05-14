@@ -1,5 +1,7 @@
 package org.gemsjax.client.admin.view.implementation;
 
+import java.util.List;
+
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
@@ -9,6 +11,7 @@ import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.admin.tabs.LoadingTab;
 import org.gemsjax.client.admin.tabs.TwoColumnLayout;
 import org.gemsjax.client.admin.view.MetaModelView;
+import org.gemsjax.client.admin.view.grids.MetaClassDetailView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.client.canvas.Anchor;
@@ -17,16 +20,18 @@ import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
+import org.gemsjax.shared.metamodel.MetaBaseType;
+import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModelElement;
+
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.types.AnimationEffect;
-import com.smartgwt.client.types.ListGridFieldType;
-import com.smartgwt.client.types.Overflow;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 
 
@@ -51,6 +56,9 @@ class CollaboratorListRecord extends ListGridRecord{
 
 
 
+
+
+
 /**
  * This is the implementation for the Meta-Model editing Tab.
  * <b>To add this Tab to the {@link TabEnviroment} call TabEnviroment.getInstance().addTab(); 
@@ -68,10 +76,16 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	private TwoColumnLayout layout;
 	
 	private UserLanguage language;
-	private HLayout detailsView;
+	private VLayout detailsView;
 	
-	final ListGrid collaboratorsList;
+	private VLayout metaDetailPlaceHolder;
 	
+	private ListGrid collaboratorsList;
+	
+	private List<MetaBaseType> metaBaseTypes;
+	
+	
+	private MetaClassDetailView metaClassDetailView;
 	
 	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException 
 	{
@@ -85,9 +99,16 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		
 		generateToolStrip(language);
 		
-		detailsView = new HLayout();
+		metaDetailPlaceHolder = new VLayout();
+		metaDetailPlaceHolder.setWidth100();
+		metaDetailPlaceHolder.setHeight("*");
+		
+		
+		detailsView = new VLayout();
 		detailsView.setWidth(150);
 		detailsView.setHeight100();
+		
+		detailsView.addMember(metaDetailPlaceHolder);
 		
 		canvas = new MetaModelCanvas();
 		
@@ -99,6 +120,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		ListGridField collaboratorField = new ListGridField("displayedName", "Collaborators");
 		collaboratorsList.setFields(collaboratorField);
 		collaboratorsList.setData(new CollaboratorListRecord[]{});
+		
 		detailsView.addMember(collaboratorsList);
 		
 		TwoColumnLayout canvasDetailContainer = new TwoColumnLayout();
@@ -279,6 +301,38 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		
 		collaboratorsList.redraw();
 	}
+
+	@Override
+	public void setMetaClassDetail(MetaClass metaClass) {
+		clearDetailPlaceHolder();
+		
+		if (metaClassDetailView == null)
+			metaClassDetailView = new MetaClassDetailView(metaBaseTypes);
+		
+		metaClassDetailView.setMetaClass(metaClass);
+		metaDetailPlaceHolder.addMember(metaClassDetailView);
+		
+	}
+
+	@Override
+	public void setMetaConnectionDetail(MetaConnection metaConnection) {
+		clearDetailPlaceHolder();
+	
+		
+		
+	}
+	
+	private void clearDetailPlaceHolder(){
+		metaDetailPlaceHolder.removeMembers(metaDetailPlaceHolder.getMembers());
+	}
+	
+
+	@Override
+	public void setMetaBaseTypes(List<MetaBaseType> types) {
+		this.metaBaseTypes = types;
+	}
+	
+	
 	
 	
 }

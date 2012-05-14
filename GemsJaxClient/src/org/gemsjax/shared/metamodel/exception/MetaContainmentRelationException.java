@@ -1,5 +1,6 @@
 package org.gemsjax.shared.metamodel.exception;
 
+import org.gemsjax.shared.collaboration.SemanticException;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaContainmentRelation;
 
@@ -9,7 +10,7 @@ import org.gemsjax.shared.metamodel.MetaContainmentRelation;
  * @author Hannes Dorfmann
  *
  */
-public class MetaContainmentRelationException extends Exception {
+public class MetaContainmentRelationException extends SemanticException {
 
 	private MetaClass container;
 	private MetaClass toContain;

@@ -244,8 +244,14 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 
 	@Override
 	public void onClick(ClickEvent event) {
-		// TODO Auto-generated method stub
-		
+		if (event.getSource() instanceof MetaClassDrawable)
+		{
+			view.setMetaClassDetail(((MetaClassDrawable)event.getSource()).getMetaClass());
+		}
+		else
+		if(event.getSource() instanceof MetaConnectionDrawable){
+			
+		}
 	}
 
 
@@ -514,7 +520,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				ap.y = y;
 			}
 
-			//TODO collaborativ websocket information
+			//TODO collaborative websocket information
 		}
 		else
 		if(e.getType() == PlaceEventType.NOT_ALLOWED) // Not Allowed: display a notification, restore the anchors position to the position before the TEMP_PLACING has started

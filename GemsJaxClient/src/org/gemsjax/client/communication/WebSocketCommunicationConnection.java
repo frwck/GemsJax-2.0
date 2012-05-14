@@ -30,6 +30,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashMa
 import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashSetInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.LinkedListInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.CollaboratorInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.MetaBaseTypeInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorJoinedMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorLeftMessageInstantiator;
@@ -37,6 +38,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Subs
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableSuccessfulMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.TransactionMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.UnsubscribeCollaborateableMessageInstantiator;
+import org.gemsjax.shared.metamodel.impl.MetaBaseTypeImpl;
 
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.util.SC;
@@ -142,6 +144,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(CollaboratorJoinedMessage.class.getName(), new CollaboratorJoinedMessageInstantiator());
 		objectFactory.register(CollaboratorLeftMessage.class.getName(), new CollaboratorLeftMessageInstantiator());
 		objectFactory.register(Collaborator.class.getName(), new CollaboratorInstantiator());
+		objectFactory.register(MetaBaseTypeImpl.class.getName(), new MetaBaseTypeInstantiator());
 		
 		// Commands
 		

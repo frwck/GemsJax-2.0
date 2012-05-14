@@ -2,6 +2,7 @@ package org.gemsjax.client.module;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -18,18 +19,22 @@ import org.gemsjax.shared.communication.message.collaboration.SubscribeCollabora
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
 import org.gemsjax.shared.communication.message.collaboration.UnsubscribeCollaborateableMessage;
+import org.gemsjax.shared.metamodel.MetaBaseType;
+import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.user.User;
 
 
 public class CollaborationModule implements CollaborationChannelHandler{
 	
-//	private Collaborateable collaborateable;
 	private int collaborateableId;
 	private Collaborateable collaborateable;
 	private CollaborationChannel channel;
 	private Set<CollaborationModuleHandler> handlers;
 	private TransactionProcessor transactionProcessor;
 	private Set<Collaborator> collaborators;
+	
+	private List<MetaBaseType> metaBaseTypes;
 	
 	private User user;
 	private static int moduleIdCounter = 0;
@@ -47,6 +52,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		this.handlers = new LinkedHashSet<CollaborationModuleHandler>();
 		this.collaborators = new LinkedHashSet<Collaborator>();
 		
+		this.metaBaseTypes = new LinkedList<MetaBaseType>();
 		
 		this.transactionProcessor = new TransactionProcessor(user,collaborateable);
 		
@@ -77,7 +83,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	
 		mergeMaxVectorClocks(tx);
 		
-		
+		transactionProcessor.executeTransaction(tx);
 		
 		fireUpdated();
 		
@@ -111,6 +117,13 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		
 	}
 	
+	
+	public synchronized void sendAndCommitTransaction(Command command) throws IOException{
+		LinkedList<Command> list = new LinkedList<Command>();
+		list.add(command);
+		sendAndCommitTransaction(list);
+
+	}
 	
 	public synchronized void sendAndCommitTransaction(List<Command> commands) throws IOException{
 		
@@ -170,7 +183,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 
 	@Override
 	public void onSubscribeSuccessful(String referenceId,
-			List<Transaction> transactions, List<Collaborator> collaborators) {
+			List<Transaction> transactions, List<Collaborator> collaborators, List<MetaBaseType> optionalMetaBaseTypes) {
 		
 		if (subscribeReferenceId.equals(referenceId)){
 			for (Transaction t : transactions){
@@ -178,6 +191,17 @@ public class CollaborationModule implements CollaborationChannelHandler{
 				mergeMaxVectorClocks(t);
 			}
 			
+			this.metaBaseTypes.addAll(optionalMetaBaseTypes);
+			
+			if (collaborateable instanceof MetaModel){
+				for (MetaBaseType baseType: optionalMetaBaseTypes)
+					try {
+						((MetaModel)collaborateable).addBaseType(baseType);
+					} catch (MetaBaseTypeException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
 			
 			this.collaborators.addAll(collaborators);
 			

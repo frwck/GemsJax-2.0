@@ -1,5 +1,6 @@
 package org.gemsjax.shared.metamodel.exception;
 
+import org.gemsjax.shared.collaboration.SemanticException;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaModel;
 
@@ -10,7 +11,7 @@ import org.gemsjax.shared.metamodel.MetaModel;
  * @author hannes
  *
  */
-public class MetaClassException extends Exception{
+public class MetaClassException extends SemanticException{
 	
 		
 	private String name;

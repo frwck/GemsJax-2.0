@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.gemsjax.server.persistence.collaboration.command.CommandImpl;
+import org.gemsjax.shared.collaboration.command.CommandImpl;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;

@@ -1,5 +1,7 @@
 package org.gemsjax.shared.metamodel.impl;
 
+import org.gemsjax.shared.communication.serialisation.Archive;
+import org.gemsjax.shared.communication.serialisation.Serializable;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 
 /**
@@ -8,7 +10,7 @@ import org.gemsjax.shared.metamodel.MetaBaseType;
  * @author Hannes Dorfmann
  *
  */
-public class MetaBaseTypeImpl implements MetaBaseType{
+public class MetaBaseTypeImpl implements MetaBaseType, Serializable{
 
 	/**
 	 * The unique ID in this MetaModel
@@ -19,6 +21,7 @@ public class MetaBaseTypeImpl implements MetaBaseType{
 	 */
 	private String name;
 	
+	public MetaBaseTypeImpl(){}
 	
 	
 	public MetaBaseTypeImpl (String id, String name)
@@ -57,6 +60,12 @@ public class MetaBaseTypeImpl implements MetaBaseType{
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public void serialize(Archive a) throws Exception {
+		id = a.serialize("id", id).value;
+		name = a.serialize("name", name).value;
 	}
 
 	

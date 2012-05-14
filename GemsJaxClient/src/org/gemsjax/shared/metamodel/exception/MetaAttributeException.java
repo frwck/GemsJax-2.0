@@ -1,12 +1,14 @@
 package org.gemsjax.shared.metamodel.exception;
 
+import org.gemsjax.shared.collaboration.SemanticException;
+
 /**
  * This Exception is thrown, when a new Attribute should be added to a {@link MetaClass} and there exists already
  * {@link MetaAttribute} with the same name. The {@link MetaAttribute} name must be unique within a MetaClass.
  * @author Hannes Dorfmann
  *
  */
-public class MetaAttributeException extends Exception {
+public class MetaAttributeException extends SemanticException {
 		
 	private String name;
 	private Object metaElement;

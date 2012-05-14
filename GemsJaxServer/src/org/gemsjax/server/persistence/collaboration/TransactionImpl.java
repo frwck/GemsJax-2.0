@@ -2,12 +2,12 @@ package org.gemsjax.server.persistence.collaboration;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.eclipse.jetty.websocket.WebSocket;
-import org.gemsjax.server.persistence.user.UserImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.collaboration.SemanticException;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.user.User;
@@ -40,8 +40,10 @@ public class TransactionImpl implements Transaction {
 	 * The {@link Command}s that are executed within this transaction.
 	 * <b>NOTICE:</b> The commands are executed in the order as they are added to this list. 
 	 */
+	// The internal database strukture
 	private Set<Command> commands;
 	
+	private List<Command> commandsAsList;
 	
 	private User user;
 	
@@ -50,6 +52,7 @@ public class TransactionImpl implements Transaction {
 	{
 		commands = new LinkedHashSet<Command>();
 		vectorClock = new LinkedHashMap<User, Long>();
+		commandsAsList = new LinkedList<Command>();
 	}
 	
 	
@@ -80,7 +83,7 @@ public class TransactionImpl implements Transaction {
 	 * by calling {@link Command#execute()} to manipulate data. After the commit the {@link Collaborateable} is in an atomic state.
 	 */
 	@Override
-	public void commit()
+	public void commit() throws SemanticException
 	{
 		for (Command c: commands)
 			c.execute();
@@ -90,7 +93,7 @@ public class TransactionImpl implements Transaction {
 	 * Calling this method will "undo" all the changes that were previously done on the {@link Collaborateable}.
 	 */
 	@Override
-	public void rollback()
+	public void rollback() throws SemanticException
 	{
 		for (Command c: commands)
 			c.undo();
@@ -104,6 +107,7 @@ public class TransactionImpl implements Transaction {
 	public void addCommand(Command c)
 	{
 		commands.add(c);
+		commandsAsList.add(c);
 	}
 	
 	/**
@@ -114,6 +118,7 @@ public class TransactionImpl implements Transaction {
 	public void removeCommand(Command c)
 	{
 		commands.remove(c);
+		commandsAsList.remove(c);
 	}
 	
 	@Override
@@ -130,6 +135,8 @@ public class TransactionImpl implements Transaction {
 
 	public void setCommands(Set<Command> commands) {
 		this.commands = commands;
+		this.commandsAsList.clear();
+		this.commandsAsList.addAll(commands);
 	}
 	
 	
@@ -184,15 +191,13 @@ public class TransactionImpl implements Transaction {
 
 	@Override
 	public int getCollaborateableId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return collaborateable.getId();
 	}
 
 
 	@Override
 	public int getUserId() {
-		// TODO Auto-generated method stub
-		return 0;
+		return user.getId();
 	}
 
 
@@ -212,15 +217,15 @@ public class TransactionImpl implements Transaction {
 
 	@Override
 	public void setCollaborateableId(int arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public void setCommands(List<Command> arg0) {
-		// TODO Auto-generated method stub
-		
+	public void setCommands(List<Command> c) {
+		commands.clear();
+		commands.addAll(c);
+		this.commandsAsList = c;
 	}
 
 
@@ -240,8 +245,7 @@ public class TransactionImpl implements Transaction {
 
 	@Override
 	public List<Command> getCommands() {
-		// TODO Auto-generated method stub
-		return null;
+		return commandsAsList;
 	}
 
 

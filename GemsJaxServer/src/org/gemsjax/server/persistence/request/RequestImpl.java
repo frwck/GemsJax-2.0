@@ -2,7 +2,7 @@ package org.gemsjax.server.persistence.request;
 
 import java.util.Date;
 
-import org.gemsjax.server.persistence.collaboration.command.CommandImpl;
+import org.gemsjax.shared.collaboration.command.CommandImpl;
 import org.gemsjax.shared.request.Request;
 import org.gemsjax.shared.request.Request.RequestState;
 import org.gemsjax.shared.user.RegisteredUser;

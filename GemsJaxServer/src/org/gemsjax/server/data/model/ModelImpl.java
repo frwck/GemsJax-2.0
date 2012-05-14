@@ -1,6 +1,5 @@
 package org.gemsjax.server.data.model;
 
-import org.gemsjax.server.data.metamodel.MetaModelImpl;
 import org.gemsjax.server.persistence.collaboration.CollaborateableImpl;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;

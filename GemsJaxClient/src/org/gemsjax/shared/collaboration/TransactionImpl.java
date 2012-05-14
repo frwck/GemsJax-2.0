@@ -38,7 +38,7 @@ public class TransactionImpl implements Transaction{
 	}
 
 	@Override
-	public void commit() {
+	public void commit() throws SemanticException {
 		
 		for (Command c: commands)
 			c.execute();
@@ -46,7 +46,7 @@ public class TransactionImpl implements Transaction{
 	}
 
 	@Override
-	public void rollback() {
+	public void rollback() throws SemanticException{
 		for (int i = commands.size()-1; i>=0;i--)
 			commands.get(i).undo();
 	}
