@@ -1,6 +1,7 @@
 package org.gemsjax.shared.collaboration.command;
 
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.communication.serialisation.Archive;
 import org.gemsjax.shared.communication.serialisation.Serializable;
 
@@ -11,6 +12,11 @@ public abstract class CommandImpl implements Command, Serializable{
 	private int sequenceNumber;
 	
 	private Collaborateable collaborateable;
+	
+	/**
+	 * Hibernate mapping reference
+	 */
+	private Transaction transaction;
 	
 	
 	public CommandImpl()
@@ -66,15 +72,27 @@ public abstract class CommandImpl implements Command, Serializable{
 		else
 			return super.hashCode();
 	}
+	
+	
 
-
+	@Override
 	public Collaborateable getCollaborateable() {
 		return collaborateable;
 	}
 
-
+	@Override
 	public void setCollaborateable(Collaborateable collaborateable) {
 		this.collaborateable = collaborateable;
+	}
+
+	@Override
+	public Transaction getTransaction() {
+		return transaction;
+	}
+
+	@Override
+	public void setTransaction(Transaction transaction) {
+		this.transaction = transaction;
 	}
 
 }

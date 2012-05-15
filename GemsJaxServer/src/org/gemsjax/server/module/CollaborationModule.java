@@ -84,9 +84,10 @@ public class CollaborationModule implements CollaborationChannelHandler{
 						tx.setUser(sender.getUser());
 						tx.setCollaborateable(c);
 						
+						
 						mergeMaxVectorClocks(tx, c);
 						copyVectorClock(c.getVectorClock(), tx.getVectorClock());
-//						dao.addTransaction(c, tx);
+						dao.addTransaction(c, tx);
 						
 						// Deliver to other subscribers
 						TransactionMessage tm = new TransactionMessage();

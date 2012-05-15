@@ -13,6 +13,7 @@ import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.request.CollaborateRequestImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.CollaborateableImpl;
+import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;
@@ -723,6 +724,12 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 	public void addTransaction(Collaborateable c,
 			org.gemsjax.shared.collaboration.Transaction t) throws DAOException {
 		
+		
+		for(Command command : t.getCommands()){
+			command.setTransaction(t);
+		}
+		
+		
 		Session session = null;
 		Transaction tx = null;
 		
@@ -731,7 +738,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 			session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
 				t.setCollaborateable(c);
-				session.save(t);
+//				session.save(t);
 				c.addTransaction(t);
 				session.update(c);
 			tx.commit();

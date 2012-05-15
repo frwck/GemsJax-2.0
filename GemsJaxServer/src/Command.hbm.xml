@@ -11,12 +11,16 @@
     
    <!--  <property name="sequenceNumber" column="sequenceNumber" type="int" not-null="true" />  -->
     
-
+	
+	<many-to-one name="transaction" class="org.gemsjax.shared.collaboration.TransactionImpl" fetch="select" lazy="false">
+	            <column name="Transaction_id" not-null="true" />
+	    </many-to-one>
     
     
     
     <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand" table="CreateMetaClassCommand">
         <key column="Command_id"/>
+        <property name="metaClassId" column="metaClassId" type="string" />
         <property name="name" column="name" type="string" />
         <property name="x" column="x" type="double" />
         <property name="y" column="y" type="double" />

@@ -20,7 +20,6 @@ import org.gemsjax.shared.communication.message.MessageType;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.communication.message.collaboration.CollaboratorJoinedMessage;
 import org.gemsjax.shared.communication.message.collaboration.CollaboratorLeftMessage;
-import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableMessage;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableSuccessfulMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionErrorMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
@@ -139,6 +138,9 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(LinkedHashSet.class.getName(), new LinkedHashSetInstantiator());
 		objectFactory.register(LinkedList.class.getName(), new LinkedListInstantiator());
 		objectFactory.register(LinkedHashMap.class.getName(), new LinkedHashMapInstantiator());
+		objectFactory.register("org.hibernate.collection.PersistentMap", new LinkedHashMapInstantiator());
+		objectFactory.register("org.hibernate.collection.PersistentList", new LinkedListInstantiator());
+		
 	
 		// CollaboarionMessages
 		objectFactory.register(SubscribeCollaborateableSuccessfulMessage.class.getName(), new SubscribeCollaborateableSuccessfulMessageInstantiator());
@@ -150,6 +152,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(Collaborator.class.getName(), new CollaboratorInstantiator());
 		objectFactory.register(MetaBaseTypeImpl.class.getName(), new MetaBaseTypeInstantiator());
 		objectFactory.register(TransactionErrorMessage.class.getName(), new TransactionErrorMessageInstantiator());
+		
 		
 		
 		// Commands

@@ -2,6 +2,7 @@ package org.gemsjax.shared.collaboration.command;
 
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.SemanticException;
+import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.communication.serialisation.Serializable;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaModel;
@@ -23,5 +24,8 @@ public interface Command extends Serializable{
 	
 	public void setCollaborateable(Collaborateable c);
 	public Collaborateable getCollaborateable();
+	
+	public void setTransaction(Transaction t);
+	public Transaction getTransaction();
 	
 }

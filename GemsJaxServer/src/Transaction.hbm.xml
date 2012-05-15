@@ -22,12 +22,17 @@
 		<element column="value" type="long" />
 	</map>
      -->
-    <map name="vectorClock" table="VectorClockEntry" cascade="delete">
+    <map name="vectorClock" table="VectorClockEntry" cascade="delete" lazy="false">
 		<key column="Transaction_id" />
 		<map-key column="User_id" type="int" />
 		<element column="value" type="long" />
 	</map>
     
+    
+    
+    <many-to-one name="collaborateable" class="org.gemsjax.shared.collaboration.CollaborateableImpl" fetch="select">
+            <column name="Collaborateable_id" not-null="true" />
+    </many-to-one>
     
     <list name="commands" table="Command" lazy="false" fetch="select" cascade="all-delete-orphan" >
             <key>

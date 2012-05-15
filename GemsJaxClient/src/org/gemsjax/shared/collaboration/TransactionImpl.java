@@ -155,8 +155,17 @@ public class TransactionImpl implements Transaction, Serializable{
 	@Override
 	public void serialize(Archive a) throws Exception {
 		id = a.serialize("id", id).value;
-		userId = a.serialize("userId", userId).value;
-		collaborateableId = a.serialize("collaborateableId", collaborateableId).value;
+		
+		if (user!=null)
+			userId = a.serialize("userId", user.getId()).value;
+		else
+			userId = a.serialize("userId", userId).value;
+		
+		if (collaborateable!=null)
+			collaborateableId = a.serialize("collaborateableId", collaborateable.getId()).value;
+		else
+			collaborateableId = a.serialize("collaborateableId", collaborateableId).value;
+		
 		vectorClock = a.serialize("vectorClock", vectorClock).value;
 		commands = a.serialize("commands", commands).value;
 		
