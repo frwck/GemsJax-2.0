@@ -4,15 +4,15 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.gemsjax.server.data.metamodel.MetaModelImpl;
-import org.gemsjax.server.data.model.ModelImpl;
+import org.gemsjax.shared.metamodel.impl.MetaModelImpl;
+import org.gemsjax.shared.model.impl.ModelImpl;
 import org.gemsjax.server.persistence.HibernateUtil;
-import org.gemsjax.server.persistence.collaboration.CollaborateableImpl;
 import org.gemsjax.server.persistence.dao.CollaborateableDAO;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.request.CollaborateRequestImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.collaboration.CollaborateableImpl;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;
@@ -136,7 +136,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 			MetaModelImpl metaModel = new MetaModelImpl();
 				metaModel.setName(name);
 				metaModel.setOwner(owner);
-				metaModel.getUsers().add(owner);Model persistent = null;
+				metaModel.getUsers().add(owner);
 				
 				metaModel.setForExperiment(false);
 				metaModel.setPublicPermission(Collaborateable.Permission.PRIVATE);

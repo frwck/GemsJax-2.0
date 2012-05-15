@@ -1,13 +1,14 @@
 package test.persistence;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.gemsjax.server.data.metamodel.MetaModelImpl;
-import org.gemsjax.server.persistence.HibernateUtil;
 import org.gemsjax.server.persistence.dao.UserDAO;
 import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
@@ -23,10 +24,8 @@ import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 public class CollaborateableDAOTest {
 	

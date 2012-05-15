@@ -17,4 +17,6 @@ public interface Model extends Collaborateable {
 	 */
 	public MetaModel getMetaModel();
 	
+	public void setMetaModel(MetaModel metaModel);
+	
 }

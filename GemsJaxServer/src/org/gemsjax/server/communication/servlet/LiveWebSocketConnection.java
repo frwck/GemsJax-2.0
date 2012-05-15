@@ -125,16 +125,23 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 				deliverReceivedMessage(m);
 				
 			} catch (Exception e) {
+				if (!e.getMessage().startsWith("key missmatch"))
+				e.printStackTrace();
 				
-//				e.printStackTrace();
-				// TODO remove deprecated stuff (backward compatibility)
-				InputMessage im = new InputMessage(200, data);
-				
-		    	for (InputChannel c: inputChannels)
-		        {
-		        	if (c.isMatchingFilter(data))
-		        		c.onMessageReceived(im);
-		        }
+				try{
+					// TODO remove deprecated stuff (backward compatibility)
+					InputMessage im = new InputMessage(200, data);
+					
+			    	for (InputChannel c: inputChannels)
+			        {
+			        	if (c.isMatchingFilter(data))
+			        		c.onMessageReceived(im);
+			        }
+				}catch(Throwable t)
+				{
+					t.printStackTrace();
+					
+				}
 		    	
 			}
 			

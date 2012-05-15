@@ -1,6 +1,5 @@
-package org.gemsjax.server.persistence.collaboration;
+package org.gemsjax.shared.collaboration;
 
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -8,9 +7,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.gemsjax.shared.collaboration.Collaborateable;
-import org.gemsjax.shared.collaboration.Transaction;
-import org.gemsjax.shared.collaboration.Collaborateable.Permission;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
 
@@ -24,7 +20,6 @@ public class CollaborateableImpl implements Collaborateable
 	private Set<User> users;
 	private List<Transaction> transactions;
 	private Map<Integer, Long> vectorClock;
-	private Permission permission;
 	private int publicPermission;
 	
 	/**
@@ -162,10 +157,9 @@ public class CollaborateableImpl implements Collaborateable
 
 
 	@Override
-	public synchronized int getNextTransactionSequenceNumber() {
-		synchronized(transactions){
-			return transactions.size()+1;
-		}
+	public void setId(int id) {
+		this.id = id;
 	}
+
 
 }

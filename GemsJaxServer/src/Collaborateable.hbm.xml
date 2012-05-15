@@ -4,7 +4,7 @@
   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping default-access="field">
-<class name="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" table="Collaborateable">
+<class name="org.gemsjax.shared.collaboration.CollaborateableImpl" table="Collaborateable">
     <id name="id" type="int" column="id">
     	<generator class="increment" />
     </id>
@@ -39,24 +39,24 @@
     
     
     <!-- MetaModel -->
-    <joined-subclass name="org.gemsjax.server.data.metamodel.MetaModelImpl" table="MetaModel">
+    <joined-subclass name="org.gemsjax.shared.metamodel.impl.MetaModelImpl" table="MetaModel">
         <key column="Collaborateable_id" />
         
         <set name="models" table="Model" lazy="false" fetch="select" cascade="all-delete-orphan" inverse="true">
             <key>
                 <column name="MetaModel_id_basedOn" not-null="true" />
             </key>
-            <one-to-many class="org.gemsjax.server.data.model.ModelImpl" />
+            <one-to-many class="org.gemsjax.shared.model.impl.ModelImpl" />
     	</set>
     	
     </joined-subclass>
     
     
   	<!-- Model -->
-    <joined-subclass name="org.gemsjax.server.data.model.ModelImpl" table="Model">
+    <joined-subclass name="org.gemsjax.shared.model.impl.ModelImpl" table="Model">
         <key column="Collaborateable_id" />
        
-        <many-to-one name="metaModel" class="org.gemsjax.server.data.metamodel.MetaModelImpl" fetch="select">
+        <many-to-one name="metaModel" class="org.gemsjax.shared.metamodel.impl.MetaModelImpl" fetch="select">
             <column name="MetaModel_id_basedOn" />
    	 	</many-to-one>
         

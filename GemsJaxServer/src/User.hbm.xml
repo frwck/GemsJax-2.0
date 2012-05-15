@@ -15,7 +15,7 @@
     <!--  The Collaborateable on which this User works -->
     <set name="collaborateables" table="CollaborateOn" inverse="true" cascade="save-update" lazy="false">        
 		<key column="User_id" />         
-		<many-to-many column="Collaborateable_id" class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" />    
+		<many-to-many column="Collaborateable_id" class="org.gemsjax.shared.collaboration.CollaborateableImpl" />    
 	</set>
     
     
@@ -31,7 +31,7 @@
             <key>
                 <column name="User_id_owner" not-null="true" />
             </key>
-            <one-to-many class="org.gemsjax.server.persistence.collaboration.CollaborateableImpl" />
+            <one-to-many class="org.gemsjax.shared.collaboration.CollaborateableImpl" />
     	</set>
         
         <set name="ownedExperiments" table="Experiment" cascade="all-delete-orphan" inverse = "true" lazy="true" fetch="select">

@@ -3,13 +3,11 @@ package org.gemsjax.shared.metamodel.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.gemsjax.shared.collaboration.Collaborateable;
-import org.gemsjax.shared.collaboration.Transaction;
+import org.gemsjax.shared.collaboration.CollaborateableImpl;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -20,8 +18,6 @@ import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
 import org.gemsjax.shared.model.Model;
-import org.gemsjax.shared.user.RegisteredUser;
-import org.gemsjax.shared.user.User;
 
 
 /**
@@ -29,29 +25,16 @@ import org.gemsjax.shared.user.User;
  * @author Hannes Dorfmann
  *
  */
-public class MetaModelImpl implements MetaModel{
+public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 	
-	private String name;
-	private int id;
 	
 	private List<MetaClass> metaClasses;
 	private List<MetaBaseType> baseTypes;
 	private List<MetaAttribute> attributes;
 	
-	private String keywords;
-	private Set<User> users;
-	
-	
-	private Map<Integer, Long> vectorClock;
-	
-	private Collaborateable.Permission permission;
-	
-	private List<Transaction> transactions;
 	
 	private Set<Model> models;
 	
-	// TODO how to set owner?
-	private RegisteredUser owner;
 	
 	/**
 	 * This map provides a quick access map for getting a element by its id
@@ -60,19 +43,20 @@ public class MetaModelImpl implements MetaModel{
 	
 	public MetaModelImpl(int id, String name)
 	{
-		this.name = name;
-		this.id = id;
+		this();
+		setId(id);
+		setName(name);
 		
+	}
+	
+	public MetaModelImpl(){
 		models = new LinkedHashSet<Model>();
 		metaClasses = new ArrayList<MetaClass>();
 		baseTypes = new ArrayList<MetaBaseType>();
 		idMap = new HashMap<String, MetaModelElement>();	
 		attributes = new ArrayList<MetaAttribute>();
-		users = new LinkedHashSet<User>();
-		
-		transactions = new LinkedList<Transaction>();
-		vectorClock = new HashMap<Integer, Long>();
 	}
+	
 	
 	/**
 	 * Check if a Name is available.
@@ -130,20 +114,13 @@ public class MetaModelImpl implements MetaModel{
 		return idMap.get(id);
 	}
 
-	@Override
-	public int getId() {
-		return id;
-	}
-
+	
 	@Override
 	public List<MetaClass> getMetaClasses() {
 		return metaClasses;
 	}
 
-	@Override
-	public String getName() {
-		return name;
-	}
+	
 
 	@Override
 	public void removeBaseType(MetaBaseType baseType) {
@@ -155,17 +132,7 @@ public class MetaModelImpl implements MetaModel{
 		metaClasses.remove(metaClass);
 	}
 
-	@Override
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	@Override
-	public void setKeywords(String keywords)
-	{
-		this.keywords = keywords;
-	}
-	
+		
 	@Override
 	public MetaAttribute addAttribute(String id, String name, MetaBaseType type) throws MetaAttributeException {
 		
@@ -190,37 +157,8 @@ public class MetaModelImpl implements MetaModel{
 		attributes.remove(attribute);
 	}
 
-	@Override
-	public RegisteredUser getOwner() {
-		return owner;
-	}
-
-	@Override
-	public Set<User> getUsers() {
-		return users;
-	}
-
-	@Override
-	public Map<Integer, Long> getVectorClock() {
-		return vectorClock;
-	}
-
-	@Override
-	public String getKeywords() {
-		return keywords;
-	}
-
-	@Override
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
-
 	
 
-	@Override
-	public void setOwner(RegisteredUser owner) {
-		this.owner = owner;
-	}
 
 	@Override
 	public Set<Model> getModels() {
@@ -228,16 +166,6 @@ public class MetaModelImpl implements MetaModel{
 	}
 
 	
-
-	@Override
-	public Permission getPublicPermission() {
-		return permission;
-	}
-
-	@Override
-	public void setPublicPermission(Permission permission) {
-		this.permission = permission;
-	}
 
 	@Override
 	public boolean isClassRelationNameAvailable(String name) {
@@ -257,16 +185,7 @@ public class MetaModelImpl implements MetaModel{
 		return true;
 	}
 
-	@Override
-	public void addTransaction(Transaction t) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
-	@Override
-	public int getNextTransactionSequenceNumber() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 	
 }

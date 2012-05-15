@@ -22,20 +22,6 @@ import org.gemsjax.shared.model.Model;
  */
 public interface MetaModel  extends Collaborateable {
 
-	
-	/**
-	 * Get the name of this element
-	 * @return
-	 */
-	public String getName();
-	
-	/**
-	 * Set the name of this element.
-	 * <b>Notice:</b> The name must also be unique in a MetaModel
-	 * @param name
-	 * @return
-	 */
-	public void setName(String name);
 
 	/**
 	 * Add a {@link MetaClass}

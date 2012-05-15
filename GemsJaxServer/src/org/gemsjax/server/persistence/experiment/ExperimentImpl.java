@@ -2,7 +2,7 @@ package org.gemsjax.server.persistence.experiment;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import org.gemsjax.server.data.metamodel.MetaModelImpl;
+import org.gemsjax.shared.metamodel.impl.MetaModelImpl;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.user.RegisteredUser;

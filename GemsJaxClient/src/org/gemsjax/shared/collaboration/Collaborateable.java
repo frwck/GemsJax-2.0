@@ -71,6 +71,8 @@ public interface Collaborateable{
 	 */
 	public int getId();
 	
+	public void setId(int id);
+	
 	/**
 	 * Get the Owner who has created this {@link Collaborateable}
 	 * @return
@@ -143,7 +145,6 @@ public interface Collaborateable{
 	
 	public void addTransaction(Transaction t);
 	
-	public int getNextTransactionSequenceNumber();
 	
 	
 }
