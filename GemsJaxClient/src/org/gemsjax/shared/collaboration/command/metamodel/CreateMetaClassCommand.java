@@ -17,11 +17,7 @@ public class CreateMetaClassCommand extends CommandImpl{
 	private double width;
 	private double height;
 	
-	
-	// NON serialize
-	private MetaModel metaModel;
-
-	
+		
 	public CreateMetaClassCommand(){}
 	
 	public CreateMetaClassCommand(String commandId, String metaClassId, String name, double x, double y, double width, double height, MetaModel metaModel){
@@ -32,7 +28,6 @@ public class CreateMetaClassCommand extends CommandImpl{
 		this.y = y;
 		this.width = width;
 		this.height = height;
-		this.metaModel = metaModel;
 	}
 	
 
@@ -56,12 +51,14 @@ public class CreateMetaClassCommand extends CommandImpl{
 		mc.setX(x);
 		mc.setY(y);
 		
+		MetaModel metaModel = (MetaModel) getCollaborateable();
 		metaModel.addMetaClass(mc);
 		
 	}
 
 	@Override
 	public void undo() {
+		MetaModel metaModel = (MetaModel) getCollaborateable();
 		MetaClass mc = (MetaClass) metaModel.getElementByID(metaClassId);
 		metaModel.removeMetaClass(mc);
 	}
@@ -124,16 +121,6 @@ public class CreateMetaClassCommand extends CommandImpl{
 
 	public void setHeight(double height) {
 		this.height = height;
-	}
-
-
-	public MetaModel getMetaModel() {
-		return metaModel;
-	}
-
-
-	public void setMetaModel(MetaModel metaModel) {
-		this.metaModel = metaModel;
 	}
 
 }

@@ -207,7 +207,7 @@ class VectorClockProcess extends Thread implements CollaborationModuleHandler{
 		connection.inputChannelDeliveryHelper.add(this);
 		Collaborateable c = MetaFactory.createMetaModel(1, "name");
 		
-		channel = new CollaborationChannel(connection, c.getId());
+		channel = new CollaborationChannel(connection, c);
 		module = new CollaborationModule(u, c, channel);
 		module.addCollaborationModuleHandler(this);
 	}

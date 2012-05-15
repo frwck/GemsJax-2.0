@@ -1,5 +1,6 @@
 package org.gemsjax.shared.collaboration.command;
 
+import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.communication.serialisation.Archive;
 import org.gemsjax.shared.communication.serialisation.Serializable;
 
@@ -8,6 +9,9 @@ public abstract class CommandImpl implements Command, Serializable{
 	
 	private String id;
 	private int sequenceNumber;
+	
+	private Collaborateable collaborateable;
+	
 	
 	public CommandImpl()
 	{
@@ -61,6 +65,16 @@ public abstract class CommandImpl implements Command, Serializable{
 			return id.hashCode();
 		else
 			return super.hashCode();
+	}
+
+
+	public Collaborateable getCollaborateable() {
+		return collaborateable;
+	}
+
+
+	public void setCollaborateable(Collaborateable collaborateable) {
+		this.collaborateable = collaborateable;
 	}
 
 }

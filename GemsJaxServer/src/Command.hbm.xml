@@ -9,7 +9,7 @@
     	<!-- No generator needed since id will generated on client side with uuid -->
     </id>
     
-    <property name="sequenceNumber" column="sequenceNumber" type="int" not-null="true" />
+   <!--  <property name="sequenceNumber" column="sequenceNumber" type="int" not-null="true" />  -->
     
 
     

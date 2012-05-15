@@ -28,13 +28,14 @@
 	
 	
     <!--  Transactions -->
-    <set name="transactions" table="Transaction" lazy="false" cascade="all-delete-orphan" inverse="true" fetch="select" order-by="sequenceNumber">
+    <list name="transactions" table="Transaction" lazy="false" cascade="all"  fetch="select">
     	<key>
-        	<column name="Collaborateable_id" not-null="true" />
+        	<column name="Collaborateable_id" />
        </key>
+       <index column="idx"/>
        <one-to-many class="org.gemsjax.shared.collaboration.TransactionImpl" />
        
-    </set>
+    </list>
     
     
     <!-- MetaModel -->

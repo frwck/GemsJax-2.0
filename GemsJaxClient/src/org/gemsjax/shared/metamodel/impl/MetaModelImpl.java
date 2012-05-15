@@ -3,6 +3,7 @@ package org.gemsjax.shared.metamodel.impl;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class MetaModelImpl implements MetaModel{
 	
 	private Collaborateable.Permission permission;
 	
-	private Set<Transaction> transactions;
+	private List<Transaction> transactions;
 	
 	private Set<Model> models;
 	
@@ -69,7 +70,7 @@ public class MetaModelImpl implements MetaModel{
 		attributes = new ArrayList<MetaAttribute>();
 		users = new LinkedHashSet<User>();
 		
-		transactions = new LinkedHashSet<Transaction>();
+		transactions = new LinkedList<Transaction>();
 		vectorClock = new HashMap<Integer, Long>();
 	}
 	
@@ -210,7 +211,7 @@ public class MetaModelImpl implements MetaModel{
 	}
 
 	@Override
-	public Set<Transaction> getTransactions() {
+	public List<Transaction> getTransactions() {
 		return transactions;
 	}
 

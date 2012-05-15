@@ -131,6 +131,9 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		tx.setCommands(commands);
 		tx.setUserId(user.getId());
 		tx.setCollaborateableId(collaborateableId);
+		tx.setCollaborateable(collaborateable);
+		for (Command c : tx.getCommands())
+			c.setCollaborateable(collaborateable);
 		
 		long value = getVectorClockValue(user.getId()) + 1;
 		collaborateable.getVectorClock().put(user.getId(), value);

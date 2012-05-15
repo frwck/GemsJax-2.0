@@ -92,6 +92,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	{
 		super(title, language);
 		
+		
 		this.language = language;
 		
 		layout = new TwoColumnLayout();

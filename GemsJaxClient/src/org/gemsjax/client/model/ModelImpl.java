@@ -1,5 +1,6 @@
 package org.gemsjax.client.model;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -73,7 +74,7 @@ public class ModelImpl implements Model{
 	}
 
 	@Override
-	public Set<Transaction> getTransactions() {
+	public List<Transaction> getTransactions() {
 		// TODO Auto-generated method stub
 		return null;
 	}

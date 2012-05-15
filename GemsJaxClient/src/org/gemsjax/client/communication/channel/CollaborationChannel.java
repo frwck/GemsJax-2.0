@@ -7,6 +7,8 @@ import java.util.Set;
 import org.gemsjax.client.communication.channel.handler.CollaborationChannelHandler;
 import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.collaboration.Transaction;
+import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
@@ -31,11 +33,11 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	private Set<CollaborationChannelHandler> handlers;
 	private CommunicationConnection connection;
 //	private Collaborateable collaborateable;
-	private int collaborateableId;
+	private Collaborateable collaborateable;
 	
-	public CollaborationChannel(CommunicationConnection connection, int collaborateableId)
+	public CollaborationChannel(CommunicationConnection connection, Collaborateable collaborateable)
 	{
-		this.collaborateableId = collaborateableId;
+		this.collaborateable = collaborateable;
 		this.handlers = new LinkedHashSet<CollaborationChannelHandler>();
 		this.connection = connection;
 		connection.registerInputChannel(this, CollaborationMessage.TYPE);
@@ -72,7 +74,16 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	@Override
 	public void onMessageRecieved(Message msg) {
 		
+		int collaborateableId = collaborateable.getId();
+		
 		if (msg instanceof TransactionMessage && ((TransactionMessage) msg).getTransaction().getCollaborateableId() == collaborateableId){
+			
+			Transaction t = ((TransactionMessage)msg).getTransaction();
+			
+			t.setCollaborateable(collaborateable);
+			
+			for (Command c : t.getCommands())
+				c.setCollaborateable(collaborateable);
 			
 			for (CollaborationChannelHandler h: handlers)
 				h.onTransactionReceived(((TransactionMessage)msg).getTransaction());

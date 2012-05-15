@@ -86,7 +86,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 						
 						mergeMaxVectorClocks(tx, c);
 						copyVectorClock(c.getVectorClock(), tx.getVectorClock());
-						dao.addTransaction(c, tx);
+//						dao.addTransaction(c, tx);
 						
 						// Deliver to other subscribers
 						TransactionMessage tm = new TransactionMessage();
@@ -98,7 +98,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 						
 						
 						
-					} catch (DAOException e) {
+					} catch (Exception e) { // DAOException
 						
 						copyVectorClock(beforeCopy, c.getVectorClock());
 						e.printStackTrace();

@@ -6,8 +6,12 @@ import org.gemsjax.shared.metamodel.impl.MetaClassImpl;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.widgets.events.KeyDownEvent;
+import com.smartgwt.client.widgets.events.KeyDownHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -61,9 +65,8 @@ public class BufferedCanvas extends VLayout {
 		mouseDownY = -200;
 		 */
 
-
+		
 		drawableStorage = new DrawableStorage();
-
 
 
 		canvas.setWidth("100%");

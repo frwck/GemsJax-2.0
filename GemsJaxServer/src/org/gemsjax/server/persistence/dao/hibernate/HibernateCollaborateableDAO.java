@@ -730,6 +730,8 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		{	
 			session = HibernateUtil.getSessionFactory().openSession();
 			tx = session.beginTransaction();
+				t.setCollaborateable(c);
+				session.save(t);
 				c.addTransaction(t);
 				session.update(c);
 			tx.commit();

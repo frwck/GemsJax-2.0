@@ -398,7 +398,7 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 		{
 			MetaModel mm = new MetaModelImpl(collaborateableId, name);
 			
-			CollaborationModule module = new CollaborationModule(authenticationModule.getCurrentlyAuthenticatedUser(), mm, new CollaborationChannel(WebSocketCommunicationConnection.getInstance(), collaborateableId));
+			CollaborationModule module = new CollaborationModule(authenticationModule.getCurrentlyAuthenticatedUser(), mm, new CollaborationChannel(WebSocketCommunicationConnection.getInstance(), mm));
 			
 			try {
 			

@@ -1,5 +1,6 @@
 package org.gemsjax.shared.collaboration;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -125,7 +126,7 @@ public interface Collaborateable{
 	 * Get all Transactions
 	 * @return
 	 */
-	public Set<Transaction> getTransactions();
+	public List<Transaction> getTransactions();
 	
 	/**
 	 * Get the {@link PublicPermission}

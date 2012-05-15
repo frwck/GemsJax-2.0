@@ -2,6 +2,8 @@ package org.gemsjax.server.persistence.collaboration;
 
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +22,7 @@ public class CollaborateableImpl implements Collaborateable
 	private String name;
 	private RegisteredUser owner;
 	private Set<User> users;
-	private Set<Transaction> transactions;
+	private List<Transaction> transactions;
 	private Map<Integer, Long> vectorClock;
 	private Permission permission;
 	private int publicPermission;
@@ -36,7 +38,7 @@ public class CollaborateableImpl implements Collaborateable
 	{
 		users = new LinkedHashSet<User>();
 		vectorClock = new ConcurrentHashMap<Integer, Long>();
-		transactions = new LinkedHashSet<Transaction>();
+		transactions = new LinkedList<Transaction>();
 	}
 
 
@@ -95,7 +97,7 @@ public class CollaborateableImpl implements Collaborateable
 
 
 	@Override
-	public synchronized Set<Transaction> getTransactions() {
+	public synchronized List<Transaction> getTransactions() {
 		synchronized(transactions){
 			return transactions;
 		}
