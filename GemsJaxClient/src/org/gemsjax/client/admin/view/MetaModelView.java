@@ -9,6 +9,7 @@ import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
+import org.gemsjax.client.canvas.handler.metamodel.CreateMetaClassHandler;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -108,5 +109,14 @@ public interface MetaModelView extends CollaborateableView{
 	public void setMetaConnectionDetail(MetaConnection metaConnection);
 	
 	public void setMetaBaseTypes(List<MetaBaseType> types);
+	
+	
+	public void showNameAlreadyInUseError(String name);	
+	
+	public void addCreateMetaClassHandler(CreateMetaClassHandler h);
+	public void removeCreateMetaClassHandler(CreateMetaClassHandler h);
+	
+	
+	
 	
 }

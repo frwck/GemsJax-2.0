@@ -90,5 +90,8 @@ public interface Transaction {
 	
 	public Map<Integer, Long> getVectorClock();
 	
+	public int getSequenceNumber();
+	public void setSequenceNumber(int number);
+	
 
 }

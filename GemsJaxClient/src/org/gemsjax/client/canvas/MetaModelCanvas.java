@@ -1,5 +1,11 @@
 package org.gemsjax.client.canvas;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
+import org.gemsjax.client.admin.notification.NotificationManager;
+import org.gemsjax.client.admin.notification.TipNotification;
 import org.gemsjax.client.canvas.events.FocusEvent;
 import org.gemsjax.client.canvas.events.MoveEvent;
 import org.gemsjax.client.canvas.events.PlaceEvent;
@@ -8,6 +14,8 @@ import org.gemsjax.client.canvas.events.FocusEvent.FocusEventType;
 import org.gemsjax.client.canvas.events.MoveEvent.MoveEventType;
 import org.gemsjax.client.canvas.events.PlaceEvent.PlaceEventType;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
+import org.gemsjax.client.canvas.events.metamodel.CreateMetaClassEvent;
+import org.gemsjax.client.canvas.handler.metamodel.CreateMetaClassHandler;
 import org.gemsjax.shared.Point;
 
 
@@ -21,6 +29,9 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOutHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.smartgwt.client.types.AnimationEffect;
+import com.smartgwt.client.util.SC;
+import com.smartgwt.client.util.ValueCallback;
 
 
 
@@ -163,9 +174,14 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	 */
 	private MouseOutEvent lastMouseOutEvent;
 	
+	private String createMetaClassName;
+	
+	private Set<CreateMetaClassHandler> createClassHandlers;
 	
 	public MetaModelCanvas() throws CanvasSupportException {
 		super();
+		
+		createClassHandlers = new LinkedHashSet<CreateMetaClassHandler>();
 		
 		resizing = false;
 		moving = false;
@@ -181,6 +197,15 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		getWrappedCanvas().addMouseUpHandler(this);
 		getWrappedCanvas().addMouseOutHandler(this);
 
+	}
+	
+	
+	public void addCreateMetaClassHandler(CreateMetaClassHandler h){
+		createClassHandlers.add(h);
+	}
+	
+	public void removeCreateMetaClassHandler(CreateMetaClassHandler h){
+		createClassHandlers.remove(h);
 	}
 	
 	
@@ -202,7 +227,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	
 	
 	@Override
-	public void onClick(ClickEvent event) {
+	public void onClick(final ClickEvent event) {
 
 
 		switch (editingMode)
@@ -251,7 +276,28 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 				break; // End case Normal
 			
-			
+				
+			case CREATE_CLASS:
+				final double x = event.getClientX();
+				final double y = event.getClientY();
+				SC.askforValue("Create MetaClass", "Please insert the name", new ValueCallback() {
+					
+					@Override
+					public void execute(String value) {
+						if (value == null || value.isEmpty())
+						{
+							NotificationManager.getInstance().showTipNotification(new TipNotification("Insert a valid name", null, 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE);
+							createMetaClassName = null;
+						}
+						
+						else
+							for(CreateMetaClassHandler h : createClassHandlers)
+								h.onCreateMetaClass(new CreateMetaClassEvent(value, x, y));
+					}			
+				});
+				
+				break;
+				
 			
 		}// End switch
 		

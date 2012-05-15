@@ -124,6 +124,8 @@ public class HibernateUserDAO implements UserDAO {
 		}// End Try
 		catch(HibernateException e)
 		{
+			e.printStackTrace();
+			
 			if (session!=null)
 				session.close();
 			

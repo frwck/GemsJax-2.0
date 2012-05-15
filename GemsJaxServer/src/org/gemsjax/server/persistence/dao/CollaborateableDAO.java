@@ -5,6 +5,7 @@ import java.util.Set;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.communication.message.collaborateablefile.CollaborateableType;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.model.Model;
@@ -193,5 +194,8 @@ public interface CollaborateableDAO {
 	
 	
 	public abstract Collaborateable getCollaborateable(int id) throws NotFoundException;
+	
+	
+	public abstract void addTransaction(Collaborateable c, Transaction t) throws DAOException;
 	
 }

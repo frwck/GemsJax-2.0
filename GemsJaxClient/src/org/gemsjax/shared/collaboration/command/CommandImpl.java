@@ -1,7 +1,10 @@
 package org.gemsjax.shared.collaboration.command;
 
+import org.gemsjax.shared.communication.serialisation.Archive;
+import org.gemsjax.shared.communication.serialisation.Serializable;
 
-public abstract class CommandImpl implements Command {
+
+public abstract class CommandImpl implements Command, Serializable{
 	
 	private String id;
 	private int sequenceNumber;
@@ -16,6 +19,10 @@ public abstract class CommandImpl implements Command {
 	{
 		return id;
 	}
+	
+	public void setId(String id){
+		this.id = id;
+	}
 
 
 	public int getSequenceNumber() {
@@ -27,6 +34,10 @@ public abstract class CommandImpl implements Command {
 		this.sequenceNumber = sequenz;
 	}
 	
+	public void serialize(Archive a) throws Exception{
+		id = a.serialize("id", id).value;
+		sequenceNumber = a.serialize("sequenceNumber", sequenceNumber).value;
+	}
 	
 	
 	@Override

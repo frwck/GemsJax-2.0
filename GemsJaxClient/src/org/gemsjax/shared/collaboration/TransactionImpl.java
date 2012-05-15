@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.gemsjax.shared.collaboration.command.Command;
+import org.gemsjax.shared.communication.serialisation.Archive;
+import org.gemsjax.shared.communication.serialisation.Serializable;
 import org.gemsjax.shared.user.User;
 
-public class TransactionImpl implements Transaction{
+public class TransactionImpl implements Transaction, Serializable{
 
 	private String id;
 	private int collaborateableId;
@@ -17,6 +19,10 @@ public class TransactionImpl implements Transaction{
 	private User user;
 	private int userId;
 	private Map<Integer, Long> vectorClock;
+	/**
+	 * Used by the server only
+	 */
+	private int sequenceNumber;
 	
 	
 	public TransactionImpl(){
@@ -74,6 +80,7 @@ public class TransactionImpl implements Transaction{
 	@Override
 	public void setCollaborateable(Collaborateable c) {
 		this.collaborateable = c;
+		collaborateableId = c.getId();
 	}
 
 
@@ -85,6 +92,7 @@ public class TransactionImpl implements Transaction{
 	@Override
 	public void setUser(User u) {
 		this.user = u;
+		this.userId = u.getId();
 	}
 
 	@Override
@@ -141,6 +149,35 @@ public class TransactionImpl implements Transaction{
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+
+	@Override
+	public void serialize(Archive a) throws Exception {
+		id = a.serialize("id", id).value;
+		userId = a.serialize("userId", userId).value;
+		collaborateableId = a.serialize("collaborateableId", collaborateableId).value;
+		vectorClock = a.serialize("vectorClock", vectorClock).value;
+		commands = a.serialize("commands", commands).value;
+		
+	}
+
+
+	/**
+	 * Server only
+	 * @return
+	 */
+	public int getSequenceNumber() {
+		return sequenceNumber;
+	}
+
+
+	/**
+	 * Server only
+	 * @param sequenceNumber
+	 */
+	public void setSequenceNumber(int sequenceNumber) {
+		this.sequenceNumber = sequenceNumber;
 	}
 	
 }

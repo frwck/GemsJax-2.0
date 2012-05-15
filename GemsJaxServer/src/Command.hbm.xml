@@ -15,7 +15,7 @@
     
     
     
-    <joined-subclass name=" org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand" table="CreateMetaClassCommand">
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand" table="CreateMetaClassCommand">
         <key column="Command_id"/>
         <property name="name" column="name" type="string" />
         <property name="x" column="x" type="double" />

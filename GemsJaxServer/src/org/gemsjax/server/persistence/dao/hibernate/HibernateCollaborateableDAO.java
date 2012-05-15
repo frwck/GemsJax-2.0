@@ -154,6 +154,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		}
 		catch (HibernateException e)
 		{
+			e.printStackTrace();
 			if (tx != null)
 				tx.rollback();
 			
@@ -186,6 +187,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		}
 		catch (HibernateException e)
 		{
+			e.printStackTrace();
 			if (tx != null)
 				tx.rollback();
 			
@@ -222,6 +224,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		}
 		catch (HibernateException e)
 		{
+			e.printStackTrace();
 			if (tx != null)
 				tx.rollback();
 			
@@ -258,6 +261,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		}
 		catch (HibernateException e)
 		{
+			e.printStackTrace();
 			if (tx != null)
 				tx.rollback();
 			
@@ -376,7 +380,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		}
 		catch (HibernateException e)
 		{
-			
+			e.printStackTrace();
 			if (tx != null)
 				tx.rollback();
 			
@@ -650,6 +654,7 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		}
 		catch (HibernateException e)
 		{
+			e.printStackTrace();
 			if (tx != null)
 				tx.rollback();
 			
@@ -711,6 +716,40 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 		else
 			return m;
 	
+	}
+
+
+	@Override
+	public void addTransaction(Collaborateable c,
+			org.gemsjax.shared.collaboration.Transaction t) throws DAOException {
+		
+		Session session = null;
+		Transaction tx = null;
+		
+		try
+		{	
+			session = HibernateUtil.getSessionFactory().openSession();
+			tx = session.beginTransaction();
+				c.addTransaction(t);
+				session.update(c);
+			tx.commit();
+			session.flush();
+			session.close();
+			
+		}
+		catch (HibernateException e)
+		{
+			e.printStackTrace();
+			if (tx != null)
+				tx.rollback();
+			
+			if (session != null)
+				session.close();
+			
+			throw new DAOException(e, "Could not update the name of the Collaborateable");
+		}
+		
+		
 	}
 	
 	

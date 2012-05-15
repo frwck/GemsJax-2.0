@@ -105,4 +105,7 @@ public interface MetaModel  extends Collaborateable {
 	 * @return
 	 */
 	public Set<Model> getModels();
+	
+	public boolean isClassRelationNameAvailable(String name);
+	
 }

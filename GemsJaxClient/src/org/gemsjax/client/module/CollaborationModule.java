@@ -142,6 +142,8 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		channel.send(new TransactionMessage(tx));
 		transactionProcessor.executeTransaction(tx);
 		
+		fireUpdated();
+		
 	}
 	
 	
@@ -210,8 +212,9 @@ public class CollaborationModule implements CollaborationChannelHandler{
 				for (Collaborator c: collaborators)
 					h.onCollaboratorJoined(c);
 				
-				h.onCollaborateableUpdated();
+
 				h.onCollaborateableInitialized();
+				h.onCollaborateableUpdated();
 			}
 			
 			
@@ -258,6 +261,8 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		for (CollaborationModuleHandler h : handlers)
 			h.onCollaboratorLeft(c);
 	}
+	
+	
 	
 	
 

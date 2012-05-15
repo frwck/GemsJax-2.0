@@ -32,7 +32,7 @@
     	<key>
         	<column name="Collaborateable_id" not-null="true" />
        </key>
-       <one-to-many class="org.gemsjax.server.persistence.collaboration.TransactionImpl" />
+       <one-to-many class="org.gemsjax.shared.collaboration.TransactionImpl" />
        
     </set>
     

@@ -140,4 +140,9 @@ public interface Collaborateable{
 	public void setPublicPermission(Permission permission);
 	
 	
+	public void addTransaction(Transaction t);
+	
+	public int getNextTransactionSequenceNumber();
+	
+	
 }

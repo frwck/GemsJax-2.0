@@ -38,7 +38,7 @@ public class MetaClassImpl implements MetaClass {
 	private String gradientStartColor ="#FCCE70";
 	private String gradientEndColor="#FCFBD5";
 	
-	private String iconURL = "/metamodel/icons/book.jpg";
+	private String iconURL = "/images/icons/defaultMetaClass.png";
 	private double iconWidth = 50;
 	private double iconHeight = 50;
 	

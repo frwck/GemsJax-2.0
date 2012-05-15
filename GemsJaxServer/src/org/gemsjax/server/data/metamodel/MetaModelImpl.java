@@ -151,5 +151,11 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 	public Set<Model> getModels() {
 		return models;
 	}
+
+	@Override
+	public boolean isClassRelationNameAvailable(String arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

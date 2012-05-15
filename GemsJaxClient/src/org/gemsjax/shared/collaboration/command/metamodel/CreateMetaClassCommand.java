@@ -13,7 +13,7 @@ public class CreateMetaClassCommand extends CommandImpl{
 	private double x;
 	private double y;
 	private String name;
-	private String id;
+	private String metaClassId;
 	private double width;
 	private double height;
 	
@@ -22,25 +22,27 @@ public class CreateMetaClassCommand extends CommandImpl{
 	private MetaModel metaModel;
 
 	
-	
 	public CreateMetaClassCommand(){}
 	
-	public CreateMetaClassCommand(String id, String name, double x, double y, double width, double height){
-		this.id = id;
+	public CreateMetaClassCommand(String commandId, String metaClassId, String name, double x, double y, double width, double height, MetaModel metaModel){
+		setId(commandId);
+		this.metaClassId = metaClassId;
 		this.name =name;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.metaModel = metaModel;
 	}
 	
 
 	@Override
 	public void serialize(Archive a) throws Exception {
+		super.serialize(a);
 		x = a.serialize("x", x).value;
 		y = a.serialize("y", y).value;
 		name = a.serialize("name",name).value;
-		id = a.serialize("id", id).value;
+		metaClassId = a.serialize("metaClassId", metaClassId).value;
 		width = a.serialize("width", width).value;
 		height = a.serialize("height", height).value;
 	}
@@ -48,7 +50,7 @@ public class CreateMetaClassCommand extends CommandImpl{
 	
 	@Override
 	public void execute() throws SemanticException {
-		MetaClass mc  = new MetaClassImpl(id, name);
+		MetaClass mc  = new MetaClassImpl(metaClassId, name);
 		mc.setWidth(width);
 		mc.setHeight(height);
 		mc.setX(x);
@@ -60,7 +62,7 @@ public class CreateMetaClassCommand extends CommandImpl{
 
 	@Override
 	public void undo() {
-		MetaClass mc = (MetaClass) metaModel.getElementByID(id);
+		MetaClass mc = (MetaClass) metaModel.getElementByID(metaClassId);
 		metaModel.removeMetaClass(mc);
 	}
 
@@ -95,13 +97,13 @@ public class CreateMetaClassCommand extends CommandImpl{
 	}
 
 
-	public String getId() {
-		return id;
+	public String getMetaClassId() {
+		return metaClassId;
 	}
 
 
-	public void setId(String id) {
-		this.id = id;
+	public void setMetaClassId(String id) {
+		this.metaClassId = id;
 	}
 
 

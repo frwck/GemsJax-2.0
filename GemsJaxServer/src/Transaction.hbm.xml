@@ -5,7 +5,7 @@
 
 <hibernate-mapping default-access="field">
 
-<class name="org.gemsjax.server.persistence.collaboration.TransactionImpl" table="Transaction">
+<class name="org.gemsjax.shared.collaboration.TransactionImpl" table="Transaction">
     <id name="id" type="string" column="id">
     	<!-- Generator is not needed, since the id is generated with uuid on the client -->
     </id>
@@ -15,9 +15,16 @@
     
     
       <!--  The vector clock mapping  -->
+      <!-- 
 	<map name="vectorClock" table="VectorClockEntry" cascade="delete">
 		<key column="Transaction_id" />
 		<index-many-to-many column="User_id" class="org.gemsjax.server.persistence.user.UserImpl" />
+		<element column="value" type="long" />
+	</map>
+     -->
+    <map name="vectorClock" table="VectorClockEntry" cascade="delete">
+		<key column="Transaction_id" />
+		<map-key column="User_id" type="int" />
 		<element column="value" type="long" />
 	</map>
     

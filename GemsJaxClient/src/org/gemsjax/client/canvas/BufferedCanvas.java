@@ -83,6 +83,7 @@ public class BufferedCanvas extends VLayout {
 		this.setHeight100();
 		
 		this.setOverflow(Overflow.SCROLL);
+		this.setMembersMargin(0);
 		
 		// TODO needed?
 /*

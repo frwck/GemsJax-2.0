@@ -15,6 +15,7 @@ import org.eclipse.jetty.websocket.WebSocket;
 import org.gemsjax.server.communication.channel.UserAuthenticationChannel;
 import org.gemsjax.server.communication.serialisation.XmlLoadingArchive;
 import org.gemsjax.shared.collaboration.TransactionImpl;
+import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
@@ -30,6 +31,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashMa
 import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashSetInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.LinkedListInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.TransactionMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.UnsubscribeCollaborateableMessageInstantiator;
@@ -88,6 +90,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 				objectFactory.register(TransactionImpl.class.getName(), new TransactionInstantiator());
 				
 				// Commands
+				objectFactory.register(CreateMetaClassCommand.class.getName(), new CreateMetaClassCommandInstantiator());
 					
 				
 			}
@@ -123,6 +126,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 				
 			} catch (Exception e) {
 				
+//				e.printStackTrace();
 				// TODO remove deprecated stuff (backward compatibility)
 				InputMessage im = new InputMessage(200, data);
 				

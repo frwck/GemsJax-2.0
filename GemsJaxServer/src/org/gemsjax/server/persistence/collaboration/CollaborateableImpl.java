@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
@@ -34,7 +35,7 @@ public class CollaborateableImpl implements Collaborateable
 	public CollaborateableImpl()
 	{
 		users = new LinkedHashSet<User>();
-		vectorClock = new HashMap<Integer, Long>();
+		vectorClock = new ConcurrentHashMap<Integer, Long>();
 		transactions = new LinkedHashSet<Transaction>();
 	}
 
@@ -94,8 +95,10 @@ public class CollaborateableImpl implements Collaborateable
 
 
 	@Override
-	public Set<Transaction> getTransactions() {
-		return transactions;
+	public synchronized Set<Transaction> getTransactions() {
+		synchronized(transactions){
+			return transactions;
+		}
 	}
 
 
@@ -143,6 +146,24 @@ public class CollaborateableImpl implements Collaborateable
 			return id.hashCode();
 		else
 			return super.hashCode();
+	}
+
+
+	@Override
+	public synchronized void addTransaction(Transaction t) {
+		synchronized(transactions){
+			t.setSequenceNumber(transactions.size()+1);
+			transactions.add(t);
+		}
+		
+	}
+
+
+	@Override
+	public synchronized int getNextTransactionSequenceNumber() {
+		synchronized(transactions){
+			return transactions.size()+1;
+		}
 	}
 
 }

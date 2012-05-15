@@ -104,6 +104,7 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 				else
 				{
 					RegisteredUser u = userDAO.getUserByLogin(lm.getUsername(), SHA.generate256(lm.getPassword()));
+					
 					ou = OnlineUser.create(u, communicationConnection, httpSession);
 					
 					if (ou == null)
@@ -121,6 +122,7 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 						send(new LoginAnswerMessage(ou.getId(), u.getDisplayedName() , unread)); 
 						communicationConnection.deregisterInputChannel(this);
 					}
+					
 				}
 				
 			}

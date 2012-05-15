@@ -19,6 +19,7 @@ import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
+import org.gemsjax.client.canvas.handler.metamodel.CreateMetaClassHandler;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -84,8 +85,8 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	
 	private List<MetaBaseType> metaBaseTypes;
 	
-	
 	private MetaClassDetailView metaClassDetailView;
+	
 	
 	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException 
 	{
@@ -118,6 +119,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		collaboratorsList.setHeight(200);
 		collaboratorsList.setWidth100();
 		ListGridField collaboratorField = new ListGridField("displayedName", "Collaborators");
+		collaboratorField.setWidth("100%");
 		collaboratorsList.setFields(collaboratorField);
 		collaboratorsList.setData(new CollaboratorListRecord[]{});
 		
@@ -128,8 +130,11 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		canvasDetailContainer.setHeight100();
 		canvasDetailContainer.setLeftColumn(canvas, true);
 		canvasDetailContainer.setRightColumn(detailsView, true);
+		canvasDetailContainer.setMembersMargin(0);
 		
 		layout.setRightColumn(canvasDetailContainer, true);
+		layout.setMembersMargin(0);
+		
 		
 		// TODO set it to the corresponding MetaModel settings (check for READ_ONLY)
 		setCanvasEditingMode(EditingMode.NORMAL);
@@ -330,6 +335,21 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	@Override
 	public void setMetaBaseTypes(List<MetaBaseType> types) {
 		this.metaBaseTypes = types;
+	}
+
+	@Override
+	public void addCreateMetaClassHandler(CreateMetaClassHandler h) {
+		canvas.addCreateMetaClassHandler(h);
+	}
+
+	@Override
+	public void removeCreateMetaClassHandler(CreateMetaClassHandler h) {
+		canvas.removeCreateMetaClassHandler(h);
+	}
+
+	@Override
+	public void showNameAlreadyInUseError(String name) {
+			NotificationManager.getInstance().showTipNotification(new TipNotification("Name already in use", "The name \""+name+"\" is already user by a MetaModel-Element. Please choose a diffrent one", 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE);
 	}
 	
 	

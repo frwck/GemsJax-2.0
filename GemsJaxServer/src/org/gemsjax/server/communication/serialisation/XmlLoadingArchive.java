@@ -79,6 +79,7 @@ public class XmlLoadingArchive implements XmlArchive {
 			primitivDataTypes.add(Boolean.class.getName());
 			primitivDataTypes.add(Short.class.getName());
 			primitivDataTypes.add(Character.class.getName());
+			primitivDataTypes.add(Long.class.getName());
 
 		}
 
@@ -120,6 +121,9 @@ public class XmlLoadingArchive implements XmlArchive {
 			if (xmlClass.equals(Integer.class.getName()))
 				result = new Holder<T>((T) new Integer(	Integer.parseInt(content)));
 			else
+			if (xmlClass.equals(Long.class.getName()))
+				result = new Holder<T>((T) new Long(Long.parseLong(content)));
+			else	
 			if (xmlClass.equals(String.class.getName()))
 				result =  new Holder<T>((T) content);
 			else

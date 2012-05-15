@@ -12,6 +12,7 @@ import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.metamodel.MetaModelElement;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
@@ -235,6 +236,36 @@ public class MetaModelImpl implements MetaModel{
 	@Override
 	public void setPublicPermission(Permission permission) {
 		this.permission = permission;
+	}
+
+	@Override
+	public boolean isClassRelationNameAvailable(String name) {
+		
+		String toUpper = name.toUpperCase();
+		
+		for (MetaClass m: metaClasses){
+			if (m.getName().toUpperCase().equals(toUpper))
+				return false;
+		
+			for(MetaConnection c : m.getConnections())
+				if (c.getName().toUpperCase().equals(toUpper))
+						return false;
+		}
+		
+		
+		return true;
+	}
+
+	@Override
+	public void addTransaction(Transaction t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getNextTransactionSequenceNumber() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

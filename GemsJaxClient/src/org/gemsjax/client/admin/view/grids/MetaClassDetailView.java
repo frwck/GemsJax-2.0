@@ -27,6 +27,7 @@ import com.smartgwt.client.widgets.grid.events.EditCompleteHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
+import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.layout.VStack;
 
 
@@ -85,6 +86,7 @@ class AddMetaAttributeDialog extends ModalDialog{
 		type = new SelectItem();
 		type.setTitle("Type");
 		type.setAddUnknownValues(false);
+		type.setDefaultValue((baseTypes.get(0).getName()));
 		
 		LinkedHashMap<String, String> typesMap = new LinkedHashMap<String, String>();
 		for (MetaBaseType typ: baseTypes)
@@ -107,8 +109,11 @@ class AddMetaAttributeDialog extends ModalDialog{
 		content.setWidth100();
 		content.setHeight100();
 		
+		this.addItem(content);
+		
 		this.setWidth(250);
 		this.setHeight(200);
+		this.centerInPage();
 	}
 	
 	
@@ -128,7 +133,7 @@ class AddMetaAttributeDialog extends ModalDialog{
 
 
 
-public class MetaClassDetailView extends HLayout implements ClickHandler{
+public class MetaClassDetailView extends VLayout implements ClickHandler{
 	
 	private MetaClass metaClass;
 	private ListGrid attributesGrid;
@@ -178,7 +183,7 @@ public class MetaClassDetailView extends HLayout implements ClickHandler{
 		});
 		
 		
-		properties.addItem(properiesGrid);
+//		properties.addItem(properiesGrid);
 		attributes.addItem(attributesGrid);
 		stack.addSection(properties);
 		stack.addSection(attributes);

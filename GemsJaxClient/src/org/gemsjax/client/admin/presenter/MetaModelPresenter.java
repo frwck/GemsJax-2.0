@@ -28,6 +28,7 @@ import org.gemsjax.client.canvas.events.PlaceEvent;
 import org.gemsjax.client.canvas.events.PlaceEvent.PlaceEventType;
 import org.gemsjax.client.canvas.events.ResizeEvent;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
+import org.gemsjax.client.canvas.events.metamodel.CreateMetaClassEvent;
 import org.gemsjax.client.canvas.handler.ClickHandler;
 import org.gemsjax.client.canvas.handler.FocusHandler;
 import org.gemsjax.client.canvas.handler.IconLoadHandler;
@@ -36,14 +37,27 @@ import org.gemsjax.client.canvas.handler.MouseOverHandler;
 import org.gemsjax.client.canvas.handler.MoveHandler;
 import org.gemsjax.client.canvas.handler.PlaceHandler;
 import org.gemsjax.client.canvas.handler.ResizeHandler;
+import org.gemsjax.client.canvas.handler.metamodel.CreateMetaClassHandler;
 import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
 import org.gemsjax.shared.AnchorPoint;
+import org.gemsjax.shared.UUID;
+import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
+import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
+import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
+import org.gemsjax.shared.metamodel.exception.MetaClassException;
+import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
+import org.gemsjax.shared.metamodel.impl.MetaAttributeImpl;
+import org.gemsjax.shared.metamodel.impl.MetaBaseTypeImpl;
+import org.gemsjax.shared.metamodel.impl.MetaClassImpl;
+import org.gemsjax.shared.metamodel.impl.MetaConnectionImpl;
+import org.gemsjax.shared.metamodel.impl.MetaFactory;
 
 import com.google.gwt.event.shared.EventBus;
 import com.smartgwt.client.util.SC;
@@ -54,7 +68,8 @@ import com.smartgwt.client.widgets.tab.Tab;
  * @author Hannes Dorfmann
  *
  */
-public class MetaModelPresenter extends CollaborationPresenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler, PlaceHandler, CollaborationModuleHandler{
+public class MetaModelPresenter extends CollaborationPresenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler, PlaceHandler, 
+																CollaborationModuleHandler, CreateMetaClassHandler{
 	
 	private MetaModel metaModel;
 	private MetaModelView view;
@@ -119,13 +134,93 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				view.setCanvasEditingMode(EditingMode.CREATE_CONTAINMENT);
 			}
 		});
+		
+		view.addCreateMetaClassHandler(this);
 	}
 	
 	
 	
 	private void generateDrawables()
 	{
+		/*
+		try {
+			
+			
+		MetaBaseType stringType = new MetaBaseTypeImpl("1", "String");
+		MetaBaseType dateType = new MetaBaseTypeImpl("2", "Date");
+		MetaBaseType booleanType = new MetaBaseTypeImpl("3", "Boolean");
+		MetaBaseType intType = new MetaBaseTypeImpl("4", "Integer");
 		
+		
+		MetaClass songMC = new MetaClassImpl("1", "Song");
+		songMC.setX(10);
+		songMC.setY(10);
+		songMC.setIconURL("/metamodel/icons/song.png");
+		songMC.setWidth(100);
+		songMC.setHeight(50);
+		songMC.addAttribute(new MetaAttributeImpl("1-1", "name", stringType));
+		songMC.addAttribute(new MetaAttributeImpl("1-2", "trackNumber", intType));
+		songMC.autoSize();
+		
+		
+		MetaClass albumMC = new MetaClassImpl("2", "Album");
+		albumMC.addAttribute(new MetaAttributeImpl("2-1", "name", stringType));
+		albumMC.addAttribute(new MetaAttributeImpl("2-2", "releaseDate", dateType));
+		albumMC.setX(10);
+		albumMC.setY(10);
+		albumMC.setIconURL("/metamodel/icons/albumCD.png");
+		albumMC.setWidth(100);
+		albumMC.setHeight(50);
+		albumMC.autoSize();
+		
+		
+		MetaClass artistMC = new MetaClassImpl("3", "Artist");
+		artistMC.addAttribute(new MetaAttributeImpl("3-1", "name", stringType));
+		artistMC.addAttribute(new MetaAttributeImpl("3-2", "isBand", booleanType));
+		artistMC.setX(10);
+		artistMC.setY(10);
+		artistMC.setIconURL("/metamodel/icons/artistBlue.png");
+		artistMC.setWidth(100);
+		artistMC.setHeight(50);
+		artistMC.autoSize();
+		
+		
+		MetaConnection partOf = MetaFactory.createMetaConnection("PartOf", songMC, albumMC);
+		songMC.addConnection(partOf);
+		
+		
+		MetaConnection sungBy = MetaFactory.createMetaConnection("SungBy", albumMC, artistMC);
+		albumMC.addConnection(sungBy);
+		
+		
+		metaModel.addMetaClass(artistMC);
+		metaModel.addMetaClass(albumMC);
+		metaModel.addMetaClass(songMC);
+		
+		metaModel.addBaseType(stringType);
+		metaModel.addBaseType(dateType);
+		metaModel.addBaseType(booleanType);
+		metaModel.addBaseType(intType);
+		
+		
+		
+		
+		} catch (MetaAttributeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MetaConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MetaClassException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MetaBaseTypeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		*/
 		try {
 			
 			// First add all MetaClasses
@@ -239,6 +334,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		} catch (DoubleLimitException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 
@@ -606,10 +702,13 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		view.clearDrawables();
 		generateDrawables();
 	}
+	
 
 
 	@Override
 	public void onCollaborateableInitialized() {
+		
+		view.setMetaBaseTypes(metaModel.getBaseTypes());
 		view.showContent();
 	}
 
@@ -629,6 +728,24 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 	@Override
 	public void onCollaboratorLeft(Collaborator c) {
 		view.removeCollaborator(c);
+	}
+
+
+	@Override
+	public void onCreateMetaClass(CreateMetaClassEvent e) {
+
+		if (!metaModel.isClassRelationNameAvailable(e.getName()))
+			view.showNameAlreadyInUseError(e.getName());
+		else
+			try {
+				CreateMetaClassCommand c = new CreateMetaClassCommand(UUID.generate(), UUID.generate(), e.getName(), e.getX(), e.getY(), 100, 100, metaModel);
+				c.setSequenceNumber(1);
+				module.sendAndCommitTransaction(c);
+				view.setCanvasEditingMode(EditingMode.NORMAL);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	}
 	
 

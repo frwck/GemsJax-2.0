@@ -95,6 +95,20 @@ public class ModelImpl implements Model{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	public void addTransaction(Transaction t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public int getNextTransactionSequenceNumber() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 
 }
