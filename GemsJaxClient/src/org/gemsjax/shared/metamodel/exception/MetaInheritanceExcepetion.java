@@ -1,6 +1,6 @@
 package org.gemsjax.shared.metamodel.exception;
 
-import org.gemsjax.shared.collaboration.SemanticException;
+import org.gemsjax.shared.collaboration.ManipulationException;
 import org.gemsjax.shared.metamodel.MetaClass;
 
 /**
@@ -9,7 +9,7 @@ import org.gemsjax.shared.metamodel.MetaClass;
  * @author Hannes Dorfmann
  *
  */
-public class MetaInheritanceExcepetion extends SemanticException {
+public class MetaInheritanceExcepetion extends ManipulationException {
 	
 	
 	private MetaClass superClass;

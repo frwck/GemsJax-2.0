@@ -288,7 +288,12 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 			throw new NotFoundException();
 		
 		else
+		{
+			for (org.gemsjax.shared.collaboration.Transaction t : m.getTransactions())
+				for (Command command: t.getCommands())
+					command.setCollaborateable(m);
 			return m;
+		}
 		
 	}
 	
@@ -305,8 +310,13 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 
 		if (m == null)
 			throw new NotFoundException();
-		
-		return m;
+		else{
+			for (org.gemsjax.shared.collaboration.Transaction t : m.getTransactions())
+				for (Command command: t.getCommands())
+					command.setCollaborateable(m);
+	
+			return m;
+		}
 	}
 	
 	
@@ -708,14 +718,19 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 	@Override
 	public Collaborateable getCollaborateable(int id) throws NotFoundException {
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		Collaborateable m = (CollaborateableImpl)session.get(CollaborateableImpl.class, id);
+		Collaborateable c = (CollaborateableImpl)session.get(CollaborateableImpl.class, id);
 		session.close();
 		
-		if (m == null)
+		if (c == null)
 			throw new NotFoundException();
 		
-		else
-			return m;
+		else{
+			for (org.gemsjax.shared.collaboration.Transaction t : c.getTransactions())
+				for (Command command: t.getCommands())
+					command.setCollaborateable(c);
+			
+			return c;
+		}
 	
 	}
 
@@ -723,12 +738,6 @@ public class HibernateCollaborateableDAO implements CollaborateableDAO {
 	@Override
 	public void addTransaction(Collaborateable c,
 			org.gemsjax.shared.collaboration.Transaction t) throws DAOException {
-		
-		
-		for(Command command : t.getCommands()){
-			command.setTransaction(t);
-		}
-		
 		
 		Session session = null;
 		Transaction tx = null;

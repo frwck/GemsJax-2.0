@@ -8,7 +8,7 @@ import java.util.TreeMap;
 
 import org.gemsjax.client.user.RegisteredUserImpl;
 import org.gemsjax.shared.collaboration.Collaborateable;
-import org.gemsjax.shared.collaboration.SemanticException;
+import org.gemsjax.shared.collaboration.ManipulationException;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.user.User;
@@ -87,7 +87,7 @@ public class TransactionProcessor {
 			history.add(t);
 			try {
 				t.commit();
-			} catch (SemanticException e) {
+			} catch (ManipulationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -109,7 +109,7 @@ public class TransactionProcessor {
 				{
 					try {
 						current.rollback();
-					} catch (SemanticException e) {
+					} catch (ManipulationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
@@ -126,7 +126,7 @@ public class TransactionProcessor {
 				Transaction current = history.get(i);
 				try {
 					current.commit();
-				} catch (SemanticException e) {
+				} catch (ManipulationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

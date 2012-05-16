@@ -50,6 +50,7 @@
 	<classpathentry kind="lib" path="lib/testing/httpcomponents/httpclient-cache-4.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/testing/httpcomponents/httpmime-4.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/testing/WebSocket.jar"/>
+	<classpathentry kind="lib" path="lib/commons-fileupload-1.2.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

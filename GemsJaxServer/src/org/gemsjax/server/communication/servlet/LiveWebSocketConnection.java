@@ -16,6 +16,8 @@ import org.gemsjax.server.communication.channel.UserAuthenticationChannel;
 import org.gemsjax.server.communication.serialisation.XmlLoadingArchive;
 import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
@@ -32,6 +34,8 @@ import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashSe
 import org.gemsjax.shared.communication.serialisation.instantiators.LinkedListInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaClassCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaClassCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ResizeMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.TransactionMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.UnsubscribeCollaborateableMessageInstantiator;
@@ -91,7 +95,10 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 				
 				// Commands
 				objectFactory.register(CreateMetaClassCommand.class.getName(), new CreateMetaClassCommandInstantiator());
-					
+				objectFactory.register(MoveMetaClassCommand.class.getName(), new MoveMetaClassCommandInstantiator());
+				objectFactory.register(ResizeMetaClassCommand.class.getName(), new ResizeMetaClassCommandInstantiator());
+				
+
 				
 			}
 			
@@ -125,8 +132,9 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 				deliverReceivedMessage(m);
 				
 			} catch (Exception e) {
-				if (!e.getMessage().startsWith("key missmatch"))
-				e.printStackTrace();
+				
+				if (e.getMessage()==null || !e.getMessage().startsWith("key missmatch"))
+					e.printStackTrace();
 				
 				try{
 					// TODO remove deprecated stuff (backward compatibility)

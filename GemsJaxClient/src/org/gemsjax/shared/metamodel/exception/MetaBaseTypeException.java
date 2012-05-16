@@ -1,6 +1,6 @@
 package org.gemsjax.shared.metamodel.exception;
 
-import org.gemsjax.shared.collaboration.SemanticException;
+import org.gemsjax.shared.collaboration.ManipulationException;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaModel;
 
@@ -10,7 +10,7 @@ import org.gemsjax.shared.metamodel.MetaModel;
  * @author Hannes Dorfmann
  *
  */
-public class MetaBaseTypeException extends SemanticException{
+public class MetaBaseTypeException extends ManipulationException{
 	
 	private MetaModel metaModel;
 	private String baseTypeName;

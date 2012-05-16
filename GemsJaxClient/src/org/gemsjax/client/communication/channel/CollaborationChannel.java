@@ -5,7 +5,6 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.gemsjax.client.communication.channel.handler.CollaborationChannelHandler;
-import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.collaboration.command.Command;
@@ -32,7 +31,6 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	
 	private Set<CollaborationChannelHandler> handlers;
 	private CommunicationConnection connection;
-//	private Collaborateable collaborateable;
 	private Collaborateable collaborateable;
 	
 	public CollaborationChannel(CommunicationConnection connection, Collaborateable collaborateable)

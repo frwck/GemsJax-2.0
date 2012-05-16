@@ -88,7 +88,11 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 		
 		
 		if (isMetaClassNameAvailable(metaClass.getName()))
+		{	
 			metaClasses.add(metaClass);
+			idMap.put(metaClass.getID(), metaClass);
+		}
+		
 		else
 			throw new MetaClassException(metaClass.getName(), this);
 	}
@@ -130,6 +134,7 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 	@Override
 	public void removeMetaClass(MetaClass metaClass) {
 		metaClasses.remove(metaClass);
+		idMap.remove(metaClass).getID();
 	}
 
 		

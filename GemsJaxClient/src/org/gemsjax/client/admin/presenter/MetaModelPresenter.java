@@ -42,7 +42,9 @@ import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.UUID;
+import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -423,10 +425,15 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 
 		
 		if (e.getType()==MoveEventType.MOVE_FINISHED){
-			metaClass.setX(e.getX()-e.getDistanceToTopLeftX());
-			metaClass.setY(e.getY()-e.getDistanceToTopLeftY());
-			
-			// TODO collaborative info websocket
+			double x = (e.getX()-e.getDistanceToTopLeftX());
+			double y = (e.getY()-e.getDistanceToTopLeftY());
+		
+			try {
+				module.sendAndCommitTransaction(new MoveMetaClassCommand(UUID.generate(), metaClass.getID(), x, y, metaClass.getX(), metaClass.getY()));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 			
 		view.redrawMetaModelCanvas();

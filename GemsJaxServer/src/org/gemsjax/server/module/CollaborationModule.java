@@ -1,20 +1,19 @@
 package org.gemsjax.server.module;
 
 import java.io.IOException;
-import java.lang.annotation.Target;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.eclipse.jetty.util.ConcurrentHashSet;
 import org.gemsjax.server.communication.channel.handler.CollaborationChannelHandler;
 import org.gemsjax.server.persistence.dao.CollaborateableDAO;
-import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateCollaborateableDAO;
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.collaboration.ManipulationException;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.communication.message.collaboration.CollaboratorJoinedMessage;
@@ -27,6 +26,7 @@ import org.gemsjax.shared.communication.message.collaboration.TransactionErrorMe
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.impl.MetaBaseTypeImpl;
+import org.gemsjax.shared.user.User;
 
 public class CollaborationModule implements CollaborationChannelHandler{
 	
@@ -66,69 +66,67 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	public void onTransactionReceived(Transaction tx, OnlineUser sender) {
 		
 		try {
-			Collaborateable c = getOrLoadCollaborateable(tx.getCollaborateableId());
 			
-			if (c.getUsers().contains(sender.getUser())){
-				
-				Set<OnlineUser> subscribers = subscriptions.get(tx.getCollaborateableId());
-				if (subscribers == null || !subscribers.contains(sender))
-					sender.getCollaborationChannel().send(new TransactionErrorMessage(TransactionError.SUBSCRIPTION, tx.getId(), tx.getCollaborateableId()));
-				else
-				{	// Everything seems to be correct, so store transaction and deliver
+			Collaborateable c = tx.getCollaborateable();
+			
+			synchronized (c) {
+			
+				if (isCollaborativeUser(c, sender.getUser())){
 					
-					Map<Integer, Long> beforeCopy = new ConcurrentHashMap<Integer, Long>();
-					copyVectorClock(c.getVectorClock(), beforeCopy);
-					// Store
-					try {
+					Set<OnlineUser> subscribers = subscriptions.get(tx.getCollaborateableId());
+					if (subscribers == null || !subscribers.contains(sender))
+						sender.getCollaborationChannel().send(new TransactionErrorMessage(TransactionError.SUBSCRIPTION, tx.getId(), tx.getCollaborateableId()));
+					else
+					{	// Everything seems to be correct, so store transaction and deliver
 						
-						tx.setUser(sender.getUser());
-						tx.setCollaborateable(c);
+						Map<Integer, Long> beforeCopy = new ConcurrentHashMap<Integer, Long>();
+						copyVectorClock(c.getVectorClock(), beforeCopy);
 						
 						
-						mergeMaxVectorClocks(tx, c);
+						TransactionProcessor tp = new TransactionProcessor();
+						try {
+							tp.executeTransaction(tx);
+						} catch (ManipulationException e1) {
+							// Manipulation Exceptions are allowed
+						}
+						
 						copyVectorClock(c.getVectorClock(), tx.getVectorClock());
-						dao.addTransaction(c, tx);
+						// Store
+						try {
+							dao.addTransaction(c, tx);
+							
+							// Deliver to other subscribers
+							TransactionMessage tm = new TransactionMessage();
+							tm.setTransaction(tx);
 						
-						// Deliver to other subscribers
-						TransactionMessage tm = new TransactionMessage();
-						tm.setTransaction(tx);
-					
-						for (OnlineUser u : subscribers)
-							if (!u.equals(sender))u.getCollaborationChannel().send(tm);
+							for (OnlineUser u : subscribers)
+								if (!u.equals(sender))
+									try{
+										u.getCollaborationChannel().send(tm);
+									}catch(IOException e){
+										
+									}
+							
+						} catch (Exception e) { // DAOException
+							
+							copyVectorClock(beforeCopy, c.getVectorClock());
+							e.printStackTrace();
+							sender.getCollaborationChannel().send(new TransactionErrorMessage(TransactionError.DATABASE, tx.getId(), tx.getCollaborateableId()));
+							
+						}
 						
-						
-						
-						
-					} catch (Exception e) { // DAOException
-						
-						copyVectorClock(beforeCopy, c.getVectorClock());
-						e.printStackTrace();
-						sender.getCollaborationChannel().send(new TransactionErrorMessage(TransactionError.DATABASE, tx.getId(), tx.getCollaborateableId()));
+						// 
 						
 					}
 					
-					// 
-					
+				}
+				else
+				{
+					sender.getCollaborationChannel().send(new TransactionErrorMessage(TransactionError.PERMISSION_DENIED, tx.getId(), tx.getCollaborateableId()));
 				}
 				
-			}
-			else
-			{
-				sender.getCollaborationChannel().send(new TransactionErrorMessage(TransactionError.PERMISSION_DENIED, tx.getId(), tx.getCollaborateableId()));
-			}
-			
-			
-			
-		} catch (NotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			try {
-				sender.getCollaborationChannel().send(new TransactionErrorMessage(TransactionError.NOT_FOUND, tx.getId(), tx.getCollaborateableId()));
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
+			} // End synchronized
+		
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -138,36 +136,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	}
 	
 	
-	private void  mergeMaxVectorClocks(Transaction tx, Collaborateable collaborateable){
-		
-		synchronized(collaborateable){
-				// Adjust Vector Clock
-				for (Entry<Integer, Long> e : tx.getVectorClock().entrySet()){
-					long receivedVal = tx.getVectorClockEnrty(e.getKey());
-					long currentVal = getVectorClockValue(e.getKey(), collaborateable);
-					
-					if (receivedVal>currentVal)
-						collaborateable.getVectorClock().put(e.getKey(), receivedVal);
-				}
-			}
-		}
-		
-		
-		private long getVectorClockValue(int userId, Collaborateable collaborateable){
-			Long value = collaborateable.getVectorClock().get(userId);
-			if ( value==null)
-				return 0;
-			else
-				return value;
-			
-	}
-		
-	// TODO check if synchronized is needed
-	private void copyVectorClock(Map<Integer, Long> source, Map<Integer, Long> target){
-		target.clear();
-		for (Map.Entry<Integer, Long> e : source.entrySet())
-			target.put(e.getKey(), e.getValue());
-	}
+	
 		
 	
 
@@ -177,7 +146,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		try {
 			Collaborateable c = getOrLoadCollaborateable(collaborateableId);
 			
-			if (c.getUsers().contains(sender.getUser()) || c.getOwner().equals(sender.getUser()))
+			if (isCollaborativeUser(c, sender.getUser()) || c.getOwner().equals(sender.getUser()))
 			{
 				Set<OnlineUser> subscribers = subscriptions.get(collaborateableId);
 				if (subscribers == null) // The first User who subscribes
@@ -228,7 +197,10 @@ public class CollaborationModule implements CollaborationChannelHandler{
 			}
 			else // Not a collaborative user, 
 			{
-				sender.getCollaborationChannel().send(new SubscribeCollaborateableErrorMessage(SubscribeCollaborateableError.PERMISSION_DENIED));
+				SubscribeCollaborateableErrorMessage sm = new SubscribeCollaborateableErrorMessage(SubscribeCollaborateableError.PERMISSION_DENIED);
+				sm.setCollaborateableId(collaborateableId);
+				sm.setReferenceId(refId);
+				sender.getCollaborationChannel().send(sm);
 			}
 			
 		} catch (NotFoundException e) {
@@ -298,17 +270,20 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	
 	
 	
-	private Collaborateable getOrLoadCollaborateable(int collaborateableId) throws NotFoundException{
+	public Collaborateable getOrLoadCollaborateable(int collaborateableId) throws NotFoundException{
 		Collaborateable c = collaborateables.get(collaborateableId);
 		
 		if (c == null){ // id currently not in the memory, so try to laod if from the database
-		{	
 			c = dao.getCollaborateable(collaborateableId);
-			for (Transaction t: c.getTransactions())
-				mergeMaxVectorClocks(t, c);
-				
-		}
 			
+			try {
+				TransactionProcessor tp = new TransactionProcessor();
+				tp.executeTransactions(c.getTransactions());
+				
+			} catch (ManipulationException e) {
+				// ManipulationExceptions are allowed
+			}
+				
 			collaborateables.put(collaborateableId, c);
 		}
 		
@@ -318,49 +293,24 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	}
 	
 	
-	
-	/*
-	
-	private org.gemsjax.shared.collaboration.TransactionImpl transformToClientFormat(TransactionImpl t){
-		
-		org.gemsjax.shared.collaboration.TransactionImpl tx = new org.gemsjax.shared.collaboration.TransactionImpl();
-		tx.setUserId(t.getUserId());
-		tx.setCollaborateableId(t.getCollaborateableId());
-		tx.setCommands(t.getCommands());
-		
-		for (Map.Entry<User, Long> e : t.getUserVectorClock().entrySet()) {
-			tx.setVectorClockEntry(e.getKey().getId(), e.getValue());
-		}
-		
-		tx.setId(t.getId());
-		
-		return tx;
+	// TODO check if synchronized is needed
+	private void copyVectorClock(Map<Integer, Long> source, Map<Integer, Long> target){
+		target.clear();
+		for (Map.Entry<Integer, Long> e : source.entrySet())
+			target.put(e.getKey(), e.getValue());
 	}
 	
 	
 	
-	private TransactionImpl transformToServerFormat(org.gemsjax.shared.collaboration.TransactionImpl t) throws NotFoundException{
+	private boolean isCollaborativeUser(Collaborateable c, User user){
+		if (c.getOwner().getId() == user.getId())
+			return true;
 		
-		TransactionImpl tx = new TransactionImpl();
-		tx.setId(t.getId());
-		tx.setUserId(t.getUserId());
-		tx.setUser(OnlineUserManager.getInstance().getOrLoadUser(t.getUserId()));
-		tx.setCollaborateableId(t.getCollaborateableId());
-		tx.setCollaborateable(getOrLoadCollaborateable(t.getCollaborateableId()));
-		tx.setCommands(t.getCommands());
+		for (User u : c.getUsers())
+			if (u.getId() == user.getId())
+				return true;
 		
-		for (Map.Entry<Integer, Long> e : t.getVectorClock().entrySet()) {
-			tx.getUserVectorClock().put(OnlineUserManager.getInstance().getOrLoadUser(e.getKey()), e.getValue());
-		}
-		
-		tx.setId(t.getId());
-		
-		return tx;
+		return false;
 	}
-	
-	*/
-	
-	
-	
 
 }

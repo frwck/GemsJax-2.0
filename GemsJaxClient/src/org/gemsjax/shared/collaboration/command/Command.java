@@ -1,7 +1,7 @@
 package org.gemsjax.shared.collaboration.command;
 
 import org.gemsjax.shared.collaboration.Collaborateable;
-import org.gemsjax.shared.collaboration.SemanticException;
+import org.gemsjax.shared.collaboration.ManipulationException;
 import org.gemsjax.shared.collaboration.Transaction;
 import org.gemsjax.shared.communication.serialisation.Serializable;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -18,9 +18,9 @@ import org.gemsjax.shared.model.Model;
  */
 public interface Command extends Serializable{
 
-	public void execute() throws SemanticException;
+	public void execute() throws ManipulationException;
 	
-	public void undo() throws SemanticException;
+	public void undo() throws ManipulationException;
 	
 	public void setCollaborateable(Collaborateable c);
 	public Collaborateable getCollaborateable();

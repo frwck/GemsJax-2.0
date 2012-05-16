@@ -29,6 +29,15 @@
     </joined-subclass>
    
     
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand" table="MoveMetaClassCommand">
+        <key column="Command_id"/>
+        <property name="metaClassId" column="metaClassId" type="string" />
+        <property name="x" column="x" type="double" />
+        <property name="y" column="y" type="double" />
+        <property name="oldX" column="oldX" type="double" />
+        <property name="oldY" column="oldY" type="double" />
+    </joined-subclass>
+    
          
 </class>
 

@@ -1,6 +1,6 @@
 package org.gemsjax.shared.metamodel.exception;
 
-import org.gemsjax.shared.collaboration.SemanticException;
+import org.gemsjax.shared.collaboration.ManipulationException;
 
 /**
  * This Exception is thrown, when a new Attribute should be added to a {@link MetaClass} and there exists already
@@ -8,7 +8,7 @@ import org.gemsjax.shared.collaboration.SemanticException;
  * @author Hannes Dorfmann
  *
  */
-public class MetaAttributeException extends SemanticException {
+public class MetaAttributeException extends ManipulationException {
 		
 	private String name;
 	private Object metaElement;

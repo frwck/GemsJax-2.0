@@ -12,6 +12,8 @@ import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
@@ -20,6 +22,7 @@ import org.gemsjax.shared.communication.message.MessageType;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.communication.message.collaboration.CollaboratorJoinedMessage;
 import org.gemsjax.shared.communication.message.collaboration.CollaboratorLeftMessage;
+import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableErrorMessage;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableSuccessfulMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionErrorMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
@@ -34,8 +37,11 @@ import org.gemsjax.shared.communication.serialisation.instantiators.collaboratio
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.MetaBaseTypeInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaClassCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaClassCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ResizeMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorJoinedMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorLeftMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableErrorMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableSuccessfulMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.TransactionErrorMessageInstantiator;
@@ -152,12 +158,13 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(Collaborator.class.getName(), new CollaboratorInstantiator());
 		objectFactory.register(MetaBaseTypeImpl.class.getName(), new MetaBaseTypeInstantiator());
 		objectFactory.register(TransactionErrorMessage.class.getName(), new TransactionErrorMessageInstantiator());
-		
+		objectFactory.register(SubscribeCollaborateableErrorMessage.class.getName(), new SubscribeCollaborateableErrorMessageInstantiator());
 		
 		
 		// Commands
 		objectFactory.register(CreateMetaClassCommand.class.getName(), new CreateMetaClassCommandInstantiator());
-		
+		objectFactory.register(MoveMetaClassCommand.class.getName(), new MoveMetaClassCommandInstantiator());
+		objectFactory.register(ResizeMetaClassCommand.class.getName(), new ResizeMetaClassCommandInstantiator());
 		
 		
 			

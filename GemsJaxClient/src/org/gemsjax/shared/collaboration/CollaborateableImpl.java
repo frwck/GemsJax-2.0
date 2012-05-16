@@ -161,5 +161,9 @@ public class CollaborateableImpl implements Collaborateable
 		this.id = id;
 	}
 
+	
+	public String toString(){
+		return super.toString()+" ID "+getId()+" VC "+vectorClock.toString();
+	}
 
 }

@@ -1,6 +1,6 @@
 package org.gemsjax.shared.collaboration.command.metamodel;
 
-import org.gemsjax.shared.collaboration.SemanticException;
+import org.gemsjax.shared.collaboration.ManipulationException;
 import org.gemsjax.shared.collaboration.command.CommandImpl;
 import org.gemsjax.shared.communication.serialisation.Archive;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -44,7 +44,7 @@ public class CreateMetaClassCommand extends CommandImpl{
 	
 	
 	@Override
-	public void execute() throws SemanticException {
+	public void execute() throws ManipulationException {
 		MetaClass mc  = new MetaClassImpl(metaClassId, name);
 		mc.setWidth(width);
 		mc.setHeight(height);

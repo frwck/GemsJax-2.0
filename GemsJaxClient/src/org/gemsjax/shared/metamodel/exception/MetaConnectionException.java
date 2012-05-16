@@ -1,6 +1,6 @@
 package org.gemsjax.shared.metamodel.exception;
 
-import org.gemsjax.shared.collaboration.SemanticException;
+import org.gemsjax.shared.collaboration.ManipulationException;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 
@@ -10,7 +10,7 @@ import org.gemsjax.shared.metamodel.MetaConnection;
  * @author Hannes Dorfmann
  *
  */
-public class MetaConnectionException extends SemanticException {
+public class MetaConnectionException extends ManipulationException {
 	
 	
 	private String name;

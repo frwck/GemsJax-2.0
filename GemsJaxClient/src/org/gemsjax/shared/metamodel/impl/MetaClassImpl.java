@@ -29,7 +29,7 @@ public class MetaClassImpl implements MetaClass {
 	// Drawable fields
 	
 	private double x, y,z;
-	private double width = 100, height = 200, minWidth = 30, minHeight = 30;
+	private double width = 100, height = 200, minWidth = 60, minHeight = 60;
 	
 	private String borderColor = "black";
 	

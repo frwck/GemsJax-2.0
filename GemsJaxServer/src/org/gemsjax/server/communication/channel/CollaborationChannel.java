@@ -5,7 +5,11 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.gemsjax.server.communication.channel.handler.CollaborationChannelHandler;
+import org.gemsjax.server.module.CollaborationModule;
 import org.gemsjax.server.module.OnlineUser;
+import org.gemsjax.server.persistence.dao.exception.NotFoundException;
+import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
@@ -13,6 +17,8 @@ import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.collaboration.CollaborationMessage;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableMessage;
+import org.gemsjax.shared.communication.message.collaboration.TransactionError;
+import org.gemsjax.shared.communication.message.collaboration.TransactionErrorMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
 
 public class CollaborationChannel implements InputChannel, OutputChannel {
@@ -61,9 +67,34 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 	@Override
 	public void onMessageRecieved(Message m) {
 	
-		if (m instanceof TransactionMessage)
+		if (m instanceof TransactionMessage){
+		
+			TransactionMessage mm = (TransactionMessage)m;
+			
+			try {
+				Collaborateable col = CollaborationModule.getInstance().getOrLoadCollaborateable(mm.getTransaction().getCollaborateableId());
+			
+				mm.getTransaction().setUser(user.getUser());
+				mm.getTransaction().setCollaborateable(col);
+				
+			for(Command c: mm.getTransaction().getCommands()){
+				c.setTransaction(mm.getTransaction());
+				c.setCollaborateable(col);
+			}
+			
+			
 			for(CollaborationChannelHandler h : handlers)
-				h.onTransactionReceived(((TransactionMessage) m).getTransaction(), user);
+				h.onTransactionReceived(mm.getTransaction(), user);
+			
+			} catch (NotFoundException e) {
+				e.printStackTrace();
+				try {
+					send(new TransactionErrorMessage(TransactionError.NOT_FOUND, mm.getTransaction().getId(), mm.getTransaction().getCollaborateableId()));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		}
 		
 		else
 		if (m instanceof SubscribeCollaborateableMessage)

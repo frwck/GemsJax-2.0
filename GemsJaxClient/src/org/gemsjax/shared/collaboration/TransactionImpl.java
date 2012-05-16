@@ -44,7 +44,7 @@ public class TransactionImpl implements Transaction, Serializable{
 	}
 
 	@Override
-	public void commit() throws SemanticException {
+	public void commit() throws ManipulationException {
 		
 		for (Command c: commands)
 			c.execute();
@@ -52,7 +52,7 @@ public class TransactionImpl implements Transaction, Serializable{
 	}
 
 	@Override
-	public void rollback() throws SemanticException{
+	public void rollback() throws ManipulationException{
 		for (int i = commands.size()-1; i>=0;i--)
 			commands.get(i).undo();
 	}
@@ -187,6 +187,11 @@ public class TransactionImpl implements Transaction, Serializable{
 	 */
 	public void setSequenceNumber(int sequenceNumber) {
 		this.sequenceNumber = sequenceNumber;
+	}
+	
+	
+	public String toString(){
+		return super.toString()+" "+vectorClock.toString() + " "+getId();
 	}
 	
 }
