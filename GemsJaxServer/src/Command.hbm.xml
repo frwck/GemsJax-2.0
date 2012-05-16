@@ -38,6 +38,15 @@
         <property name="oldY" column="oldY" type="double" />
     </joined-subclass>
     
+    
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand" table="CreateMetaAttributeCommand">
+        <key column="Command_id"/>
+        <property name="metaAttributeId" column="metaAttributeId" type="string" />
+        <property name="metaClassId" column="metaClassId" type="string" />
+        <property name="name" column="name" type="string" />
+        <property name="metaBaseTypeName" column="metaBaseTypeName" type="string" />
+    </joined-subclass>
+    
          
 </class>
 

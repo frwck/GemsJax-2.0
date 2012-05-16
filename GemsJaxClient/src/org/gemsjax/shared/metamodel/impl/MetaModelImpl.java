@@ -17,7 +17,9 @@ import org.gemsjax.shared.metamodel.MetaModelElement;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
+import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
 import org.gemsjax.shared.model.Model;
+
 
 
 /**
@@ -188,6 +190,33 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 		
 		
 		return true;
+	}
+
+	@Override
+	public void addMetaConnection(MetaConnection connection, MetaClass owner) throws MetaConnectionException {
+		
+		for (MetaClass c: metaClasses)
+			for (MetaConnection con : c.getConnections())
+				if (con.getName().equals(connection.getName()))
+					throw new MetaConnectionException(c, con.getName());
+		
+		
+		if (connection.getSource()!=owner)
+			throw new MetaConnectionException("The owner ist not the same as the specified owner in the connection");
+		
+		
+		owner.addConnection(connection);
+		idMap.put(connection.getID(), connection);
+		
+	}
+
+	@Override
+	public void removeMetaConnection(MetaConnection connection)
+			throws MetaConnectionException {
+	
+		connection.getSource().removeConnection(connection);
+		idMap.remove(connection.getID());
+		
 	}
 
 	

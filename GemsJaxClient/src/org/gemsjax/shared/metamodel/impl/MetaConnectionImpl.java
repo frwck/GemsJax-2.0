@@ -1,10 +1,13 @@
 package org.gemsjax.shared.metamodel.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.Point;
+import org.gemsjax.shared.collaboration.CollaborateableElementPropertiesListener;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
@@ -199,6 +202,7 @@ public class MetaConnectionImpl implements MetaConnection {
 	private double attributeToAttributeSpace = 3;
 	
 	
+	private Set<CollaborateableElementPropertiesListener> listeners;
 	
 	
 	public MetaConnectionImpl(String id, String name, MetaClass source, MetaClass target)
@@ -210,13 +214,16 @@ public class MetaConnectionImpl implements MetaConnection {
 
 		this.attributes = new ArrayList<MetaAttribute>();
 		
-		
+		listeners = new LinkedHashSet<CollaborateableElementPropertiesListener>();
 	}
 
 
 	@Override
 	public void setTarget(MetaClass target) {
 		this.target = target;
+		
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 	}
 
 	@Override
@@ -503,6 +510,9 @@ public class MetaConnectionImpl implements MetaConnection {
 	@Override
 	public void setSourceIconURL(String url) {
 		this.sourceIconUrl = url;
+		
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 	}
 
 
@@ -531,6 +541,9 @@ public class MetaConnectionImpl implements MetaConnection {
 	@Override
 	public void setTargetIconURL(String url) {
 		this.targetIconUrl = url;
+		
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 	}
 
 
@@ -575,6 +588,9 @@ public class MetaConnectionImpl implements MetaConnection {
 	@Override
 	public void setSource(MetaClass source) {
 		this.source = source;
+		
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 	}
 
 
@@ -586,6 +602,9 @@ public class MetaConnectionImpl implements MetaConnection {
 				throw new MetaAttributeException(name, this);
 		
 		attributes.add(attribute);
+		
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 		
 	}
 
@@ -599,6 +618,9 @@ public class MetaConnectionImpl implements MetaConnection {
 	@Override
 	public void removeAttribute(MetaAttribute attribute) {
 		attributes.remove(attribute);
+		
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 	}
 
 
@@ -800,6 +822,19 @@ public class MetaConnectionImpl implements MetaConnection {
 	@Override
 	public void setConnectionBoxMinWidth(double width) {
 		connectionMinWidth = width;
+	}
+
+
+	@Override
+	public void addPropertiesListener(CollaborateableElementPropertiesListener l) {
+		listeners.add(l);
+	}
+
+
+	@Override
+	public void removePropertiesListener(
+			CollaborateableElementPropertiesListener l) {
+		listeners.remove(l);
 	}
 
 	

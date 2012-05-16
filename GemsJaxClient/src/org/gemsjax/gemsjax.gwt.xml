@@ -24,6 +24,11 @@
 	<!-- Development tool -->
 	<inherits name="com.smartgwt.tools.SmartGwtTools" />
 	
+	
+	<inherits name="gwtupload.GWTUpload"/>
+  	<!-- Load dinamically predefined styles in the library when the application starts -->
+  	<stylesheet src="Upload.css"/>
+	
 	<!-- Smart GWT Design -->
 	<!--  <inherits name="com.smartclient.theme.silverwave.SilverWave"/> -->
 

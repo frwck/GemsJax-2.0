@@ -8,6 +8,7 @@ import java.util.List;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.view.MetaModelView;
+import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationListener.MetaAttributeManipulationEvent.ManipulationType;
 import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.DockableAnchor;
 import org.gemsjax.client.canvas.Drawable;
@@ -42,24 +43,14 @@ import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.UUID;
-import org.gemsjax.shared.collaboration.TransactionImpl;
+import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
-import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
-import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
-import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
-import org.gemsjax.shared.metamodel.exception.MetaClassException;
-import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
-import org.gemsjax.shared.metamodel.impl.MetaAttributeImpl;
-import org.gemsjax.shared.metamodel.impl.MetaBaseTypeImpl;
-import org.gemsjax.shared.metamodel.impl.MetaClassImpl;
-import org.gemsjax.shared.metamodel.impl.MetaConnectionImpl;
-import org.gemsjax.shared.metamodel.impl.MetaFactory;
 
 import com.google.gwt.event.shared.EventBus;
 import com.smartgwt.client.util.SC;
@@ -71,7 +62,8 @@ import com.smartgwt.client.widgets.tab.Tab;
  *
  */
 public class MetaModelPresenter extends CollaborationPresenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler, PlaceHandler, 
-																CollaborationModuleHandler, CreateMetaClassHandler{
+																CollaborationModuleHandler, CreateMetaClassHandler,
+																MetaModelView.MetaAttributeManipulationListener{
 	
 	private MetaModel metaModel;
 	private MetaModelView view;
@@ -137,6 +129,8 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			}
 		});
 		
+
+		view.addMetaAttributeManipulationListener(this);
 		view.addCreateMetaClassHandler(this);
 	}
 	
@@ -753,6 +747,21 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+	}
+
+
+	@Override
+	public void onMetaAttributeManipulated(MetaAttributeManipulationEvent event) {
+		try {
+			
+			if (event.getType()==ManipulationType.NEW){
+				CreateMetaAttributeCommand c = new CreateMetaAttributeCommand(UUID.generate(), event.getMetaClass().getID(), UUID.generate(), event.getName(), event.getBaseType());
+				module.sendAndCommitTransaction(c);
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 

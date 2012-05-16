@@ -9,7 +9,9 @@ import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.exception.MetaClassException;
+import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
 import org.gemsjax.shared.model.Model;
+
 
 
 /**
@@ -93,5 +95,9 @@ public interface MetaModel  extends Collaborateable {
 	public Set<Model> getModels();
 	
 	public boolean isClassRelationNameAvailable(String name);
+	
+	public void addMetaConnection(MetaConnection connection, MetaClass owner) throws MetaConnectionException;
+	public void removeMetaConnection(MetaConnection connection) throws MetaConnectionException;
+	
 	
 }

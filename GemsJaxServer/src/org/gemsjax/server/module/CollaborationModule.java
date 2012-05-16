@@ -235,6 +235,9 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	
 	public void unSubscribeAllOf(OnlineUser user){
 		
+		if (user == null) // It seems that this happens from time to time
+			return;
+		
 		if (user.getUser().getCollaborateables()!=null)
 		for (Collaborateable c : user.getUser().getCollaborateables())
 		{

@@ -1,10 +1,14 @@
 package org.gemsjax.shared.metamodel.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.gemsjax.shared.collaboration.CollaborateableElementPropertiesListener;
 import org.gemsjax.shared.metamodel.MetaAttribute;
-import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaContainmentRelation;
@@ -162,9 +166,27 @@ public class MetaClassImpl implements MetaClass {
 	private List<MetaInheritance> inheritances;
 	
 	private List<MetaContainmentRelation> containments;
+	
+	
+	
+	private Set<CollaborateableElementPropertiesListener> listeners;
+	
+	private Map<String, MetaAttribute> attributeMap;
+	
+	public MetaClassImpl(){
+		 // Lists
+		 attributes = new ArrayList<MetaAttribute>();
+		 inheritances = new ArrayList<MetaInheritance>();
+		 connections = new ArrayList<MetaConnection>();
+		 containments = new ArrayList<MetaContainmentRelation>();
+		 attributeMap = new ConcurrentHashMap<String, MetaAttribute>();
+		 listeners = new LinkedHashSet<CollaborateableElementPropertiesListener>();
+	}
+	
 
 	public MetaClassImpl(String id, String name, double x, double y)
 	{
+		
 		this(id,x,y);
 		this.name = name;
 	}
@@ -177,18 +199,12 @@ public class MetaClassImpl implements MetaClass {
 	}
 		
 	public MetaClassImpl(String id, double x, double y) {
-		 
+		this();
 		this.id = id;
 		this.x = x;
 		this.y = y;
 		 
 		 selected = false;
-		 
-		 // Lists
-		 attributes = new ArrayList<MetaAttribute>();
-		 inheritances = new ArrayList<MetaInheritance>();
-		 connections = new ArrayList<MetaConnection>();
-		 containments = new ArrayList<MetaContainmentRelation>();
 		 
 	}
 
@@ -216,6 +232,9 @@ public class MetaClassImpl implements MetaClass {
 	@Override
 	public void setZIndex(double z) {
 		this.z=z;
+		
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 	}
 
 	
@@ -300,6 +319,8 @@ public class MetaClassImpl implements MetaClass {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 	}
 
 
@@ -310,6 +331,10 @@ public class MetaClassImpl implements MetaClass {
 	@Override
 	public void setAbstract(boolean isAbstract) {
 		this.isAbstract = isAbstract;
+		
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
+
 	}
 
 	
@@ -322,12 +347,21 @@ public class MetaClassImpl implements MetaClass {
 				throw new MetaAttributeException(name, this);
 		
 		attributes.add(attribute);
+		attributeMap.put(attribute.getID(), attribute);
+		
+		
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 	}
 	
 	@Override
 	public void removeAttribute(MetaAttribute attribute)
 	{
 		attributes.remove(attribute);
+		attributeMap.remove(attribute.getID());
+		
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 	}
 
 	@Override
@@ -560,6 +594,10 @@ public class MetaClassImpl implements MetaClass {
 	}
 
 
+	
+	/**
+	 * Do not use this directly. Call MetaModel.addConnection() to add a connection
+	 */
 	@Override
 	public void addConnection(MetaConnection connection) throws MetaConnectionException {
 		
@@ -568,6 +606,7 @@ public class MetaClassImpl implements MetaClass {
 				throw new MetaConnectionException(this,name);
 		
 		connections.add(connection);
+		
 			
 	}
 
@@ -642,6 +681,8 @@ public class MetaClassImpl implements MetaClass {
 	@Override
 	public void setIconURL(String url) {
 		iconURL = url;
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
 	}
 
 
@@ -706,6 +747,36 @@ public class MetaClassImpl implements MetaClass {
 		
 		this.setHeight(height); 
 		
+	}
+
+
+	@Override
+	public void addPropertiesListener(CollaborateableElementPropertiesListener l) {
+		listeners.add(l);
+	}
+
+
+	@Override
+	public void removePropertiesListener(
+			CollaborateableElementPropertiesListener l) {
+		listeners.remove(l);
+	}
+
+
+	@Override
+	public boolean isAttributeNameAvailable(String name) {
+		for(MetaAttribute a : attributes)
+			if (a.getName().equals(name) )
+				return false;
+		
+		return true;
+	}
+
+
+	@Override
+	public MetaAttribute getAttributeById(String id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

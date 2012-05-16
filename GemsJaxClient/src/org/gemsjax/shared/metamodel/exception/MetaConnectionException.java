@@ -16,6 +16,10 @@ public class MetaConnectionException extends ManipulationException {
 	private String name;
 	private MetaClass metaClass;
 	
+	public MetaConnectionException(String msg){
+		super(msg);
+	}
+	
 	public MetaConnectionException( MetaClass metaClass, String name)
 	{
 		this.name = name;

@@ -3,6 +3,7 @@ package org.gemsjax.shared.metamodel;
 import java.util.List;
 
 import org.gemsjax.shared.AnchorPoint;
+import org.gemsjax.shared.collaboration.CollaborateableElementPropertiesListener;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 
 
@@ -511,6 +512,9 @@ public interface MetaConnection extends MetaModelElement{
 	public void setConnectionBoxMinWidth(double width);
 	public void setConnectionBoxMinHeight(double height);
 	
+	
+	public void addPropertiesListener(CollaborateableElementPropertiesListener l);
+	public void removePropertiesListener(CollaborateableElementPropertiesListener l);
 	
 	
 }

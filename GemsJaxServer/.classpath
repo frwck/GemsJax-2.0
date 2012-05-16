@@ -51,6 +51,9 @@
 	<classpathentry kind="lib" path="lib/testing/httpcomponents/httpmime-4.1.2.jar"/>
 	<classpathentry kind="lib" path="lib/testing/WebSocket.jar"/>
 	<classpathentry kind="lib" path="lib/commons-fileupload-1.2.2.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/gwtupload-0.6.4.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

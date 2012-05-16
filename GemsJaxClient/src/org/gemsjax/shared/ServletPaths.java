@@ -27,6 +27,9 @@ public class ServletPaths {
 	public static final String SEARCH = "/servlets/search";
 	
 	
+	public static final String ICON_UPLOAD ="/servlets/icon-upload";
+	
+	
 	
 	
 	private ServletPaths(){}

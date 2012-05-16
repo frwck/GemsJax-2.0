@@ -11,6 +11,7 @@ import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
 import org.gemsjax.client.canvas.handler.metamodel.CreateMetaClassHandler;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
+import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
@@ -20,6 +21,68 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 
 
 public interface MetaModelView extends CollaborateableView{
+	
+	
+	public interface MetaAttributeManipulationListener{
+		
+		public void onMetaAttributeManipulated(MetaAttributeManipulationEvent event);
+		
+		public class MetaAttributeManipulationEvent{
+			public enum ManipulationType{
+				NEW,
+				MODIFY,
+				DELETE
+			}
+			
+			private ManipulationType type;
+			private MetaAttribute attribute;
+			private String name;
+			private MetaBaseType baseType;
+			private MetaClass metaClass;
+			
+			public MetaAttributeManipulationEvent(ManipulationType type, MetaClass metaClass){
+				this.type = type;
+				this.metaClass = metaClass;
+			}
+			
+			public MetaClass getMetaClass(){
+				return metaClass;
+			}
+
+			public MetaAttribute getAttribute() {
+				return attribute;
+			}
+
+			public void setAttribute(MetaAttribute attribute) {
+				this.attribute = attribute;
+			}
+
+			public String getName() {
+				return name;
+			}
+
+			public void setName(String name) {
+				this.name = name;
+			}
+
+			public MetaBaseType getBaseType() {
+				return baseType;
+			}
+
+			public void setBaseType(MetaBaseType baseType) {
+				this.baseType = baseType;
+			}
+
+			public ManipulationType getType() {
+				return type;
+			}
+			
+		}
+		
+		
+		
+	}
+	
 	
 	/**
 	 * Get the toolbar button for creating a new meta-class
@@ -117,6 +180,7 @@ public interface MetaModelView extends CollaborateableView{
 	public void removeCreateMetaClassHandler(CreateMetaClassHandler h);
 	
 	
-	
+	public void addMetaAttributeManipulationListener(MetaAttributeManipulationListener l);
+	public void removeMetaAttributeManipulationListener(MetaAttributeManipulationListener l);
 	
 }

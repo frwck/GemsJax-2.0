@@ -1,6 +1,7 @@
 package org.gemsjax.shared.metamodel;
 
 import org.gemsjax.shared.Constants;
+import org.gemsjax.shared.collaboration.CollaborateableElementPropertiesListener;
 
 /**
  * The common interface for a meta model containment relation implementation on client and server side.
@@ -51,5 +52,9 @@ public interface MetaContainmentRelation extends MetaModelElement{
 	 * @return
 	 */
 	public MetaClass getContainedBy();
+	
+	
+	public void addPropertiesListener(CollaborateableElementPropertiesListener l);
+	public void removePropertiesListener(CollaborateableElementPropertiesListener l);
 
 }

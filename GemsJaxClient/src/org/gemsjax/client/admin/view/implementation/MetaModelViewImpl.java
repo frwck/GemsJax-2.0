@@ -1,6 +1,8 @@
 package org.gemsjax.client.admin.view.implementation;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
@@ -87,11 +89,13 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	
 	private MetaClassDetailView metaClassDetailView;
 	
+	private Set<MetaModelView.MetaAttributeManipulationListener> attributeManipulationListeners;
+	
 	
 	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException 
 	{
 		super(title, language);
-		
+		attributeManipulationListeners = new LinkedHashSet<MetaModelView.MetaAttributeManipulationListener>();
 		
 		this.language = language;
 		
@@ -312,8 +316,10 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	public void setMetaClassDetail(MetaClass metaClass) {
 		clearDetailPlaceHolder();
 		
-		if (metaClassDetailView == null)
+		if (metaClassDetailView == null){
 			metaClassDetailView = new MetaClassDetailView(metaBaseTypes);
+			metaClassDetailView.addMetaAttributeManipulationListeners(attributeManipulationListeners);
+		}
 		
 		metaClassDetailView.setMetaClass(metaClass);
 		metaDetailPlaceHolder.addMember(metaClassDetailView);
@@ -351,6 +357,26 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	@Override
 	public void showNameAlreadyInUseError(String name) {
 			NotificationManager.getInstance().showTipNotification(new TipNotification("Name already in use", "The name \""+name+"\" is already user by a MetaModel-Element. Please choose a diffrent one", 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE);
+	}
+
+	@Override
+	public void addMetaAttributeManipulationListener(
+			MetaAttributeManipulationListener l) {
+		attributeManipulationListeners.add(l);
+		
+		if (metaClassDetailView!=null)
+			metaClassDetailView.addMetaAttributeManipulationListener(l);
+		
+	}
+
+	@Override
+	public void removeMetaAttributeManipulationListener(
+			MetaAttributeManipulationListener l) {
+		
+		attributeManipulationListeners.remove(l);
+		
+		if (metaClassDetailView!=null)
+			metaClassDetailView.removeMetaAttributeManipulationListener(l);
 	}
 	
 	

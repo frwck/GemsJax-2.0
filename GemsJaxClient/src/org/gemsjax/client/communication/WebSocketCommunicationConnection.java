@@ -11,6 +11,7 @@ import org.gemsjax.client.communication.serialisation.GwtXmlLoadingArchive;
 import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.collaboration.TransactionImpl;
+import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand;
@@ -36,6 +37,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.LinkedListIn
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.CollaboratorInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.MetaBaseTypeInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ResizeMetaClassCommandInstantiator;
@@ -161,11 +163,11 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(SubscribeCollaborateableErrorMessage.class.getName(), new SubscribeCollaborateableErrorMessageInstantiator());
 		
 		
-		// Commands
+		// MetaModel Commands
 		objectFactory.register(CreateMetaClassCommand.class.getName(), new CreateMetaClassCommandInstantiator());
 		objectFactory.register(MoveMetaClassCommand.class.getName(), new MoveMetaClassCommandInstantiator());
 		objectFactory.register(ResizeMetaClassCommand.class.getName(), new ResizeMetaClassCommandInstantiator());
-		
+		objectFactory.register(CreateMetaAttributeCommand.class.getName(), new CreateMetaAttributeCommandInstantiator());
 		
 			
 		}

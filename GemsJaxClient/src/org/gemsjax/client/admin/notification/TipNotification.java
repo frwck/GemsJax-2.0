@@ -21,6 +21,8 @@ public class TipNotification extends Notification implements ResizeHandler{
 	private static final int bottomPositionSpacer = 100;
 	
 	
+	
+	
 	public TipNotification(String title, String text, int timeToHide,  NotificationPosition position)
 	{
 		super();

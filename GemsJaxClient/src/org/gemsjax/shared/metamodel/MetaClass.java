@@ -2,6 +2,7 @@ package org.gemsjax.shared.metamodel;
 
 import java.util.List;
 
+import org.gemsjax.shared.collaboration.CollaborateableElementPropertiesListener;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
 import org.gemsjax.shared.metamodel.exception.MetaContainmentRelationException;
@@ -43,7 +44,7 @@ public interface MetaClass extends MetaModelElement{
 	 * @param connection
 	 * @throws MetaConnectionException if a MetaConnection with the same name exists.
 	 */
-	public void addConnection(MetaConnection connection)  throws MetaConnectionException;
+	void addConnection(MetaConnection connection)  throws MetaConnectionException;
 	
 	/**
 	 * Add a {@link MetaContainmentRelation} 
@@ -489,6 +490,13 @@ public interface MetaClass extends MetaModelElement{
 	 */
 	public void autoSize();
 		
+	
+	public boolean isAttributeNameAvailable(String name);
+	
+	public void addPropertiesListener(CollaborateableElementPropertiesListener l);
+	public void removePropertiesListener(CollaborateableElementPropertiesListener l);
+	
+	public MetaAttribute getAttributeById(String id);
 	
 	
 }

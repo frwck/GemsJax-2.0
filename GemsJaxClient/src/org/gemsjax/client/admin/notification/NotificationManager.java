@@ -130,6 +130,11 @@ public class NotificationManager implements NotificationHandler{
 	}
 	
 	
+	public void showTipNotification(TipNotification notification){
+		showTipNotification(notification, AnimationEffect.FADE);
+	}
+	
+	
 	public void showShortInfoNotification(ShortInfoNotification notification){
 		
 		notification.addNotificationHandler(this);

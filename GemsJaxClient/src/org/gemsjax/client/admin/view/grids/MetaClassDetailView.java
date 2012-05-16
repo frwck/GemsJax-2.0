@@ -1,22 +1,38 @@
 package org.gemsjax.client.admin.view.grids;
 
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.gemsjax.client.admin.notification.Notification.NotificationPosition;
+import org.gemsjax.client.admin.notification.NotificationManager;
+import org.gemsjax.client.admin.notification.TipNotification;
+import org.gemsjax.client.admin.view.MetaModelView;
+import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationListener;
+import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationListener.MetaAttributeManipulationEvent;
+import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationListener.MetaAttributeManipulationEvent.ManipulationType;
 import org.gemsjax.client.admin.widgets.ModalDialog;
 import org.gemsjax.client.admin.widgets.OptionButton;
 import org.gemsjax.client.admin.widgets.Title;
+import org.gemsjax.client.admin.widgets.UploadDiaolog;
+import org.gemsjax.shared.FieldVerifier;
+import org.gemsjax.shared.collaboration.CollaborateableElementPropertiesListener;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Label;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.widgets.Button;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -133,24 +149,146 @@ class AddMetaAttributeDialog extends ModalDialog{
 
 
 
-public class MetaClassDetailView extends VLayout implements ClickHandler{
+
+
+
+
+
+
+
+
+
+class MetaClassPropertiesGrid extends VStack implements ClickHandler, CollaborateableElementPropertiesListener{
+	
+	private TextItem nameField;
+	private Button iconButton;
+	private CheckboxItem abstractCheckBox;
+	private int cretedItems = 0;
+	private MetaClass metaClass;
+//	private Set<MetaModelView> handlers;
+	
+	public MetaClassPropertiesGrid(){
+		
+		setWidth100();
+		this.setMembersMargin(0);
+		
+		DynamicForm nameForm = new DynamicForm();
+		nameField = new TextItem();
+		nameField.setWidth("100%");
+		nameField.setHeight("100%");
+		nameField.setShowTitle(false);
+		nameForm.setFields(nameField);
+		
+		
+		DynamicForm abstractForm = new DynamicForm();
+		abstractCheckBox = new CheckboxItem();
+		abstractCheckBox.setWidth("100%");
+		abstractCheckBox.setHeight("100%");
+		abstractCheckBox.setTitle("");
+		abstractCheckBox.setName("");
+		abstractCheckBox.setShowTitle(false);
+		abstractForm.setFields(abstractCheckBox);
+		
+		iconButton = new Button("Set icon");
+		iconButton.addClickHandler(this);
+		
+		
+		
+		this.addMember(createItem("Name:", nameForm));
+		this.addMember(createItem("Abstract:", abstractForm));
+		this.addMember(createItem("Icon:", iconButton));
+		
+	}
+	
+	
+	private HLayout createItem(String name, Canvas component){
+		
+		Label l = new Label(name);
+		l.setWidth("40%");
+		l.setHeight("25px");
+		l.setStyleName("DetailGridLabel");
+		
+		
+		
+		HLayout layout = new HLayout();
+		layout.setWidth100();
+		layout.setHeight(25);
+		layout.setMembersMargin(0);
+		
+		component.setWidth("60%");
+		component.setHeight(25);
+		layout.setBackgroundColor(cretedItems%2==0?"#f1f1f1":"#f8f8f8");
+		layout.addMember(l);
+		layout.addMember(component);
+		cretedItems++;
+		return layout;
+		
+	}
+
+
+	@Override
+	public void onClick(ClickEvent event) {
+		UploadDiaolog ud = new UploadDiaolog("Upload icon", new UploadDiaolog.SuccessfulHandler() {
+			
+			@Override
+			public void onUploadSuccessful(String pathToUploadedFile) {
+				Window.alert(pathToUploadedFile);
+			}
+		});
+		
+		ud.show();
+		
+	}
+	
+	
+	public void setMetaModel(MetaClass mc){
+		if (this.metaClass!=null)
+			metaClass.removePropertiesListener(this);
+		
+		this.metaClass = mc;
+		this.metaClass.addPropertiesListener(this);
+		
+		onChanged();
+	}
+
+
+	@Override
+	public void onChanged() {
+		nameField.setValue(metaClass.getName());
+		abstractCheckBox.setValue(metaClass.isAbstract());	
+	}
+	
+	
+}
+
+
+
+
+
+public class MetaClassDetailView extends VLayout implements ClickHandler, CollaborateableElementPropertiesListener{
 	
 	private MetaClass metaClass;
 	private ListGrid attributesGrid;
-	private ListGrid properiesGrid;
+	private MetaClassPropertiesGrid propertiesGrid;
 	private Button addAttributeButton;
 	private AddMetaAttributeDialog addDialog;
 	private List<MetaBaseType> metaBaseTypes; 
+	
+	private Set<MetaModelView.MetaAttributeManipulationListener> attributeModifyListeners;
 	
 	public MetaClassDetailView(List<MetaBaseType> types ){
 		this.metaBaseTypes = types;
 		this.setWidth100();
 		this.setHeight100();
+		attributeModifyListeners = new LinkedHashSet<MetaModelView.MetaAttributeManipulationListener>();
 	
 		
 		SectionStack stack  = new SectionStack();
 		stack.setWidth100();
 		stack.setHeight("*");
+		
+		propertiesGrid = new MetaClassPropertiesGrid();
+		
 		
 		SectionStackSection properties = new SectionStackSection("Properies");
 		
@@ -183,12 +321,6 @@ public class MetaClassDetailView extends VLayout implements ClickHandler{
 		});
 		
 		
-//		properties.addItem(properiesGrid);
-		attributes.addItem(attributesGrid);
-		stack.addSection(properties);
-		stack.addSection(attributes);
-		
-		
 		
 		addAttributeButton = new Button("Add Attribute");
 		addAttributeButton.addClickHandler(this);
@@ -196,15 +328,32 @@ public class MetaClassDetailView extends VLayout implements ClickHandler{
 		addAttributeButton.setHeight(25);
 		
 		
+		properties.addItem(propertiesGrid);
+		attributes.addItem(attributesGrid);
+		attributes.addItem(addAttributeButton);
+		stack.addSection(properties);
+		stack.addSection(attributes);
+	
 		this.addMember(stack);
-		this.addMember(addAttributeButton);
-		
 		
 	}
 	
 	
+	public void addMetaAttributeManipulationListeners(Set<MetaAttributeManipulationListener> listeners){
+		attributeModifyListeners.addAll(listeners);
+	}
+	
+	public void addMetaAttributeManipulationListener(MetaModelView.MetaAttributeManipulationListener l){
+		attributeModifyListeners.add(l);
+	}
+	
+	public void removeMetaAttributeManipulationListener(MetaModelView.MetaAttributeManipulationListener l){
+		attributeModifyListeners.remove(l);
+	}
+	
+	
 	private void onAttributeEdited(EditCompleteEvent event){
-		
+		Window.alert("Edited");
 	}
 	
 	
@@ -214,32 +363,87 @@ public class MetaClassDetailView extends VLayout implements ClickHandler{
 	
 	
 	public void setMetaClass(MetaClass m){
+		if (metaClass!=null)
+			metaClass.removePropertiesListener(this);
+		
 		this.metaClass = m;
-		// TODO properties
+		this.metaClass.addPropertiesListener(this);
+		propertiesGrid.setMetaModel(m);
 		
-		
-		// Attributes
-		AttributeRecord attributes[] = new AttributeRecord[m.getAttributes().size()];
-		for (int i =0; i<m.getAttributes().size(); i++){
-			MetaAttribute a = m.getAttributes().get(i);
-			attributes[i]=new AttributeRecord(a);
-		}
-		attributesGrid.setRecords(attributes);
+		onChanged();
 	}
 
 
+	private void fireAttributeModifiedEvent(MetaModelView.MetaAttributeManipulationListener.MetaAttributeManipulationEvent e)
+	{
+		for (MetaModelView.MetaAttributeManipulationListener l : attributeModifyListeners)
+			l.onMetaAttributeManipulated(e);
+	}
+	
+	
 
 	@Override
 	public void onClick(ClickEvent event) {
 		if (event.getSource() == addAttributeButton){
 			this.addDialog = new AddMetaAttributeDialog(metaBaseTypes);
+			this.addDialog.getSaveButton().addClickHandler(this);
 			addDialog.animateShow(AnimationEffect.FADE);
 		}
 		else
 		if (addDialog!=null && addDialog.getSaveButton() == event.getSource()){
-			// Add a new 
+			if(FieldVerifier.isNotEmpty(addDialog.getName()) && FieldVerifier.isNotEmpty(addDialog.getType())){
+				
+				MetaBaseType type = stringToMetaBaseType(addDialog.getType());
+				
+				if (type==null)
+				{
+					NotificationManager.getInstance().showTipNotification(new TipNotification("MetaBaseType was null", null, 2000, NotificationPosition.CENTER));
+					return;
+				}
+				
+				if (!metaClass.isAttributeNameAvailable(addDialog.getName()))
+				{
+					NotificationManager.getInstance().showTipNotification(new TipNotification("Attribute with this name already exists", null, 2000, NotificationPosition.CENTER));
+					return;
+				}
+				
+				
+				MetaAttributeManipulationEvent e = new MetaAttributeManipulationEvent(ManipulationType.NEW, metaClass);
+				e.setBaseType(type);
+				e.setName(addDialog.getName());
+				
+				addDialog.destroy();
+				fireAttributeModifiedEvent(e);
+				
+			}
+			else
+				NotificationManager.getInstance().showTipNotification(new TipNotification("No valid name set", null, 2000, NotificationPosition.CENTER));
 		}
 		
 	}
+	
+	
+	private MetaBaseType stringToMetaBaseType(String name){
+		for (MetaBaseType type : metaBaseTypes)
+			if(type.getName().equals(name))
+				return type;
+		
+		return null;
+	}
+
+
+	@Override
+	public void onChanged() {
+		// Attributes
+		AttributeRecord attributes[] = new AttributeRecord[metaClass.getAttributes().size()];
+		for (int i =0; i<metaClass.getAttributes().size(); i++){
+			MetaAttribute a = metaClass.getAttributes().get(i);
+			attributes[i]=new AttributeRecord(a);
+		}
+		attributesGrid.setRecords(attributes);
+		
+	}
+	
+	
 	
 }

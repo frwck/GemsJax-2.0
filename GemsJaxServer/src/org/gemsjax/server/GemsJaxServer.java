@@ -8,9 +8,11 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.gemsjax.server.communication.servlet.FileServlet;
+import org.gemsjax.server.communication.servlet.IconServlet;
 import org.gemsjax.server.communication.servlet.LiveCommunicationWebSocketServlet;
 import org.gemsjax.server.communication.servlet.post.RegistrationServlet;
 import org.gemsjax.server.communication.servlet.post.SearchServlet;
+import org.gemsjax.shared.ServletPaths;
 
 
 
@@ -58,6 +60,7 @@ public class GemsJaxServer {
 	        servletContext.addServlet(new ServletHolder( new LiveCommunicationWebSocketServlet()),"/servlets/liveCommunication");
 	        servletContext.addServlet(new ServletHolder( new RegistrationServlet()),"/servlets/registration");
 	        servletContext.addServlet(new ServletHolder( new SearchServlet()),"/servlets/search");
+	        servletContext.addServlet(new ServletHolder( new IconServlet(warUrl+"/icons/")), ServletPaths.ICON_UPLOAD);
 	        
 
 
