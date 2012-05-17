@@ -66,6 +66,12 @@
         <property name="originalAttribueTypeName" column="originalAttribueTypeName" type="string" />
      </joined-subclass>
     
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.RenameMetaClassCommand" table="RenameMetaClassCommand">
+        <key column="Command_id"/>
+        <property name="metaClassId" column="metaClassId" type="string" />
+        <property name="newName" column="newName" type="string" />
+        <property name="oldName" column="oldName" type="string" />
+     </joined-subclass>
          
 </class>
 

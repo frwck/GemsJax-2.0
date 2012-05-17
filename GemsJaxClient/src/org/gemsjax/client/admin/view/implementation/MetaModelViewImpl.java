@@ -35,6 +35,7 @@ import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.layout.VLayout;
+import com.smartgwt.client.widgets.tab.events.CloseClickHandler;
 
 
 
@@ -90,12 +91,14 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	private MetaClassDetailView metaClassDetailView;
 	
 	private Set<MetaModelView.MetaAttributeManipulationListener> attributeManipulationListeners;
+	private Set<MetaClassPropertiesListener> classPropertiesListeners;
 	
 	
 	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException 
 	{
 		super(title, language);
 		attributeManipulationListeners = new LinkedHashSet<MetaModelView.MetaAttributeManipulationListener>();
+		classPropertiesListeners = new LinkedHashSet<MetaModelView.MetaClassPropertiesListener>();
 		
 		this.language = language;
 		
@@ -319,6 +322,10 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		if (metaClassDetailView == null){
 			metaClassDetailView = new MetaClassDetailView(metaBaseTypes);
 			metaClassDetailView.addMetaAttributeManipulationListeners(attributeManipulationListeners);
+			
+			for (MetaClassPropertiesListener l : classPropertiesListeners )
+				metaClassDetailView.addMetaClassPropertiesListener(l);
+			
 		}
 		
 		metaClassDetailView.setMetaClass(metaClass);
@@ -377,6 +384,38 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		
 		if (metaClassDetailView!=null)
 			metaClassDetailView.removeMetaAttributeManipulationListener(l);
+	}
+
+	@Override
+	public void addMetaClassPropertiesListener(MetaClassPropertiesListener l) {
+		classPropertiesListeners.add(l);
+		if (metaClassDetailView!=null)
+			metaClassDetailView.addMetaClassPropertiesListener(l);
+		
+	}
+
+	@Override
+	public void removeMetaClassPropertiesListener(MetaClassPropertiesListener l) {
+		classPropertiesListeners.remove(l);
+		if (metaClassDetailView!=null)
+			metaClassDetailView.removeMetaClassPropertiesListener(l);
+		
+	}
+
+	@Override
+	public void showSendError(Exception e) {
+		NotificationManager.getInstance().showTipNotification(new TipNotification("Connection error", "Your last interaction coud'nt be sent to the server. Please retry ", 2000, NotificationPosition.CENTER));
+	}
+
+	@Override
+	public void addCloseClickHandler(CloseClickHandler h) {
+		TabEnviroment.getInstance().addCloseClickHandler(h);
+	}
+
+	@Override
+	public void removeCloseClickHandler(CloseClickHandler h) {
+		// TODO how to implement/ which method to call?
+		
 	}
 	
 	

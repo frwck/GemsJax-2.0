@@ -18,6 +18,7 @@ import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModelElement;
 
 import com.smartgwt.client.widgets.events.HasClickHandlers;
+import com.smartgwt.client.widgets.tab.events.CloseClickHandler;
 
 
 public interface MetaModelView extends CollaborateableView{
@@ -79,8 +80,73 @@ public interface MetaModelView extends CollaborateableView{
 			
 		}
 		
+	}
+	
+	
+	public interface MetaClassPropertiesListener{
 		
+		public void onMetaClassPropertyChanged(MetaClassPropertyEvent e);
 		
+		public class MetaClassPropertyEvent{
+			
+			public enum PropertyChangedType{
+				RENAME,
+				NEW_ICON,
+				ABSTRACT
+			}
+			
+			private PropertyChangedType type;
+			private MetaClass metaClass;
+			private String name;
+			private String iconUrl;
+			private boolean _abstract;
+			
+			public MetaClassPropertyEvent(PropertyChangedType type, MetaClass metaClass){
+				this.type = type;
+				this.metaClass = metaClass;
+			}
+
+			public PropertyChangedType getType() {
+				return type;
+			}
+
+			public void setType(PropertyChangedType type) {
+				this.type = type;
+			}
+
+			public MetaClass getMetaClass() {
+				return metaClass;
+			}
+
+			public void setMetaClass(MetaClass metaClass) {
+				this.metaClass = metaClass;
+			}
+
+			public String getName() {
+				return name;
+			}
+
+			public void setName(String name) {
+				this.name = name;
+			}
+
+			public String getIconUrl() {
+				return iconUrl;
+			}
+
+			public void setIconUrl(String iconUrl) {
+				this.iconUrl = iconUrl;
+			}
+
+			public boolean isAbstract() {
+				return _abstract;
+			}
+
+			public void setAbstract(boolean _abstract) {
+				this._abstract = _abstract;
+			}
+			
+		}
 	}
 	
 	
@@ -173,6 +239,7 @@ public interface MetaModelView extends CollaborateableView{
 	
 	public void setMetaBaseTypes(List<MetaBaseType> types);
 	
+	public void showSendError(Exception e);
 	
 	public void showNameAlreadyInUseError(String name);	
 	
@@ -182,5 +249,11 @@ public interface MetaModelView extends CollaborateableView{
 	
 	public void addMetaAttributeManipulationListener(MetaAttributeManipulationListener l);
 	public void removeMetaAttributeManipulationListener(MetaAttributeManipulationListener l);
+	
+	public void addMetaClassPropertiesListener(MetaClassPropertiesListener l);
+	public void removeMetaClassPropertiesListener(MetaClassPropertiesListener l);
+	
+	public void addCloseClickHandler(CloseClickHandler h);
+	public void removeCloseClickHandler(CloseClickHandler h);
 	
 }

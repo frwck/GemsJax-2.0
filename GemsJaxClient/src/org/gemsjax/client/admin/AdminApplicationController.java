@@ -23,11 +23,13 @@ import org.gemsjax.client.admin.presenter.RegistrationPresenter;
 import org.gemsjax.client.admin.presenter.event.CreateNewMetaModelRequiredEvent;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent.CriticalErrorType;
+import org.gemsjax.client.admin.presenter.event.CollaborateableClosedEvent;
 import org.gemsjax.client.admin.presenter.event.DoNewGlobalSearchEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
 import org.gemsjax.client.admin.presenter.event.ShowAllMetaModelsRequestedEvent;
 import org.gemsjax.client.admin.presenter.event.ShowMetaModelRequiredEvent;
+import org.gemsjax.client.admin.presenter.handler.CollaboratebableClosedHandler;
 import org.gemsjax.client.admin.presenter.handler.CreateNewMetaModelRequiredHandler;
 import org.gemsjax.client.admin.presenter.handler.DoNewGlobalSearchHandler;
 import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
@@ -66,6 +68,7 @@ import org.gemsjax.client.module.FriendsModule;
 import org.gemsjax.client.module.GlobalSearchModule;
 import org.gemsjax.client.module.NotificationRequestModule;
 import org.gemsjax.client.module.RegistrationModule;
+import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.metamodel.MetaBaseType;
@@ -95,7 +98,9 @@ import com.smartgwt.client.util.SC;
  * @author Hannes Dorfmann
  *
  */
-public class AdminApplicationController  implements ShowMetaModelRequiredHandler, DoNewGlobalSearchHandler, LoginSuccessfulHandler, ShowAllMetaModelRequestedHandler, CreateNewMetaModelRequiredHandler {
+public class AdminApplicationController  implements ShowMetaModelRequiredHandler, DoNewGlobalSearchHandler, LoginSuccessfulHandler, 
+											ShowAllMetaModelRequestedHandler, CreateNewMetaModelRequiredHandler,
+											CollaboratebableClosedHandler{
 	
 	/**
 	 * Singleton instance
@@ -161,6 +166,7 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 		eventBus.addHandler(ShowAllMetaModelsRequestedEvent.TYPE, this);
 		eventBus.addHandler(CreateNewMetaModelRequiredEvent.TYPE,this);
 		eventBus.addHandler(ShowMetaModelRequiredEvent.TYPE, this);
+		eventBus.addHandler(CollaborateableClosedEvent.TYPE, this);
 	}
 
 	
@@ -416,6 +422,13 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 			}
 		}
 		
+	}
+
+
+	@Override
+	public void onCollaborateableClosed(int collaborateableId) {
+		collaborations.remove(collaborateableId);
+		Console.log("closed "+collaborateableId);
 	}
 	
 }

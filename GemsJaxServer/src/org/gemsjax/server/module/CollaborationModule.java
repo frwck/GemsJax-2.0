@@ -1,6 +1,7 @@
 package org.gemsjax.server.module;
 
 import java.io.IOException;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -225,12 +226,41 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		Set<OnlineUser> subscribers =subscriptions.get(collaboratebaleId);
 		
 		if (subscribers != null)
-			subscribers.remove(sender);
+			removeSubscriberFrom(sender, subscribers);
+		
+		User user = sender.getUser();
+		
+		CollaboratorLeftMessage m = new CollaboratorLeftMessage();
+		m.setCollaborator(new Collaborator(user.getId(), user.getDisplayedName()));
+		m.setCollaborateableId(collaboratebaleId);
+		
+		for (OnlineUser u : subscribers){
+			try {
+				u.getCollaborationChannel().send(m);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		
 		if (subscribers.isEmpty())
 			collaborateables.remove(collaboratebaleId);
 		
+	}
+	
+	private boolean removeSubscriberFrom(OnlineUser subscriber, Set<OnlineUser> subscribers){
+		
+		Set<OnlineUser> toRemove = new LinkedHashSet<OnlineUser>();
+		
+		for (OnlineUser u: subscribers)
+			if (u.getId().equals(subscriber.getId()))
+				toRemove.add(u);
+		
+		subscribers.removeAll(toRemove);
+		
+		return !toRemove.isEmpty();
+				
 	}
 	
 	
@@ -248,21 +278,22 @@ public class CollaborationModule implements CollaborationChannelHandler{
 			if(subscribers == null)
 				continue;
 			
-			subscribers.remove(user);
+			boolean removedOne = removeSubscriberFrom(user, subscribers);
 			
-			
-			CollaboratorLeftMessage m = new CollaboratorLeftMessage();
-			m.setCollaborator(new Collaborator(user.getId(), user.getUser().getDisplayedName()));
-			m.setCollaborateableId(c.getId());
-			
-			for (OnlineUser u : subscribers){
-				try {
-					u.getCollaborationChannel().send(m);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			if (removedOne){
+				CollaboratorLeftMessage m = new CollaboratorLeftMessage();
+				m.setCollaborator(new Collaborator(user.getId(), user.getUser().getDisplayedName()));
+				m.setCollaborateableId(c.getId());
+				
+				for (OnlineUser u : subscribers){
+					try {
+						u.getCollaborationChannel().send(m);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
+			} // End removedOne
 			
 			
 			

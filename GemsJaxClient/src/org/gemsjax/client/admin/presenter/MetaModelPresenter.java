@@ -7,8 +7,10 @@ import java.util.List;
 
 import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
+import org.gemsjax.client.admin.presenter.event.CollaborateableClosedEvent;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationListener.MetaAttributeManipulationEvent.ManipulationType;
+import org.gemsjax.client.admin.view.MetaModelView.MetaClassPropertiesListener.MetaClassPropertyEvent.PropertyChangedType;
 import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.DockableAnchor;
 import org.gemsjax.client.canvas.Drawable;
@@ -48,6 +50,7 @@ import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand
 import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaClassCommand;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
@@ -57,6 +60,8 @@ import org.gemsjax.shared.metamodel.MetaModel;
 import com.google.gwt.event.shared.EventBus;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.tab.Tab;
+import com.smartgwt.client.widgets.tab.events.CloseClickHandler;
+import com.smartgwt.client.widgets.tab.events.TabCloseClickEvent;
 
 /**
  * The Presenter that manages the MetaModelView and the MetaModel.
@@ -65,7 +70,9 @@ import com.smartgwt.client.widgets.tab.Tab;
  */
 public class MetaModelPresenter extends CollaborationPresenter implements ClickHandler,FocusHandler, ResizeHandler, MoveHandler, MouseOverHandler, MouseOutHandler, IconLoadHandler, PlaceHandler, 
 																CollaborationModuleHandler, CreateMetaClassHandler,
-																MetaModelView.MetaAttributeManipulationListener{
+																MetaModelView.MetaAttributeManipulationListener,
+																MetaModelView.MetaClassPropertiesListener,
+																CloseClickHandler{
 	
 	private MetaModel metaModel;
 	private MetaModelView view;
@@ -131,9 +138,11 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			}
 		});
 		
-
+		view.addMetaClassPropertiesListener(this);
 		view.addMetaAttributeManipulationListener(this);
 		view.addCreateMetaClassHandler(this);
+		
+		view.addCloseClickHandler(this);
 	}
 	
 	
@@ -773,9 +782,41 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			
 			
 		} catch (IOException ex) {
-			// TODO Auto-generated catch block
+			view.showSendError(ex);
 			ex.printStackTrace();
 		}
+	}
+
+
+	@Override
+	public void onMetaClassPropertyChanged(MetaClassPropertyEvent e) {
+		try {
+			if (e.getType() == PropertyChangedType.RENAME){
+				RenameMetaClassCommand c = new RenameMetaClassCommand(UUID.generate(), e.getMetaClass(), e.getName());
+				module.sendAndCommitTransaction(c);
+			}
+			
+		} catch (IOException e1) {
+			view.showSendError(e1);
+			e1.printStackTrace();
+		}
+		
+	}
+
+
+	@Override
+	public void onCloseClick(TabCloseClickEvent event) {
+		
+		try {
+			module.unsubscribe();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// TODO memory cleanup
+		eventBus.fireEvent(new CollaborateableClosedEvent(metaModel.getId()));
+		
 	}
 	
 

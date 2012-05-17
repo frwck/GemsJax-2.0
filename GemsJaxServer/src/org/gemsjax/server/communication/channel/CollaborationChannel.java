@@ -20,6 +20,7 @@ import org.gemsjax.shared.communication.message.collaboration.SubscribeCollabora
 import org.gemsjax.shared.communication.message.collaboration.TransactionError;
 import org.gemsjax.shared.communication.message.collaboration.TransactionErrorMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
+import org.gemsjax.shared.communication.message.collaboration.UnsubscribeCollaborateableMessage;
 
 public class CollaborationChannel implements InputChannel, OutputChannel {
 
@@ -102,10 +103,9 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 				h.onSubscribe(((SubscribeCollaborateableMessage) m).getCollaborateableId(), ((SubscribeCollaborateableMessage) m).getReferenceId(), user);
 		
 		else
-		if (m instanceof SubscribeCollaborateableMessage)
+		if (m instanceof UnsubscribeCollaborateableMessage)
 			for(CollaborationChannelHandler h : handlers)
-				h.onSubscribe(((SubscribeCollaborateableMessage) m).getCollaborateableId(), ((SubscribeCollaborateableMessage) m).getReferenceId(), user);
-	
+				h.onUnsubscribe(((UnsubscribeCollaborateableMessage) m).getCollaborateableId(), ((UnsubscribeCollaborateableMessage) m).getReferenceId(), user);
 		
 	}
 	

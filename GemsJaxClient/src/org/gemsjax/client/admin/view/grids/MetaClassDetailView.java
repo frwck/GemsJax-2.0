@@ -12,10 +12,14 @@ import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationListener;
 import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationListener.MetaAttributeManipulationEvent;
 import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationListener.MetaAttributeManipulationEvent.ManipulationType;
+import org.gemsjax.client.admin.view.MetaModelView.MetaClassPropertiesListener;
+import org.gemsjax.client.admin.view.MetaModelView.MetaClassPropertiesListener.MetaClassPropertyEvent;
+import org.gemsjax.client.admin.view.MetaModelView.MetaClassPropertiesListener.MetaClassPropertyEvent.PropertyChangedType;
 import org.gemsjax.client.admin.widgets.ModalDialog;
 import org.gemsjax.client.admin.widgets.OptionButton;
 import org.gemsjax.client.admin.widgets.Title;
 import org.gemsjax.client.admin.widgets.UploadDiaolog;
+import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.collaboration.CollaborateableElementPropertiesListener;
 import org.gemsjax.shared.metamodel.MetaAttribute;
@@ -37,6 +41,10 @@ import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
+import com.smartgwt.client.widgets.form.fields.events.KeyUpEvent;
+import com.smartgwt.client.widgets.form.fields.events.KeyUpHandler;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
@@ -199,10 +207,11 @@ class MetaClassPropertiesGrid extends VStack implements ClickHandler, Collaborat
 	private CheckboxItem abstractCheckBox;
 	private int cretedItems = 0;
 	private MetaClass metaClass;
-//	private Set<MetaModelView> handlers;
+	private MetaClassDetailView parent;
 	
-	public MetaClassPropertiesGrid(){
+	public MetaClassPropertiesGrid(MetaClassDetailView p){
 		
+		this.parent = p;
 		setWidth100();
 		this.setMembersMargin(0);
 		
@@ -211,6 +220,22 @@ class MetaClassPropertiesGrid extends VStack implements ClickHandler, Collaborat
 		nameField.setWidth("100%");
 		nameField.setHeight("100%");
 		nameField.setShowTitle(false);
+		nameField.addKeyUpHandler(new KeyUpHandler() {
+			
+			@Override
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getKeyName().equals("Enter") && !metaClass.getName().equals(nameField.getValue())){
+					
+					MetaClassPropertyEvent e = new MetaClassPropertyEvent(PropertyChangedType.RENAME, metaClass);
+					e.setName(nameField.getValueAsString());
+					
+					parent.fireClassPropertyChanged(e);
+					
+				}
+					
+			}
+		});
+		
 		nameForm.setFields(nameField);
 		
 		
@@ -221,6 +246,22 @@ class MetaClassPropertiesGrid extends VStack implements ClickHandler, Collaborat
 		abstractCheckBox.setTitle("");
 		abstractCheckBox.setName("");
 		abstractCheckBox.setShowTitle(false);
+		abstractCheckBox.addChangedHandler(new ChangedHandler() {
+			
+			@Override
+			public void onChanged(ChangedEvent event) {
+				boolean abs = (Boolean) event.getValue();
+				
+				if (abs!=metaClass.isAbstract())
+				{
+					MetaClassPropertyEvent e = new MetaClassPropertyEvent(PropertyChangedType.ABSTRACT, metaClass);
+					e.setAbstract(abs);
+					parent.fireClassPropertyChanged(e);
+				}
+				
+			}
+		});
+		
 		abstractForm.setFields(abstractCheckBox);
 		
 		iconButton = new Button("Set icon");
@@ -266,7 +307,9 @@ class MetaClassPropertiesGrid extends VStack implements ClickHandler, Collaborat
 			
 			@Override
 			public void onUploadSuccessful(String pathToUploadedFile) {
-				Window.alert(pathToUploadedFile);
+				MetaClassPropertyEvent e = new MetaClassPropertyEvent(PropertyChangedType.NEW_ICON, metaClass);
+				e.setIconUrl(pathToUploadedFile);
+				parent.fireClassPropertyChanged(e);
 			}
 		});
 		
@@ -308,7 +351,7 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 	private AddMetaAttributeDialog addDialog;
 	private List<MetaBaseType> metaBaseTypes; 
 	
-	
+	private Set<MetaClassPropertiesListener> propertiesListeners;
 	private Set<MetaModelView.MetaAttributeManipulationListener> attributeModifyListeners;
 	
 	public MetaClassDetailView(List<MetaBaseType> types ){
@@ -316,13 +359,14 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 		this.setWidth100();
 		this.setHeight100();
 		attributeModifyListeners = new LinkedHashSet<MetaModelView.MetaAttributeManipulationListener>();
+		propertiesListeners = new LinkedHashSet<MetaModelView.MetaClassPropertiesListener>();
 	
 		
 		SectionStack stack  = new SectionStack();
 		stack.setWidth100();
 		stack.setHeight("*");
 		
-		propertiesGrid = new MetaClassPropertiesGrid();
+		propertiesGrid = new MetaClassPropertiesGrid(this);
 		
 		
 		SectionStackSection properties = new SectionStackSection("Properies");
@@ -391,6 +435,13 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 		attributeModifyListeners.remove(l);
 	}
 	
+	public void addMetaClassPropertiesListener(MetaClassPropertiesListener l){
+		propertiesListeners.add(l);
+	}
+	
+	public void removeMetaClassPropertiesListener(MetaClassPropertiesListener l){
+		propertiesListeners.remove(l);
+	}
 	
 	private void onAttributeEdited(AttributeRecord r){
 		
@@ -451,6 +502,12 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 			l.onMetaAttributeManipulated(e);
 	}
 	
+	
+	public void fireClassPropertyChanged(MetaClassPropertyEvent e)
+	{
+		for (MetaClassPropertiesListener l : propertiesListeners )
+			l.onMetaClassPropertyChanged(e);
+	}
 	
 
 	@Override

@@ -20,6 +20,7 @@ import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCom
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
@@ -41,6 +42,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.collaboratio
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.DeleteMetaAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.EditMetaAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaClassCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.RenameMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ResizeMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.TransactionMessageInstantiator;
@@ -106,6 +108,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 				objectFactory.register(CreateMetaAttributeCommand.class.getName(), new CreateMetaAttributeCommandInstantiator());
 				objectFactory.register(EditMetaAttributeCommand.class.getName(), new EditMetaAttributeCommandInstantiator());
 				objectFactory.register(DeleteMetaAttributeCommand.class.getName(), new DeleteMetaAttributeCommandInstantiator());
+				objectFactory.register(RenameMetaClassCommand.class.getName(), new RenameMetaClassCommandInstantiator());
 				
 
 				
