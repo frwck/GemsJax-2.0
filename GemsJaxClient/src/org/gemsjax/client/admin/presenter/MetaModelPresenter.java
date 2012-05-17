@@ -45,6 +45,7 @@ import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.UUID;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
@@ -761,7 +762,12 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			}
 			else
 			if (e.getType()==ManipulationType.MODIFY){
-				EditMetaAttributeCommand c = new EditMetaAttributeCommand(UUID.generate(), e.getAttribute().getID(), e.getMetaClass().getID(), e.getName(), e.getAttribute().getName(), e.getBaseType(), e.getAttribute().getType());
+				EditMetaAttributeCommand c = new EditMetaAttributeCommand(UUID.generate(), e.getMetaAttribute().getID(), e.getMetaClass().getID(), e.getName(), e.getMetaAttribute().getName(), e.getBaseType(), e.getMetaAttribute().getType());
+				module.sendAndCommitTransaction(c);
+			}
+			else
+			if (e.getType() == ManipulationType.DELETE){
+				DeleteMetaAttributeCommand c = new DeleteMetaAttributeCommand(UUID.generate(), e.getMetaClass().getID(), e.getMetaAttribute());
 				module.sendAndCommitTransaction(c);
 			}
 			

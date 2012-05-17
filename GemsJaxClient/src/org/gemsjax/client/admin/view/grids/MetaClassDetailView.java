@@ -31,6 +31,8 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
+import com.smartgwt.client.widgets.events.RightMouseDownEvent;
+import com.smartgwt.client.widgets.events.RightMouseDownHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -302,9 +304,10 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 	private MetaClass metaClass;
 	private ListGrid attributesGrid;
 	private MetaClassPropertiesGrid propertiesGrid;
-	private Button addAttributeButton;
+	private Button addAttributeButton, removeAttributeButton;
 	private AddMetaAttributeDialog addDialog;
 	private List<MetaBaseType> metaBaseTypes; 
+	
 	
 	private Set<MetaModelView.MetaAttributeManipulationListener> attributeModifyListeners;
 	
@@ -342,14 +345,13 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 		attributesGrid.setEditEvent(ListGridEditEvent.DOUBLECLICK);  
 		attributesGrid.setModalEditing(true);  
 		attributesGrid.setFields(attributeName, attributeType);
-		attributesGrid.setCanRemoveRecords(true);
+		//attributesGrid.setCanRemoveRecords(true);
 		
-		
+				
 		attributesGrid.addCellSavedHandler(new CellSavedHandler() {
 			
 			@Override
 			public void onCellSaved(CellSavedEvent event) {
-				
 				onAttributeEdited((AttributeRecord) event.getRecord());
 			}
 		});
@@ -359,10 +361,16 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 		addAttributeButton.setWidth100();
 		addAttributeButton.setHeight(25);
 		
+		removeAttributeButton = new Button("Remove Attribute");
+		removeAttributeButton.addClickHandler(this);
+		removeAttributeButton.setWidth100();
+		removeAttributeButton.setHeight(25);
+		
 		
 		properties.addItem(propertiesGrid);
 		attributes.addItem(attributesGrid);
 		attributes.addItem(addAttributeButton);
+		attributes.addItem(removeAttributeButton);
 		stack.addSection(properties);
 		stack.addSection(attributes);
 	
@@ -447,6 +455,27 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 
 	@Override
 	public void onClick(ClickEvent event) {
+		
+		if (event.getSource() == removeAttributeButton)
+		{
+			
+			ListGridRecord [] records = attributesGrid.getSelectedRecords();
+			
+			if(records.length == 0){
+				NotificationManager.getInstance().showTipNotification(new TipNotification("No Attribute selected", null, 2000, NotificationPosition.CENTER));
+			}
+			else
+			{
+				for (ListGridRecord r : records){
+					
+					MetaAttributeManipulationEvent e = new MetaAttributeManipulationEvent(ManipulationType.DELETE, metaClass);
+					e.setAttribute(((AttributeRecord)r).getMetaAttribute());
+					fireAttributeModifiedEvent(e);
+				}
+			}
+			
+		}
+		else
 		if (event.getSource() == addAttributeButton){
 			this.addDialog = new AddMetaAttributeDialog(metaBaseTypes);
 			this.addDialog.getSaveButton().addClickHandler(this);

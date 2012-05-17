@@ -49,7 +49,7 @@ public interface MetaModelView extends CollaborateableView{
 				return metaClass;
 			}
 
-			public MetaAttribute getAttribute() {
+			public MetaAttribute getMetaAttribute() {
 				return attribute;
 			}
 

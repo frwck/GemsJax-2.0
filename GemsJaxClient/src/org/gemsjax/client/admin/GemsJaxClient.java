@@ -12,6 +12,7 @@ import org.gemsjax.client.util.Console;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
+import com.google.gwt.event.shared.UmbrellaException;
 import com.smartgwt.client.core.KeyIdentifier;
 import com.smartgwt.client.util.KeyCallback;
 import com.smartgwt.client.util.Page;
@@ -73,8 +74,8 @@ public class GemsJaxClient implements EntryPoint {
 				@Override
 				public void onUncaughtException(Throwable e) {
 					
-					
-					Console.logException(e);
+					if (e instanceof UmbrellaException)
+						e = e.getCause();
 					
 					String msg =e.toString() + " "+e.getLocalizedMessage() +" "+ e.getMessage()+" \n";
 					
@@ -83,6 +84,8 @@ public class GemsJaxClient implements EntryPoint {
 					
 					
 					e.printStackTrace();
+					
+					Console.logException(e);
 					SC.say(msg);
 					SC.logWarn(msg);
 	

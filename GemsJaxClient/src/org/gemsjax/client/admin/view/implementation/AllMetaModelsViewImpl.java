@@ -84,7 +84,7 @@ public class AllMetaModelsViewImpl extends LoadingTab implements AllMetaModelsVi
 
 		this.setCanClose(true);
 		this.setContent(content);
-		this.showContent();
+		this.showLoading();
 		
 	}
 

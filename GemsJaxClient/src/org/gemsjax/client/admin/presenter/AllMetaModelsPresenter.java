@@ -61,6 +61,7 @@ public class AllMetaModelsPresenter extends Presenter implements ClickHandler, C
 	@Override
 	public void onGetAllSuccessful(Set<MetaModel> result) {
 		view.setAllMetaModels(result);
+		view.showContent();
 	}
 	
 	public void onGetAllError(CollaborateableFileError error) {
