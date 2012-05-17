@@ -47,6 +47,17 @@
         <property name="metaBaseTypeName" column="metaBaseTypeName" type="string" />
     </joined-subclass>
     
+    
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand" table="EditMetaAttributeCommand">
+        <key column="Command_id"/>
+        <property name="attributeId" column="attributeId" type="string" />
+        <property name="metaClassId" column="metaClassId" type="string" />
+        <property name="newName" column="newName" type="string" />
+        <property name="oldName" column="oldName" type="string" />
+        <property name="newMetaBaseTypeName" column="newMetaBaseTypeName" type="string" />
+        <property name="oldMetaBaseTypeName" column="oldMetaBaseTypeName" type="string" />
+    </joined-subclass>
+    
          
 </class>
 

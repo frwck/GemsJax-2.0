@@ -45,6 +45,7 @@ import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.UUID;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.metamodel.MetaClass;
@@ -751,16 +752,23 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 
 
 	@Override
-	public void onMetaAttributeManipulated(MetaAttributeManipulationEvent event) {
+	public void onMetaAttributeManipulated(MetaAttributeManipulationEvent e) {
 		try {
 			
-			if (event.getType()==ManipulationType.NEW){
-				CreateMetaAttributeCommand c = new CreateMetaAttributeCommand(UUID.generate(), event.getMetaClass().getID(), UUID.generate(), event.getName(), event.getBaseType());
+			if (e.getType()==ManipulationType.NEW){
+				CreateMetaAttributeCommand c = new CreateMetaAttributeCommand(UUID.generate(), e.getMetaClass().getID(), UUID.generate(), e.getName(), e.getBaseType());
 				module.sendAndCommitTransaction(c);
 			}
-		} catch (IOException e) {
+			else
+			if (e.getType()==ManipulationType.MODIFY){
+				EditMetaAttributeCommand c = new EditMetaAttributeCommand(UUID.generate(), e.getAttribute().getID(), e.getMetaClass().getID(), e.getName(), e.getAttribute().getName(), e.getBaseType(), e.getAttribute().getType());
+				module.sendAndCommitTransaction(c);
+			}
+			
+			
+		} catch (IOException ex) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			ex.printStackTrace();
 		}
 	}
 	

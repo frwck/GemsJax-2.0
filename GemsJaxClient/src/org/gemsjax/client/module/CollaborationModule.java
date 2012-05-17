@@ -191,10 +191,6 @@ public class CollaborationModule implements CollaborationChannelHandler{
 			List<Transaction> transactions, List<Collaborator> collaborators, List<MetaBaseType> optionalMetaBaseTypes) {
 		
 		if (subscribeReferenceId.equals(referenceId)){
-			for (Transaction t : transactions){
-				transactionProcessor.executeTransaction(t);
-				mergeMaxVectorClocks(t);
-			}
 			
 			this.metaBaseTypes.addAll(optionalMetaBaseTypes);
 			
@@ -210,6 +206,13 @@ public class CollaborationModule implements CollaborationChannelHandler{
 			
 			this.collaborators.addAll(collaborators);
 			
+			
+			for (Transaction t : transactions){
+				transactionProcessor.executeTransaction(t);
+				mergeMaxVectorClocks(t);
+			}
+		
+			
 			for (CollaborationModuleHandler h : handlers)
 			{
 				for (Collaborator c: collaborators)
@@ -219,9 +222,6 @@ public class CollaborationModule implements CollaborationChannelHandler{
 				h.onCollaborateableInitialized();
 				h.onCollaborateableUpdated();
 			}
-			
-			
-			
 			
 		}
 		

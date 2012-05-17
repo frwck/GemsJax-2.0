@@ -46,6 +46,7 @@ public class TransactionImpl implements Transaction, Serializable{
 	@Override
 	public void commit() throws ManipulationException {
 		
+
 		for (Command c: commands)
 			c.execute();
 		

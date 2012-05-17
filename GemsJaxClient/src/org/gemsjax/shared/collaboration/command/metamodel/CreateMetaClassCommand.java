@@ -52,6 +52,7 @@ public class CreateMetaClassCommand extends CommandImpl{
 		mc.setY(y);
 		
 		MetaModel metaModel = (MetaModel) getCollaborateable();
+
 		metaModel.addMetaClass(mc);
 		
 	}

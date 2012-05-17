@@ -25,7 +25,6 @@ public class CreateMetaAttributeCommand extends CommandImpl {
 		this.metaClassId = metaClassId;
 		this.metaBaseTypeName = metaBaseType.getName();
 		this.name = name;
-		this.metaAttributeId = metaAttributeId;
 	}
 	
 	
@@ -35,6 +34,7 @@ public class CreateMetaAttributeCommand extends CommandImpl {
 		name = a.serialize("name", name).value;
 		metaBaseTypeName = a.serialize("metaBaseTypeName", metaBaseTypeName).value;
 		metaClassId = a.serialize("metaClassId", metaClassId).value;
+		metaAttributeId = a.serialize("metaAttributeId",metaAttributeId).value;
 	}
 	
 	

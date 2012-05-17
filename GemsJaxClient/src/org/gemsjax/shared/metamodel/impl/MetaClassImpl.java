@@ -33,7 +33,7 @@ public class MetaClassImpl implements MetaClass {
 	// Drawable fields
 	
 	private double x, y,z;
-	private double width = 100, height = 200, minWidth = 60, minHeight = 60;
+	private double width = 100, height = 200, minWidth = 60, minHeight = 80;
 	
 	private String borderColor = "black";
 	
@@ -349,6 +349,8 @@ public class MetaClassImpl implements MetaClass {
 		attributes.add(attribute);
 		attributeMap.put(attribute.getID(), attribute);
 		
+		attribute.addCollaborateableElementPropertiesListeners(listeners);
+		
 		
 		for (CollaborateableElementPropertiesListener l : listeners)
 			l.onChanged();
@@ -359,6 +361,8 @@ public class MetaClassImpl implements MetaClass {
 	{
 		attributes.remove(attribute);
 		attributeMap.remove(attribute.getID());
+		
+		attribute.removeCollaborateableElementPropertiesListeners(listeners);
 		
 		for (CollaborateableElementPropertiesListener l : listeners)
 			l.onChanged();
@@ -753,6 +757,9 @@ public class MetaClassImpl implements MetaClass {
 	@Override
 	public void addPropertiesListener(CollaborateableElementPropertiesListener l) {
 		listeners.add(l);
+		
+		for (MetaAttribute a: attributes)
+			a.addCollaborateableElementPropertiesListeners(listeners);
 	}
 
 
@@ -760,6 +767,9 @@ public class MetaClassImpl implements MetaClass {
 	public void removePropertiesListener(
 			CollaborateableElementPropertiesListener l) {
 		listeners.remove(l);
+		
+		for (MetaAttribute a: attributes)
+			a.removeCollaborateableElementPropertiesListeners(listeners);
 	}
 
 
@@ -775,8 +785,7 @@ public class MetaClassImpl implements MetaClass {
 
 	@Override
 	public MetaAttribute getAttributeById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return attributeMap.get(id);
 	}
 
 

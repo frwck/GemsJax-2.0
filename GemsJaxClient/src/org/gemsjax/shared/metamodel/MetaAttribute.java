@@ -1,5 +1,9 @@
 package org.gemsjax.shared.metamodel;
 
+import java.util.Set;
+
+import org.gemsjax.shared.collaboration.CollaborateableElementPropertiesListener;
+
 /**
  * The common interface for the meta model attribute implementation on client and server side.
  * We define a common api that can be used for implementing concrete objects on server and client.
@@ -33,6 +37,10 @@ public interface MetaAttribute extends MetaModelElement{
 	 * @return
 	 */
 	public void setName(String name);
+	
+	
+	public void addCollaborateableElementPropertiesListeners(Set<CollaborateableElementPropertiesListener> listeners);
+	public void removeCollaborateableElementPropertiesListeners(Set<CollaborateableElementPropertiesListener> listeners);
 
 
 }

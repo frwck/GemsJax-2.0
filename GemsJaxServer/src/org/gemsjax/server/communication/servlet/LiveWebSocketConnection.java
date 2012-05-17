@@ -17,6 +17,7 @@ import org.gemsjax.server.communication.serialisation.XmlLoadingArchive;
 import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand;
 import org.gemsjax.shared.communication.CommunicationConnection;
@@ -36,6 +37,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.LinkedListIn
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaClassCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.EditMetaAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ResizeMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableMessageInstantiator;
@@ -100,6 +102,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 				objectFactory.register(MoveMetaClassCommand.class.getName(), new MoveMetaClassCommandInstantiator());
 				objectFactory.register(ResizeMetaClassCommand.class.getName(), new ResizeMetaClassCommandInstantiator());
 				objectFactory.register(CreateMetaAttributeCommand.class.getName(), new CreateMetaAttributeCommandInstantiator());
+				objectFactory.register(EditMetaAttributeCommand.class.getName(), new EditMetaAttributeCommandInstantiator());
 				
 
 				
@@ -136,9 +139,6 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 				
 			} catch (Exception e) {
 				
-				if (e.getMessage()==null || !e.getMessage().startsWith("key missmatch"))
-					e.printStackTrace();
-				
 				try{
 					// TODO remove deprecated stuff (backward compatibility)
 					InputMessage im = new InputMessage(200, data);
@@ -153,6 +153,14 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 					t.printStackTrace();
 					
 				}
+				
+				
+				if (e.getMessage()!=null)
+					if (e.getMessage().startsWith("key missmatch"))
+						return;
+				
+				e.printStackTrace();
+				
 		    	
 			}
 			

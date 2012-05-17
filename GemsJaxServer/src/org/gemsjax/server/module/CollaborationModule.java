@@ -25,6 +25,8 @@ import org.gemsjax.shared.communication.message.collaboration.TransactionError;
 import org.gemsjax.shared.communication.message.collaboration.TransactionErrorMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
 import org.gemsjax.shared.metamodel.MetaBaseType;
+import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
 import org.gemsjax.shared.metamodel.impl.MetaBaseTypeImpl;
 import org.gemsjax.shared.user.User;
 
@@ -278,6 +280,15 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		
 		if (c == null){ // id currently not in the memory, so try to laod if from the database
 			c = dao.getCollaborateable(collaborateableId);
+			
+			if (c instanceof MetaModel)
+				for (MetaBaseType bt: metaBaseTypes)
+					try {
+						((MetaModel)c).addBaseType(bt);
+					} catch (MetaBaseTypeException e1) {
+						// Its Possible, that a MetaBaseType has been removed?
+						e1.printStackTrace();
+					}
 			
 			try {
 				TransactionProcessor tp = new TransactionProcessor();

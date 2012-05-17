@@ -102,4 +102,16 @@ public class FieldVerifier {
 		return true;
 	}
 	
+	
+	public static boolean isValidAttributeName(String name){
+		
+		if(name== null || name.isEmpty())
+			return false;
+		
+		if (name.contains(" "))
+			return false;
+		
+		return true;
+	}
+	
 }

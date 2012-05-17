@@ -38,8 +38,12 @@ import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.CellSavedEvent;
+import com.smartgwt.client.widgets.grid.events.CellSavedHandler;
 import com.smartgwt.client.widgets.grid.events.EditCompleteEvent;
 import com.smartgwt.client.widgets.grid.events.EditCompleteHandler;
+import com.smartgwt.client.widgets.grid.events.RowEditorExitEvent;
+import com.smartgwt.client.widgets.grid.events.RowEditorExitHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
@@ -50,18 +54,39 @@ import com.smartgwt.client.widgets.layout.VStack;
 class AttributeRecord extends ListGridRecord{
 	
 	private MetaAttribute metaAttribute;
+
 	
 	public AttributeRecord(MetaAttribute ma){
 		this.metaAttribute = ma;
 		
-		this.setAttribute("name", ma.getName());
-		this.setAttribute("type", ma.getType().getName());
+		setName(ma.getName());
+		setTypeName(ma.getType().getName());
+		
 	}
 	
 	
 	public MetaAttribute getMetaAttribute(){
 		return metaAttribute;
 	}
+
+
+	public String getName(){
+		return getAttribute("name");
+	}
+	
+	public String getTypeName(){
+		return getAttribute("type");
+	}
+
+	
+	public void setName(String name){
+		this.setAttribute("name", name);
+	}
+	
+	public void setTypeName(String name){
+		this.setAttribute("type", name);
+	}
+	
 	
 }
 
@@ -71,6 +96,7 @@ class AddMetaAttributeDialog extends ModalDialog{
 	private TextItem name;
 	private SelectItem type;
 	private OptionButton saveButton;
+	private DynamicForm inputContainer;
 	
 	
 	public AddMetaAttributeDialog(List<MetaBaseType> baseTypes){
@@ -94,7 +120,7 @@ class AddMetaAttributeDialog extends ModalDialog{
 		header.setWidth100();
 		header.setHeight(30);
 		
-		DynamicForm inputContainer = new DynamicForm();
+		inputContainer = new DynamicForm();
 		name = new TextItem();
 		name.setTitle("Name");
 		name.setRequired(true);
@@ -130,8 +156,14 @@ class AddMetaAttributeDialog extends ModalDialog{
 		this.setWidth(250);
 		this.setHeight(200);
 		this.centerInPage();
+		inputContainer.focusInItem(0);
 	}
 	
+	@Override
+	public void show(){
+		inputContainer.focusInItem(0);
+		super.show();
+	}
 	
 	public String getName(){
 		return name.getValueAsString();
@@ -311,16 +343,16 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 		attributesGrid.setModalEditing(true);  
 		attributesGrid.setFields(attributeName, attributeType);
 		attributesGrid.setCanRemoveRecords(true);
-		attributesGrid.addEditCompleteHandler(new EditCompleteHandler() {
+		
+		
+		attributesGrid.addCellSavedHandler(new CellSavedHandler() {
 			
 			@Override
-			public void onEditComplete(EditCompleteEvent event) {
+			public void onCellSaved(CellSavedEvent event) {
 				
-				onAttributeEdited(event);
+				onAttributeEdited((AttributeRecord) event.getRecord());
 			}
 		});
-		
-		
 		
 		addAttributeButton = new Button("Add Attribute");
 		addAttributeButton.addClickHandler(this);
@@ -352,8 +384,39 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 	}
 	
 	
-	private void onAttributeEdited(EditCompleteEvent event){
-		Window.alert("Edited");
+	private void onAttributeEdited(AttributeRecord r){
+		
+		MetaAttribute att = r.getMetaAttribute();
+		String name = r.getName();
+		MetaBaseType t = stringToMetaBaseType(r.getTypeName());
+		
+		if (!FieldVerifier.isValidAttributeName(name)){
+			
+			NotificationManager.getInstance().showTipNotification(new TipNotification("Invalid name", "\""+name+"\" is not a valid attribute name", 2000, NotificationPosition.CENTER));
+			
+			r.setName(att.getName());
+			r.setTypeName(att.getType().getName());
+			
+			return;
+		}
+		
+		
+		if (t == null){
+			
+			NotificationManager.getInstance().showTipNotification(new TipNotification("Invalid MetaBaseType",null, 2000, NotificationPosition.CENTER));
+			
+			r.setName(att.getName());
+			r.setTypeName(att.getType().getName());
+			
+			return;
+		}
+		
+		MetaAttributeManipulationEvent e = new MetaAttributeManipulationEvent(ManipulationType.MODIFY, metaClass);
+		e.setAttribute(att);
+		e.setName(name);
+		e.setBaseType(t);
+		
+		fireAttributeModifiedEvent(e);
 	}
 	
 	
@@ -391,7 +454,7 @@ public class MetaClassDetailView extends VLayout implements ClickHandler, Collab
 		}
 		else
 		if (addDialog!=null && addDialog.getSaveButton() == event.getSource()){
-			if(FieldVerifier.isNotEmpty(addDialog.getName()) && FieldVerifier.isNotEmpty(addDialog.getType())){
+			if(FieldVerifier.isValidAttributeName(addDialog.getName()) && FieldVerifier.isNotEmpty(addDialog.getType())){
 				
 				MetaBaseType type = stringToMetaBaseType(addDialog.getType());
 				
