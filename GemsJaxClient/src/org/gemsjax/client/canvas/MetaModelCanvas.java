@@ -16,6 +16,7 @@ import org.gemsjax.client.canvas.events.PlaceEvent.PlaceEventType;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.client.canvas.events.metamodel.CreateMetaClassEvent;
 import org.gemsjax.client.canvas.handler.metamodel.CreateMetaClassHandler;
+import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.Point;
 
 
@@ -177,11 +178,17 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	private String createMetaClassName;
 	
 	private Set<CreateMetaClassHandler> createClassHandlers;
+	private Set<CreateMetaRelationHandler> createRelationHandlers;
+	
+	private MetaClassDrawable createRelationSource;
+	private MetaClassDrawable createRelationTarget;
+	
 	
 	public MetaModelCanvas() throws CanvasSupportException {
 		super();
 		
 		createClassHandlers = new LinkedHashSet<CreateMetaClassHandler>();
+		createRelationHandlers = new LinkedHashSet<CreateMetaRelationHandler>();
 		
 		resizing = false;
 		moving = false;
@@ -216,6 +223,10 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	public void setEditingMode(EditingMode mode)
 	{
 		editingMode = mode;
+		
+		createRelationSource = null;
+		createRelationTarget = null;
+		
 	}
 	
 	
@@ -295,6 +306,48 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 								h.onCreateMetaClass(new CreateMetaClassEvent(value, x, y));
 					}			
 				});
+				
+				break;
+				
+			case CREATE_RELATION:
+				
+				Drawable d = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
+				
+				if (d instanceof MetaClassDrawable){
+					if(createRelationSource==null){
+						createRelationSource = (MetaClassDrawable) d;
+						NotificationManager.getInstance().showTipNotification(new TipNotification("Select the traget now", null, 2000, NotificationPosition.CENTER));
+					}
+					else
+					if (createRelationTarget == null){
+						createRelationTarget = (MetaClassDrawable) d;
+					
+					
+						SC.askforValue("Create MetaRelation", "Please insert the name", new ValueCallback() {
+							
+							@Override
+							public void execute(String value) {
+								if (!FieldVerifier.isValidRelationName(value))
+								{
+									NotificationManager.getInstance().showTipNotification(new TipNotification("Inserted name is not valid", null, 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE);
+									createMetaClassName = null;
+								}
+								
+								else
+									for(CreateMetaRelationHandler h : createRelationHandlers)
+										h.onCreateMetaRelation(value, createRelationSource.getMetaClass(), createRelationTarget.getMetaClass());
+								
+								
+							}			
+						});
+					}
+					
+				}
+				else
+					NotificationManager.getInstance().showTipNotification(new TipNotification("No MetaClass selected", "Please click on a MetaClass", 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE);
+				
+				
+					
 				
 				break;
 				
@@ -582,6 +635,15 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		//lastMouseOutEvent = event;
 		//onMouseUp(null);
 
+	}
+	
+	
+	public void addCreateMetaRelationHandler(CreateMetaRelationHandler h){
+		createRelationHandlers.add(h);
+	}
+	
+	public void removeCreateMetaRelationHandler(CreateMetaRelationHandler h){
+		createRelationHandlers.remove(h);
 	}
 	
 	

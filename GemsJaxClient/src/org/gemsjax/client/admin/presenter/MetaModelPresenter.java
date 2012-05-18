@@ -12,6 +12,7 @@ import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationListener.MetaAttributeManipulationEvent.ManipulationType;
 import org.gemsjax.client.admin.view.MetaModelView.MetaClassPropertiesListener.MetaClassPropertyEvent.PropertyChangedType;
 import org.gemsjax.client.canvas.Anchor;
+import org.gemsjax.client.canvas.CreateMetaRelationHandler;
 import org.gemsjax.client.canvas.DockableAnchor;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaClassDrawable;
@@ -43,8 +44,11 @@ import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.canvas.handler.metamodel.CreateMetaClassHandler;
 import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
+import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.UUID;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstractCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaAttributeCommand;
@@ -56,6 +60,8 @@ import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
+import org.gemsjax.shared.metamodel.impl.MetaFactory;
 
 import com.google.gwt.event.shared.EventBus;
 import com.smartgwt.client.util.SC;
@@ -72,7 +78,8 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 																CollaborationModuleHandler, CreateMetaClassHandler,
 																MetaModelView.MetaAttributeManipulationListener,
 																MetaModelView.MetaClassPropertiesListener,
-																CloseClickHandler{
+																CloseClickHandler, 
+																CreateMetaRelationHandler{
 	
 	private MetaModel metaModel;
 	private MetaModelView view;
@@ -141,6 +148,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		view.addMetaClassPropertiesListener(this);
 		view.addMetaAttributeManipulationListener(this);
 		view.addCreateMetaClassHandler(this);
+		view.addCreateMetaRelationHandler(this);
 		
 		view.addCloseClickHandler(this);
 	}
@@ -795,7 +803,16 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				RenameMetaClassCommand c = new RenameMetaClassCommand(UUID.generate(), e.getMetaClass(), e.getName());
 				module.sendAndCommitTransaction(c);
 			}
-			
+			else
+			if (e.getType() == PropertyChangedType.CHANGE_ICON){
+				ChangeMetaClassIconCommand c = new ChangeMetaClassIconCommand(UUID.generate(), e.getMetaClass(), e.getIconUrl());
+				module.sendAndCommitTransaction(c);
+			}
+			else
+			if (e.getType() == PropertyChangedType.ABSTRACT){
+				ChangeMetaClassAbstractCommand c = new ChangeMetaClassAbstractCommand(UUID.generate(), e.getMetaClass(), e.isAbstract());
+				module.sendAndCommitTransaction(c);
+			}
 		} catch (IOException e1) {
 			view.showSendError(e1);
 			e1.printStackTrace();
@@ -816,6 +833,28 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		
 		// TODO memory cleanup
 		eventBus.fireEvent(new CollaborateableClosedEvent(metaModel.getId()));
+		
+	}
+
+
+	@Override
+	public void onCreateMetaRelation(String name, MetaClass source,
+			MetaClass target) {
+		
+		view.setCanvasEditingMode(EditingMode.NORMAL);
+		
+		
+		MetaConnection mc = MetaFactory.createMetaConnection(name, source, target);
+		try {
+			source.addConnection(mc);
+		} catch (MetaConnectionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		Console.log("Relation " +name+" "+ source.getName()+" "+target.getName());
+		
+		onCollaborateableUpdated();
 		
 	}
 	

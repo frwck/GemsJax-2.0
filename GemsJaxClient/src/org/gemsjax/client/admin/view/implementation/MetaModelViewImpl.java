@@ -18,6 +18,7 @@ import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.canvas.CreateMetaRelationHandler;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
@@ -236,8 +237,8 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 				
 			break;
 			case CREATE_RELATION:	newRelationButton.setActive(true); 
-			tipNotification = new TipNotification("This is a long Text example", "This is a example for very very long text, so bla bla bla bla normaly something usefull should be stay here and not this stupid bla bla bla bla bla text. There can be also a LOT OF UPER CASE CHARECTERS AND LOWER CASE CHARACTERS! This is a example for very very long text, so bla bla bla bla normaly something usefull should be stay here and not this stupid bla bla bla bla bla text. There can be also a LOT OF UPER CASE CHARECTERS AND LOWER CASE CHARACTERS! This is a example for very very long text, so bla bla bla bla normaly something usefull should be stay here and not this stupid bla bla bla bla bla text. There can be also a LOT OF UPER CASE CHARECTERS AND LOWER CASE CHARACTERS!" , 3000, NotificationPosition.BOTTOM_CENTERED); //language.MetaModelToolbarNewMetaClassTip()
-			tipNotification.animateShow(AnimationEffect.FADE);
+			NotificationManager.getInstance().showTipNotification(new TipNotification("Select the source MetaClass", null , 2000, NotificationPosition.BOTTOM_CENTERED) );
+			
 			break;
 			case CREATE_INHERITANCE: newInheritanceButton.setActive(true);
 			case READ_ONLY: break;// TODO: what to do when it has been set to READ_ONLY
@@ -416,6 +417,16 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	public void removeCloseClickHandler(CloseClickHandler h) {
 		// TODO how to implement/ which method to call?
 		
+	}
+
+	@Override
+	public void addCreateMetaRelationHandler(CreateMetaRelationHandler h) {
+		canvas.addCreateMetaRelationHandler(h);
+	}
+
+	@Override
+	public void removeCreateMetaRelationHandler(CreateMetaRelationHandler h) {
+		canvas.removeCreateMetaRelationHandler(h);
 	}
 	
 	

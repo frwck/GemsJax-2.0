@@ -72,6 +72,20 @@
         <property name="newName" column="newName" type="string" />
         <property name="oldName" column="oldName" type="string" />
      </joined-subclass>
+     
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand" table="ChangeMetaClassIconCommand">
+        <key column="Command_id"/>
+        <property name="metaClassId" column="metaClassId" type="string" />
+        <property name="newIconUrl" column="newIconUrl" type="string" />
+        <property name="oldIconUrl" column="oldIconUrl" type="string" />
+     </joined-subclass>
+     
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstractCommand" table="ChangeMetaClassAbstractCommand">
+        <key column="Command_id"/>
+        <property name="metaClassId" column="metaClassId" type="string" />
+        <property name="oldIsAbstract" column="oldIsAbstract" type="boolean" />
+        <property name="newIsAbstract" column="newIsAbstract" type="boolean" />
+     </joined-subclass>
          
 </class>
 

@@ -11,6 +11,8 @@ import org.gemsjax.client.communication.serialisation.GwtXmlLoadingArchive;
 import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.collaboration.TransactionImpl;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstractCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaAttributeCommand;
@@ -40,6 +42,8 @@ import org.gemsjax.shared.communication.serialisation.instantiators.LinkedListIn
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.CollaboratorInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.MetaBaseTypeInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaClassAbstractCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaClassIconCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.DeleteMetaAttributeCommandInstantiator;
@@ -177,6 +181,8 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(EditMetaAttributeCommand.class.getName(), new EditMetaAttributeCommandInstantiator());
 		objectFactory.register(DeleteMetaAttributeCommand.class.getName(), new DeleteMetaAttributeCommandInstantiator());
 		objectFactory.register(RenameMetaClassCommand.class.getName(), new RenameMetaClassCommandInstantiator());
+		objectFactory.register(ChangeMetaClassIconCommand.class.getName(), new ChangeMetaClassIconCommandInstantiator());
+		objectFactory.register(ChangeMetaClassAbstractCommand.class.getName(), new ChangeMetaClassAbstractCommandInstantiator());
 		
 		
 		

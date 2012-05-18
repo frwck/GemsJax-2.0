@@ -307,7 +307,7 @@ class MetaClassPropertiesGrid extends VStack implements ClickHandler, Collaborat
 			
 			@Override
 			public void onUploadSuccessful(String pathToUploadedFile) {
-				MetaClassPropertyEvent e = new MetaClassPropertyEvent(PropertyChangedType.NEW_ICON, metaClass);
+				MetaClassPropertyEvent e = new MetaClassPropertyEvent(PropertyChangedType.CHANGE_ICON, metaClass);
 				e.setIconUrl(pathToUploadedFile);
 				parent.fireClassPropertyChanged(e);
 			}

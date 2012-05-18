@@ -6,6 +6,7 @@ import java.util.List;
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.notification.Notification;
 import org.gemsjax.client.canvas.Anchor;
+import org.gemsjax.client.canvas.CreateMetaRelationHandler;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
 import org.gemsjax.client.canvas.MetaModelCanvas.EditingMode;
@@ -91,7 +92,7 @@ public interface MetaModelView extends CollaborateableView{
 			
 			public enum PropertyChangedType{
 				RENAME,
-				NEW_ICON,
+				CHANGE_ICON,
 				ABSTRACT
 			}
 			
@@ -115,6 +116,7 @@ public interface MetaModelView extends CollaborateableView{
 			}
 
 			public MetaClass getMetaClass() {
+
 				return metaClass;
 			}
 
@@ -256,4 +258,6 @@ public interface MetaModelView extends CollaborateableView{
 	public void addCloseClickHandler(CloseClickHandler h);
 	public void removeCloseClickHandler(CloseClickHandler h);
 	
+	public void addCreateMetaRelationHandler(CreateMetaRelationHandler h);
+	public void removeCreateMetaRelationHandler(CreateMetaRelationHandler h);
 }
