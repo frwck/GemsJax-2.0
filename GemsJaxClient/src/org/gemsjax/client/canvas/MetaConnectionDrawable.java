@@ -286,8 +286,8 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		double height = connection.getSourceIconHeight();
 		double width = connection.getSourceIconWidth();
 		
-		double x = source.getX() + sourceAnchor.getX() ;
-		double y = source.getY() + sourceAnchor.getY() ;
+		double x = sourceAnchor.getX() ;
+		double y = sourceAnchor.getY() ;
 		
 		
 		if (connection.getSourceIconURL()!=null && !connection.getSourceIconURL().equals(""))
@@ -297,24 +297,30 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 				context.save();
 				
 				
-				context.translate(x-connection.getSourceIconWidth(), y);
+				context.translate(x,y);
 				
 				switch(sourceAnchor.getPlaceableDestination().getCoordinatesBorderDirection(x, y))
 				{
 					
-					case LEFT: 	context.rotate(2*Math.PI - Math.PI/2); break;
+					case LEFT: 	context.rotate(2*Math.PI - Math.PI/2); 
+						context.drawImage(getSourceIcon(), -(connection.getSourceIconWidth()/2), -(connection.getSourceIconHeight()), width, height);
+					break;
 								
-					case BOTTOM:context.rotate(Math.PI); break;
+					case BOTTOM:context.rotate(Math.PI); 
+						context.drawImage(getSourceIcon(), -(connection.getSourceIconWidth()/2), -(connection.getSourceIconHeight()), width, height);
+					break;
 								
-					case RIGHT: context.rotate(Math.PI/2); break;
+					case RIGHT: context.rotate(Math.PI/2);
+						context.drawImage(getSourceIcon(), -(connection.getSourceIconWidth()/2), -connection.getSourceIconHeight(), width, height);
+					break;
 					
 					case NOWHERE:
 					case TOP:	
-					default: 	break;
+					default: 	
+						context.drawImage(getSourceIcon(), -(connection.getSourceIconWidth()/2), -(connection.getSourceIconHeight()), width, height);
+					break;
 				}
 				
-				
-				context.drawImage(getSourceIcon(), 0,0, width, height);
 				context.restore();
 				
 				
