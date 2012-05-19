@@ -353,44 +353,49 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		
 		
 		
+		x = targetAnchor.getX();
+		y = targetAnchor.getY();
+		
+		height = connection.getTargetIconHeight();
+		width = connection.getTargetIconWidth();
 		
 		if (connection.getTargetIconURL()!=null && !connection.getTargetIconURL().equals(""))
 		{
-		
-			x = target.getX() + targetAnchor.getX();
-			y = target.getY() + targetAnchor.getY();
-			
-			width = connection.getTargetIconWidth();
-			height = connection.getTargetIconHeight();
-	
 			if (targetIconLoaded)
 			{
 				context.save();
 				
-				context.translate(x, y);
+				context.translate(x,y);
 				
 				switch(targetAnchor.getPlaceableDestination().getCoordinatesBorderDirection(x, y))
 				{
 					
-					case LEFT: 	context.rotate(Math.PI/2); break;
+					case LEFT: 	context.rotate(2*Math.PI - Math.PI/2); 
+						context.drawImage(getTargetIcon(), -(connection.getSourceIconWidth()/2), -(connection.getSourceIconHeight()), width, height);
+					break;
 								
-					case BOTTOM:context.rotate(Math.PI); break;
+					case BOTTOM:context.rotate(Math.PI); 
+						context.drawImage(getTargetIcon(), -(connection.getSourceIconWidth()/2), -(connection.getSourceIconHeight()), width, height);
+					break;
 								
-					case RIGHT: context.rotate(2*Math.PI - Math.PI/2); break;
+					case RIGHT: context.rotate(Math.PI/2);
+						context.drawImage(getTargetIcon(), -(connection.getSourceIconWidth()/2), -connection.getSourceIconHeight(), width, height);
+					break;
 					
-					case NOWHERE: 
+					case NOWHERE:
 					case TOP:	
-					default: 	context.rotate(0); break;
+					default: 	
+						context.drawImage(getTargetIcon(), -(connection.getSourceIconWidth()/2), -(connection.getSourceIconHeight()), width, height);
+					break;
 				}
-				
-				context.drawImage(getTargetIcon(), 0,0, width, height);
 				
 				context.restore();
 				
+				
 			}
-			else
+			/*else
 			{	
-	
+				
 				String loadingTxt = "Loading";
 				
 				context.setFont(""+connection.getAttributeFontSize()+"px "+connection.getFontFamily());
@@ -411,8 +416,9 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 						context.fillText(loadingTxt.substring(0, chars)+"...", x, y+connection.getAttributeFontSize(), width);
 				}
 			}
-		
+			*/
 		}
+		
 		
 	}
 	

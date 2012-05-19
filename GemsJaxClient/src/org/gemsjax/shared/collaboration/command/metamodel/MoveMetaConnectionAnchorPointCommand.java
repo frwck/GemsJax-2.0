@@ -1,12 +1,13 @@
-package org.gemsjax.shared.collaboration.command;
+package org.gemsjax.shared.collaboration.command.metamodel;
 
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.collaboration.ManipulationException;
+import org.gemsjax.shared.collaboration.command.CommandImpl;
 import org.gemsjax.shared.communication.serialisation.Archive;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModel;
 
-public class MoveMetaConnectionAchnorPointCommand extends CommandImpl {
+public class MoveMetaConnectionAnchorPointCommand extends CommandImpl {
 
 	private String anchorId;
 	private String metaConnectionId;
@@ -15,9 +16,9 @@ public class MoveMetaConnectionAchnorPointCommand extends CommandImpl {
 	private double newY;
 	private double oldY;
 	
-	public MoveMetaConnectionAchnorPointCommand(){}
+	public MoveMetaConnectionAnchorPointCommand(){}
 	
-	public MoveMetaConnectionAchnorPointCommand(String id, MetaConnection connection, AnchorPoint ap,  double newX, double newY){
+	public MoveMetaConnectionAnchorPointCommand(String id, MetaConnection connection, AnchorPoint ap,  double newX, double newY){
 		setId(id);
 		metaConnectionId = connection.getID();
 		this.newX = newX;

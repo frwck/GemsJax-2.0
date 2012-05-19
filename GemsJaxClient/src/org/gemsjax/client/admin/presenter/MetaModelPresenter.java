@@ -47,7 +47,6 @@ import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.UUID;
-import org.gemsjax.shared.collaboration.command.MoveMetaConnectionAchnorPointCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstractCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionIconsCommand;
@@ -61,6 +60,7 @@ import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaConnectionAt
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaConnectionAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaConnectionAnchorPointCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaConnectionCommand;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
@@ -699,7 +699,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				double newX = ((DockableAnchor)p).getRelativeX();
 				double newY = ((DockableAnchor)p).getRelativeY();
 				
-				MoveMetaConnectionAchnorPointCommand c = new MoveMetaConnectionAchnorPointCommand(UUID.generate(), parent.getMetaConnection(), ap, newX, newY);
+				MoveMetaConnectionAnchorPointCommand c = new MoveMetaConnectionAnchorPointCommand(UUID.generate(), parent.getMetaConnection(), ap, newX, newY);
 				try {
 					module.sendAndCommitTransaction(c);
 				} catch (IOException e1) {
@@ -712,7 +712,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				double newX = x;
 				double newY = y;
 				
-				MoveMetaConnectionAchnorPointCommand c = new MoveMetaConnectionAchnorPointCommand(UUID.generate(), parent.getMetaConnection(), ap, newX, newY);
+				MoveMetaConnectionAnchorPointCommand c = new MoveMetaConnectionAnchorPointCommand(UUID.generate(), parent.getMetaConnection(), ap, newX, newY);
 				try {
 					module.sendAndCommitTransaction(c);
 				} catch (IOException e1) {
@@ -924,12 +924,12 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			}
 			else
 			if(e.getType() == ConnectionPropertyChangedType.SOURCE_ICON ) {
-				ChangeMetaConnectionIconsCommand c = new ChangeMetaConnectionIconsCommand(UUID.generate(), e.getConnection(), e.getSourceIcon(), e.getConnection().getTargetIconURL());
+				ChangeMetaConnectionIconsCommand c = new ChangeMetaConnectionIconsCommand(UUID.generate(), e.getConnection(), e.getSourceIcon(), true);
 				module.sendAndCommitTransaction(c);
 			}
 			else
 			if( e.getType() == ConnectionPropertyChangedType.TARGET_ICON ) {
-				ChangeMetaConnectionIconsCommand c = new ChangeMetaConnectionIconsCommand(UUID.generate(), e.getConnection(), e.getSourceIcon(), e.getConnection().getTargetIconURL());
+				ChangeMetaConnectionIconsCommand c = new ChangeMetaConnectionIconsCommand(UUID.generate(), e.getConnection(), e.getTargetIcon(), false);
 				module.sendAndCommitTransaction(c);
 			}
 			

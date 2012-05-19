@@ -159,7 +159,7 @@
      </joined-subclass>
     
      
-     <joined-subclass name="org.gemsjax.shared.collaboration.command.MoveMetaConnectionAchnorPointCommand" table="MoveMetaConnectionAchnorPointCommand">
+     <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.MoveMetaConnectionAnchorPointCommand" table="MoveMetaConnectionAnchorPointCommand">
         <key column="Command_id"/>
         <property name="anchorId" column="metaAttributeId" type="string" />
         <property name="metaConnectionId" column="metaConnectionId" type="string" />
@@ -172,11 +172,9 @@
      <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionIconsCommand" table="ChangeMetaConnectionIconsCommand">
         <key column="Command_id"/>
         <property name="metaConnectionId" column="metaConnectionId" type="string" />
-        <property name="newSourceIcon" column="newSourceIcon" type="string" />
-        <property name="newTargetIcon" column="newTargetIcon" type="string" />
-        <property name="oldSourceIcon" column="oldSourceIcon" type="string" /> 
-        <property name="oldTargetIcon" column="oldTargetIcon" type="string" />
-       
+        <property name="newIcon" column="newIcon" type="string" />
+        <property name="oldIcon" column="oldIcon" type="string" />
+        <property name="source" column="source" type="boolean" /> 
      </joined-subclass>
      
     

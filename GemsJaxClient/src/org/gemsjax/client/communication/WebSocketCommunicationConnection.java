@@ -11,7 +11,6 @@ import org.gemsjax.client.communication.serialisation.GwtXmlLoadingArchive;
 import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.collaboration.TransactionImpl;
-import org.gemsjax.shared.collaboration.command.MoveMetaConnectionAchnorPointCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstractCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionIconsCommand;
@@ -25,6 +24,7 @@ import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaConnectionAt
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaConnectionAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaConnectionAnchorPointCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaConnectionCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand;
@@ -206,7 +206,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(CreateMetaConnectionAttributeCommand.class.getName(), new CreateMetaConnectionAttributeCommandInstantiator());
 		objectFactory.register(EditMetaConnectionAttributeCommand.class.getName(), new EditMetaConnectionAttributeInstantiator());
 		objectFactory.register(DeleteMetaConnectionAttributeCommand.class.getName(), new DeleteMetaConnectionAttributeCommandInstantiator());
-		objectFactory.register(MoveMetaConnectionAchnorPointCommand.class.getName(), new MoveMetaConnectionAchnorPointCommandInstantiator());
+		objectFactory.register(MoveMetaConnectionAnchorPointCommand.class.getName(), new MoveMetaConnectionAchnorPointCommandInstantiator());
 		objectFactory.register(ChangeMetaConnectionIconsCommand.class.getName(), new ChangeMetaConnectionIconsCommandInstantiator());
 		
 		
