@@ -6,6 +6,7 @@ import org.gemsjax.shared.communication.serialisation.Archive;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModel;
 
 public class EditMetaAttributeCommand extends CommandImpl{
@@ -16,18 +17,31 @@ public class EditMetaAttributeCommand extends CommandImpl{
 	private String oldName;
 	private String newMetaBaseTypeName;
 	private String oldMetaBaseTypeName;
+	private String metaConnectionId;
 	
 	
 	public EditMetaAttributeCommand(){
 		
 	}
 	
-	public EditMetaAttributeCommand(String id, String attributeId, String metaClassId,
+	public EditMetaAttributeCommand(String id, String attributeId, MetaClass metaClass,
 			String newName, String oldName, MetaBaseType newMetaBaseType,
 			MetaBaseType oldMetaBaseType) {
 		setId(id);
 		this.attributeId = attributeId;
-		this.metaClassId = metaClassId;
+		this.metaClassId = metaClass.getID();
+		this.newName = newName;
+		this.oldName = oldName;
+		this.newMetaBaseTypeName = newMetaBaseType.getName();
+		this.oldMetaBaseTypeName = oldMetaBaseType.getName();
+	}
+	
+	public EditMetaAttributeCommand(String id, String attributeId, MetaConnection metaConnection,
+			String newName, String oldName, MetaBaseType newMetaBaseType,
+			MetaBaseType oldMetaBaseType) {
+		setId(id);
+		this.attributeId = attributeId;
+		this.metaConnectionId = metaConnection.getID();
 		this.newName = newName;
 		this.oldName = oldName;
 		this.newMetaBaseTypeName = newMetaBaseType.getName();
@@ -43,18 +57,28 @@ public class EditMetaAttributeCommand extends CommandImpl{
 		oldName = a.serialize("oldName", oldName).value;
 		newMetaBaseTypeName = a.serialize("newMetaBaseTypeName", newMetaBaseTypeName).value;
 		oldMetaBaseTypeName = a.serialize("oldMetaBaseTypeName", oldMetaBaseTypeName).value;
-		
+		metaConnectionId = a.serialize("metaConnectionId", metaConnectionId).value;
 	}
 
 
 	@Override
 	public void execute() throws ManipulationException {
 		MetaModel mm = (MetaModel) getCollaborateable();
-		MetaClass mc = (MetaClass) mm.getElementByID(metaClassId);
-		MetaBaseType type = getTypeFromName(mm, newMetaBaseTypeName);
-		MetaAttribute a = mc.getAttributeById(attributeId);
-		a.setName(newName);
-		a.setType(type);
+		if (metaClassId!=null){
+			MetaClass mc = (MetaClass) mm.getElementByID(metaClassId);
+			MetaBaseType type = getTypeFromName(mm, newMetaBaseTypeName);
+			MetaAttribute a = mc.getAttributeById(attributeId);
+			a.setName(newName);
+			a.setType(type);
+		}
+		else
+		if (metaConnectionId!=null){
+			MetaConnection mc = (MetaConnection) mm.getElementByID(metaConnectionId);
+			MetaBaseType type = getTypeFromName(mm, newMetaBaseTypeName);
+			MetaAttribute a = mc.getAttributeById(attributeId);
+			a.setName(newName);
+			a.setType(type);
+		}	
 	}
 
 	
@@ -69,12 +93,25 @@ public class EditMetaAttributeCommand extends CommandImpl{
 
 	@Override
 	public void undo() throws ManipulationException {
+		
 		MetaModel mm = (MetaModel) getCollaborateable();
-		MetaClass mc = (MetaClass) mm.getElementByID(metaClassId);
-		MetaBaseType type = getTypeFromName(mm, oldMetaBaseTypeName);
-		MetaAttribute a = mc.getAttributeById(attributeId);
-		a.setName(oldName);
-		a.setType(type);
+		
+		if (metaClassId!=null){
+			MetaClass mc = (MetaClass) mm.getElementByID(metaClassId);
+			MetaBaseType type = getTypeFromName(mm, oldMetaBaseTypeName);
+			MetaAttribute a = mc.getAttributeById(attributeId);
+			a.setName(oldName);
+			a.setType(type);
+		}
+		else
+		if (metaConnectionId!=null){
+			MetaConnection mc = (MetaConnection) mm.getElementByID(metaConnectionId);
+			MetaBaseType type = getTypeFromName(mm, oldMetaBaseTypeName);
+			MetaAttribute a = mc.getAttributeById(attributeId);
+			a.setName(oldName);
+			a.setType(type);
+		}
+		
 	}
 	
 	

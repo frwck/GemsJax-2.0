@@ -52,6 +52,7 @@
         <key column="Command_id"/>
         <property name="attributeId" column="attributeId" type="string" />
         <property name="metaClassId" column="metaClassId" type="string" />
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
         <property name="newName" column="newName" type="string" />
         <property name="oldName" column="oldName" type="string" />
         <property name="newMetaBaseTypeName" column="newMetaBaseTypeName" type="string" />
@@ -62,6 +63,7 @@
         <key column="Command_id"/>
         <property name="metaAttributeId" column="metaAttributeId" type="string" />
         <property name="metaClassId" column="metaClassId" type="string" />
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
         <property name="originalAttributeName" column="originalAttributeName" type="string" />
         <property name="originalAttribueTypeName" column="originalAttribueTypeName" type="string" />
      </joined-subclass>
@@ -86,7 +88,98 @@
         <property name="oldIsAbstract" column="oldIsAbstract" type="boolean" />
         <property name="newIsAbstract" column="newIsAbstract" type="boolean" />
      </joined-subclass>
-         
+     
+    
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.CreateMetaConnectionCommand" table="CreateMetaConnectionCommand">
+        <key column="Command_id"/>
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="name" column="name" type="string" />
+        <property name="metaClassSourceId" column="metaClassSourceId" type="string" />
+        <property name="metaClassTargetId" column="metaClassTargetId" type="string" />
+        <property name="sourcePointX" column="sourcePointX" type="double" />
+        <property name="sourcePointY" column="sourcePointY" type="double" />
+        <property name="sourceBoxPointX" column="sourceBoxPointX" type="double" />
+        <property name="sourceBoxPointY" column="sourceBoxPointY" type="double" />
+        <property name="targetPointX" column="targetPointX" type="double" />
+        <property name="targetPointY" column="targetPointY" type="double" />
+        <property name="targetBoxPointX" column="targetBoxPointX" type="double" />
+        <property name="targetBoxPointY" column="targetBoxPointY" type="double" />
+        <property name="boxX" column="boxX" type="double" />
+        <property name="boxY" column="boxY" type="double" />
+        <property name="boxWidth" column="boxWidth" type="double" />
+        <property name="boxHeight" column="boxHeight" type="double" />
+        <property name="sourceBoxPointId" column="sourceBoxPointId" type="string" />
+        <property name="sourcePointId" column="sourcePointId" type="string" />
+        <property name="targetBoxPointId" column="targetBoxPointId" type="string" />
+        <property name="targetPointId" column="targetPointId" type="string" />
+     </joined-subclass>
+    
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.RenameMetaConnectionCommand" table="RenameMetaConnectionCommand">
+        <key column="Command_id"/>
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="newName" column="newName" type="string" />
+        <property name="oldName" column="oldName" type="string" />
+     </joined-subclass>
+    
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionMultiplicityCommand" table="ChangeMetaConnectionMultiplicityCommand">
+        <key column="Command_id"/>
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="newLowerBound" column="newLowerBound" type="integer" />
+        <property name="newUpperBound" column="newUpperBound" type="integer" />
+        <property name="oldLowerBound" column="newName" type="integer" />
+        <property name="oldUpperBound" column="oldUpperBound" type="integer" />
+     </joined-subclass>
+     
+    
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.CreateMetaConnectionAttributeCommand" table="CreateMetaConnectionAttributeCommand">
+        <key column="Command_id"/>
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="metaAttributeId" column="metaAttributeId" type="string" />
+        <property name="metaTypeName" column="metaTypeName" type="string" />
+        <property name="name" column="name" type="string" />
+     </joined-subclass>
+     
+    <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.EditMetaConnectionAttributeCommand" table="EditMetaConnectionAttributeCommand">
+        <key column="Command_id"/>
+        <property name="attributeId" column="attributeId" type="string" />
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="newName" column="newName" type="string" />
+        <property name="newMetaBaseTypeName" column="newMetaBaseTypeName" type="string" />
+        <property name="oldName" column="oldName" type="string" />
+        <property name="oldMetaBaseTypeName" column="oldMetaBaseTypeName" type="string" />
+     </joined-subclass>
+    
+    
+     <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaConnectionAttributeCommand" table="DeleteMetaConnectionAttributeCommand">
+        <key column="Command_id"/>
+        <property name="metaAttributeId" column="metaAttributeId" type="string" />
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="originalAttributeName" column="originalAttributeName" type="string" />
+        <property name="originalAttribueTypeName" column="originalAttribueTypeName" type="string" />
+     </joined-subclass>
+    
+     
+     <joined-subclass name="org.gemsjax.shared.collaboration.command.MoveMetaConnectionAchnorPointCommand" table="MoveMetaConnectionAchnorPointCommand">
+        <key column="Command_id"/>
+        <property name="anchorId" column="metaAttributeId" type="string" />
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="newX" column="newX" type="double" />
+        <property name="newY" column="newY" type="double" />
+        <property name="oldX" column="oldX" type="double" />
+        <property name="oldY" column="oldY" type="double" />
+     </joined-subclass>
+     
+     <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionIconsCommand" table="ChangeMetaConnectionIconsCommand">
+        <key column="Command_id"/>
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="newSourceIcon" column="newSourceIcon" type="string" />
+        <property name="newTargetIcon" column="newTargetIcon" type="string" />
+        <property name="oldSourceIcon" column="oldSourceIcon" type="string" /> 
+        <property name="oldTargetIcon" column="oldTargetIcon" type="string" />
+       
+     </joined-subclass>
+     
+    
 </class>
 
 </hibernate-mapping>

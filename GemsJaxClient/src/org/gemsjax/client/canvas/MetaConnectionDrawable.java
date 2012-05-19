@@ -175,7 +175,8 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		RootPanel.get().add(sourceIconImage); // image must be on page to fire load events
 		
 		sourceIconLoaded = false;
-		sourceIconImage.setUrl(connection.getSourceIconURL());
+		if (connection.getSourceIconURL()!=null)
+			sourceIconImage.setUrl(connection.getSourceIconURL());
 		
 		
 		targetIconImage = new Image();
@@ -194,7 +195,8 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		RootPanel.get().add(targetIconImage); // image must be on page to fire load events
 		
 		targetIconLoaded = false;
-		targetIconImage.setUrl(connection.getTargetIconURL());
+		if (connection.getTargetIconURL()!=null)
+			targetIconImage.setUrl(connection.getTargetIconURL());
 		
 		
 		
@@ -267,11 +269,12 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 		connectionBox.draw(context);
 		
 		// TODO what to do with the icons
-		//drawIcons(context);
+		drawIcons(context);
 		
 		
 		if (connection.isSelected())
 			drawOnSelect(context);
+		
 		
 		
 		context.restore();
@@ -316,9 +319,9 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 				
 				
 			}
-			else
+			/*else
 			{	
-	
+				
 				String loadingTxt = "Loading";
 				
 				context.setFont(""+connection.getAttributeFontSize()+"px "+connection.getFontFamily());
@@ -339,6 +342,7 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 						context.fillText(loadingTxt.substring(0, chars)+"...", x, y+connection.getAttributeFontSize(), width);
 				}
 			}
+			*/
 		}
 		
 		
@@ -955,6 +959,9 @@ public class MetaConnectionDrawable implements Drawable, Moveable, Clickable, Re
 	}
 
 
+	public MetaConnection getMetaConnection(){
+		return connection;
+	}
 
 
 

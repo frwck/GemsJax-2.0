@@ -42,5 +42,8 @@ public interface MetaAttribute extends MetaModelElement{
 	public void addCollaborateableElementPropertiesListeners(Set<CollaborateableElementPropertiesListener> listeners);
 	public void removeCollaborateableElementPropertiesListeners(Set<CollaborateableElementPropertiesListener> listeners);
 
+	public void addCollaborateableElementPropertiesListener(CollaborateableElementPropertiesListener listeners);
+	public void removeCollaborateableElementPropertiesListener(CollaborateableElementPropertiesListener listeners);
+	
 
 }

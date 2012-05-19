@@ -15,18 +15,13 @@ import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationList
 import org.gemsjax.client.admin.view.MetaModelView.MetaClassPropertiesListener;
 import org.gemsjax.client.admin.view.MetaModelView.MetaClassPropertiesListener.MetaClassPropertyEvent;
 import org.gemsjax.client.admin.view.MetaModelView.MetaClassPropertiesListener.MetaClassPropertyEvent.PropertyChangedType;
-import org.gemsjax.client.admin.widgets.ModalDialog;
-import org.gemsjax.client.admin.widgets.OptionButton;
-import org.gemsjax.client.admin.widgets.Title;
 import org.gemsjax.client.admin.widgets.UploadDiaolog;
-import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.collaboration.CollaborateableElementPropertiesListener;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Label;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.ListGridEditEvent;
@@ -34,9 +29,6 @@ import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.HasClickHandlers;
-import com.smartgwt.client.widgets.events.RightMouseDownEvent;
-import com.smartgwt.client.widgets.events.RightMouseDownHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -50,10 +42,6 @@ import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
 import com.smartgwt.client.widgets.grid.events.CellSavedEvent;
 import com.smartgwt.client.widgets.grid.events.CellSavedHandler;
-import com.smartgwt.client.widgets.grid.events.EditCompleteEvent;
-import com.smartgwt.client.widgets.grid.events.EditCompleteHandler;
-import com.smartgwt.client.widgets.grid.events.RowEditorExitEvent;
-import com.smartgwt.client.widgets.grid.events.RowEditorExitHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
@@ -99,101 +87,6 @@ class AttributeRecord extends ListGridRecord{
 	
 	
 }
-
-
-class AddMetaAttributeDialog extends ModalDialog{
-	
-	private TextItem name;
-	private SelectItem type;
-	private OptionButton saveButton;
-	private DynamicForm inputContainer;
-	
-	
-	public AddMetaAttributeDialog(List<MetaBaseType> baseTypes){
-		OptionButton close = new OptionButton("close");
-		close.setWidth(55);
-		close.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				destroy();
-			}
-		});
-		
-		Title t = new Title("New Attribute");
-		t.setWidth("*");
-		
-		HLayout header = new HLayout();
-		header.setMembersMargin(20);
-		header.addMember(t);
-		header.addMember(close);
-		header.setWidth100();
-		header.setHeight(30);
-		
-		inputContainer = new DynamicForm();
-		name = new TextItem();
-		name.setTitle("Name");
-		name.setRequired(true);
-		
-		type = new SelectItem();
-		type.setTitle("Type");
-		type.setAddUnknownValues(false);
-		type.setDefaultValue((baseTypes.get(0).getName()));
-		
-		LinkedHashMap<String, String> typesMap = new LinkedHashMap<String, String>();
-		for (MetaBaseType typ: baseTypes)
-			typesMap.put(typ.getName(), typ.getName());
-		type.setValueMap(typesMap);
-		
-		inputContainer.setFields(name, type);
-		inputContainer.setWidth100();
-		inputContainer.setHeight(50);
-		
-		
-		saveButton = new OptionButton("save");
-		saveButton.setWidth(50);
-		
-		VStack content = new VStack();
-		content.addMember(header);
-		content.addMember(inputContainer);
-		content.addMember(saveButton);
-		
-		content.setWidth100();
-		content.setHeight100();
-		
-		this.addItem(content);
-		
-		this.setWidth(250);
-		this.setHeight(200);
-		this.centerInPage();
-		inputContainer.focusInItem(0);
-	}
-	
-	@Override
-	public void show(){
-		inputContainer.focusInItem(0);
-		super.show();
-	}
-	
-	public String getName(){
-		return name.getValueAsString();
-	}
-	
-	public String getType(){
-		return type.getValueAsString();
-	}
-	
-	public HasClickHandlers getSaveButton(){
-		return saveButton;
-	}
-	
-}
-
-
-
-
-
-
 
 
 

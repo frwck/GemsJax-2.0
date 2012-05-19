@@ -35,7 +35,7 @@ public class UploadDiaolog extends StyledModalDialog{
 		
 		uploader = new SingleUploader(FileInputType.BUTTON);
 		uploader.setServletPath(ServletPaths.ICON_UPLOAD);
-		uploader.setValidExtensions("jpg","png");
+		uploader.setValidExtensions("jpg","png", "gif");
 		uploader.setAutoSubmit(true);
 		uploader.addOnStartUploadHandler(new IUploader.OnStartUploaderHandler() {
 			

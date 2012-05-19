@@ -26,7 +26,7 @@
 	<classpathentry kind="lib" path="lib/jetty/jetty-xml-8.0.3.v20111011.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/servlet-api-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate/hibernate3.jar"/>
-	<classpathentry kind="lib" path="lib/GemsJaxShared.jar"/>
+	<classpathentry kind="lib" path="lib/GemsJaxShared.jar" sourcepath="/GemsJaxClient/src"/>
 	<classpathentry kind="lib" path="lib/hibernate/mysql-connector-java-5.1.18-bin.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate/commons-collections-3.1.jar"/>

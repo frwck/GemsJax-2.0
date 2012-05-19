@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.notification.Notification;
+import org.gemsjax.client.admin.view.MetaModelView.MetaConnectionPropertiesListener;
 import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.CreateMetaRelationHandler;
 import org.gemsjax.client.canvas.Drawable;
@@ -41,10 +42,16 @@ public interface MetaModelView extends CollaborateableView{
 			private String name;
 			private MetaBaseType baseType;
 			private MetaClass metaClass;
+			private MetaConnection metaConnection;
 			
 			public MetaAttributeManipulationEvent(ManipulationType type, MetaClass metaClass){
 				this.type = type;
 				this.metaClass = metaClass;
+			}
+			
+			public MetaAttributeManipulationEvent(ManipulationType type, MetaConnection metaConnection){
+				this.type = type;
+				this.metaConnection = metaConnection;
 			}
 			
 			public MetaClass getMetaClass(){
@@ -77,6 +84,14 @@ public interface MetaModelView extends CollaborateableView{
 
 			public ManipulationType getType() {
 				return type;
+			}
+
+			public MetaConnection getMetaConnection() {
+				return metaConnection;
+			}
+
+			public void setMetaConnection(MetaConnection metaConnection) {
+				this.metaConnection = metaConnection;
 			}
 			
 		}
@@ -149,6 +164,93 @@ public interface MetaModelView extends CollaborateableView{
 			}
 			
 		}
+	}
+	
+	
+	public interface MetaConnectionPropertiesListener{
+		
+		public void onMetaConnectionPropertyChanged(MetaConnectionPropertyEvent e);
+		
+		public class MetaConnectionPropertyEvent{
+			public enum ConnectionPropertyChangedType{
+				RENAME,
+				MULTIPLICITY,
+				SOURCE_ICON,
+				TARGET_ICON
+			}
+			
+			private ConnectionPropertyChangedType type;
+			private MetaConnection connection;
+			private String name;
+			private int lowerBound;
+			private int upperBound;
+			private String sourceIcon;
+			private String targetIcon;
+			
+			public MetaConnectionPropertyEvent(ConnectionPropertyChangedType type, MetaConnection connection){
+				this.type = type;
+				this.connection = connection;
+			}
+
+			public ConnectionPropertyChangedType getType() {
+				return type;
+			}
+
+			public void setType(ConnectionPropertyChangedType type) {
+				this.type = type;
+			}
+
+			public MetaConnection getConnection() {
+				return connection;
+			}
+
+			public void setConnection(MetaConnection connection) {
+				this.connection = connection;
+			}
+
+			public String getName() {
+				return name;
+			}
+
+			public void setName(String name) {
+				this.name = name;
+			}
+
+			public int getLowerBound() {
+				return lowerBound;
+			}
+
+			public void setLowerBound(int lowerBound) {
+				this.lowerBound = lowerBound;
+			}
+
+			public int getUpperBound() {
+				return upperBound;
+			}
+
+			public void setUpperBound(int upperBound) {
+				this.upperBound = upperBound;
+			}
+
+			public String getSourceIcon() {
+				return sourceIcon;
+			}
+
+			public void setSourceIcon(String sourceIcon) {
+				this.sourceIcon = sourceIcon;
+			}
+
+			public String getTargetIcon() {
+				return targetIcon;
+			}
+
+			public void setTargetIcon(String targetIcon) {
+				this.targetIcon = targetIcon;
+			}
+			
+		}
+		
+		
 	}
 	
 	
@@ -260,4 +362,7 @@ public interface MetaModelView extends CollaborateableView{
 	
 	public void addCreateMetaRelationHandler(CreateMetaRelationHandler h);
 	public void removeCreateMetaRelationHandler(CreateMetaRelationHandler h);
+	void addMetaConnectionPropertiesListener(MetaConnectionPropertiesListener l);
+	void removeConnectionPropertiesListener(MetaConnectionPropertiesListener l);
+	public void clearDetailView();
 }

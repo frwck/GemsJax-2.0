@@ -14,6 +14,7 @@ import org.gemsjax.client.admin.tabs.LoadingTab;
 import org.gemsjax.client.admin.tabs.TwoColumnLayout;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.view.grids.MetaClassDetailView;
+import org.gemsjax.client.admin.view.grids.MetaConnectionDetailView;
 import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.client.canvas.Anchor;
@@ -90,9 +91,11 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	private List<MetaBaseType> metaBaseTypes;
 	
 	private MetaClassDetailView metaClassDetailView;
+	private MetaConnectionDetailView metaConnectionDetailView;
 	
 	private Set<MetaModelView.MetaAttributeManipulationListener> attributeManipulationListeners;
 	private Set<MetaClassPropertiesListener> classPropertiesListeners;
+	private Set<MetaConnectionPropertiesListener> connectionPropertiesListeners;
 	
 	
 	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException 
@@ -100,6 +103,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		super(title, language);
 		attributeManipulationListeners = new LinkedHashSet<MetaModelView.MetaAttributeManipulationListener>();
 		classPropertiesListeners = new LinkedHashSet<MetaModelView.MetaClassPropertiesListener>();
+		connectionPropertiesListeners = new LinkedHashSet<MetaModelView.MetaConnectionPropertiesListener>();
 		
 		this.language = language;
 		
@@ -338,7 +342,17 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	public void setMetaConnectionDetail(MetaConnection metaConnection) {
 		clearDetailPlaceHolder();
 	
+		if (metaConnectionDetailView == null){
+			metaConnectionDetailView = new MetaConnectionDetailView(metaBaseTypes);
+			metaConnectionDetailView.addMetaAttributeManipulationListeners(attributeManipulationListeners);
+			
+			for (MetaConnectionPropertiesListener l : connectionPropertiesListeners )
+				metaConnectionDetailView.addMetaConnectionPropertiesListener(l);
+			
+		}
 		
+		metaConnectionDetailView.setMetaConnection(metaConnection);
+		metaDetailPlaceHolder.addMember(metaConnectionDetailView);
 		
 	}
 	
@@ -430,6 +444,19 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	}
 	
 	
+	@Override
+	public void addMetaConnectionPropertiesListener(MetaConnectionPropertiesListener l){
+		connectionPropertiesListeners.add(l);
+	}
 	
+	@Override
+	public void removeConnectionPropertiesListener(MetaConnectionPropertiesListener l){
+		connectionPropertiesListeners.add(l);
+	}
+	
+	
+	public void clearDetailView(){
+		metaDetailPlaceHolder.removeMembers(metaDetailPlaceHolder.getMembers());
+	}
 	
 }

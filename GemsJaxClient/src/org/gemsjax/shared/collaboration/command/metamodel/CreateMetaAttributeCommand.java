@@ -6,6 +6,7 @@ import org.gemsjax.shared.communication.serialisation.Archive;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaClass;
+import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModel;
 import org.gemsjax.shared.metamodel.impl.MetaAttributeImpl;
 
@@ -15,26 +16,40 @@ public class CreateMetaAttributeCommand extends CommandImpl {
 	private String metaBaseTypeName;
 	private String metaClassId;
 	private String metaAttributeId;
+	private String metaConnectionId;
 	
 	public CreateMetaAttributeCommand(){}
 	
 		
-	public CreateMetaAttributeCommand(String id, String metaClassId, String metaAttributeId, String name, MetaBaseType metaBaseType ){
+	public CreateMetaAttributeCommand(String id, MetaClass metaClass, String metaAttributeId, String name, MetaBaseType metaBaseType ){
 		setId(id);
 		this.metaAttributeId = metaAttributeId;
-		this.metaClassId = metaClassId;
+		this.metaClassId = metaClass.getID();
+		this.metaConnectionId = null;
 		this.metaBaseTypeName = metaBaseType.getName();
 		this.name = name;
 	}
 	
+	public CreateMetaAttributeCommand(String id, MetaConnection connection, String metaAttributeId, String name, MetaBaseType metaBaseType ){
+		setId(id);
+		this.metaAttributeId = metaAttributeId;
+		this.metaClassId = null;
+		this.metaConnectionId = connection.getID();
+		this.metaBaseTypeName = metaBaseType.getName();
+		this.name = name;
+	}
 	
 	@Override
 	public void serialize(Archive a) throws Exception{
 		super.serialize(a);
+		
+		
 		name = a.serialize("name", name).value;
 		metaBaseTypeName = a.serialize("metaBaseTypeName", metaBaseTypeName).value;
 		metaClassId = a.serialize("metaClassId", metaClassId).value;
 		metaAttributeId = a.serialize("metaAttributeId",metaAttributeId).value;
+		metaConnectionId = a.serialize("metaConnectionId", metaConnectionId).value;
+		
 	}
 	
 	
@@ -51,18 +66,36 @@ public class CreateMetaAttributeCommand extends CommandImpl {
 	@Override
 	public void execute() throws ManipulationException {
 		MetaModel mm = (MetaModel) getCollaborateable();
-		MetaClass mc = (MetaClass) mm.getElementByID(metaClassId);
-		MetaBaseType type = getTypeFromName(mm, metaBaseTypeName);
-		mc.addAttribute(new MetaAttributeImpl(metaAttributeId, name, type));
+		
+		if (metaClassId!=null){
+			MetaClass mc = (MetaClass) mm.getElementByID(metaClassId);
+			MetaBaseType type = getTypeFromName(mm, metaBaseTypeName);
+			mc.addAttribute(new MetaAttributeImpl(metaAttributeId, name, type));
+		}
+		else
+		if(metaConnectionId !=null){
+			MetaConnection mc = (MetaConnection) mm.getElementByID(metaConnectionId);
+			MetaBaseType type = getTypeFromName(mm, metaBaseTypeName);
+			mc.addAttribute(new MetaAttributeImpl(metaAttributeId, name, type));
+		}
+		
 		
 	}
 
 	@Override
 	public void undo() throws ManipulationException {
 		MetaModel mm = (MetaModel) getCollaborateable();
-		MetaClass mc = (MetaClass) mm.getElementByID(metaClassId);
-		MetaAttribute a = mc.getAttributeById(metaAttributeId);
-		mc.removeAttribute(a);
+		if(metaClassId!=null){
+			MetaClass mc = (MetaClass) mm.getElementByID(metaClassId);
+			MetaAttribute a = mc.getAttributeById(metaAttributeId);
+			mc.removeAttribute(a);
+		}
+		else
+		if(metaConnectionId!=null){
+			MetaConnection mc = (MetaConnection) mm.getElementByID(metaConnectionId);
+			MetaAttribute a = mc.getAttributeById(metaAttributeId);
+			mc.removeAttribute(a);
+		}
 	}
 
 }

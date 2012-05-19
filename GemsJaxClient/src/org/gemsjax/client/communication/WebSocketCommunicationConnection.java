@@ -11,14 +11,22 @@ import org.gemsjax.client.communication.serialisation.GwtXmlLoadingArchive;
 import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.ServletPaths;
 import org.gemsjax.shared.collaboration.TransactionImpl;
+import org.gemsjax.shared.collaboration.command.MoveMetaConnectionAchnorPointCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstractCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionIconsCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionMultiplicityCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaConnectionAttributeCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaConnectionCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaAttributeCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaConnectionAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.EditMetaConnectionAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaConnectionCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
@@ -44,12 +52,20 @@ import org.gemsjax.shared.communication.serialisation.instantiators.collaboratio
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.TransactionInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaClassAbstractCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaClassIconCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionIconsCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionMultiplicityCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaClassCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaConnectionAttributeCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaConnectionCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.DeleteMetaAttributeCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.DeleteMetaConnectionAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.EditMetaAttributeCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.EditMetaConnectionAttributeInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaClassCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaConnectionAchnorPointCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.RenameMetaClassCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.RenameMetaConnectionCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ResizeMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorJoinedMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorLeftMessageInstantiator;
@@ -183,10 +199,19 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(RenameMetaClassCommand.class.getName(), new RenameMetaClassCommandInstantiator());
 		objectFactory.register(ChangeMetaClassIconCommand.class.getName(), new ChangeMetaClassIconCommandInstantiator());
 		objectFactory.register(ChangeMetaClassAbstractCommand.class.getName(), new ChangeMetaClassAbstractCommandInstantiator());
+		// MetaConnection
+		objectFactory.register(CreateMetaConnectionCommand.class.getName(), new CreateMetaConnectionCommandInstantiator());
+		objectFactory.register(RenameMetaConnectionCommand.class.getName(), new RenameMetaConnectionCommandInstantiator());
+		objectFactory.register(ChangeMetaConnectionMultiplicityCommand.class.getName(), new ChangeMetaConnectionMultiplicityCommandInstantiator());
+		objectFactory.register(CreateMetaConnectionAttributeCommand.class.getName(), new CreateMetaConnectionAttributeCommandInstantiator());
+		objectFactory.register(EditMetaConnectionAttributeCommand.class.getName(), new EditMetaConnectionAttributeInstantiator());
+		objectFactory.register(DeleteMetaConnectionAttributeCommand.class.getName(), new DeleteMetaConnectionAttributeCommandInstantiator());
+		objectFactory.register(MoveMetaConnectionAchnorPointCommand.class.getName(), new MoveMetaConnectionAchnorPointCommandInstantiator());
+		objectFactory.register(ChangeMetaConnectionIconsCommand.class.getName(), new ChangeMetaConnectionIconsCommandInstantiator());
 		
 		
 		
-			
+		
 		}
 		
 	
@@ -564,9 +589,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		
 		if (!inputChannelMap.containsKey(type)){ // key is not already there
 			Set<InputChannel> channels =  new LinkedHashSet<InputChannel>();
-			
 			channels.add(c);
-			
 			inputChannelMap.put(type, channels);
 		}
 		else

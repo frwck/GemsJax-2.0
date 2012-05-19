@@ -95,6 +95,20 @@ public class MetaAttributeImpl implements MetaAttribute{
 			Set<CollaborateableElementPropertiesListener> listeners) {
 		this.listeners.removeAll(listeners);
 	}
+
+
+	@Override
+	public void addCollaborateableElementPropertiesListener(
+			CollaborateableElementPropertiesListener l) {
+		listeners.add(l);
+	}
+
+
+	@Override
+	public void removeCollaborateableElementPropertiesListener(
+			CollaborateableElementPropertiesListener l) {
+		listeners.remove(l);
+	}
 	
 	
 

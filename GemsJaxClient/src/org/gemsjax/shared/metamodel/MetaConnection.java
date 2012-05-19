@@ -30,6 +30,8 @@ import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
  *
  */
 public interface MetaConnection extends MetaModelElement{
+	
+	public static int MULTIPLICITY_MANY = -1;
 
 	/**
 	 * Get the name of this element
@@ -516,7 +518,14 @@ public interface MetaConnection extends MetaModelElement{
 	public void addPropertiesListener(CollaborateableElementPropertiesListener l);
 	public void removePropertiesListener(CollaborateableElementPropertiesListener l);
 	
+	public boolean isAttributeNameAvailable(String name);
+
+	public MetaAttribute getAttributeById(String metaAttributeId);
 	
+	public void addCollaborateableElementPropertiesListener(CollaborateableElementPropertiesListener l);
+	public void removeCollaborateableElementPropertiesListener(CollaborateableElementPropertiesListener l);
+	
+	public AnchorPoint getAnchorPointById(String id);
 }
 
 

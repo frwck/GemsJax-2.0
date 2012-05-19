@@ -316,7 +316,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				if (d instanceof MetaClassDrawable){
 					if(createRelationSource==null){
 						createRelationSource = (MetaClassDrawable) d;
-						NotificationManager.getInstance().showTipNotification(new TipNotification("Select the traget now", null, 2000, NotificationPosition.CENTER));
+						NotificationManager.getInstance().showTipNotification(new TipNotification("Select the traget", null, 2000, NotificationPosition.BOTTOM_CENTERED));
 					}
 					else
 					if (createRelationTarget == null){

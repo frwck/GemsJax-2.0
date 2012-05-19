@@ -11,6 +11,7 @@ import org.gemsjax.client.admin.presenter.event.CollaborateableClosedEvent;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationListener.MetaAttributeManipulationEvent.ManipulationType;
 import org.gemsjax.client.admin.view.MetaModelView.MetaClassPropertiesListener.MetaClassPropertyEvent.PropertyChangedType;
+import org.gemsjax.client.admin.view.MetaModelView.MetaConnectionPropertiesListener.MetaConnectionPropertyEvent.ConnectionPropertyChangedType;
 import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.CreateMetaRelationHandler;
 import org.gemsjax.client.canvas.DockableAnchor;
@@ -44,23 +45,31 @@ import org.gemsjax.client.canvas.handler.ResizeHandler;
 import org.gemsjax.client.canvas.handler.metamodel.CreateMetaClassHandler;
 import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
-import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.UUID;
+import org.gemsjax.shared.collaboration.command.MoveMetaConnectionAchnorPointCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstractCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionIconsCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionMultiplicityCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaConnectionAttributeCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaConnectionCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaAttributeCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaConnectionAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.EditMetaConnectionAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaConnectionCommand;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionMultiplicityCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaConnectionAchnorPointCommandInstantiator;
 import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
-import org.gemsjax.shared.metamodel.exception.MetaConnectionException;
 import org.gemsjax.shared.metamodel.impl.MetaFactory;
 
 import com.google.gwt.event.shared.EventBus;
@@ -78,6 +87,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 																CollaborationModuleHandler, CreateMetaClassHandler,
 																MetaModelView.MetaAttributeManipulationListener,
 																MetaModelView.MetaClassPropertiesListener,
+																MetaModelView.MetaConnectionPropertiesListener,
 																CloseClickHandler, 
 																CreateMetaRelationHandler{
 	
@@ -146,6 +156,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		});
 		
 		view.addMetaClassPropertiesListener(this);
+		view.addMetaConnectionPropertiesListener(this);
 		view.addMetaAttributeManipulationListener(this);
 		view.addCreateMetaClassHandler(this);
 		view.addCreateMetaRelationHandler(this);
@@ -268,6 +279,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 					d.addResizeHandler(this);
 					d.addFocusHandler(this);
 					d.addIconLoadHandler(this);
+					d.addClickHandler(this);
 					
 					// Add PlaceHandler to the AnchorPoints between source and Connection box
 					AnchorPoint currentPoint = d.getSourceAnchor().getAnchorPoint();
@@ -361,8 +373,10 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		}
 		else
 		if(event.getSource() instanceof MetaConnectionDrawable){
-			
+			view.setMetaConnectionDetail(((MetaConnectionDrawable)event.getSource()).getMetaConnection());
 		}
+		else
+			view.clearDetailView();
 	}
 
 
@@ -682,16 +696,31 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			
 			if (p instanceof DockableAnchor)
 			{
-				ap.x = ((DockableAnchor)p).getRelativeX();
-				ap.y = ((DockableAnchor)p).getRelativeY();
+				double newX = ((DockableAnchor)p).getRelativeX();
+				double newY = ((DockableAnchor)p).getRelativeY();
+				
+				MoveMetaConnectionAchnorPointCommand c = new MoveMetaConnectionAchnorPointCommand(UUID.generate(), parent.getMetaConnection(), ap, newX, newY);
+				try {
+					module.sendAndCommitTransaction(c);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			else
 			{
-				ap.x = x;
-				ap.y = y;
+				double newX = x;
+				double newY = y;
+				
+				MoveMetaConnectionAchnorPointCommand c = new MoveMetaConnectionAchnorPointCommand(UUID.generate(), parent.getMetaConnection(), ap, newX, newY);
+				try {
+					module.sendAndCommitTransaction(c);
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}	
 
-			//TODO collaborativ websocket information
 		}
 		else
 		if(e.getType() == PlaceEventType.NOT_ALLOWED) // Not Allowed: display a notification, restore the anchors position to the position before the TEMP_PLACING has started
@@ -772,26 +801,48 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 	@Override
 	public void onMetaAttributeManipulated(MetaAttributeManipulationEvent e) {
 		try {
-			
-			if (e.getType()==ManipulationType.NEW){
-				CreateMetaAttributeCommand c = new CreateMetaAttributeCommand(UUID.generate(), e.getMetaClass().getID(), UUID.generate(), e.getName(), e.getBaseType());
-				module.sendAndCommitTransaction(c);
+
+			if (e.getMetaClass()!=null){
+				if (e.getType()==ManipulationType.NEW){
+					CreateMetaAttributeCommand c = new CreateMetaAttributeCommand(UUID.generate(), e.getMetaClass(), UUID.generate(), e.getName(), e.getBaseType());
+					module.sendAndCommitTransaction(c);
+				}
+				else
+				if (e.getType()==ManipulationType.MODIFY){
+					EditMetaAttributeCommand c = new EditMetaAttributeCommand(UUID.generate(), e.getMetaAttribute().getID(), e.getMetaClass(), e.getName(), e.getMetaAttribute().getName(), e.getBaseType(), e.getMetaAttribute().getType());
+					module.sendAndCommitTransaction(c);
+				}
+				else
+				if (e.getType() == ManipulationType.DELETE){
+					DeleteMetaAttributeCommand c = new DeleteMetaAttributeCommand(UUID.generate(), e.getMetaClass(), e.getMetaAttribute());
+					module.sendAndCommitTransaction(c);
+				}
 			}
 			else
-			if (e.getType()==ManipulationType.MODIFY){
-				EditMetaAttributeCommand c = new EditMetaAttributeCommand(UUID.generate(), e.getMetaAttribute().getID(), e.getMetaClass().getID(), e.getName(), e.getMetaAttribute().getName(), e.getBaseType(), e.getMetaAttribute().getType());
-				module.sendAndCommitTransaction(c);
+			if (e.getMetaConnection()!=null){
+				
+				if (e.getType()==ManipulationType.NEW){
+
+					CreateMetaConnectionAttributeCommand c = new CreateMetaConnectionAttributeCommand(UUID.generate(), e.getMetaConnection(), UUID.generate(), e.getName(), e.getBaseType());
+					module.sendAndCommitTransaction(c);
+				}
+				else
+				if (e.getType()==ManipulationType.MODIFY){
+					EditMetaConnectionAttributeCommand c = new EditMetaConnectionAttributeCommand(UUID.generate(),  e.getMetaConnection(), e.getMetaAttribute(), e.getName(), e.getBaseType());
+					module.sendAndCommitTransaction(c);
+				}
+				else
+				if (e.getType() == ManipulationType.DELETE){
+					DeleteMetaConnectionAttributeCommand c = new DeleteMetaConnectionAttributeCommand(UUID.generate(), e.getMetaConnection(), e.getMetaAttribute());
+					module.sendAndCommitTransaction(c);
+				}
+				
 			}
-			else
-			if (e.getType() == ManipulationType.DELETE){
-				DeleteMetaAttributeCommand c = new DeleteMetaAttributeCommand(UUID.generate(), e.getMetaClass().getID(), e.getMetaAttribute());
-				module.sendAndCommitTransaction(c);
-			}
-			
 			
 		} catch (IOException ex) {
 			view.showSendError(ex);
 			ex.printStackTrace();
+
 		}
 	}
 
@@ -845,16 +896,49 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		
 		
 		MetaConnection mc = MetaFactory.createMetaConnection(name, source, target);
+		
+		CreateMetaConnectionCommand c = new CreateMetaConnectionCommand(UUID.generate(), mc);
 		try {
-			source.addConnection(mc);
-		} catch (MetaConnectionException e) {
-			// TODO Auto-generated catch block
+			module.sendAndCommitTransaction(c);
+		} catch (IOException e) {
+			view.showSendError(e);
 			e.printStackTrace();
 		}
 		
-		Console.log("Relation " +name+" "+ source.getName()+" "+target.getName());
 		
-		onCollaborateableUpdated();
+	}
+
+
+	@Override
+	public void onMetaConnectionPropertyChanged(MetaConnectionPropertyEvent e) {
+		
+		try {
+			if (e.getType() == ConnectionPropertyChangedType.RENAME){
+				RenameMetaConnectionCommand c = new RenameMetaConnectionCommand(UUID.generate(), e.getConnection(), e.getName());
+				module.sendAndCommitTransaction(c);
+			}
+			else
+			if(e.getType() == ConnectionPropertyChangedType.MULTIPLICITY){
+				ChangeMetaConnectionMultiplicityCommand c = new ChangeMetaConnectionMultiplicityCommand(UUID.generate(), e.getConnection(), e.getLowerBound(), e.getUpperBound());
+				module.sendAndCommitTransaction(c);
+			}
+			else
+			if(e.getType() == ConnectionPropertyChangedType.SOURCE_ICON ) {
+				ChangeMetaConnectionIconsCommand c = new ChangeMetaConnectionIconsCommand(UUID.generate(), e.getConnection(), e.getSourceIcon(), e.getConnection().getTargetIconURL());
+				module.sendAndCommitTransaction(c);
+			}
+			else
+			if( e.getType() == ConnectionPropertyChangedType.TARGET_ICON ) {
+				ChangeMetaConnectionIconsCommand c = new ChangeMetaConnectionIconsCommand(UUID.generate(), e.getConnection(), e.getSourceIcon(), e.getConnection().getTargetIconURL());
+				module.sendAndCommitTransaction(c);
+			}
+			
+			
+			
+		} catch (IOException ex) {
+			view.showSendError(ex);
+			ex.printStackTrace();
+		}
 		
 	}
 	

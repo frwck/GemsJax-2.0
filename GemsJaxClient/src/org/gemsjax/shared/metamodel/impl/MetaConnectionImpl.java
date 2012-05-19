@@ -48,13 +48,13 @@ public class MetaConnectionImpl implements MetaConnection {
 	private double connectionMinHeight = 20;
 	
 	
-	private int targetLowerBound;
+	private int targetLowerBound = 0;
 	
-	private int targetUpperBound;
+	private int targetUpperBound = MULTIPLICITY_MANY;
 	
 	
-	private String sourceIconUrl = "/metamodel/icons/connection.gif";
-	private String targetIconUrl = "/metamodel/icons/connection.gif";
+	private String sourceIconUrl = null;
+	private String targetIconUrl = null;
 	
 	private double sourceIconWidth = 30;
 	private double sourceIconHeight = 30;
@@ -222,8 +222,7 @@ public class MetaConnectionImpl implements MetaConnection {
 	public void setTarget(MetaClass target) {
 		this.target = target;
 		
-		for (CollaborateableElementPropertiesListener l : listeners)
-			l.onChanged();
+		firePropertyChanged();
 	}
 
 	@Override
@@ -232,6 +231,10 @@ public class MetaConnectionImpl implements MetaConnection {
 	}
 
 
+	private void firePropertyChanged(){
+		for (CollaborateableElementPropertiesListener l : listeners)
+			l.onChanged();
+	}
 	
 
 
@@ -244,6 +247,8 @@ public class MetaConnectionImpl implements MetaConnection {
 	@Override
 	public void setName(String name) {
 		this.name = name;
+
+		firePropertyChanged();
 	}
 
 
@@ -447,6 +452,7 @@ public class MetaConnectionImpl implements MetaConnection {
 	@Override
 	public void setTargetLowerBound(int lower) {
 		targetLowerBound = lower;
+		firePropertyChanged();
 	}
 
 
@@ -454,6 +460,8 @@ public class MetaConnectionImpl implements MetaConnection {
 	@Override
 	public void setTargetUpperBound(int upper) {
 		targetUpperBound = upper;
+
+		firePropertyChanged();
 	}
 
 
@@ -511,8 +519,8 @@ public class MetaConnectionImpl implements MetaConnection {
 	public void setSourceIconURL(String url) {
 		this.sourceIconUrl = url;
 		
-		for (CollaborateableElementPropertiesListener l : listeners)
-			l.onChanged();
+
+		firePropertyChanged();
 	}
 
 
@@ -541,9 +549,8 @@ public class MetaConnectionImpl implements MetaConnection {
 	@Override
 	public void setTargetIconURL(String url) {
 		this.targetIconUrl = url;
-		
-		for (CollaborateableElementPropertiesListener l : listeners)
-			l.onChanged();
+
+		firePropertyChanged();
 	}
 
 
@@ -589,8 +596,8 @@ public class MetaConnectionImpl implements MetaConnection {
 	public void setSource(MetaClass source) {
 		this.source = source;
 		
-		for (CollaborateableElementPropertiesListener l : listeners)
-			l.onChanged();
+
+		firePropertyChanged();
 	}
 
 
@@ -603,8 +610,8 @@ public class MetaConnectionImpl implements MetaConnection {
 		
 		attributes.add(attribute);
 		
-		for (CollaborateableElementPropertiesListener l : listeners)
-			l.onChanged();
+
+		firePropertyChanged();
 		
 	}
 
@@ -619,8 +626,8 @@ public class MetaConnectionImpl implements MetaConnection {
 	public void removeAttribute(MetaAttribute attribute) {
 		attributes.remove(attribute);
 		
-		for (CollaborateableElementPropertiesListener l : listeners)
-			l.onChanged();
+
+		firePropertyChanged();
 	}
 
 
@@ -835,6 +842,69 @@ public class MetaConnectionImpl implements MetaConnection {
 	public void removePropertiesListener(
 			CollaborateableElementPropertiesListener l) {
 		listeners.remove(l);
+	}
+
+
+	@Override
+	public boolean isAttributeNameAvailable(String name) {
+		for (MetaAttribute a : attributes)
+			if (a.getName().equals(name))
+				return false;
+		
+		return true;
+	}
+
+
+	@Override
+	public MetaAttribute getAttributeById(String metaAttributeId) {
+		
+		for (MetaAttribute a: attributes)
+			if(a.getID().equals(metaAttributeId))
+				return a;
+		
+		return null;
+	}
+
+
+	@Override
+	public void addCollaborateableElementPropertiesListener(
+			CollaborateableElementPropertiesListener l) {
+		for (MetaAttribute a: attributes)
+			a.addCollaborateableElementPropertiesListener(l);
+	}
+
+
+	@Override
+	public void removeCollaborateableElementPropertiesListener(
+			CollaborateableElementPropertiesListener l) {
+		for (MetaAttribute a: attributes)
+			a.removeCollaborateableElementPropertiesListener(l);
+	}
+
+
+	@Override
+	public AnchorPoint getAnchorPointById(String id) {
+		
+		AnchorPoint current = sourceRelativePoint;
+		
+		while (current !=null){
+			if (current.getID().equals(id))
+				return current;
+			
+			current = current.getNextAnchorPoint();
+		}
+		
+		current = targetConnectionBoxRelativePoint;
+		
+		while (current !=null){
+			if (current.getID().equals(id))
+				return current;
+			
+			current = current.getNextAnchorPoint();
+		}
+		
+		return null;
+		
 	}
 
 	

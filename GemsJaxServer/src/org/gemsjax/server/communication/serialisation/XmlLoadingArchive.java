@@ -101,14 +101,14 @@ public class XmlLoadingArchive implements XmlArchive {
 		String xmlKey = currentElement.getTagName();
 		String xmlClass = currentElement.getAttribute(ATTRIBUTE_CLASS);
 
-		if (!key.equals(xmlKey))
-			throw new Exception("key missmatch " + key + " " + xmlKey);
-
 		// check for null values
 		if (currentElement.hasAttribute(XmlArchive.ATTRIBUTE_NULL_VALUE)
 				&& Boolean.parseBoolean(currentElement
 						.getAttribute(XmlArchive.ATTRIBUTE_NULL_VALUE)))
 			return new Holder<T>(null);
+		
+		if (!key.equals(xmlKey))
+			throw new Exception("key missmatch " + key + " " + xmlKey);
 
 		// Check Primitive types
 		boolean isPrimitive = primitivDataTypes.contains(xmlClass);
