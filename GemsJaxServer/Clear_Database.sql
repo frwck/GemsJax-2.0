@@ -22,6 +22,9 @@ DELETE FROM RenameMetaConnectionCommand;
 DELETE FROM ResizeMetaClassCommand;
 DELETE FROM MoveMetaConnectionCommand;
 DELETE FROM ResizeMetaConnectionCommand;
+DELETE FROM ChangeMetaConnectionTargetCommand;
+DELETE FROM ChangeMetaConnectionSourceCommand;
+DELETE FROM CreateMetaInheritanceCommand;
 
 DELETE FROM Command;
 DELETE FROM VectorClockEntry;

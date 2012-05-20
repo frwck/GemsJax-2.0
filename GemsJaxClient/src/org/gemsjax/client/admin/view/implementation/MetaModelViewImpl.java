@@ -19,6 +19,7 @@ import org.gemsjax.client.admin.widgets.BigMenuButton;
 import org.gemsjax.client.admin.widgets.VerticalBigMenuButtonBar;
 import org.gemsjax.client.canvas.Anchor;
 import org.gemsjax.client.canvas.CanvasSupportException;
+import org.gemsjax.client.canvas.CreateMetaInheritanceHandler;
 import org.gemsjax.client.canvas.CreateMetaRelationHandler;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
@@ -244,7 +245,10 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 			NotificationManager.getInstance().showTipNotification(new TipNotification("Select the source MetaClass", null , 2000, NotificationPosition.BOTTOM_CENTERED) );
 			
 			break;
-			case CREATE_INHERITANCE: newInheritanceButton.setActive(true);
+			case CREATE_INHERITANCE: 
+				newInheritanceButton.setActive(true);
+				NotificationManager.getInstance().showTipNotification(new TipNotification("Select the class which should be extended", null, 2000, NotificationPosition.BOTTOM_CENTERED));
+				break;						
 			case READ_ONLY: break;// TODO: what to do when it has been set to READ_ONLY
 			default: Window.alert("Error: the mode is set to "+mode); break;
 		}
@@ -457,6 +461,25 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	
 	public void clearDetailView(){
 		metaDetailPlaceHolder.removeMembers(metaDetailPlaceHolder.getMembers());
+	}
+
+	@Override
+	public void addCreateMetaInheritanceHandler(CreateMetaInheritanceHandler h) {
+		canvas.addCreateMetaInheritanceHandler(h);	
+	}
+
+	@Override
+	public void removeCreateMetaInheritanceHandler(
+			CreateMetaInheritanceHandler h) {
+		canvas.removeCreateMetaInheritanceHandler(h);
+	}
+
+	@Override
+	public void showMetaInheritanceAlreadyExists(MetaClass clazz,
+			MetaClass superClass) {
+		
+		NotificationManager.getInstance().showTipNotification(new TipNotification("Inheritance already exists", clazz.getName()+" already inherits from "+superClass.getName(), 2000, NotificationPosition.CENTER));
+		
 	}
 	
 }

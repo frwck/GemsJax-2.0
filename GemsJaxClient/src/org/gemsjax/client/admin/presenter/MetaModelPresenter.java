@@ -14,6 +14,7 @@ import org.gemsjax.client.admin.view.MetaModelView.MetaAttributeManipulationList
 import org.gemsjax.client.admin.view.MetaModelView.MetaClassPropertiesListener.MetaClassPropertyEvent.PropertyChangedType;
 import org.gemsjax.client.admin.view.MetaModelView.MetaConnectionPropertiesListener.MetaConnectionPropertyEvent.ConnectionPropertyChangedType;
 import org.gemsjax.client.canvas.Anchor;
+import org.gemsjax.client.canvas.CreateMetaInheritanceHandler;
 import org.gemsjax.client.canvas.CreateMetaRelationHandler;
 import org.gemsjax.client.canvas.DockableAnchor;
 import org.gemsjax.client.canvas.Drawable;
@@ -54,10 +55,12 @@ import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCom
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionIconsCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionMultiplicityCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionSourceCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionTargetCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaConnectionAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaConnectionCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaInheritanceCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.DeleteMetaConnectionAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeCommand;
@@ -97,7 +100,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 																MetaModelView.MetaClassPropertiesListener,
 																MetaModelView.MetaConnectionPropertiesListener,
 																CloseClickHandler, 
-																CreateMetaRelationHandler{
+																CreateMetaRelationHandler, CreateMetaInheritanceHandler{
 	
 	private MetaModel metaModel;
 	private MetaModelView view;
@@ -168,6 +171,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		view.addMetaAttributeManipulationListener(this);
 		view.addCreateMetaClassHandler(this);
 		view.addCreateMetaRelationHandler(this);
+		view.addCreateMetaInheritanceHandler(this);
 		
 		view.addCloseClickHandler(this);
 	}
@@ -753,8 +757,9 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			MetaConnection connection = parent.getMetaConnection();
 			
 			// NewSource
-			if (e.getNewSourceDestination()!= null && ap.getID().equals(connection.getSourceRelativePoint().getID())){ 
-				MetaClass newSource = ((MetaClassDrawable)(e.getNewSourceDestination())).getMetaClass();
+			if (e.getNewMetaConnectionSourceDestination()!= null && ap.getID().equals(connection.getSourceRelativePoint().getID())){ 
+			
+				MetaClass newSource = ((MetaClassDrawable)(e.getNewMetaConnectionSourceDestination())).getMetaClass();
 				
 				ChangeMetaConnectionSourceCommand c = new ChangeMetaConnectionSourceCommand(UUID.generate(), connection, newSource, x, y);
 				
@@ -765,6 +770,21 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 					e1.printStackTrace();
 				}
 				
+			}
+			else
+				// Target MetaConnection
+			if (e.getNewMetaConnectionTargetDestination()!= null && ap.getID().equals(connection.getTargetRelativePoint().getID())){ 
+			
+				MetaClass newTarget = ((MetaClassDrawable)(e.getNewMetaConnectionTargetDestination())).getMetaClass();
+				
+				ChangeMetaConnectionTargetCommand c = new ChangeMetaConnectionTargetCommand(UUID.generate(), connection, newTarget, x, y);
+				
+				try {
+					module.sendAndCommitTransaction(c);
+				} catch (IOException e1) {
+					view.showSendError(e1);
+					e1.printStackTrace();
+				}
 			}
 			else{
 			
@@ -1015,6 +1035,35 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			view.showSendError(ex);
 			ex.printStackTrace();
 		}
+		
+	}
+
+
+	@Override
+	public void onCreateInheritance(MetaClass clazz, MetaClass superClass) {
+		
+		if (clazz.hasInheritance(superClass)){
+			view.showMetaInheritanceAlreadyExists(clazz, superClass);
+		}
+		else 
+		{ // Create a new Inheritance
+			
+			MetaInheritance inh = MetaFactory.createInheritance(clazz, superClass);
+			
+			CreateMetaInheritanceCommand c = new CreateMetaInheritanceCommand(UUID.generate(), inh);
+			
+			try {
+				module.sendAndCommitTransaction(c);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			view.setCanvasEditingMode(EditingMode.NORMAL);
+			
+		}
+			
+		
 		
 	}
 	

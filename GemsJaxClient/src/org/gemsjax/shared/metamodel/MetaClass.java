@@ -63,6 +63,9 @@ public interface MetaClass extends MetaModelElement{
 	 */
 	public void addInheritance(MetaInheritance inheritance) throws MetaInheritanceExcepetion;
 	
+	public boolean hasInheritance(MetaClass superClass);
+	
+	
 	/**
 	 * <b> Use this just as a read only list!</b> <br />
 	 * Use {@link #addAttribute(String, String, MetaBaseType)} and {@link #removeAttribute(MetaAttribute)} to manipulate this list,
@@ -497,6 +500,8 @@ public interface MetaClass extends MetaModelElement{
 	public void removePropertiesListener(CollaborateableElementPropertiesListener l);
 	
 	public MetaAttribute getAttributeById(String id);
+
+	public MetaInheritance getInheritanceById(String id);
 	
 	
 }

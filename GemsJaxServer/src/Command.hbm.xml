@@ -219,6 +219,34 @@
         <property name="oldX" column="oldX" type="double" /> 
         <property name="oldY" column="oldY" type="double" /> 
      </joined-subclass>
+     
+      
+     <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionTargetCommand" table="ChangeMetaConnectionTargetCommand">
+        <key column="Command_id"/>
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="newMetaClassId" column="newMetaClassId" type="string" />
+        <property name="oldMetaClassId" column="oldMetaClassId" type="string" />
+        <property name="targetAnchorId" column="targetAnchorId" type="string" /> 
+        <property name="newX" column="newX" type="double" /> 
+        <property name="newY" column="newY" type="double" /> 
+        <property name="oldX" column="oldX" type="double" /> 
+        <property name="oldY" column="oldY" type="double" /> 
+     </joined-subclass>
+     
+     
+     <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.CreateMetaInheritanceCommand" table="CreateMetaInheritanceCommand">
+        <key column="Command_id"/>
+        <property name="metaInheritanceId" column="metaInheritanceId" type="string" />
+        <property name="metaClassId" column="metaClassId" type="string" />
+        <property name="superClassId" column="superClassId" type="string" />
+        <property name="ownerClassAnchorId" column="ownerClassAnchorId" type="string" /> 
+        <property name="ownerClassAnchorX" column="ownerClassAnchorX" type="double" /> 
+        <property name="ownerClassAnchorY" column="ownerClassAnchorY" type="double" /> 
+        <property name="superClassAnchorId" column="superClassAnchorId" type="string" />
+        <property name="superClassAnchorX" column="superClassAnchorX" type="double" /> 
+        <property name="superClassAnchorY" column="superClassAnchorY" type="double" /> 
+     </joined-subclass>
+   
            
      
 </class>

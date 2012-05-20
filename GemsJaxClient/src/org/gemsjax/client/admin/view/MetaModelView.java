@@ -7,6 +7,7 @@ import org.gemsjax.client.admin.exception.DoubleLimitException;
 import org.gemsjax.client.admin.notification.Notification;
 import org.gemsjax.client.admin.view.MetaModelView.MetaConnectionPropertiesListener;
 import org.gemsjax.client.canvas.Anchor;
+import org.gemsjax.client.canvas.CreateMetaInheritanceHandler;
 import org.gemsjax.client.canvas.CreateMetaRelationHandler;
 import org.gemsjax.client.canvas.Drawable;
 import org.gemsjax.client.canvas.MetaModelCanvas;
@@ -365,4 +366,9 @@ public interface MetaModelView extends CollaborateableView{
 	void addMetaConnectionPropertiesListener(MetaConnectionPropertiesListener l);
 	void removeConnectionPropertiesListener(MetaConnectionPropertiesListener l);
 	public void clearDetailView();
+	
+	public void addCreateMetaInheritanceHandler(CreateMetaInheritanceHandler h);
+	public void removeCreateMetaInheritanceHandler(CreateMetaInheritanceHandler h);
+	
+	public void showMetaInheritanceAlreadyExists(MetaClass clazz, MetaClass superClass);
 }

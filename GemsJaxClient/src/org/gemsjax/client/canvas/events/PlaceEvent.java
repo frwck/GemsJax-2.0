@@ -35,8 +35,8 @@ public class PlaceEvent {
 	private double x;
 	private double y;
 	
-	private PlaceableDestination newDestination;
-	private PlaceableDestination newTargetDestination;
+	private PlaceableDestination newMetaConnectionSourceDestination;
+	private PlaceableDestination newMetaConnectionTargetDestination;
 	
 	private HasPlaceable parent;
 	
@@ -77,20 +77,20 @@ public class PlaceEvent {
 		return parent;
 	}
 
-	public PlaceableDestination getNewSourceDestination() {
-		return newDestination;
+	public PlaceableDestination getNewMetaConnectionSourceDestination() {
+		return newMetaConnectionSourceDestination;
 	}
 
-	public void setNewSourceDestination(PlaceableDestination newDestination) {
-		this.newDestination = newDestination;
+	public void setNewMetaConnectionSourceDestination(PlaceableDestination newDestination) {
+		this.newMetaConnectionSourceDestination = newDestination;
 	}
 
-	public PlaceableDestination getNewTargetDestination() {
-		return newTargetDestination;
+	public PlaceableDestination getNewMetaConnectionTargetDestination() {
+		return newMetaConnectionTargetDestination;
 	}
 
-	public void setNewTargetDestination(PlaceableDestination newTargetDestination) {
-		this.newTargetDestination = newTargetDestination;
+	public void setNewMetaConnectionTargetDestination(PlaceableDestination newTargetDestination) {
+		this.newMetaConnectionTargetDestination = newTargetDestination;
 	}
 	
 }

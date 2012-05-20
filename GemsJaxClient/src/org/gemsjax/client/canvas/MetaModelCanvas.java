@@ -181,16 +181,20 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 	
 	private Set<CreateMetaClassHandler> createClassHandlers;
 	private Set<CreateMetaRelationHandler> createRelationHandlers;
+	private Set<CreateMetaInheritanceHandler> createInheritanceHandlers;
 	
 	private MetaClassDrawable createRelationSource;
 	private MetaClassDrawable createRelationTarget;
 	
+	private MetaClassDrawable createInheritanceToExtendClass;
+	private MetaClassDrawable createInheritanceSuperClass;
 	
 	public MetaModelCanvas() throws CanvasSupportException {
 		super();
 		
 		createClassHandlers = new LinkedHashSet<CreateMetaClassHandler>();
 		createRelationHandlers = new LinkedHashSet<CreateMetaRelationHandler>();
+		createInheritanceHandlers = new LinkedHashSet<CreateMetaInheritanceHandler>();
 		
 		resizing = false;
 		moving = false;
@@ -217,6 +221,14 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		createClassHandlers.remove(h);
 	}
 	
+	public void addCreateMetaInheritanceHandler(CreateMetaInheritanceHandler h){
+		createInheritanceHandlers.add(h);
+	}
+	
+	public void removeCreateMetaInheritanceHandler(CreateMetaInheritanceHandler h){
+		createInheritanceHandlers.remove(h);
+	}
+	
 	
 	/**
 	 * Set the {@link EditingMode} for this canvas
@@ -228,6 +240,8 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 		
 		createRelationSource = null;
 		createRelationTarget = null;
+		createInheritanceToExtendClass = null;
+		createInheritanceSuperClass = null;
 		
 	}
 	
@@ -350,6 +364,36 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				
 				
 					
+				
+				break;
+				
+				
+			case CREATE_INHERITANCE:
+				
+				Drawable selected = getDrawableStorage().getDrawableAt(event.getX(), event.getY());
+				
+				if (selected instanceof MetaClassDrawable){
+					if(createInheritanceToExtendClass==null){
+						createInheritanceToExtendClass = (MetaClassDrawable) selected;
+						NotificationManager.getInstance().showTipNotification(new TipNotification("Select super class", null, 2000, NotificationPosition.BOTTOM_CENTERED));
+					}
+					else
+					if (createInheritanceSuperClass == null){
+						createInheritanceSuperClass = (MetaClassDrawable) selected;
+						
+						
+						for (CreateMetaInheritanceHandler h : createInheritanceHandlers)
+							h.onCreateInheritance(createInheritanceToExtendClass.getMetaClass(), createInheritanceSuperClass.getMetaClass());
+						
+						createInheritanceToExtendClass = null;
+						createInheritanceSuperClass = null;
+						
+					}
+					
+				}
+				else
+					NotificationManager.getInstance().showTipNotification(new TipNotification("No MetaClass selected", "Please click on a MetaClass", 2000, NotificationPosition.BOTTOM_CENTERED), AnimationEffect.FADE);
+				
 				
 				break;
 				
@@ -598,7 +642,8 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 						
 						Drawable newDestination = getDrawableStorage().getSecondDrawableAt(x,y);
 						
-						// Source Point move
+						// Source / Target MetaConnection Point move
+					
 						if (newDestination!= null  && newDestination!=currentPlaceable.getPlaceableDestination() 
 								&& newDestination instanceof PlaceableDestination && newDestination instanceof MetaClassDrawable && currentMouseDownDrawable instanceof MetaConnectionDrawable){
 							
@@ -606,13 +651,26 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 							Anchor anchor = (Anchor) currentPlaceable;
 							MetaClassDrawable newDestClass = (MetaClassDrawable) newDestination;
 							
+							// MetaConnection source
 							if (anchor.getAnchorPoint().getID().equals(mc.getSourceRelativePoint().getID())){
 								e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, 0, newDestClass.getHeight(), (HasPlaceable)currentMouseDownDrawable);
-								e.setNewSourceDestination((PlaceableDestination) newDestination);	
+								e.setNewMetaConnectionSourceDestination((PlaceableDestination) newDestination);	
+								currentPlaceable.firePlaceEvent(e);
+								return;
+							}
+							else // MetaConnection target
+							if (anchor.getAnchorPoint().getID().equals(mc.getTargetRelativePoint().getID())){
+								e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, 0, newDestClass.getHeight(), (HasPlaceable)currentMouseDownDrawable);
+								e.setNewMetaConnectionTargetDestination((PlaceableDestination) newDestination);	
 								currentPlaceable.firePlaceEvent(e);
 								return;
 							}
 						}
+						
+						
+						
+						
+						
 						
 						// normal anchot point move
 						

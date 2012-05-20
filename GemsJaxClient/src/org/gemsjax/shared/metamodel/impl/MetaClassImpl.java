@@ -789,4 +789,29 @@ public class MetaClassImpl implements MetaClass {
 	}
 
 
+	@Override
+	public boolean hasInheritance(MetaClass superClass) {
+		
+		for (MetaInheritance c : inheritances)
+			if (c.getSuperClass().getID().equals(superClass.getID()))
+				return true;
+		
+		return false;
+	}
+
+
+	@Override
+	public MetaInheritance getInheritanceById(String id) {
+		
+		for (MetaInheritance i : inheritances)
+			if (i.getID().equals(id))
+				return i;
+		
+		
+		return null;
+	}
+	
+	
+
+
 }

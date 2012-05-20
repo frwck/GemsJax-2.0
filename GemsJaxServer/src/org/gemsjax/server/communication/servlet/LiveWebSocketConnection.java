@@ -16,6 +16,8 @@ import org.gemsjax.server.communication.channel.UserAuthenticationChannel;
 import org.gemsjax.server.communication.serialisation.XmlLoadingArchive;
 import org.gemsjax.shared.collaboration.TransactionImpl;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionSourceCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionTargetCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaInheritanceCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaConnectionAnchorPointCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstractCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand;
@@ -55,10 +57,12 @@ import org.gemsjax.shared.communication.serialisation.instantiators.collaboratio
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionIconsCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionMultiplicityCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionSourceCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionTargetCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaConnectionAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaConnectionCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaInheritanceCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.DeleteMetaAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.DeleteMetaConnectionAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.EditMetaAttributeCommandInstantiator;
@@ -149,8 +153,11 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 				objectFactory.register(MoveMetaConnectionCommand.class.getName(), new MoveMetaConnectionCommandInstantiator());
 				objectFactory.register(ResizeMetaConnectionCommand.class.getName(), new ResizeMetaConnectionCommandInstantiator());
 				objectFactory.register(ChangeMetaConnectionSourceCommand.class.getName(), new ChangeMetaConnectionSourceCommandInstantiator());
+				objectFactory.register(ChangeMetaConnectionTargetCommand.class.getName(), new ChangeMetaConnectionTargetCommandInstantiator());
 				
-
+				// Inheritance
+				objectFactory.register(CreateMetaInheritanceCommand.class.getName(), new CreateMetaInheritanceCommandInstantiator());
+				
 				
 			}
 			
