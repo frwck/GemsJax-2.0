@@ -11,8 +11,8 @@ public class ResizeMetaClassCommand extends CommandImpl{
 	private String metaClassId;
 	private double oldWidth;
 	private double oldHeight;
-	private double width;
-	private double height;
+	private double newWidth;
+	private double newHeight;
 	
 	
 	public ResizeMetaClassCommand(){}
@@ -20,8 +20,8 @@ public class ResizeMetaClassCommand extends CommandImpl{
 	public ResizeMetaClassCommand(String id, String metaClassId, double width, double height, double oldWidth, double oldHeight){
 		setId(id);
 		this.metaClassId = metaClassId;
-		this.width = width;
-		this.height = height;
+		this.newWidth = width;
+		this.newHeight = height;
 		this.oldHeight =oldHeight;
 		this.oldWidth = oldWidth;
 	}
@@ -30,8 +30,8 @@ public class ResizeMetaClassCommand extends CommandImpl{
 	public void execute() throws ManipulationException {
 		MetaModel metaModel = (MetaModel) getCollaborateable();
 		MetaClass mc = (MetaClass) metaModel.getElementByID(metaClassId);
-		mc.setWidth(width);
-		mc.setHeight(height);
+		mc.setWidth(newWidth);
+		mc.setHeight(newHeight);
 		
 	}
 
@@ -48,8 +48,8 @@ public class ResizeMetaClassCommand extends CommandImpl{
 	public void serialize(Archive a) throws Exception {
 		super.serialize(a);
 		metaClassId = a.serialize("metaClassId", metaClassId).value;
-		width = a.serialize("width", width).value;
-		height = a.serialize("height", height).value;
+		newWidth = a.serialize("width", newWidth).value;
+		newHeight = a.serialize("height", newHeight).value;
 		oldWidth = a.serialize("oldWidth", oldWidth).value;
 		oldHeight = a.serialize("oldHeight", oldHeight).value;
 		
@@ -81,19 +81,19 @@ public class ResizeMetaClassCommand extends CommandImpl{
 	}
 
 	public double getWidth() {
-		return width;
+		return newWidth;
 	}
 
 	public void setWidth(double width) {
-		this.width = width;
+		this.newWidth = width;
 	}
 
 	public double getHeight() {
-		return height;
+		return newHeight;
 	}
 
 	public void setHeight(double height) {
-		this.height = height;
+		this.newHeight = height;
 	}
 
 }

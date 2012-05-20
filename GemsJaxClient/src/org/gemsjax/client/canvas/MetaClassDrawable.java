@@ -372,7 +372,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 		{
 			context.drawImage(getIcon(), x+spaceLeft, y, width, height);
 		}
-		else
+		/*else
 		{	
 
 			String loadingTxt = "Loading";
@@ -396,7 +396,7 @@ public class MetaClassDrawable implements Drawable, Clickable, Focusable, MouseO
 			}
 		}
 		
-		
+		*/
 		
 		return height;	
 		

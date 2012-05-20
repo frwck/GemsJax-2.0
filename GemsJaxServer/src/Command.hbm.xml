@@ -177,7 +177,17 @@
         <property name="source" column="source" type="boolean" /> 
      </joined-subclass>
      
+     <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand" table="ResizeMetaClassCommand">
+        <key column="Command_id"/>
+        <property name="metaClassId" column="metaClassId" type="string" />
+        <property name="newWidth" column="newWidth" type="double" />
+        <property name="newHeight" column="newHeight" type="double" />
+        <property name="oldWidth" column="oldWidth" type="double" /> 
+        <property name="oldHeight" column="oldHeight" type="double" /> 
+     </joined-subclass>
+     
     
+     
 </class>
 
 </hibernate-mapping>

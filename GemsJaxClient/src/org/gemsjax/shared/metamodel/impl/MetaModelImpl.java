@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.collaboration.CollaborateableImpl;
 import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
@@ -217,6 +218,21 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 		connection.getSource().removeConnection(connection);
 		idMap.remove(connection.getID());
 		
+	}
+
+	@Override
+	public MetaModelElement getAnchorPointOwner(AnchorPoint ap) {
+		for (MetaClass c: metaClasses)
+			for (MetaConnection con : c.getConnections())
+				if (con.getAnchorPointById(ap.getID())!=null)
+					return con;
+		
+		
+		//TODO check MetaInheritance
+		//TODO check MetaContainment
+		
+		
+		return null;
 	}
 
 	

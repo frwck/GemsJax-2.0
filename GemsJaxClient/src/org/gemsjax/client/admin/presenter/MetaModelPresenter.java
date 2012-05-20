@@ -3,6 +3,7 @@ package org.gemsjax.client.admin.presenter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.gemsjax.client.admin.adminui.TabEnviroment;
@@ -47,6 +48,7 @@ import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.module.handler.CollaborationModuleHandler;
 import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.UUID;
+import org.gemsjax.shared.collaboration.command.Command;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstractCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionIconsCommand;
@@ -63,6 +65,7 @@ import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaConnectionAnchorPointCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaConnectionCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionMultiplicityCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaConnectionAchnorPointCommandInstantiator;
@@ -70,6 +73,7 @@ import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaInheritance;
 import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.MetaModelElement;
 import org.gemsjax.shared.metamodel.impl.MetaFactory;
 
 import com.google.gwt.event.shared.EventBus;
@@ -481,8 +485,16 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				
 			if (event.getType()==ResizeEventType.RESIZE_FINISHED )
 			{
+				List<Command> commands =new LinkedList<Command>();
+				
+				ResizeMetaClassCommand rc = new ResizeMetaClassCommand(UUID.generate(), metaClass.getID(), event.getWidth(), event.getHeight(), metaClass.getWidth(), metaClass.getHeight());
+				commands.add(rc);
+				
+				/*
 				metaClass.setWidth(event.getWidth());
 				metaClass.setHeight(event.getHeight());
+				*/
+				
 				
 				
 				// Check for Anchors which position has been changed durrning the resizement
@@ -492,14 +504,31 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				
 				for (Anchor a : d.getDockedAnchors())
 				
+					
 					if (a.getX()!=a.getAnchorPoint().x || a.getY() != a.getAnchorPoint().y)
 					{
-						a.getAnchorPoint().x = a.getX();
-						a.getAnchorPoint().y = a.getY();
+						MetaModelElement owner = metaModel.getAnchorPointOwner(a.getAnchorPoint());
+						
+						if (owner instanceof MetaConnection){
+							MoveMetaConnectionAnchorPointCommand c = new MoveMetaConnectionAnchorPointCommand(UUID.generate(), (MetaConnection)owner, a.getAnchorPoint(), a.getX()-d.getX(), a.getY()-d.getY());
+							commands.add(c);
+						}
+						/*
+						 * a.getAnchorPoint().x = a.getX();
+						 	a.getAnchorPoint().y = a.getY();
+						 */
+						
 						changedAnchorPoints.add(a.getAnchorPoint());
 					}
 				
-				// TODO collabrative info websocket (also changedAnchorPoints)
+				
+					try {
+						module.sendAndCommitTransaction(commands);
+					} catch (IOException e) {
+						view.showSendError(e);
+						e.printStackTrace();
+					}
+				
 				}
 			else
 			if (event.getType()==ResizeEventType.NOT_ALLOWED)

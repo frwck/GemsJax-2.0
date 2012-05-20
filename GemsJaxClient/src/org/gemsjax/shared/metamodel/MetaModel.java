@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.gemsjax.shared.AnchorPoint;
 import org.gemsjax.shared.collaboration.Collaborateable;
 import org.gemsjax.shared.metamodel.exception.MetaAttributeException;
 import org.gemsjax.shared.metamodel.exception.MetaBaseTypeException;
@@ -98,6 +99,8 @@ public interface MetaModel  extends Collaborateable {
 	
 	public void addMetaConnection(MetaConnection connection, MetaClass owner) throws MetaConnectionException;
 	public void removeMetaConnection(MetaConnection connection) throws MetaConnectionException;
+	
+	public MetaModelElement getAnchorPointOwner(AnchorPoint ap);
 	
 	
 }
