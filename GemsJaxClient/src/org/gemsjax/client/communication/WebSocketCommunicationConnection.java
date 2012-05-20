@@ -25,9 +25,11 @@ import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeComma
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaConnectionAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaConnectionAnchorPointCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaConnectionCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaConnectionCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaConnectionCommand;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
@@ -64,9 +66,11 @@ import org.gemsjax.shared.communication.serialisation.instantiators.collaboratio
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.EditMetaConnectionAttributeInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaConnectionAchnorPointCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaConnectionCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.RenameMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.RenameMetaConnectionCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ResizeMetaClassCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ResizeMetaConnectionCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorJoinedMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CollaboratorLeftMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableErrorMessageInstantiator;
@@ -208,7 +212,8 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(DeleteMetaConnectionAttributeCommand.class.getName(), new DeleteMetaConnectionAttributeCommandInstantiator());
 		objectFactory.register(MoveMetaConnectionAnchorPointCommand.class.getName(), new MoveMetaConnectionAchnorPointCommandInstantiator());
 		objectFactory.register(ChangeMetaConnectionIconsCommand.class.getName(), new ChangeMetaConnectionIconsCommandInstantiator());
-		
+		objectFactory.register(MoveMetaConnectionCommand.class.getName(), new MoveMetaConnectionCommandInstantiator());
+		objectFactory.register(ResizeMetaConnectionCommand.class.getName(), new ResizeMetaConnectionCommandInstantiator());
 		
 		
 		

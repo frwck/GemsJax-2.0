@@ -187,6 +187,27 @@
      </joined-subclass>
      
     
+     <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.MoveMetaConnectionCommand" table="MoveMetaConnectionCommand">
+        <key column="Command_id"/>
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="x" column="x" type="double" />
+        <property name="y" column="y" type="double" />
+        <property name="oldX" column="oldX" type="double" />
+        <property name="oldY" column="oldY" type="double" />
+    </joined-subclass>
+    
+     
+      <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaConnectionCommand" table="ResizeMetaConnectionCommand">
+        <key column="Command_id"/>
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="newWidth" column="newWidth" type="double" />
+        <property name="newHeight" column="newHeight" type="double" />
+        <property name="oldWidth" column="oldWidth" type="double" /> 
+        <property name="oldHeight" column="oldHeight" type="double" /> 
+     </joined-subclass>
+     
+     
+     
      
 </class>
 

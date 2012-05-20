@@ -20,6 +20,8 @@ DELETE FROM MoveMetaConnectionAnchorPointCommand;
 DELETE FROM RenameMetaClassCommand;
 DELETE FROM RenameMetaConnectionCommand;
 DELETE FROM ResizeMetaClassCommand;
+DELETE FROM MoveMetaConnectionCommand;
+DELETE FROM ResizeMetaConnectionCommand;
 
 DELETE FROM Command;
 DELETE FROM VectorClockEntry;

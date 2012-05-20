@@ -63,9 +63,11 @@ import org.gemsjax.shared.collaboration.command.metamodel.EditMetaAttributeComma
 import org.gemsjax.shared.collaboration.command.metamodel.EditMetaConnectionAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaConnectionAnchorPointCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.MoveMetaConnectionCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.RenameMetaConnectionCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaClassCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ResizeMetaConnectionCommand;
 import org.gemsjax.shared.communication.message.collaboration.Collaborator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionMultiplicityCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.MoveMetaConnectionAchnorPointCommandInstantiator;
@@ -551,10 +553,16 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 
 		
 		if (e.getType()==MoveEventType.MOVE_FINISHED){
-			connection.setConnectionBoxX(e.getX()-e.getDistanceToTopLeftX());
-			connection.setConnectionBoxY(e.getY()-e.getDistanceToTopLeftY());
+			double x = (e.getX()-e.getDistanceToTopLeftX());
+			double y = (e.getY()-e.getDistanceToTopLeftY());
 			
-			// TODO collabrative info websocket
+			MoveMetaConnectionCommand c = new MoveMetaConnectionCommand(UUID.generate(), connection, x, y );
+			try {
+				module.sendAndCommitTransaction(c);
+			} catch (IOException e1) {
+				view.showSendError(e1);
+				e1.printStackTrace();
+			}
 		}
 		
 		view.redrawMetaModelCanvas();
@@ -581,8 +589,13 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			
 			if (event.getType() == ResizeEventType.RESIZE_FINISHED)
 			{
-				connection.setConnectionBoxWidth(event.getWidth());
-				connection.setConnectionBoxHeight(event.getHeight());
+				
+				List<Command> commands = new LinkedList<Command>();
+				
+				ResizeMetaConnectionCommand rc = new ResizeMetaConnectionCommand(UUID.generate(), connection, event.getWidth(), event.getHeight());
+				commands.add(rc);
+//				connection.setConnectionBoxWidth(event.getWidth());
+//				connection.setConnectionBoxHeight(event.getHeight());
 				
 				
 				List<AnchorPoint> changedAnchorPoints = new ArrayList<AnchorPoint>();
@@ -592,13 +605,24 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				
 					if (a.getX()!=a.getAnchorPoint().x || a.getY() != a.getAnchorPoint().y)
 					{
-						a.getAnchorPoint().x = a.getX();
-						a.getAnchorPoint().y = a.getY();
+						MetaModelElement owner = metaModel.getAnchorPointOwner(a.getAnchorPoint());
+						
+						if (owner instanceof MetaConnection){
+							MoveMetaConnectionAnchorPointCommand c = new MoveMetaConnectionAnchorPointCommand(UUID.generate(), (MetaConnection)owner, a.getAnchorPoint(), a.getX()-d.getX(), a.getY()-d.getY());
+							commands.add(c);
+						}
+						
+//						a.getAnchorPoint().x = a.getX();
+//						a.getAnchorPoint().y = a.getY();
 						changedAnchorPoints.add(a.getAnchorPoint());
 					}
 				
-				// TODO collaborative websocket info
-				
+				try {
+					module.sendAndCommitTransaction(commands);
+				} catch (IOException e) {
+					view.showSendError(e);
+					e.printStackTrace();
+				}
 
 			}
 			
