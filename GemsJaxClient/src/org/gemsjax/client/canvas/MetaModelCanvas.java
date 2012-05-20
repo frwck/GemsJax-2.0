@@ -16,8 +16,10 @@ import org.gemsjax.client.canvas.events.PlaceEvent.PlaceEventType;
 import org.gemsjax.client.canvas.events.ResizeEvent.ResizeEventType;
 import org.gemsjax.client.canvas.events.metamodel.CreateMetaClassEvent;
 import org.gemsjax.client.canvas.handler.metamodel.CreateMetaClassHandler;
+import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.Point;
+import org.gemsjax.shared.metamodel.MetaConnection;
 
 
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -465,6 +467,7 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 				{
 					placing = true;
 					
+					
 					if (currentPlaceable.getPlaceableDestination() == null) // can be placed everywhere
 					{
 						// TODO should be something special be done?
@@ -590,15 +593,38 @@ public class MetaModelCanvas extends BufferedCanvas implements ClickHandler, Mou
 					}
 					else
 					{
-						Point p = currentPlaceable.getPlaceableDestination().canPlaceableBePlacedAt(x, y);
+						
 						PlaceEvent e;
 						
-						if (p == null) // Not allowed to be placed there
-							e = new PlaceEvent(currentPlaceable, PlaceEventType.NOT_ALLOWED, x, y, (HasPlaceable)currentMouseDownDrawable);
-						else
-							e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, p.x, p.y, (HasPlaceable)currentMouseDownDrawable);
+						Drawable newDestination = getDrawableStorage().getSecondDrawableAt(x,y);
 						
-						currentPlaceable.firePlaceEvent(e);
+						// Source Point move
+						if (newDestination!= null  && newDestination!=currentPlaceable.getPlaceableDestination() 
+								&& newDestination instanceof PlaceableDestination && newDestination instanceof MetaClassDrawable && currentMouseDownDrawable instanceof MetaConnectionDrawable){
+							
+							MetaConnection mc = ((MetaConnectionDrawable) currentMouseDownDrawable).getMetaConnection();
+							Anchor anchor = (Anchor) currentPlaceable;
+							MetaClassDrawable newDestClass = (MetaClassDrawable) newDestination;
+							
+							if (anchor.getAnchorPoint().getID().equals(mc.getSourceRelativePoint().getID())){
+								e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, 0, newDestClass.getHeight(), (HasPlaceable)currentMouseDownDrawable);
+								e.setNewSourceDestination((PlaceableDestination) newDestination);	
+								currentPlaceable.firePlaceEvent(e);
+								return;
+							}
+						}
+						
+						// normal anchot point move
+						
+							Point p = currentPlaceable.getPlaceableDestination().canPlaceableBePlacedAt(x, y);
+						
+							if (p == null) // Not allowed to be placed there
+								e = new PlaceEvent(currentPlaceable, PlaceEventType.NOT_ALLOWED, x, y, (HasPlaceable)currentMouseDownDrawable);
+							else
+								e = new PlaceEvent(currentPlaceable, PlaceEventType.PLACING_FINISHED, p.x, p.y, (HasPlaceable)currentMouseDownDrawable);
+							
+							currentPlaceable.firePlaceEvent(e);
+						
 					}
 					
 				}

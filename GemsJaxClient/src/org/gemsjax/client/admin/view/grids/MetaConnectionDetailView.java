@@ -23,11 +23,11 @@ import org.gemsjax.shared.metamodel.MetaAttribute;
 import org.gemsjax.shared.metamodel.MetaBaseType;
 import org.gemsjax.shared.metamodel.MetaConnection;
 
-import com.google.gwt.user.client.ui.Label;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.ListGridEditEvent;
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -319,6 +319,8 @@ class MetaConnectionPropertiesGrid extends VStack implements ClickHandler, Colla
 	private int cretedItems = 0;
 	private MetaConnection metaConnection;
 	private MetaConnectionDetailView parent;
+	private Label sourceClassName;
+	private Label targetClassName;
 	
 	public MetaConnectionPropertiesGrid(MetaConnectionDetailView p){
 		
@@ -456,10 +458,16 @@ class MetaConnectionPropertiesGrid extends VStack implements ClickHandler, Colla
 		targetIconButton.setHeight(25);
 		
 		
+		sourceClassName = new Label();
+		targetClassName = new Label();
+		
 		
 		
 		this.addMember(createItem("Name:", nameForm));
 		this.addMember(createItem("Multiplicity:", boundsForm));
+		this.addMember(createItem("Source", sourceClassName));
+		this.addMember(createItem("Target", targetClassName));
+		
 		this.addMember(sourceIconButton);
 		this.addMember(targetIconButton);
 		
@@ -550,6 +558,8 @@ class MetaConnectionPropertiesGrid extends VStack implements ClickHandler, Colla
 	@Override
 	public void onChanged() {
 		nameField.setValue(metaConnection.getName());
+		sourceClassName.setContents(metaConnection.getSource().getName());
+		targetClassName.setContents(metaConnection.getTarget().getName());
 		generateMultiplicityString();
 	}
 	

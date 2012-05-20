@@ -2,6 +2,7 @@ package org.gemsjax.client.canvas.events;
 
 import org.gemsjax.client.canvas.HasPlaceable;
 import org.gemsjax.client.canvas.Placeable;
+import org.gemsjax.client.canvas.PlaceableDestination;
 import org.gemsjax.client.canvas.handler.PlaceHandler;
 
 /**
@@ -33,6 +34,9 @@ public class PlaceEvent {
 	private Placeable source;
 	private double x;
 	private double y;
+	
+	private PlaceableDestination newDestination;
+	private PlaceableDestination newTargetDestination;
 	
 	private HasPlaceable parent;
 	
@@ -71,6 +75,22 @@ public class PlaceEvent {
 
 	public HasPlaceable getParent() {
 		return parent;
+	}
+
+	public PlaceableDestination getNewSourceDestination() {
+		return newDestination;
+	}
+
+	public void setNewSourceDestination(PlaceableDestination newDestination) {
+		this.newDestination = newDestination;
+	}
+
+	public PlaceableDestination getNewTargetDestination() {
+		return newTargetDestination;
+	}
+
+	public void setNewTargetDestination(PlaceableDestination newTargetDestination) {
+		this.newTargetDestination = newTargetDestination;
 	}
 	
 }

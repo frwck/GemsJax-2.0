@@ -53,6 +53,7 @@ import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstrac
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionIconsCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionMultiplicityCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionSourceCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaConnectionAttributeCommand;
@@ -79,6 +80,7 @@ import org.gemsjax.shared.metamodel.MetaModelElement;
 import org.gemsjax.shared.metamodel.impl.MetaFactory;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.Window;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.events.CloseClickHandler;
@@ -702,6 +704,8 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				ap.x = x;
 				ap.y = y;
 			}
+			
+			
 
 			//TODO collaborative websocket information
 		}
@@ -746,33 +750,52 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			p.setX(x);
 			p.setY(y);
 			AnchorPoint ap = p.getAnchorPoint();
+			MetaConnection connection = parent.getMetaConnection();
 			
-			if (p instanceof DockableAnchor)
-			{
-				double newX = ((DockableAnchor)p).getRelativeX();
-				double newY = ((DockableAnchor)p).getRelativeY();
+			// NewSource
+			if (e.getNewSourceDestination()!= null && ap.getID().equals(connection.getSourceRelativePoint().getID())){ 
+				MetaClass newSource = ((MetaClassDrawable)(e.getNewSourceDestination())).getMetaClass();
 				
-				MoveMetaConnectionAnchorPointCommand c = new MoveMetaConnectionAnchorPointCommand(UUID.generate(), parent.getMetaConnection(), ap, newX, newY);
+				ChangeMetaConnectionSourceCommand c = new ChangeMetaConnectionSourceCommand(UUID.generate(), connection, newSource, x, y);
+				
 				try {
 					module.sendAndCommitTransaction(c);
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
+					view.showSendError(e1);
 					e1.printStackTrace();
 				}
+				
 			}
-			else
-			{
-				double newX = x;
-				double newY = y;
-				
-				MoveMetaConnectionAnchorPointCommand c = new MoveMetaConnectionAnchorPointCommand(UUID.generate(), parent.getMetaConnection(), ap, newX, newY);
-				try {
-					module.sendAndCommitTransaction(c);
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+			else{
+			
+				// Normal move command
+				if (p instanceof DockableAnchor)
+				{
+					double newX = ((DockableAnchor)p).getRelativeX();
+					double newY = ((DockableAnchor)p).getRelativeY();
+					
+					MoveMetaConnectionAnchorPointCommand c = new MoveMetaConnectionAnchorPointCommand(UUID.generate(), parent.getMetaConnection(), ap, newX, newY);
+					try {
+						module.sendAndCommitTransaction(c);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
-			}	
+				else
+				{
+					double newX = x;
+					double newY = y;
+					
+					MoveMetaConnectionAnchorPointCommand c = new MoveMetaConnectionAnchorPointCommand(UUID.generate(), parent.getMetaConnection(), ap, newX, newY);
+					try {
+						module.sendAndCommitTransaction(c);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}	
+			}
 
 		}
 		else

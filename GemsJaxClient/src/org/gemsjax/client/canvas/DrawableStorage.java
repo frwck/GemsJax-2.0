@@ -79,6 +79,27 @@ public class DrawableStorage {
 		
 	}
 	
+	
+	public synchronized Drawable getSecondDrawableAt(double x, double y){
+	
+		Drawable first = getDrawableAt(x, y);
+		
+		
+		for (Drawable d: elements)
+		{
+			if (d.hasCoordinate(x, y))
+			{
+				if (first !=d) // TODO zindex (d.getZIndex()>=result.getZIndex() && d.getZIndex()<first.getZIndex())
+					return d;
+			}
+			
+		}
+		
+		
+		return null;
+		
+	}
+	
 	/**
 	 * Add a {@link Drawable}.
 	 * The internal list will set the list according the z index. So the list is sorted by the z index, from less to great.

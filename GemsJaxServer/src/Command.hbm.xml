@@ -207,7 +207,19 @@
      </joined-subclass>
      
      
-     
+      
+      <joined-subclass name="org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionSourceCommand" table="ChangeMetaConnectionSourceCommand">
+        <key column="Command_id"/>
+        <property name="metaConnectionId" column="metaConnectionId" type="string" />
+        <property name="newMetaClassId" column="newMetaClassId" type="string" />
+        <property name="oldMetaClassId" column="oldMetaClassId" type="string" />
+        <property name="sourceAnchorId" column="sourceAnchorId" type="string" /> 
+        <property name="newX" column="newX" type="double" /> 
+        <property name="newY" column="newY" type="double" /> 
+        <property name="oldX" column="oldX" type="double" /> 
+        <property name="oldY" column="oldY" type="double" /> 
+     </joined-subclass>
+           
      
 </class>
 

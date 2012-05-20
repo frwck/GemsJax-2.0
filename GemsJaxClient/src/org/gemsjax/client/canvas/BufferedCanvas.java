@@ -219,6 +219,10 @@ public class BufferedCanvas extends VLayout {
 				d.draw(backBufferContext);
 	}
 
+	
+	public Context2d getContext(){
+		return backBufferContext;
+	}
 
 
 	/**

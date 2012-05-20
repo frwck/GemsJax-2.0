@@ -15,6 +15,7 @@ import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassAbstrac
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaClassIconCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionIconsCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionMultiplicityCommand;
+import org.gemsjax.shared.collaboration.command.metamodel.ChangeMetaConnectionSourceCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaAttributeCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaClassCommand;
 import org.gemsjax.shared.collaboration.command.metamodel.CreateMetaConnectionAttributeCommand;
@@ -56,6 +57,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.collaboratio
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaClassIconCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionIconsCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionMultiplicityCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ChangeMetaConnectionSourceCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaAttributeCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.CreateMetaConnectionAttributeCommandInstantiator;
@@ -214,7 +216,7 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(ChangeMetaConnectionIconsCommand.class.getName(), new ChangeMetaConnectionIconsCommandInstantiator());
 		objectFactory.register(MoveMetaConnectionCommand.class.getName(), new MoveMetaConnectionCommandInstantiator());
 		objectFactory.register(ResizeMetaConnectionCommand.class.getName(), new ResizeMetaConnectionCommandInstantiator());
-		
+		objectFactory.register(ChangeMetaConnectionSourceCommand.class.getName(), new ChangeMetaConnectionSourceCommandInstantiator());
 		
 		
 		}
