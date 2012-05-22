@@ -13,6 +13,8 @@ public class CreateExperimentPresenter extends Presenter{
 		
 		this.view = view;
 		
+		view.showIt();
+		
 	}
 
 

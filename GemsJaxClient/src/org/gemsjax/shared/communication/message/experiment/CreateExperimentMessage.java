@@ -2,6 +2,8 @@ package org.gemsjax.shared.communication.message.experiment;
 
 import java.util.Set;
 
+import org.gemsjax.shared.communication.serialisation.Archive;
+import org.gemsjax.shared.communication.serialisation.Serializable;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;
 
@@ -42,7 +44,7 @@ import org.gemsjax.shared.experiment.ExperimentInvitation;
  * @author Hannes Dorfmann
  *
  */
-public class CreateExperimentMessage extends ReferenceableExperimentMessage {
+public class CreateExperimentMessage extends ReferenceableExperimentMessage implements Serializable {
 
 	public static final String TAG ="new";
 	
@@ -59,11 +61,12 @@ public class CreateExperimentMessage extends ReferenceableExperimentMessage {
 	public static final String ATTRIBUTE_USER_ID = "id";
 	
 	
-	private Set<ExperimentGroup> groups;
-	private Set<Integer> userIds;
+	private Set<ExperimentGroupDTO> groups;
+	private Set<Integer> adminIds;
 	private String name;
 	private String description;
-	
+	 
+	/*
 	public CreateExperimentMessage(String referenceId, String name, String description, Set<ExperimentGroup> groups, Set<Integer> userIds) {
 		super(referenceId);
 		this.name = name;
@@ -71,10 +74,20 @@ public class CreateExperimentMessage extends ReferenceableExperimentMessage {
 		this.groups = groups;
 		this.userIds = userIds;
 	}
-
+*/
+	
+	public CreateExperimentMessage(String referenceId, String name, String description, Set<ExperimentGroupDTO> groups, Set<Integer> adminIds){
+		super(referenceId);
+		this.name = name;
+		this.description = description;
+		this.groups = groups;
+		this.adminIds = adminIds;
+	}
+	
 	@Override
 	public String toXml() {
 		
+		/*
 		String ret = super.openingXml()+"<"+TAG+"><"+SUBTAG_NAME+">"+name+"</"+SUBTAG_NAME+"><"+SUBTAG_DESCRIPTION+">"+description+"</"+SUBTAG_DESCRIPTION+">";
 		
 		
@@ -96,9 +109,11 @@ public class CreateExperimentMessage extends ReferenceableExperimentMessage {
 		
 		
 		return ret+"</"+TAG+">"+closingXml();
+		*/
+		return null;
 	}
 
-	public Set<ExperimentGroup> getGroups() {
+	public Set<ExperimentGroupDTO> getGroups() {
 		return groups;
 	}
 
@@ -111,8 +126,16 @@ public class CreateExperimentMessage extends ReferenceableExperimentMessage {
 	}
 	
 	
-	public Set<Integer> getUserIds(){
-		return userIds;
+	public Set<Integer> getAdminIds(){
+		return adminIds;
+	}
+
+	@Override
+	public void serialize(Archive a) throws Exception {
+		name = a.serialize("name", name).value;
+		description = a.serialize("description", description).value;
+		groups = a.serialize("groups", groups).value;
+		adminIds = a.serialize("adminIds", adminIds).value;
 	}
 	
 	

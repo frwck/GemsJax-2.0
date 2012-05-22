@@ -4,13 +4,13 @@ import java.util.Set;
 
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.adminui.TabEnviroment;
-import org.gemsjax.client.admin.presenter.event.ShowMetaModelRequiredEvent;
+import org.gemsjax.client.admin.presenter.event.ShowExperimentRequiredEvent;
 import org.gemsjax.client.admin.tabs.LoadingTab;
-import org.gemsjax.client.admin.view.AllMetaModelsView;
+import org.gemsjax.client.admin.view.AllExperimentsView;
 import org.gemsjax.client.admin.widgets.Hyperlink;
 import org.gemsjax.client.admin.widgets.OptionButton;
 import org.gemsjax.client.admin.widgets.Title;
-import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.communication.message.experiment.ExperimentDTO;
 
 import com.google.gwt.event.shared.EventBus;
 import com.smartgwt.client.types.VerticalAlignment;
@@ -22,33 +22,32 @@ import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VStack;
 
-public class AllMetaModelsViewImpl extends LoadingTab implements AllMetaModelsView, ClickHandler{
+public class AllExperimentsViewImpl extends LoadingTab implements AllExperimentsView, ClickHandler{
 
-	private class MetaModelItem extends Hyperlink{
-		private MetaModel metaModel;
+	private class ExperimentItem extends Hyperlink{
+		private ExperimentDTO experiment;
 		
-		public MetaModelItem(MetaModel mm, ClickHandler ch){
-			super(mm.getName());
-			this.metaModel = mm;
+		public ExperimentItem(ExperimentDTO ex, ClickHandler ch){
+			super(ex.getName());
+			this.experiment = ex;
 			this.addClickHandler(ch);
-			this.setHeight(20);
 		}
 		
-		public MetaModel getMetaModel(){
-			return metaModel;
+		public ExperimentDTO getExperiment(){
+			return experiment;
 		}
 		
 	}
 	
 	private VStack content;
-	private VStack metamodelList;
+	private VStack experimentList;
 	private HLayout header;
 	private OptionButton createNewButton;
 	private OptionButton refreshButton;
 	
 	private EventBus eventBus;
 	
-	public AllMetaModelsViewImpl(String title, UserLanguage language, EventBus eventBus) {
+	public AllExperimentsViewImpl(String title, UserLanguage language, EventBus eventBus) {
 		super(title, language);
 		
 		content = new VStack();
@@ -56,13 +55,13 @@ public class AllMetaModelsViewImpl extends LoadingTab implements AllMetaModelsVi
 		
 		this.eventBus = eventBus;
 		
-		Title t = new Title(language.AllMetaModelsTitle());
-		createNewButton = new OptionButton(language.AllMetaModelsNew());
+		Title t = new Title("Experiments");
+		createNewButton = new OptionButton("new");
 		createNewButton.setWidth(40);
 		createNewButton.setValign(VerticalAlignment.CENTER);
 		t.setWidth("*");
 		
-		refreshButton = new OptionButton(language.AllMetaModelsRefresh());
+		refreshButton = new OptionButton("refresh");
 		createNewButton.setWidth(70);
 		createNewButton.setValign(VerticalAlignment.CENTER);
 		
@@ -74,12 +73,12 @@ public class AllMetaModelsViewImpl extends LoadingTab implements AllMetaModelsVi
 		header.setHeight(50);
 		
 		
-		metamodelList = new VStack();
-		metamodelList.addMember(new Label(language.AllMetaModelsEmpty()));
-		metamodelList.setWidth100();
+		experimentList = new VStack();
+		experimentList.addMember(new Label("No experiment"));
+		experimentList.setWidth100();
 		
 		content.addMember(header);
-		content.addMember(metamodelList);
+		content.addMember(experimentList);
 		
 		content.setWidth100();
 
@@ -101,7 +100,6 @@ public class AllMetaModelsViewImpl extends LoadingTab implements AllMetaModelsVi
 
 		TabEnviroment.getInstance().addTab(this);
 	}
-	
 
 	@Override
 	public void closeIt() {
@@ -109,24 +107,24 @@ public class AllMetaModelsViewImpl extends LoadingTab implements AllMetaModelsVi
 	}
 
 	@Override
-	public void setAllMetaModels(Set<MetaModel> metaModels) {
+	public void setAllExperiments(Set<ExperimentDTO> experiments) {
 		
-		metamodelList.removeMembers(metamodelList.getMembers());
+		experimentList.removeMembers(experimentList.getMembers());
 		
-		if (metaModels.isEmpty())
-			metamodelList.addMember(new Label(language.AllMetaModelsEmpty()));
+		if (experiments.isEmpty())
+			experimentList.addMember(new Label("No experiment found"));
 		else
-			for (MetaModel m : metaModels)
-				metamodelList.addMember(new MetaModelItem(m, this));
+			for (ExperimentDTO m : experiments)
+				experimentList.addMember(new ExperimentItem(m, this));
 		
 	}
 
 	@Override
 	public void onClick(ClickEvent event) {
-		if (event.getSource() instanceof MetaModelItem){
-			int id = ((MetaModelItem)(event.getSource())).getMetaModel().getId();
-			String name = ((MetaModelItem)(event.getSource())).getMetaModel().getName();
-			eventBus.fireEvent(new ShowMetaModelRequiredEvent(id, name));
+		if (event.getSource() instanceof ExperimentItem){
+			int id = ((ExperimentItem)(event.getSource())).getExperiment().getId();
+			String name = ((ExperimentItem)(event.getSource())).getExperiment().getName();
+			eventBus.fireEvent(new ShowExperimentRequiredEvent(id, name));
 		}
 	}
 

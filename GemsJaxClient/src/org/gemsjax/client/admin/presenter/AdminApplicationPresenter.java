@@ -1,7 +1,9 @@
+
 package org.gemsjax.client.admin.presenter;
 
 import org.gemsjax.client.admin.presenter.event.DoNewGlobalSearchEvent;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
+import org.gemsjax.client.admin.presenter.event.ShowAllExperimentsRequestedEvent;
 import org.gemsjax.client.admin.presenter.event.ShowAllMetaModelsRequestedEvent;
 import org.gemsjax.client.admin.presenter.event.ShowNotificationRequestCenterRequiredEvent;
 import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
@@ -54,6 +56,16 @@ public class AdminApplicationPresenter extends Presenter implements QuickSearchH
 		});
 		
 		
+		view.getUserMenuExperiments().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				onExperimentsClicked();
+			}
+
+		});
+		
+		
 		/*
 		view.getUserMenuExperiments().addClickHandler(new ClickHandler() {
 			
@@ -98,5 +110,9 @@ public class AdminApplicationPresenter extends Presenter implements QuickSearchH
 		eventBus.fireEvent(new ShowAllMetaModelsRequestedEvent());
 	}
 
+	
+	private void onExperimentsClicked() {
+		eventBus.fireEvent(new ShowAllExperimentsRequestedEvent());
+	}
 	
 }

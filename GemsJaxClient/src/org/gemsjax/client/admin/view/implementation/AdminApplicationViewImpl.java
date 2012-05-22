@@ -123,7 +123,7 @@ public class AdminApplicationViewImpl implements AdminUIView, QuickSearchView, N
 
 	@Override
 	public HasClickHandlers getUserMenuExperiments() {
-		return header.getDashBoardMenuItem();
+		return header.getExpetimetsItem();
 	}
 
 

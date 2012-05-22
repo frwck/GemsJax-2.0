@@ -27,28 +27,30 @@ public class GetAllExperimentsAnswerMessage extends ReferenceableExperimentMessa
 	public static final String ATTRIBUTE_ID="id";
 	public static final String ATTRIBUTE_NAME="name";
 	
-	private Set<Experiment> experiments;
+	private Set<ExperimentDTO> experiments;
 	
 	
-	public GetAllExperimentsAnswerMessage(String referenceId, Set<Experiment> experiments) {
+	public GetAllExperimentsAnswerMessage(String referenceId, Set<ExperimentDTO> experiments) {
 		super(referenceId);
 		this.experiments = experiments;
 		
 	}
 	
-	public Set<Experiment> getExperiments(){
+	public Set<ExperimentDTO> getExperiments(){
 		return experiments;
 	}
 
 	@Override
 	public String toXml() {
+		/*
 		String ret = super.openingXml()+"<"+TAG+">";
 		
 		for (Experiment e: experiments)
 			ret+="<"+SUBTAG_EXPERIMENT+" "+ATTRIBUTE_ID+"=\""+e.getId()+"\" "+ATTRIBUTE_NAME+"=\""+e.getName()+"\" />";
 		
 		return ret+"</"+TAG+">"+super.closingXml();
-		
+		*/
+		return null;
 	}
 
 }

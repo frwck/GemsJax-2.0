@@ -12,7 +12,7 @@ import com.google.gwt.event.shared.GwtEvent;
  */
 public class DoNewGlobalSearchEvent extends GwtEvent<DoNewGlobalSearchHandler> {
 
-	public static Type TYPE = new Type<DoNewGlobalSearchHandler>();
+	public static Type <DoNewGlobalSearchHandler>TYPE = new Type<DoNewGlobalSearchHandler>();
 	
 	private String searchString;
 	

@@ -21,10 +21,14 @@ public class ExperimentErrorMessage extends ReferenceableExperimentMessage {
 		super(referenceId);
 		this.error = error;
 	}
+	
+	public ExperimentError getExperimentError(){
+		return error;
+	}
 
 	@Override
 	public String toXml() {
-		return super.openingXml() + "<"+TAG+" "+ATTRIBUTE_REASON+"=\""+error.toConstant()+"\" />"+super.closingXml();
+		return null;
 	}
 	
 }

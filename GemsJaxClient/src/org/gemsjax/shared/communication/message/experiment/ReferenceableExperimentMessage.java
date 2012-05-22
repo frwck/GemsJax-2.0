@@ -28,6 +28,10 @@ public abstract class ReferenceableExperimentMessage extends ExperimentMessage{
 	}
 	
 	
+	public String getReferenceId(){
+		return referenceId;
+	}
+	
 	@Override
 	public abstract String toXml();
 	

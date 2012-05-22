@@ -1,7 +1,5 @@
 package org.gemsjax.shared.communication.message.search;
 
-import org.gemsjax.shared.communication.CommunicationConstants.OnlineState;
-
 public class UserResult {
 	
 	private String username;

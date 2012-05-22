@@ -22,7 +22,8 @@ public class ExperimentSuccessfulMessage extends ReferenceableExperimentMessage{
 
 	@Override
 	public String toXml() {
-		return super.openingXml()+"<"+TAG+" />"+super.closingXml();
+		return null;
+//		super.openingXml()+"<"+TAG+" />"+super.closingXml();
 	}
 	
 	

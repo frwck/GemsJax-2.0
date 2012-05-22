@@ -13,5 +13,9 @@ public interface CreateExperimentView {
 	 */
 	public String getExperimentName();
 	
+	public void showIt();
+	
+	public void closeIt();
+	
 
 }

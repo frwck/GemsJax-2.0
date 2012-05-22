@@ -8,8 +8,10 @@ import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.notification.NotificationManager;
 import org.gemsjax.client.admin.notification.ShortInfoNotification;
 import org.gemsjax.client.admin.presenter.AdminApplicationPresenter;
+import org.gemsjax.client.admin.presenter.AllExperimentsPresenter;
 import org.gemsjax.client.admin.presenter.AllMetaModelsPresenter;
 import org.gemsjax.client.admin.presenter.CollaborationPresenter;
+import org.gemsjax.client.admin.presenter.CreateExperimentPresenter;
 import org.gemsjax.client.admin.presenter.CreateMetaModelPresenter;
 import org.gemsjax.client.admin.presenter.CriticalErrorPresenter;
 import org.gemsjax.client.admin.presenter.FriendsPresenter;
@@ -24,23 +26,31 @@ import org.gemsjax.client.admin.presenter.event.CreateNewMetaModelRequiredEvent;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent.CriticalErrorType;
 import org.gemsjax.client.admin.presenter.event.CollaborateableClosedEvent;
+import org.gemsjax.client.admin.presenter.event.CreateNewExperimentRequiredEvent;
 import org.gemsjax.client.admin.presenter.event.DoNewGlobalSearchEvent;
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
+import org.gemsjax.client.admin.presenter.event.ShowAllExperimentsRequestedEvent;
 import org.gemsjax.client.admin.presenter.event.ShowAllMetaModelsRequestedEvent;
+import org.gemsjax.client.admin.presenter.event.ShowExperimentRequiredEvent;
 import org.gemsjax.client.admin.presenter.event.ShowMetaModelRequiredEvent;
 import org.gemsjax.client.admin.presenter.handler.CollaboratebableClosedHandler;
+import org.gemsjax.client.admin.presenter.handler.CreateNewExperimentRequiredHandler;
 import org.gemsjax.client.admin.presenter.handler.CreateNewMetaModelRequiredHandler;
 import org.gemsjax.client.admin.presenter.handler.DoNewGlobalSearchHandler;
 import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
 import org.gemsjax.client.admin.presenter.handler.ManageFriendsViewImpl;
+import org.gemsjax.client.admin.presenter.handler.ShowAllExperimentsRequestedHandler;
 import org.gemsjax.client.admin.presenter.handler.ShowAllMetaModelRequestedHandler;
+import org.gemsjax.client.admin.presenter.handler.ShowExperimentRequiredHandler;
 import org.gemsjax.client.admin.presenter.handler.ShowMetaModelRequiredHandler;
 import org.gemsjax.client.admin.view.CreateMetaModelView;
 import org.gemsjax.client.admin.view.LoadingView;
 import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.view.implementation.AdminApplicationViewImpl;
+import org.gemsjax.client.admin.view.implementation.AllExperimentsViewImpl;
 import org.gemsjax.client.admin.view.implementation.AllMetaModelsViewImpl;
+import org.gemsjax.client.admin.view.implementation.CreateExperimentViewImpl;
 import org.gemsjax.client.admin.view.implementation.CreateMetaModelViewImpl;
 import org.gemsjax.client.admin.view.implementation.CriticalErrorViewImpl;
 import org.gemsjax.client.admin.view.implementation.GlobalSearchResultViewImpl;
@@ -100,7 +110,8 @@ import com.smartgwt.client.util.SC;
  */
 public class AdminApplicationController  implements ShowMetaModelRequiredHandler, DoNewGlobalSearchHandler, LoginSuccessfulHandler, 
 											ShowAllMetaModelRequestedHandler, CreateNewMetaModelRequiredHandler,
-											CollaboratebableClosedHandler{
+											CollaboratebableClosedHandler, CreateNewExperimentRequiredHandler,
+											ShowExperimentRequiredHandler, ShowAllExperimentsRequestedHandler{
 	
 	/**
 	 * Singleton instance
@@ -167,6 +178,9 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 		eventBus.addHandler(CreateNewMetaModelRequiredEvent.TYPE,this);
 		eventBus.addHandler(ShowMetaModelRequiredEvent.TYPE, this);
 		eventBus.addHandler(CollaborateableClosedEvent.TYPE, this);
+		eventBus.addHandler(ShowExperimentRequiredEvent.TYPE, this);
+		eventBus.addHandler(CreateNewExperimentRequiredEvent.TYPE,this);
+		eventBus.addHandler(ShowAllExperimentsRequestedEvent.TYPE, this);
 	}
 
 	
@@ -230,125 +244,6 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 			e1.printStackTrace();
 		}
 		
-		/*
-		try {
-			
-			/*
-			MetaBaseType baseType = new MetaBaseTypeImpl("base1", "String BaseType");
-			
-			MetaModel metaModel = new MetaModelImpl("id1", "MetaModel1");
-			metaModel.addBaseType(baseType);
-			
-			MetaClass c1 = metaModel.addMetaClass("mc1", "Class 1");
-			
-			MetaClass c2 =metaModel.addMetaClass("mc2", "Class 2");
-			
-			c1.setX(100);
-			c1.setY(100);
-			c1.setWidth(100);
-			c1.setHeight(130);
-			
-			c2.setX(300);
-			c2.setY(150);
-			c2.setWidth(100);
-			c2.setHeight(130);
-			
-			
-			for (int i =1; i<=10; i++)
-			{
-				c1.addAttribute("a"+i, "Attribute"+i, baseType);
-				c2.addAttribute("aa"+i, "Attribute"+i, baseType);
-			}
-			
-			
-			MetaConnection con = c1.addConnection("con1", "Connection c1 - c2", c2, 0, 10);
-			
-
-			con.setConnectionBoxX(150);
-			con.setConnectionBoxY(150);
-			con.setConnectionBoxHeight(50);
-			con.setConnectionBoxWidth(80);
-			
-			con.getSourceConnectionBoxRelativePoint().x = 0;
-			con.getSourceConnectionBoxRelativePoint().y = 10;
-			con.getSourceRelativePoint().x = 0;
-			con.getSourceRelativePoint().y = 0;
-			
-			con.getTargetConnectionBoxRelativePoint().x=(con.getConnectionBoxWidth());
-			con.getTargetConnectionBoxRelativePoint().y = 20;
-			con.getTargetRelativePoint().x =0;
-			con.getTargetRelativePoint().y=0;
-			
-			
-			
-			*/
-			/*
-			MetaBaseType baseType = MetaFactory.createExistingBaseType("basetypeID", "BaseType 1");
-			
-			MetaModel metaModel = MetaFactory.createMetaModel(1,"MetaFactory Model");
-			
-			
-			MetaClass c1 = MetaFactory.createClass("Class1", 50, 50);
-			
-			MetaClass c2 = MetaFactory.createClass("Class2",300,100);
-			
-			LoginSuccessfulEvent
-			for (int i =1; i<=10; i++)
-			{
-				c1.addAttribute(MetaFactory.createAttribute("Attribute "+i,baseType));
-				c2.addAttribute(MetaFactory.createAttribute("Attribute "+i,baseType));
-			}
-			
-			
-			MetaConnection con = MetaFactory.createMetaConnection("Connection", c1, c2);
-			
-			c1.addConnection(con);
-			
-			for (int i =0; i<10;i++)
-				con.addAttribute(MetaFactory.createAttribute("Con Attribute"+i, baseType));
-			
-			
-			metaModel.addMetaClass(c1);
-			metaModel.addMetaClass(c2);
-			
-			
-			MetaInheritance inh = MetaFactory.createInheritance(c1, c2);
-			c1.addInheritance(inh);
-			
-			
-			
-			
-			new MetaModelPresenter(eventBus, new MetaModelViewImpl("MetaFactory Model", language), metaModel);
-		
-			
-			
-		} catch (CanvasSupportException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			SC.logWarn(e.getMessage());
-		} catch (MetaAttributeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-			SC.logWarn(e.getMessage());
-		} catch (MetaConnectionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-			SC.logWarn(e.getMessage());
-		} catch (MetaClassException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-
-			SC.logWarn(e.getMessage());
-		} catch (MetaInheritanceExcepetion e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			SC.logWarn(e.getMessage());
-		}
-		
-		*/
-	
 		
 	}
 
@@ -409,8 +304,7 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 			try {
 			
 				MetaModelView view = new MetaModelViewImpl(name, language);
-			
-			
+				
 				p = new MetaModelPresenter(eventBus,view , mm,  module);
 				collaborations.put(collaborateableId, p);
 			} catch (IOException e) {
@@ -429,6 +323,27 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 	public void onCollaborateableClosed(int collaborateableId) {
 		collaborations.remove(collaborateableId);
 		Console.log("closed "+collaborateableId);
+	}
+
+
+	@Override
+	public void onShowExperimentRequired(int experimentId, String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void onCreateNewExperimentRequired() {
+		new CreateExperimentPresenter(eventBus, new CreateExperimentViewImpl(language, friendsModule));
+		
+	}
+
+
+	@Override
+	public void onShowAllExperimentsRequested() {
+		
+		new AllExperimentsPresenter(new AllExperimentsViewImpl("Experiments", language, eventBus), eventBus);
 	}
 	
 }
