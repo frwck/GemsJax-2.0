@@ -1,19 +1,37 @@
 package org.gemsjax.client.module;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.gemsjax.client.communication.channel.ExperimentChannel;
+import org.gemsjax.client.communication.channel.handler.ExperimentChannelHandler;
+import org.gemsjax.client.module.handler.ExperimentModuleHandler;
+import org.gemsjax.client.util.Console;
+import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.experiment.CreateExperimentMessage;
+import org.gemsjax.shared.communication.message.experiment.ExperimentDTO;
+import org.gemsjax.shared.communication.message.experiment.ExperimentError;
 import org.gemsjax.shared.communication.message.experiment.ExperimentGroupDTO;
+import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsMessages;
+import org.gemsjax.shared.communication.message.friend.Friend;
 
-public class ExperimentModule {
+public class ExperimentModule implements ExperimentChannelHandler{
 
 	private ExperimentChannel channel;
+	private Set<ExperimentModuleHandler> handlers;
 	private static int refIdCounter = 0;
+	
+	private Map<String, Message> refIdMap;
+	private String lastGetAllRefId;
 	
 	public ExperimentModule(ExperimentChannel channel){
 		this.channel = channel;
+		channel.addExperilentChannelHandler(this);
+		handlers = new LinkedHashSet<ExperimentModuleHandler>();
+		refIdMap = new LinkedHashMap<String, Message>();
 	}
 	
 	private String nextId(){
@@ -21,12 +39,96 @@ public class ExperimentModule {
 		return "exp"+refIdCounter;
 	}
 	
+	public void addExperimentModuleHandler(ExperimentModuleHandler h){
+		handlers.add(h);
+	}
 	
 	
-	public void createExperiment(String name, String descriptions, Set<ExperimentGroupDTO> groups, Set<Integer> adminIds) throws IOException{
-		CreateExperimentMessage m = new CreateExperimentMessage(nextId(), name, descriptions, groups, adminIds);
+	public void removeExperimentModuleHandler(ExperimentModuleHandler h){
+		handlers.remove(h);
+	}
+	
+	
+	
+	public void createExperiment(String name, String descriptions, Set<ExperimentGroupDTO> groups, Set<Friend> admins) throws IOException{
+		
+		Set<Integer> ids = new LinkedHashSet<Integer>();
+		for (Friend f: admins)
+			ids.add(f.getId());
+		
+		String id = nextId();
+		CreateExperimentMessage m = new CreateExperimentMessage(id, name, descriptions, groups, ids);
+		refIdMap.put(id, m);
 		channel.send(m);
 	}
+
+	@Override
+	public void onSuccessfulMessage(String referenceId) {
+		
+		Message m = refIdMap.get(referenceId);
+		if (m == null)
+		{
+			Console.log("unknown reference id received");
+			return;
+		}
+		
+		if (m instanceof CreateExperimentMessage){
+			for (ExperimentModuleHandler h : handlers)
+				h.onCreateNewSuccessful();
+			refIdMap.remove(referenceId);
+		}
+		
+	}
+	
+	
+	public void getAllExperiments() throws IOException{
+		
+		lastGetAllRefId = nextId();
+		GetAllExperimentsMessages m = new GetAllExperimentsMessages(lastGetAllRefId);
+		channel.send(m);
+		
+	}
+	
+	
+
+	@Override
+	public void onErrorMessage(String referenceId, ExperimentError error) {
+		
+		
+		if (lastGetAllRefId.equals(referenceId))
+		{
+			for (ExperimentModuleHandler h : handlers)
+				h.onGetAllFailed(error);
+		}
+		
+		
+		Message m = refIdMap.get(referenceId);
+		if (m == null)
+		{
+			Console.log("unknown reference id received");
+			return;
+		}
+		
+		if (m instanceof CreateExperimentMessage){
+			for (ExperimentModuleHandler h : handlers)
+				h.onCreateNewFailed(error);
+			refIdMap.remove(referenceId);
+		}
+		
+	}
+
+	@Override
+	public void onGetAllAnswer(String refId, Set<ExperimentDTO> experiments) {
+		
+		if (lastGetAllRefId.equals(refId))
+		{
+			for (ExperimentModuleHandler h : handlers)
+				h.onGetAllSuccessful(experiments);
+		}
+		
+	}
+	
+	
 	
 	
 }

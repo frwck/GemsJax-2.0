@@ -237,7 +237,9 @@ public class FriendChooserList extends VStack implements FriendsModuleHandler, A
 		};
 		list.setData(new RecordList());
 		list.setWidth100();
+		list.setHeight100();
 		list.setCanRemoveRecords(true);
+		
 		
 		ListGridField profileField = new ListGridField("profilePic", "Profile Picture");
 		profileField.setType(ListGridFieldType.IMAGE);
@@ -268,6 +270,7 @@ public class FriendChooserList extends VStack implements FriendsModuleHandler, A
 		
 		DynamicForm form = new DynamicForm();
 		form.setItems(searchField);	
+		
 		this.addMember(form);
 		this.addMember(list);
 		

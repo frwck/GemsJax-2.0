@@ -3,6 +3,8 @@ package org.gemsjax.shared.communication.message.experiment;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.MessageType;
 import org.gemsjax.shared.communication.message.collaborateablefile.ReferenceableCollaborateableFileMessage;
+import org.gemsjax.shared.communication.serialisation.Archive;
+import org.gemsjax.shared.communication.serialisation.Serializable;
 
 
 /**
@@ -15,7 +17,7 @@ import org.gemsjax.shared.communication.message.collaborateablefile.Referenceabl
  * @author Hannes Dorfmann
  *
  */
-public abstract class ReferenceableExperimentMessage extends ExperimentMessage{
+public abstract class ReferenceableExperimentMessage extends ExperimentMessage implements Serializable{
 
 	public static final String TAG = "exp";
 	public static final String ATTRIBUTE_REFERENCE_ID ="ref-id";
@@ -41,6 +43,12 @@ public abstract class ReferenceableExperimentMessage extends ExperimentMessage{
 	
 	protected String closingXml(){
 		return "</"+TAG+">";
+	}
+	
+	
+	@Override
+	public void serialize(Archive a ) throws Exception{
+		referenceId = a.serialize("refId", referenceId).value;
 	}
 	
 

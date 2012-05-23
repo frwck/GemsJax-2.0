@@ -137,5 +137,8 @@ public class StyledModalDialog extends ModalDialog {
 	}
 	
 	
-
+	public void setFooterVisible(boolean visible){
+		footer.setVisible(visible);
+	}
+	
 }

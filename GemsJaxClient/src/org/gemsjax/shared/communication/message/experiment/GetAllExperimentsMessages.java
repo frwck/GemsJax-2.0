@@ -1,5 +1,8 @@
 package org.gemsjax.shared.communication.message.experiment;
 
+import org.gemsjax.shared.communication.serialisation.Archive;
+import org.gemsjax.shared.communication.serialisation.Serializable;
+
 
 
 /**
@@ -10,7 +13,7 @@ package org.gemsjax.shared.communication.message.experiment;
  * @author Hannes Dorfmann
  *
  */
-public class GetAllExperimentsMessages extends ReferenceableExperimentMessage{
+public class GetAllExperimentsMessages extends ReferenceableExperimentMessage implements Serializable{
 
 	public static final String TAG ="all";
 	
@@ -23,7 +26,13 @@ public class GetAllExperimentsMessages extends ReferenceableExperimentMessage{
 
 	@Override
 	public String toXml() {
-		return super.openingXml()+"<"+TAG+" />"+super.closingXml();
+//		return super.openingXml()+"<"+TAG+" />"+super.closingXml();
+		return null;
+	}
+
+	@Override
+	public void serialize(Archive a) throws Exception {
+		super.serialize(a);
 	}
 
 }

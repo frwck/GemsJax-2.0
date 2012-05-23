@@ -17,6 +17,7 @@ public class ExperimentGroupDTO implements Serializable{
 	private Date endDate;
 	
 	private Set<ExperimentInvitationDTO> notParicipatedEmails;
+	private Set<String> emailToCreateInvitation;
 
 	
 	public ExperimentGroupDTO(){}
@@ -101,6 +102,17 @@ public class ExperimentGroupDTO implements Serializable{
 		startDate = a.serialize("startDate", startDate).value;
 		endDate = a.serialize("endDate", endDate).value;
 		notParicipatedEmails = a.serialize("notParicipatedEmails", notParicipatedEmails).value;
+		emailToCreateInvitation = a.serialize("emailToCreateInvitation", emailToCreateInvitation).value;
+	}
+
+
+	public Set<String> getEmailToCreateInvitation() {
+		return emailToCreateInvitation;
+	}
+
+
+	public void setEmailToCreateInvitation(Set<String> emailToCreateInvitation) {
+		this.emailToCreateInvitation = emailToCreateInvitation;
 	}
 	
 

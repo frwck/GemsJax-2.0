@@ -195,7 +195,36 @@ public class StepByStepWizard {
 	
 	public void previous()
 	{
+		StepSection currentStepSection = stepSectionList.get(currentStepSectionIndex);
 		
+		// if the current step-section has more children, display the next children.
+		if (currentStepSection.currentChildIndex>0)
+		{
+			currentStepSection.currentChildIndex--;
+			setContent(currentStepSection.contentList.get(currentStepSection.currentChildIndex));
+		}
+		else
+		{
+			// the last children of the current step-section has been reached, so the next step-section should be displayed (if one more exists).
+			if (currentStepSectionIndex>0)
+			{	
+				// set the opacity of the old one
+				currentStepSection.stepSection.setOpacity(notActiveSectionStepOpacity);
+				
+				currentStepSectionIndex--;
+				currentStepSection = stepSectionList.get(currentStepSectionIndex);
+				// set the opacity of the (new) current step-section
+				currentStepSection.stepSection.setOpacity(100);
+				
+				// set the content to the first child of the (new) current step-section
+				setContent(currentStepSection.contentList.get(currentStepSection.currentChildIndex));
+				
+			}
+//			else
+//			{
+			 // First element has been reached
+//			}
+		}
 	}
 	
 	private void setContent(Canvas content)

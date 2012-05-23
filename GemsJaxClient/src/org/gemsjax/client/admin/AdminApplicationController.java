@@ -66,6 +66,7 @@ import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 import org.gemsjax.client.communication.channel.AuthenticationChannel;
 import org.gemsjax.client.communication.channel.CollaborateableFileChannel;
 import org.gemsjax.client.communication.channel.CollaborationChannel;
+import org.gemsjax.client.communication.channel.ExperimentChannel;
 import org.gemsjax.client.communication.channel.FriendsLiveChannel;
 import org.gemsjax.client.communication.channel.NotificationChannel;
 import org.gemsjax.client.communication.channel.RegistrationChannel;
@@ -74,6 +75,7 @@ import org.gemsjax.client.communication.channel.SearchChannel;
 import org.gemsjax.client.module.AuthenticationModule;
 import org.gemsjax.client.module.CollaborateableFileModule;
 import org.gemsjax.client.module.CollaborationModule;
+import org.gemsjax.client.module.ExperimentModule;
 import org.gemsjax.client.module.FriendsModule;
 import org.gemsjax.client.module.GlobalSearchModule;
 import org.gemsjax.client.module.NotificationRequestModule;
@@ -335,7 +337,10 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 
 	@Override
 	public void onCreateNewExperimentRequired() {
-		new CreateExperimentPresenter(eventBus, new CreateExperimentViewImpl(language, friendsModule));
+		
+		ExperimentModule module = new ExperimentModule(new ExperimentChannel(WebSocketCommunicationConnection.getInstance()));
+		
+		new CreateExperimentPresenter(eventBus, new CreateExperimentViewImpl(language, friendsModule), module);
 		
 	}
 
