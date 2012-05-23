@@ -8,6 +8,7 @@ public class ExperimentDTO {
 	private String name;
 	private String ownerDisplayName;
 	private Set<UserDTO> admins;
+	private String desription;
 	
 	
 	public ExperimentDTO(){}
@@ -50,6 +51,26 @@ public class ExperimentDTO {
 
 	public void setAdminDisplayNames(Set<UserDTO> admins) {
 		this.admins = admins;
+	}
+
+
+	public Set<UserDTO> getAdmins() {
+		return admins;
+	}
+
+
+	public void setAdmins(Set<UserDTO> admins) {
+		this.admins = admins;
+	}
+
+
+	public String getDesription() {
+		return desription;
+	}
+
+
+	public void setDesription(String desription) {
+		this.desription = desription;
 	}
 	
 }

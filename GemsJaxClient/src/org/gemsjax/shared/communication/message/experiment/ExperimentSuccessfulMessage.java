@@ -1,5 +1,7 @@
 package org.gemsjax.shared.communication.message.experiment;
 
+import org.gemsjax.shared.communication.serialisation.Archive;
+
 /**
  * Sent from server to client as a positive response on {@link CreateExperimentMessage}
  * 
@@ -17,6 +19,14 @@ public class ExperimentSuccessfulMessage extends ReferenceableExperimentMessage{
 	public ExperimentSuccessfulMessage(String referenceId) {
 		super(referenceId);
 		
+	}
+	
+	public ExperimentSuccessfulMessage(){}
+	
+	
+	@Override
+	public void serialize(Archive a) throws Exception{
+		super.serialize(a);
 	}
 	
 

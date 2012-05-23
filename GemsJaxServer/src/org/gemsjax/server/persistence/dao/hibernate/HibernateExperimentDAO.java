@@ -549,8 +549,8 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 	public List<Experiment> getExperimentByOwner(RegisteredUser owner)
 	{
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		Query query = session.createQuery( "FROM ExperimentImpl WHERE user_id_owner = "+owner.getId() );
-	      
+		Query query = session.createQuery( "FROM ExperimentImpl e WHERE user_id_owner = "+owner.getId() +"  OR :user in elements(e.administrators)" );
+		query.setParameter("user", owner);
 	    List<Experiment> result = query.list();
 	    session.close();
 	    return result;

@@ -45,6 +45,15 @@ import org.gemsjax.shared.communication.message.MessageType;
 import org.gemsjax.shared.communication.message.collaboration.SubscribeCollaborateableMessage;
 import org.gemsjax.shared.communication.message.collaboration.TransactionMessage;
 import org.gemsjax.shared.communication.message.collaboration.UnsubscribeCollaborateableMessage;
+import org.gemsjax.shared.communication.message.experiment.CreateExperimentMessage;
+import org.gemsjax.shared.communication.message.experiment.ExperimentDTO;
+import org.gemsjax.shared.communication.message.experiment.ExperimentErrorMessage;
+import org.gemsjax.shared.communication.message.experiment.ExperimentGroupDTO;
+import org.gemsjax.shared.communication.message.experiment.ExperimentInvitationDTO;
+import org.gemsjax.shared.communication.message.experiment.ExperimentSuccessfulMessage;
+import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsAnswerMessage;
+import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsMessage;
+import org.gemsjax.shared.communication.message.experiment.UserDTO;
 import org.gemsjax.shared.communication.message.system.KeepAliveMessage;
 import org.gemsjax.shared.communication.serialisation.ObjectFactory;
 import org.gemsjax.shared.communication.serialisation.XmlSavingArchive;
@@ -74,9 +83,18 @@ import org.gemsjax.shared.communication.serialisation.instantiators.collaboratio
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.RenameMetaConnectionCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ResizeMetaClassCommandInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.collaboration.command.ResizeMetaConnectionCommandInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.experiment.ExperimentDTOInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.experiment.ExperimentGroupDTOInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.experiment.ExperimentInvitationDTOInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.CreateExperimentMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.ExperimentErrorMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.ExperimentSuccessfulMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.GetAllExperimentsAnswerMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.GetAllExperimentsMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.TransactionMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.UnsubscribeCollaborateableMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.user.UserDTOInstantiator;
 
 
 
@@ -158,6 +176,16 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Unsu
 				// Inheritance
 				objectFactory.register(CreateMetaInheritanceCommand.class.getName(), new CreateMetaInheritanceCommandInstantiator());
 				
+				// Experiment
+				objectFactory.register(ExperimentDTO.class.getName(), new ExperimentDTOInstantiator());
+				objectFactory.register(ExperimentGroupDTO.class.getName(), new ExperimentGroupDTOInstantiator());
+				objectFactory.register(ExperimentInvitationDTO.class.getName(), new ExperimentInvitationDTOInstantiator());
+				objectFactory.register(CreateExperimentMessage.class.getName(), new CreateExperimentMessageInstantiator());
+				objectFactory.register(ExperimentErrorMessage.class.getName(), new ExperimentErrorMessageInstantiator());
+				objectFactory.register(ExperimentSuccessfulMessage.class.getName(), new ExperimentSuccessfulMessageInstantiator());
+				objectFactory.register(GetAllExperimentsMessage.class.getName(), new GetAllExperimentsMessageInstantiator());
+				objectFactory.register(GetAllExperimentsAnswerMessage.class.getName(), new GetAllExperimentsAnswerMessageInstantiator());
+				objectFactory.register(UserDTO.class.getName(), new UserDTOInstantiator());
 				
 			}
 			

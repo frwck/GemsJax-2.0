@@ -13,16 +13,17 @@ import org.gemsjax.shared.communication.serialisation.Serializable;
  * @author Hannes Dorfmann
  *
  */
-public class GetAllExperimentsMessages extends ReferenceableExperimentMessage implements Serializable{
+public class GetAllExperimentsMessage extends ReferenceableExperimentMessage implements Serializable{
 
 	public static final String TAG ="all";
 	
 	
-	public GetAllExperimentsMessages(String referenceId) {
+	public GetAllExperimentsMessage(String referenceId) {
 		super(referenceId);
 		
-		
 	}
+	
+	public GetAllExperimentsMessage(){}
 
 	@Override
 	public String toXml() {

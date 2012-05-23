@@ -76,6 +76,10 @@ public class CreateExperimentMessage extends ReferenceableExperimentMessage impl
 	}
 */
 	
+	public CreateExperimentMessage(){
+		
+	}
+	
 	public CreateExperimentMessage(String referenceId, String name, String description, Set<ExperimentGroupDTO> groups, Set<Integer> adminIds){
 		super(referenceId);
 		this.name = name;

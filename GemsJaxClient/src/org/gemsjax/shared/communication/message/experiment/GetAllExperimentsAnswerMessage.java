@@ -1,10 +1,12 @@
  package org.gemsjax.shared.communication.message.experiment;
 
 import java.util.Set;
+
+import org.gemsjax.shared.communication.serialisation.Archive;
 import org.gemsjax.shared.experiment.Experiment;
 
 /**
- * Sent from Server to Client as response on a {@link GetAllExperimentsMessages}
+ * Sent from Server to Client as response on a {@link GetAllExperimentsMessage}
  * 
  * <exp ref-id="blabla">
  * 		<all>
@@ -36,9 +38,13 @@ public class GetAllExperimentsAnswerMessage extends ReferenceableExperimentMessa
 		
 	}
 	
+	public GetAllExperimentsAnswerMessage(){}
+	
 	public Set<ExperimentDTO> getExperiments(){
 		return experiments;
 	}
+	
+	
 
 	@Override
 	public String toXml() {
@@ -51,6 +57,13 @@ public class GetAllExperimentsAnswerMessage extends ReferenceableExperimentMessa
 		return ret+"</"+TAG+">"+super.closingXml();
 		*/
 		return null;
+	}
+	
+	
+	@Override
+	public void serialize(Archive a) throws Exception{
+		super.serialize(a);
+		experiments = a.serialize("experiments", experiments).value;
 	}
 
 }

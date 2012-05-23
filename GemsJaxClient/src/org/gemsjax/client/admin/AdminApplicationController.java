@@ -348,7 +348,17 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 	@Override
 	public void onShowAllExperimentsRequested() {
 		
-		new AllExperimentsPresenter(new AllExperimentsViewImpl("Experiments", language, eventBus), eventBus);
+		ExperimentModule module = new ExperimentModule(new ExperimentChannel(WebSocketCommunicationConnection.getInstance()));
+		
+		AllExperimentsViewImpl view = new AllExperimentsViewImpl("Experiments", language, eventBus);
+		
+		try {
+			new AllExperimentsPresenter(view, eventBus, module);
+		} catch (IOException e) {
+			view.showUnexpectedError();
+			view.closeIt();
+			e.printStackTrace();
+		}
 	}
 	
 }

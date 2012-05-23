@@ -7,7 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsMessages;
+import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsMessage;
 import org.gemsjax.shared.communication.message.experiment.ReferenceableExperimentMessage;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -40,14 +40,14 @@ public class ExperimentMessageParser {
 					+ ReferenceableExperimentMessage.TAG + ">");
 
 		// Determine child type
-		if (childElement.getTagName() == GetAllExperimentsMessages.TAG)
+		if (childElement.getTagName() == GetAllExperimentsMessage.TAG)
 			return parseGetAllExperimentsMessage(referenceId, childElement);
 
 		throw new DOMException(DOMException.SYNTAX_ERR, "The <" + ReferenceableExperimentMessage.TAG
 				+ "> was found, but contains an unknown child tag <" + childElement.getTagName() + ">");
 	}
 
-	private GetAllExperimentsMessages parseGetAllExperimentsMessage(String referenceId, Element e) {
-		return new GetAllExperimentsMessages(referenceId);
+	private GetAllExperimentsMessage parseGetAllExperimentsMessage(String referenceId, Element e) {
+		return new GetAllExperimentsMessage(referenceId);
 	}
 }

@@ -1,5 +1,8 @@
 package org.gemsjax.shared.communication.message.experiment;
 
+import org.gemsjax.shared.communication.message.collaboration.TransactionError;
+import org.gemsjax.shared.communication.serialisation.Archive;
+
 /**
  * Sent from Server to Client as a negative response on a {@link CreateExperimentMessage}
  * 
@@ -17,6 +20,9 @@ public class ExperimentErrorMessage extends ReferenceableExperimentMessage {
 	
 	private ExperimentError error;
 	
+	
+	public ExperimentErrorMessage(){}
+	
 	public ExperimentErrorMessage(String referenceId, ExperimentError error) {
 		super(referenceId);
 		this.error = error;
@@ -29,6 +35,15 @@ public class ExperimentErrorMessage extends ReferenceableExperimentMessage {
 	@Override
 	public String toXml() {
 		return null;
+	}
+	
+	@Override
+	public void serialize(Archive a) throws Exception{
+		super.serialize(a);
+		
+		String e = a.serialize("error", error!=null?error.toString():null).value;
+		error = e==null?null:ExperimentError.valueOf(e);
+
 	}
 	
 }

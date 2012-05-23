@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import org.gemsjax.server.communication.channel.CollaborateableFileChannel;
 import org.gemsjax.server.communication.channel.CollaborationChannel;
+import org.gemsjax.server.communication.channel.ExperimentChannel;
 import org.gemsjax.server.communication.channel.FriendsLiveChannel;
 import org.gemsjax.server.communication.channel.LogoutChannel;
 import org.gemsjax.server.communication.channel.NotificationChannel;
@@ -38,6 +39,7 @@ public class OnlineUser {
 	private LogoutChannel logoutChannel;
 	private Set<InputChannel> inputChannels;
 	private RequestChannel requestChannel;
+	private ExperimentChannel experimentChannel;
 	private NotificationChannel notificationChannel;
 	private CollaborationChannel collaborationChannel;
 	private CollaborateableFileChannel collaborateableFileChannel;
@@ -195,6 +197,11 @@ public class OnlineUser {
 		colChannel.addCollaborationChannelHandler(CollaborationModule.getInstance());
 		u.setCollaborationChannel(colChannel);
 		
+		// ExperimentChannel
+		ExperimentChannel expChannel = new ExperimentChannel(connection, u);
+		expChannel.addExperimentChannelHandler(ExperimentModule.getInstance());
+		u.setExperimentChannel(expChannel);
+		
 		return u;
 	}
 	
@@ -301,6 +308,16 @@ public class OnlineUser {
 
 	public void setCollaborationChannel(CollaborationChannel collaborationChannel) {
 		this.collaborationChannel = collaborationChannel;
+	}
+
+
+	public ExperimentChannel getExperimentChannel() {
+		return experimentChannel;
+	}
+
+
+	public void setExperimentChannel(ExperimentChannel experimentChannel) {
+		this.experimentChannel = experimentChannel;
 	}
 	
 	

@@ -25,6 +25,8 @@ public abstract class ReferenceableExperimentMessage extends ExperimentMessage i
 	
 	private String referenceId;
 	
+	public ReferenceableExperimentMessage(){}
+	
 	public ReferenceableExperimentMessage(String referenceId){
 		this.referenceId = referenceId;
 	}

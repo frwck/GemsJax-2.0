@@ -15,7 +15,7 @@ import org.gemsjax.shared.communication.message.experiment.CreateExperimentMessa
 import org.gemsjax.shared.communication.message.experiment.ExperimentDTO;
 import org.gemsjax.shared.communication.message.experiment.ExperimentError;
 import org.gemsjax.shared.communication.message.experiment.ExperimentGroupDTO;
-import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsMessages;
+import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsMessage;
 import org.gemsjax.shared.communication.message.friend.Friend;
 
 public class ExperimentModule implements ExperimentChannelHandler{
@@ -84,7 +84,7 @@ public class ExperimentModule implements ExperimentChannelHandler{
 	public void getAllExperiments() throws IOException{
 		
 		lastGetAllRefId = nextId();
-		GetAllExperimentsMessages m = new GetAllExperimentsMessages(lastGetAllRefId);
+		GetAllExperimentsMessage m = new GetAllExperimentsMessage(lastGetAllRefId);
 		channel.send(m);
 		
 	}
