@@ -211,9 +211,9 @@ class ExperimentGroupPanel extends VStack{
 		Date start = getStartDate();
 		Date end = getEndDate();
 		
-		if (start.compareTo(end)<=0)
+		if (end.compareTo(start)<=0)
 		{
-			NotificationManager.getInstance().showTipNotification(new TipNotification("End date is before start date", null, 2000, NotificationPosition.CENTER));
+			NotificationManager.getInstance().showTipNotification(new TipNotification("End date of group \""+getName()+"\" is before start date", null, 2000, NotificationPosition.CENTER));
 			return false;
 		}
 		

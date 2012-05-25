@@ -136,6 +136,7 @@ public class CreateExperimentMessage extends ReferenceableExperimentMessage impl
 
 	@Override
 	public void serialize(Archive a) throws Exception {
+		super.serialize(a);
 		name = a.serialize("name", name).value;
 		description = a.serialize("description", description).value;
 		groups = a.serialize("groups", groups).value;

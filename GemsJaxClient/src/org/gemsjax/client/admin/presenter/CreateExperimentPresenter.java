@@ -47,6 +47,7 @@ public class CreateExperimentPresenter extends Presenter implements WizardHandle
 	@Override
 	public void onCreateNewSuccessful() {
 		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
+		view.closeIt();
 		view.showSuccessful();
 		
 	}

@@ -42,7 +42,7 @@
     	</set>
     	
     	<!--  The set of Experiments that were administrated by this user -->
-    	<set name="administratedExperiments" table="AdministrateExperiment" inverse="true" cascade="save-update">        
+    	<set name="administratedExperiments" table="AdministrateExperiment" inverse="true" cascade="save-update" lazy="false">        
 			 <key column="User_id" />         
 				<many-to-many column="Experiment_id" class="org.gemsjax.server.persistence.experiment.ExperimentImpl"/>    
 		</set> 

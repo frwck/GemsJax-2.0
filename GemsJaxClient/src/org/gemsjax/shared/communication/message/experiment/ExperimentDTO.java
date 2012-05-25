@@ -2,7 +2,10 @@ package org.gemsjax.shared.communication.message.experiment;
 
 import java.util.Set;
 
-public class ExperimentDTO {
+import org.gemsjax.shared.communication.serialisation.Archive;
+import org.gemsjax.shared.communication.serialisation.Serializable;
+
+public class ExperimentDTO implements Serializable{
 	
 	private int id;
 	private String name;
@@ -72,5 +75,13 @@ public class ExperimentDTO {
 	public void setDesription(String desription) {
 		this.desription = desription;
 	}
-	
+
+
+	@Override
+	public void serialize(Archive a) throws Exception {
+		id = a.serialize("id", id).value;
+		name = a.serialize("name", name).value;
+		admins = a.serialize("admins", admins).value;
+		desription = a.serialize("desription", desription).value;
+	}
 }

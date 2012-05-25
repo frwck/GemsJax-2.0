@@ -76,13 +76,16 @@ public class RequestModule implements RequestChannelHandler{
 				}
 				else
 				if (r instanceof AdministrateExperimentRequestImpl)
+				{
+					ExperimentModule.getInstance().addExperimentAdmin(((AdministrateExperimentRequestImpl) r).getExperiment(), acceptor);
 					NotificationModule.getInstance().onAdminExperimentAccepted(r.getSender(), acceptor, ((AdministrateExperimentRequestImpl) r).getExperiment());
-					//TODO implement
+					
+				}
 				else
-				if (r instanceof CollaborateRequestImpl)
+				if (r instanceof CollaborateRequestImpl){
 					NotificationModule.getInstance().onCollaborationAccepted(r.getSender(), acceptor, ((CollaborateRequestImpl) r).getCollaborateable());
 					CollaboratableFileModule.getInstance().addCollaborator(acceptor, ((CollaborateRequestImpl)r).getCollaborateable());
-				
+				}
 				// finally delete the request and send a positive response
 				dao.deleteRequest(r);
 				try {
@@ -124,6 +127,9 @@ public class RequestModule implements RequestChannelHandler{
 				e1.printStackTrace();
 			}
 			
+		} catch (AlreadyAssignedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 	}

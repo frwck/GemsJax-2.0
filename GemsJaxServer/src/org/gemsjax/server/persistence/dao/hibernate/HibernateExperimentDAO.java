@@ -30,6 +30,7 @@ import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;
 import org.gemsjax.shared.user.ExperimentUser;
 import org.gemsjax.shared.user.RegisteredUser;
+import org.gemsjax.shared.user.User;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.LockMode;
@@ -86,6 +87,8 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 			e.setName(name);
 			e.setDescription(description);
 			e.setOwner(owner);
+			
+			owner = (RegisteredUser) session.merge(owner);
 			
 			owner.getOwnedExperiments().add(e);
 			
@@ -570,10 +573,10 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 		try
 		{
 			session = HibernateUtil.getSessionFactory().openSession();
-			
+			/*
 			session.buildLockRequest(LockOptions.NONE).lock(experiment);
 			session.buildLockRequest(LockOptions.NONE).lock(user);
-			
+			*/
 			if (experiment.getAdministrators().contains(user))
 			{
 				session.close();
@@ -584,6 +587,7 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 				experiment.getAdministrators().add(user);
 				user.getAdministratedExperiments().add(experiment);
 				session.update(experiment);
+				user = (RegisteredUser) session.merge(user);
 				session.update(user);
 			tx.commit();
 			session.flush();

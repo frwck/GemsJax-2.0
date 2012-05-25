@@ -30,7 +30,7 @@
     </many-to-one>
     
     
-    <set name="administrators" table="AdministrateExperiment">        
+    <set name="administrators" table="AdministrateExperiment" lazy="false">        
 			<key column="Experiment_id" />         
 			<many-to-many column="User_id" class="org.gemsjax.server.persistence.user.RegisteredUserImpl"/>    
 	</set>
