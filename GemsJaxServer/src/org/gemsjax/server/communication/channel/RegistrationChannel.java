@@ -1,16 +1,19 @@
 package org.gemsjax.server.communication.channel;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
 
 import org.gemsjax.server.communication.HttpCommunicationConnection;
-import org.gemsjax.server.communication.parser.HttpParseException;
 import org.gemsjax.server.communication.parser.SystemMessageParser;
+import org.gemsjax.server.persistence.dao.ExperimentDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
+import org.gemsjax.server.persistence.dao.exception.ArgumentException;
 import org.gemsjax.server.persistence.dao.exception.DAOException;
 import org.gemsjax.server.persistence.dao.exception.EMailInUseExcpetion;
+import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
+import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.server.persistence.dao.hibernate.HibernateExperimentDAO;
 import org.gemsjax.server.persistence.dao.hibernate.HibernateUserDAO;
 import org.gemsjax.server.util.SHA;
 import org.gemsjax.shared.FieldVerifier;
@@ -21,11 +24,13 @@ import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.system.NewExperimentRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage;
+import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
 import org.gemsjax.shared.communication.message.system.SystemErrorMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
-import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
+import org.gemsjax.shared.experiment.ExperimentInvitation;
 import org.xml.sax.SAXException;
 
 /**
@@ -37,6 +42,7 @@ import org.xml.sax.SAXException;
 public class RegistrationChannel implements InputChannel, OutputChannel{
 
 	private UserDAO userDAO;
+	private ExperimentDAO experimentDAO;
 	private SystemMessageParser parser;
 	private CommunicationConnection connection;
 	private String filterRegex;
@@ -49,9 +55,11 @@ public class RegistrationChannel implements InputChannel, OutputChannel{
 	public RegistrationChannel(CommunicationConnection connection)
 	{
 		userDAO = new HibernateUserDAO();
+		experimentDAO = new HibernateExperimentDAO();
 		parser = new SystemMessageParser();
 		this.connection  = connection;
 		this.connection.registerInputChannel(this);
+		this.connection.registerInputChannel(this, SystemMessage.TYPE);
 		this.filterRegex = RegExFactory.startWithTagSubTag(SystemMessage.TAG, NewRegistrationMessage.TAG);
 		
 	}
@@ -163,8 +171,104 @@ public class RegistrationChannel implements InputChannel, OutputChannel{
 
 
 	@Override
-	public void onMessageRecieved(Message arg0) {
-		// TODO Auto-generated method stub
+	public void onMessageRecieved(Message m) {
+		
+		if (m instanceof NewExperimentRegistrationMessage){
+			doExperimentUserRegistration((NewExperimentRegistrationMessage) m);
+		}
+	}
+
+
+	private void doExperimentUserRegistration(NewExperimentRegistrationMessage m) {
+		try {
+			
+			ExperimentInvitation inv = experimentDAO.getExperimentInvitation(m.getVerificationCode());
+			
+			if (inv.hasParticipated()){ // Already a username created
+				RegistrationAnswerMessage am = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_EXPERIMENT_VERIFICATION_CODE);
+				setHttpResponseStatusCode(200);
+				try {
+					send(am);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				
+				return;
+			}
+			
+			
+			
+			if (experimentDAO.isDisplayedNameInExperimentGroupAvailable(m.getDisplayedName(), inv.getExperimentGroup())){
+				try {
+				experimentDAO.createExperimentUser(m.getVerificationCode(), SHA.generate256(m.getPassword()), inv.getExperimentGroup(), m.getDisplayedName());
+				experimentDAO.setExperimentInvitationParticipated(inv, true);
+				
+				RegistrationAnswerMessage am = new RegistrationAnswerMessage(RegistrationAnswerStatus.OK);
+				setHttpResponseStatusCode(200);
+				
+					send(am);
+				} catch (IOException e) {
+					// TODO what to do if message cant be sent
+					e.printStackTrace();
+				} catch (DAOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					RegistrationAnswerMessage am = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_EXPERIMENT_VERIFICATION_CODE);
+					setHttpResponseStatusCode(200);
+					try {
+						send(am);
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
+			}
+			else // DisplayedName is not available
+			{
+				RegistrationAnswerMessage am = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE);
+				setHttpResponseStatusCode(200);
+				try {
+					send(am);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+			
+		} catch (MoreThanOneExcpetion e) {
+			
+			SystemMessage em = new SystemErrorMessage(new CommunicationError(CommunicationError.ErrorType.DATABASE));
+		    setHttpResponseStatusCode(500);
+		    try {
+				send(em);
+			} catch (IOException e1) {
+				// TODO What to do if message can't be sent
+				e1.printStackTrace();
+			}
+		    
+			e.printStackTrace();
+		} catch (NotFoundException e) {
+			RegistrationAnswerMessage am = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_EXPERIMENT_VERIFICATION_CODE);
+			setHttpResponseStatusCode(200);
+			try {
+				send(am);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UsernameInUseException e) {
+			
+			RegistrationAnswerMessage am = new RegistrationAnswerMessage(RegistrationAnswerStatus.FAIL_EXPERIMENT_VERIFICATION_CODE);
+			setHttpResponseStatusCode(200);
+			try {
+				send(am);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 		
 	}
 

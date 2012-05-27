@@ -12,6 +12,7 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.system.ExperimentLoginSuccessfulMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
@@ -60,6 +61,7 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 		
 		regEx = RegExp.compile(regExFilter);
 		connection.registerInputChannel(this);
+		connection.registerInputChannel(this, SystemMessage.TYPE);
 	}
 	
 	public void addAuthenticationChannelHandler(AuthenticationChannelHandler h)
@@ -187,8 +189,9 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 
 	@Override
 	public void onMessageRecieved(Message msg) {
-		// TODO Auto-generated method stub
-		
+		if (msg instanceof ExperimentLoginSuccessfulMessage){
+			
+		}
 	}
 
 }

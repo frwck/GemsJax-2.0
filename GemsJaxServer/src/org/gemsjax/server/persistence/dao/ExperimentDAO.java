@@ -121,10 +121,14 @@ public interface ExperimentDAO {
 	 * @throws UsernameInUseException
 	 */
 	public abstract ExperimentUser createExperimentUser(String username,
-			String passwordHash, ExperimentGroup experimentGroup)
+			String passwordHash, ExperimentGroup experimentGroup, String displayedName)
 			throws ArgumentException, UsernameInUseException;
 
 
+	
+	public abstract boolean isDisplayedNameInExperimentGroupAvailable(String displayedName, ExperimentGroup group);
+	
+	
 	public abstract void updateExperimentGroup(ExperimentGroup group,
 			String name, Date startDate, Date endDate)
 			throws ArgumentException, DAOException;
@@ -199,4 +203,8 @@ public interface ExperimentDAO {
 	 * @return
 	 */
 	public Set<Experiment> getBySearch(String searchString, RegisteredUser requester);
+	
+	
+	public void setExperimentInvitationParticipated(ExperimentInvitation inv, boolean participated) throws DAOException;
+	
 }

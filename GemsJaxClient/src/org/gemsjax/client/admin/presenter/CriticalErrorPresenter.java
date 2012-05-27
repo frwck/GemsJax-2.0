@@ -35,6 +35,7 @@ public class CriticalErrorPresenter extends Presenter implements CriticalErrorHa
 			case INITIAL_ALL_FRIENDS: view.setErrorText("Could not load your friends."); break;
 			case INITAIL_NOTIFICATION_REQUEST: view.setErrorText("Could not load your notifications or requests"); break;
 			case AUTHENTICATION: view.setErrorText("You are not authenticated. Log in!");
+			case EXPERIMENT_VERIFICATION: view.setErrorText("Incorrect experiment URL! Please only use the URL of your experiment invitation e-mail");
 		}
 		
 		view.show();

@@ -29,7 +29,9 @@ public class CriticalErrorEvent extends GwtEvent<CriticalErrorHandler> {
 		/**
 		 * The user is no longer logged in
 		 */
-		AUTHENTICATION
+		AUTHENTICATION,
+		
+		EXPERIMENT_VERIFICATION
 	}
 	
 	

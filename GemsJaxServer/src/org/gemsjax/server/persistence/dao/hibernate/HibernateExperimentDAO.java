@@ -414,7 +414,7 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 	/* (non-Javadoc)
 	 * @see org.gemsjax.server.persistence.dao.hibernate.ExperimentDAO#createExperimentUser(java.lang.String, java.lang.String, org.gemsjax.shared.experiment.ExperimentGroup)
 	 */
-	public ExperimentUser createExperimentUser(String username, String passwordHash, ExperimentGroup experimentGroup) throws ArgumentException, UsernameInUseException
+	public ExperimentUser createExperimentUser(String username, String passwordHash, ExperimentGroup experimentGroup, String displayedName) throws ArgumentException, UsernameInUseException
 	{
 		if (FieldVerifier.isEmpty(username))
 			throw new ArgumentException("Username is not set");
@@ -433,7 +433,7 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 			t = session.beginTransaction();
 			
 				ExperimentUserImpl u = new ExperimentUserImpl();
-				u.setDisplayedName(username);
+				u.setDisplayedName(displayedName);
 				u.setUsername(username);
 				u.setPasswordHash(passwordHash);
 				u.setExperimentGroup(experimentGroup);
@@ -845,21 +845,30 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 	public ExperimentInvitation getExperimentInvitation(String verificationCode) throws MoreThanOneExcpetion, NotFoundException {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		Query query = session.createQuery( "FROM ExperimentInvitationImpl WHERE verificationCode = :vCode" );
+		Query query = session.createQuery( "FROM ExperimentInvitationImpl i WHERE i.verificationCode = :vCode" );
 		query.setString("vCode", verificationCode);
 	      
 	    List<ExperimentInvitation> result = (List<ExperimentInvitation>) query.list();
+	    
+	    
+	    if (result.size()>1){
+	    	 session.close();
+	    	 throw new MoreThanOneExcpetion();
+	    }
+	    else
+	    	if (result.size()==0){
+	    		 session.close();
+	    		 throw new NotFoundException();
+	    	}
+	    		
+	    
 	    
 	    ExperimentInvitation inv = result.get(0);
 	    Hibernate.initialize(inv.getExperimentGroup());
 	    session.close();
 	    
 	    
-	    if (result.size()>1)
-	    	throw new MoreThanOneExcpetion();
-	    else
-	    	if (result.size()==0)
-	    		throw new NotFoundException();
+	    
 	    
 	    
 	    return inv;
@@ -929,6 +938,54 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 	    List<Experiment> result = query.list();
 	    
 	    return new LinkedHashSet<Experiment>(result);
+	}
+
+
+
+	@Override
+	public boolean isDisplayedNameInExperimentGroupAvailable(
+			String displayedName, ExperimentGroup group) {
+		
+		String sql = "SELECT c FROM ExperimentUserImpl c WHERE c.experimentGroup=:group AND c.displayedName=:dispName";
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Query query = session.createQuery( sql );
+		query.setParameter("group", group);
+		query.setParameter("dispName", displayedName);
+		
+		if (query.list().size()==0)
+			return true;
+		else		
+			return false;
+	}
+
+
+
+	@Override
+	public void setExperimentInvitationParticipated(ExperimentInvitation invitation, boolean participated) throws DAOException {
+		
+		Transaction t= null;
+		Session session = null;
+		try
+		{
+			session = HibernateUtil.getSessionFactory().openSession();
+			t = session.beginTransaction();
+				invitation.setParticipated(participated);
+				invitation = (ExperimentInvitation) session.merge(invitation);
+			session.update(invitation);
+			t.commit();
+			
+		}catch(HibernateException e)
+		{
+			if (t!=null)
+				t.rollback();
+			
+			if (session!= null)
+				session.close();
+			
+			throw new DAOException(e,"Could not set participated in an ExperimentInvitation");
+		}
 	}
 
 

@@ -107,11 +107,12 @@ public class HttpCommunicationConnection implements CommunicationConnection{
 		for (EstablishedListener e: establishedListeners)
 			e.onEstablished();
 		
-		
+	}
+	
+	@Deprecated
+	public void deliverMessage(){
 		InputMessage im = new InputMessage(request.getParameter(Message.POST_PARAMETER_NAME));
 		fireInputChannelMessage(im);
-		
-		
 	}
 	
 	@Override
@@ -259,5 +260,12 @@ public class HttpCommunicationConnection implements CommunicationConnection{
 			Set<InputChannel> channels = inputChannelMap.get(type);
 			channels.add(c);
 		}
+	}
+	
+	public void deliverReceivedMessage(Message m){
+		Set<InputChannel> channels = inputChannelMap.get(m.getMessageType());
+		
+		for (InputChannel c : channels)
+			c.onMessageRecieved(m);
 	}
 }

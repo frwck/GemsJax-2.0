@@ -66,7 +66,7 @@ public class GemsJaxServer {
 	        // Add the GemsJaxServlet (WebSocket Communication)
 	        ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
 	        servletContext.setContextPath("/");
-	        servletContext.addServlet(new ServletHolder(new ExperimentServlet()),ServletPaths.EXPERIMENT+"/*");
+	        servletContext.addServlet(new ServletHolder(new ExperimentServlet(warUrl)),ServletPaths.EXPERIMENT+"/*");
 	        servletContext.addServlet(new ServletHolder(new FileServlet(warUrl,"GemsJax.html")),"/*");
 	        servletContext.addServlet(new ServletHolder( new LiveCommunicationWebSocketServlet()),"/servlets/liveCommunication");
 	        servletContext.addServlet(new ServletHolder( new RegistrationServlet()),"/servlets/registration");

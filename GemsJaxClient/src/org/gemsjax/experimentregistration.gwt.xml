@@ -21,7 +21,7 @@
 	<!-- Development tool -->
 	<inherits name="com.smartgwt.tools.SmartGwtTools" />
 
-
+	<inherits name="com.google.common.collect.Collect" />
 	
 	<!-- Smart GWT Design -->
 	<!--  <inherits name="com.smartclient.theme.silverwave.SilverWave"/> -->

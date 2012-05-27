@@ -1,12 +1,15 @@
 package org.gemsjax.client.experiment.view.impl;
 
 import org.gemsjax.client.admin.UserLanguage;
+import org.gemsjax.client.experiment.UrlHelper;
 import org.gemsjax.client.experiment.view.ExperimentRegistrationView;
+import org.gemsjax.shared.ServletPaths;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Img;
@@ -78,6 +81,7 @@ public class ExperimentRegistrationViewImpl extends VLayout implements Experimen
 		this.addMember(middleLayout);
 		this.addMember(bottomSpacer);
 	
+		this.bringToFront();
 	}
 	
 	
@@ -89,6 +93,8 @@ public class ExperimentRegistrationViewImpl extends VLayout implements Experimen
 		logo.setWidth(200);
 		logo.setHeight(40);
 		logo.setAlign(Alignment.CENTER);
+		logo.setValign(VerticalAlignment.CENTER);
+		
 		
 		// Welcome label
 		welcomeLabel = new Label(Language.LoginTitle());
@@ -96,9 +102,9 @@ public class ExperimentRegistrationViewImpl extends VLayout implements Experimen
 		welcomeLabel.setValign(VerticalAlignment.CENTER);
 		welcomeLabel.setStyleName("loginWelcomeLabel");
 		
-		String txt = "Hello, its the first time you try to participate in this experiment. " +
+		String txt = "<p align=\"justify\">It's the first time you try to participate in this experiment. " +
 				"Please specify a displayed name (visible to the other pariticipants) and a password." +
-				"This password is needed for a later login. Notice, that this password is associated to your received experiment invitation e-mail and can not be recovered.";
+				"This password is needed for a later login. Notice, that this password is associated to your received experiment invitation e-mail and can not be recovered.</p>";
 		Label descriptionLabel = new Label(txt);
 		descriptionLabel.setWrap(true);
 
@@ -151,7 +157,7 @@ public class ExperimentRegistrationViewImpl extends VLayout implements Experimen
 		form.draw();
 		
 		// Login Button
-		loginButton = new IButton(Language.Login());
+		loginButton = new IButton("submit");
 		loginButton.setAlign(Alignment.CENTER);
 		loginButton.setWidth100();
 	
@@ -160,7 +166,7 @@ public class ExperimentRegistrationViewImpl extends VLayout implements Experimen
 		VStack layoutStack = new VStack();
 		layoutStack.setMembersMargin(0);
 		
-		layoutStack.setWidth(200);
+		layoutStack.setWidth(250);
 		layoutStack.setMembersMargin(5);
 		
 		
@@ -222,7 +228,7 @@ public class ExperimentRegistrationViewImpl extends VLayout implements Experimen
 
 
 	@Override
-	public String getPasswordRepeated() {
+	public String getPasswordRepeated(){
 		return passwordRepeatedField.getValueAsString();
 	}
 
@@ -237,8 +243,14 @@ public class ExperimentRegistrationViewImpl extends VLayout implements Experimen
 
 	@Override
 	public void showUnexpectedError() {
-		SC.warn("An unexpected Error has occrred.");
-		Window.Location.reload();
+		SC.warn("An unexpected Error has occrred.", new BooleanCallback() {
+			
+			@Override
+			public void execute(Boolean value) {
+				Window.Location.reload();
+			}
+		});
+		
 	}
 
 
@@ -259,8 +271,14 @@ public class ExperimentRegistrationViewImpl extends VLayout implements Experimen
 
 	@Override
 	public void showSuccessful() {
-		SC.say("Successful");
-		Window.Location.reload();
+		SC.say("Successful", new BooleanCallback() {
+			
+			@Override
+			public void execute(Boolean value) {
+				Window.Location.replace(ServletPaths.SERVER_URL+ServletPaths.EXPERIMENT+"/"+UrlHelper.getVerificationCode());
+			}
+		});
+		
 	}
 
 }

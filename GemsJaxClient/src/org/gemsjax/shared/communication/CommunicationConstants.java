@@ -142,6 +142,8 @@ public class CommunicationConstants {
 		public static final String FAIL_INVALID_EMAIL = "fail_invalid_email";
 		
 		public static final String FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE = "fail_exp_disp_name";
+		
+		public static final String FAIL_EXPERIMENT_VERIFICATION_CODE = "fail_exp_verification";
 	}
 	
 	/**

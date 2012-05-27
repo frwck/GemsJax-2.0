@@ -9,5 +9,7 @@ public interface ExperimentLoginView {
 	public HasClickHandlers getLoginButton();
 	public void showPasswordIncorrectMessage();
 	public void showError(Throwable t);
+	public void resetView();
+	public void hide();
 
 }

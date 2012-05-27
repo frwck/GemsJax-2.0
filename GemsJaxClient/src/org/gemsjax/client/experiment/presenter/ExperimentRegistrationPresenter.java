@@ -23,6 +23,7 @@ public class ExperimentRegistrationPresenter extends Presenter implements ClickH
 	public ExperimentRegistrationPresenter(EventBus eventBus, ExperimentRegistrationView view, RegistrationModule module, String verificationCode) {
 		super(eventBus);
 		this.view = view;
+		
 		this.verificationCode = verificationCode;
 		this.module = module;
 		bind();

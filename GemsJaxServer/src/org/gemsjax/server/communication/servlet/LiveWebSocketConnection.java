@@ -54,6 +54,7 @@ import org.gemsjax.shared.communication.message.experiment.ExperimentSuccessfulM
 import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsAnswerMessage;
 import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsMessage;
 import org.gemsjax.shared.communication.message.experiment.UserDTO;
+import org.gemsjax.shared.communication.message.system.ExperimentLoginSuccessfulMessage;
 import org.gemsjax.shared.communication.message.system.KeepAliveMessage;
 import org.gemsjax.shared.communication.message.system.NewExperimentRegistrationMessage;
 import org.gemsjax.shared.communication.serialisation.ObjectFactory;
@@ -89,6 +90,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.experiment.E
 import org.gemsjax.shared.communication.serialisation.instantiators.experiment.ExperimentInvitationDTOInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.CreateExperimentMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.ExperimentErrorMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.ExperimentLoginSuccessfulMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.ExperimentSuccessfulMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.GetAllExperimentsAnswerMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.GetAllExperimentsMessageInstantiator;
@@ -148,6 +150,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.user.UserDTO
 				
 				// ExperimentRegistration 
 				objectFactory.register(NewExperimentRegistrationMessage.class.getName(), new NewExperimentRegistrationMessageInstantiator());
+				objectFactory.register(ExperimentLoginSuccessfulMessage.class.getName(), new ExperimentLoginSuccessfulMessageInstantiator());
 				
 				
 				// CollaboarionMessages

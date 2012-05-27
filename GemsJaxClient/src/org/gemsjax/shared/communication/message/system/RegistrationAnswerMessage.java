@@ -44,7 +44,9 @@ public class RegistrationAnswerMessage extends SystemMessage {
 		 */
 		FAIL_INVALID_EMAIL,
 		
-		FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE
+		FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE,
+		
+		FAIL_EXPERIMENT_VERIFICATION_CODE
 	}
 	
 	
@@ -98,6 +100,9 @@ public class RegistrationAnswerMessage extends SystemMessage {
 			return RegistrationAnswerStatus.FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE;
 		
 		
+		if (answereStatusAsString.equals(CommunicationConstants.Registration.FAIL_EXPERIMENT_VERIFICATION_CODE))
+			return RegistrationAnswerStatus.FAIL_EXPERIMENT_VERIFICATION_CODE;
+		
 		
 		return null;
 	}
@@ -113,6 +118,7 @@ public class RegistrationAnswerMessage extends SystemMessage {
 			case FAIL_INVALID_EMAIL: return CommunicationConstants.Registration.FAIL_INVALID_EMAIL;
 			case FAIL_INVALID_USERNAME: return CommunicationConstants.Registration.FAIL_INVALID_USERNAME;
 			case FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE: return CommunicationConstants.Registration.FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE;
+			case FAIL_EXPERIMENT_VERIFICATION_CODE: return CommunicationConstants.Registration.FAIL_EXPERIMENT_VERIFICATION_CODE;
 		}
 		
 		return null;

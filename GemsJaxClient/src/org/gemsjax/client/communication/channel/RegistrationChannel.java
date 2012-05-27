@@ -51,6 +51,7 @@ public class RegistrationChannel implements InputChannel, OutputChannel, ErrorLi
 		
 		this.connection = connection;
 		this.connection.registerInputChannel(this);
+		this.connection.registerInputChannel(this, SystemMessage.TYPE);
 		
 		this.handlers = new LinkedHashSet<RegistrationChannelHandler>();
 		parser = new SystemMessageParser();

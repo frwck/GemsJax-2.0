@@ -12,6 +12,7 @@ import org.gemsjax.shared.communication.channel.InputChannel;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.Message;
 import org.gemsjax.shared.communication.message.MessageType;
+import org.gemsjax.shared.communication.serialisation.XmlSavingArchive;
 
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
@@ -158,9 +159,23 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 		
 		
 		try {
-		  String postParameter=Message.POST_PARAMETER_NAME+"="+URL.encode(message.toXml());
-		  //TODO remove console
-		  Console.log("SEND HTTP Post: "+message.toXml());
+		
+		 
+		  String xml;
+		  
+		  if (message.toXml()==null)
+		  {
+			  XmlSavingArchive archive = new XmlSavingArchive();
+			  archive.serialize(message);
+			  xml = archive.toXml();
+		  }
+		  else
+			  xml = message.toXml();
+		  
+		  
+		  String postParameter=Message.POST_PARAMETER_NAME+"="+URL.encode(xml);
+		  
+		  Console.log("SEND HTTP Post: "+xml);
 		  
 		  builder.sendRequest(postParameter, new RequestCallback() {
 			
@@ -179,6 +194,10 @@ public class HttpPostCommunicationConnection implements CommunicationConnection{
 		} catch (RequestException e) {
 		  
 			throw new IOException(e.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new IOException(e.getMessage());
+			
 		}
 		
 	}

@@ -52,6 +52,11 @@ public class AuthenticationModule implements AuthenticationChannelHandler {
 	{
 		authenticationChannel.doLogin(username, password);
 	}
+	
+	
+	public void doExperimentLogin(String verificationCode, String password) throws IOException{
+		authenticationChannel.doExperimentLogin(verificationCode, password);
+	}
 
 	/**
 	 *  Do a logout by sending a {@link LogoutMessage} over the {@link AuthenticationChannel} to the server
