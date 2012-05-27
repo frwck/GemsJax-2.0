@@ -25,9 +25,13 @@ import org.gemsjax.server.persistence.request.RequestImpl;
 import org.gemsjax.server.persistence.user.RegisteredUserImpl;
 import org.gemsjax.shared.FieldVerifier;
 import org.gemsjax.shared.collaboration.Collaborateable;
+import org.gemsjax.shared.collaboration.Collaborateable.Permission;
+import org.gemsjax.shared.communication.message.experiment.ExperimentGroupDTO;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;
+import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.impl.MetaModelImpl;
 import org.gemsjax.shared.user.ExperimentUser;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
@@ -223,12 +227,14 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 	/* (non-Javadoc)
 	 * @see org.gemsjax.server.persistence.dao.hibernate.ExperimentDAO#addExperimentGroups(org.gemsjax.shared.experiment.Experiment, java.util.Set)
 	 */
-	public void addExperimentGroups(Experiment experiment, Set<ExperimentGroup> experimentGroups) throws ArgumentException
-	{
+	@Override
+	public void addExperimentGroups(Experiment experiment,
+			Set<ExperimentGroupDTO> experimentGroups) throws ArgumentException {
+		
 		if (experimentGroups== null || experimentGroups.isEmpty())
 			throw new ArgumentException("The set of ExperimentGroups is empty");
 		
-		for (ExperimentGroup g: experimentGroups)
+		for (ExperimentGroupDTO g: experimentGroups)
 		{
 			if (FieldVerifier.isEmpty(g.getName()))
 				throw new ArgumentException("At least one ExperimentGroup has no name set");
@@ -244,12 +250,42 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 			session.buildLockRequest(LockOptions.NONE).lock(experiment);
 			
 		
-				for (ExperimentGroup g: experimentGroups)
+				for (ExperimentGroupDTO dto: experimentGroups)
 				{
+					ExperimentGroup g = new ExperimentGroupImpl();
+					
+					g.setName(dto.getName());
+					g.setStartDate(dto.getStartDate());
+					g.setEndDate(dto.getEndDate());
+					
 					g.setExperiment(experiment);
 					experiment.getExperimentGroups().add(g);
 					
 					session.save(g);
+					
+					
+					// Create MetaModel
+					createEmptyMetaModel(g, experiment.getOwner(), session);
+					
+					// Create Model
+					createEmptyModel();
+					
+					
+					// Generate Invitations
+					for (String email : dto.getEmailToCreateInvitation())
+					{
+						ExperimentInvitationImpl i = new ExperimentInvitationImpl();
+						i.setEmail(email);
+						i.setExperimentGroup(g);
+						i.setVerificationCode(UUID.randomUUID().toString());
+						i.setParticipated(false);
+						session.save(i);
+						g.getExperimentInvitations().add(i);
+						session.update(g);
+						
+					}
+					
+					
 				}
 				
 				session.update(experiment);
@@ -267,6 +303,33 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 				session.close();
 			throw e;
 		}
+	}
+	
+	
+	private void createEmptyMetaModel(ExperimentGroup group, RegisteredUser experimentOwner, Session session){
+		
+		MetaModelImpl collaborateable = new MetaModelImpl();
+		
+		collaborateable.setName(group.getName());
+		collaborateable.setOwner(experimentOwner);
+		collaborateable.setPublicPermission(Permission.PRIVATE);
+	
+		collaborateable.setForExperiment(true);
+		session.save(collaborateable);
+		
+		experimentOwner.getOwnedCollaborateables().add(collaborateable);
+		experimentOwner.getCollaborateables().add(collaborateable);
+		session.update(experimentOwner);
+		
+		group.setMetaModel(collaborateable);
+		session.update(group);
+		
+	}
+	
+	
+	
+	private void createEmptyModel(){
+		// TODO implement
 	}
 	
 	
@@ -652,12 +715,9 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 
 	@Override
 	public Set<ExperimentInvitation> createExperimentInvitations(
-			ExperimentGroup group, List<String> emails,
-			List<String> verificationCodes) throws ArgumentException, DAOException {
-		
-		if (emails.size()!=verificationCodes.size())
-			throw new ArgumentException("List size are not the same");
-		
+			ExperimentGroup group, List<String> emails) throws ArgumentException, DAOException {
+	
+
 		int size = emails.size();
 		
 		Transaction t = null;
@@ -675,7 +735,7 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 				ExperimentInvitationImpl inv = new ExperimentInvitationImpl();
 				inv.setEmail(emails.get(i));
 				inv.setExperimentGroup(group);
-				inv.setVerificationCode(verificationCodes.get(i));
+				inv.setVerificationCode(UUID.randomUUID().toString());
 				inv.setParticipated(false);
 				
 				session.save(i);
@@ -870,6 +930,10 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 	    
 	    return new LinkedHashSet<Experiment>(result);
 	}
+
+
+
+	
 	
 	
 }

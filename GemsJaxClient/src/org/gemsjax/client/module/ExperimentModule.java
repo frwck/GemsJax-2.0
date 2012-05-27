@@ -24,14 +24,14 @@ public class ExperimentModule implements ExperimentChannelHandler{
 	private Set<ExperimentModuleHandler> handlers;
 	private static int refIdCounter = 0;
 	
-	private Map<String, Message> refIdMap;
+	private Map<String, Message> referenceIdsMap;
 	private String lastGetAllRefId;
 	
 	public ExperimentModule(ExperimentChannel channel){
 		this.channel = channel;
 		channel.addExperilentChannelHandler(this);
 		handlers = new LinkedHashSet<ExperimentModuleHandler>();
-		refIdMap = new LinkedHashMap<String, Message>();
+		this.referenceIdsMap = new LinkedHashMap<String, Message>();
 	}
 	
 	private String nextId(){
@@ -58,26 +58,30 @@ public class ExperimentModule implements ExperimentChannelHandler{
 		
 		String id = nextId();
 		CreateExperimentMessage m = new CreateExperimentMessage(id, name, descriptions, groups, ids);
-		refIdMap.put(id, m);
+		this.referenceIdsMap.put(id, m);
 		channel.send(m);
 	}
 
 	@Override
 	public void onSuccessfulMessage(String referenceId) {
 		
-		Message m = refIdMap.get(referenceId);
-		if (m == null)
-		{
-			Console.log("unknown reference id received");
-			return;
-		}
+		//TODO bugfix
 		
-		if (m instanceof CreateExperimentMessage){
+//		Message m = this.referenceIdsMap.get(referenceId);
+//		if (m == null)
+//		{
+//			Console.log("unknown reference id received");
+//			return;
+//		}
+//		
+//		if (m instanceof CreateExperimentMessage){
+//		
 			for (ExperimentModuleHandler h : handlers)
 				h.onCreateNewSuccessful();
-			refIdMap.remove(referenceId);
-		}
-		
+//			
+//			this.referenceIdsMap.remove(referenceId);
+//		}
+//		
 	}
 	
 	
@@ -102,7 +106,7 @@ public class ExperimentModule implements ExperimentChannelHandler{
 		}
 		
 		
-		Message m = refIdMap.get(referenceId);
+		Message m = referenceIdsMap.get(referenceId);
 		if (m == null)
 		{
 			Console.log("unknown reference id received");
@@ -112,7 +116,7 @@ public class ExperimentModule implements ExperimentChannelHandler{
 		if (m instanceof CreateExperimentMessage){
 			for (ExperimentModuleHandler h : handlers)
 				h.onCreateNewFailed(error);
-			refIdMap.remove(referenceId);
+			referenceIdsMap.remove(referenceId);
 		}
 		
 	}

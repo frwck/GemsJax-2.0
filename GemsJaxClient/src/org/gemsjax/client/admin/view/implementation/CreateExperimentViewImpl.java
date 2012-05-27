@@ -478,6 +478,7 @@ public class CreateExperimentViewImpl extends StyledModalDialog implements Creat
 			@Override
 			public void onClick(ClickEvent event) {
 				addGroup();
+				groupsContainer.scrollToBottom();
 			}
 		});
 		

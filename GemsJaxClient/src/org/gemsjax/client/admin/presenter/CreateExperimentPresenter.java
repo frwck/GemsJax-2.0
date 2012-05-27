@@ -24,6 +24,7 @@ public class CreateExperimentPresenter extends Presenter implements WizardHandle
 		
 		this.view = view;
 		this.module = module;
+		this.module.addExperimentModuleHandler(this);
 		
 		view.addWizardHandler(this);
 		view.showIt();

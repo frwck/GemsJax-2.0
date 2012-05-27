@@ -10,6 +10,9 @@ import org.gemsjax.shared.user.RegisteredUser;
 public class ServletPaths {
 	
 	
+
+	public static final String SERVER_URL="http://localhost:8081";
+	
 	
 	/**
 	 * The path to the live communication web socket.
@@ -28,6 +31,9 @@ public class ServletPaths {
 	
 	
 	public static final String ICON_UPLOAD ="/servlets/icon-upload";
+	
+	
+	public static final String EXPERIMENT ="/experiment";
 	
 	
 	

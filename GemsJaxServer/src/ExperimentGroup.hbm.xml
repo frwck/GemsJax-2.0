@@ -15,6 +15,10 @@
     <property name="endDate" column="endDate" type="date"/>
     
     
+     <many-to-one name="metaModel" class="org.gemsjax.shared.metamodel.impl.MetaModelImpl"  column="MetaModel_id" unique="true" not-null="false" lazy="false" />
+     <many-to-one name="model" class="org.gemsjax.shared.model.impl.ModelImpl"  column="Model_id" unique="true" not-null="false" lazy="false"/>
+     
+    
     <many-to-one name="experiment" class="org.gemsjax.server.persistence.experiment.ExperimentImpl" fetch="select">
             <column name="Experiment_id" not-null="true" />
     </many-to-one>

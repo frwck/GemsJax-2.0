@@ -169,6 +169,13 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 	}
 	
 	
+	public void doExperimentLogin(String validationCode, String password) throws IOException{
+		
+		send(new LoginMessage(validationCode, password, true));
+		
+	}
+	
+	
 	/**
 	 * Do a logout by sending a {@link LogoutMessage} with {@link LogoutReason#CLIENT_USER_LOGOUT} to the server
 	 * @throws IOException

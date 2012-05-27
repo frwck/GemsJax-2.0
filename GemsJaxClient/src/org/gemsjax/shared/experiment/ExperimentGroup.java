@@ -3,6 +3,8 @@ package org.gemsjax.shared.experiment;
 import java.util.Date;
 import java.util.Set;
 
+import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.model.Model;
 import org.gemsjax.shared.user.ExperimentUser;
 
 public interface ExperimentGroup {
@@ -23,4 +25,11 @@ public interface ExperimentGroup {
 	
 	public String getName();
 	public void setName(String name);
+	
+	
+	public void setMetaModel(MetaModel mm);
+	public MetaModel getMetaModel();
+	
+	public void setModel(Model model);
+	public Model getModel();
 }

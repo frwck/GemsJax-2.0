@@ -56,6 +56,7 @@ import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsAnsw
 import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsMessage;
 import org.gemsjax.shared.communication.message.experiment.UserDTO;
 import org.gemsjax.shared.communication.message.system.KeepAliveMessage;
+import org.gemsjax.shared.communication.message.system.NewExperimentRegistrationMessage;
 import org.gemsjax.shared.communication.serialisation.ObjectFactory;
 import org.gemsjax.shared.communication.serialisation.XmlSavingArchive;
 import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashMapInstantiator;
@@ -96,6 +97,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Expe
 import org.gemsjax.shared.communication.serialisation.instantiators.message.ExperimentSuccessfulMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.GetAllExperimentsAnswerMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.GetAllExperimentsMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.NewExperimentRegistrationMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableErrorMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableSuccessfulMessageInstantiator;
@@ -202,6 +204,9 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(LinkedHashMap.class.getName(), new LinkedHashMapInstantiator());
 		objectFactory.register("org.hibernate.collection.PersistentMap", new LinkedHashMapInstantiator());
 		objectFactory.register("org.hibernate.collection.PersistentList", new LinkedListInstantiator());
+		
+		// ExperimentRegistration 
+		objectFactory.register(NewExperimentRegistrationMessage.class.getName(), new NewExperimentRegistrationMessageInstantiator());
 		
 	
 		// CollaboarionMessages

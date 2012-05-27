@@ -55,6 +55,7 @@ import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsAnsw
 import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsMessage;
 import org.gemsjax.shared.communication.message.experiment.UserDTO;
 import org.gemsjax.shared.communication.message.system.KeepAliveMessage;
+import org.gemsjax.shared.communication.message.system.NewExperimentRegistrationMessage;
 import org.gemsjax.shared.communication.serialisation.ObjectFactory;
 import org.gemsjax.shared.communication.serialisation.XmlSavingArchive;
 import org.gemsjax.shared.communication.serialisation.instantiators.LinkedHashMapInstantiator;
@@ -91,6 +92,7 @@ import org.gemsjax.shared.communication.serialisation.instantiators.message.Expe
 import org.gemsjax.shared.communication.serialisation.instantiators.message.ExperimentSuccessfulMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.GetAllExperimentsAnswerMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.GetAllExperimentsMessageInstantiator;
+import org.gemsjax.shared.communication.serialisation.instantiators.message.NewExperimentRegistrationMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.SubscribeCollaborateableMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.TransactionMessageInstantiator;
 import org.gemsjax.shared.communication.serialisation.instantiators.message.UnsubscribeCollaborateableMessageInstantiator;
@@ -143,6 +145,11 @@ import org.gemsjax.shared.communication.serialisation.instantiators.user.UserDTO
 				objectFactory.register(LinkedList.class.getName(), new LinkedListInstantiator());
 				objectFactory.register(LinkedHashMap.class.getName(), new LinkedHashMapInstantiator());
 			
+				
+				// ExperimentRegistration 
+				objectFactory.register(NewExperimentRegistrationMessage.class.getName(), new NewExperimentRegistrationMessageInstantiator());
+				
+				
 				// CollaboarionMessages
 				objectFactory.register(SubscribeCollaborateableMessage.class.getName(), new SubscribeCollaborateableMessageInstantiator());
 				objectFactory.register(UnsubscribeCollaborateableMessage.class.getName(), new UnsubscribeCollaborateableMessageInstantiator());

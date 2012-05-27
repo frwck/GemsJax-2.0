@@ -8,10 +8,9 @@ import org.gemsjax.client.communication.channel.RegistrationChannel;
 import org.gemsjax.client.communication.channel.handler.RegistrationChannelHandler;
 import org.gemsjax.client.module.handler.RegistrationModuleHandler;
 import org.gemsjax.shared.communication.message.CommunicationError;
+import org.gemsjax.shared.communication.message.system.NewExperimentRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.NewRegistrationMessage;
 import org.gemsjax.shared.communication.message.system.RegistrationAnswerMessage.RegistrationAnswerStatus;
-
-import com.google.gwt.http.client.URL;
 
 /**
  * A {@link RegistrationModule} is responsible to execute a new user registration (sign up).
@@ -32,9 +31,16 @@ public class RegistrationModule  implements RegistrationChannelHandler{
 	}
 
 	
-	public void doRegisttraion(String username, String password, String email) throws IOException
+	public void doRegistration(String username, String password, String email) throws IOException
 	{
 		channel.send(new NewRegistrationMessage(username, password, email));
+	}
+	
+	
+	public void doExperimentRegistration(String verificationCode, String password, String displayedName) throws IOException{
+	
+		channel.send(new NewExperimentRegistrationMessage(verificationCode, password, displayedName));
+		
 	}
 	
 	

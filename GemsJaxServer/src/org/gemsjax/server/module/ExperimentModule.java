@@ -5,6 +5,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.mail.MessagingException;
+
+import org.gemsjax.server.communication.MailSender;
 import org.gemsjax.server.communication.channel.handler.ExperimentChannelHandler;
 import org.gemsjax.server.persistence.dao.ExperimentDAO;
 import org.gemsjax.server.persistence.dao.UserDAO;
@@ -22,6 +25,7 @@ import org.gemsjax.shared.communication.message.experiment.ExperimentSuccessfulM
 import org.gemsjax.shared.communication.message.experiment.GetAllExperimentsAnswerMessage;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
+import org.gemsjax.shared.experiment.ExperimentInvitation;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
 
@@ -78,23 +82,25 @@ public class ExperimentModule implements ExperimentChannelHandler{
 		try {
 			Experiment experiment = dao.createExperiment(message.getName(), message.getDescription(), (RegisteredUser) user.getUser());
 			
-			Set<ExperimentGroup> groups = new LinkedHashSet<ExperimentGroup>();
 			
-			for (ExperimentGroupDTO e : message.getGroups())
-			{
-				ExperimentGroup eg = new ExperimentGroupImpl();
-				eg.setName(e.getName());
-				eg.setStartDate(e.getStartDate());
-				eg.setEndDate(e.getEndDate());
-				groups.add(eg);
-			}
+			if (!message.getGroups().isEmpty())
+				dao.addExperimentGroups(experiment, message.getGroups());
 			
-			if (!groups.isEmpty())
-				dao.addExperimentGroups(experiment, groups);
+			
+			// send Email invitations
+			for (ExperimentGroup g: experiment.getExperimentGroups())
+				for (ExperimentInvitation i : g.getExperimentInvitations())
+					try {
+						MailSender.sendExperimentInvitation(i.getEmail(), i.getVerificationCode());
+					} catch (MessagingException e) {
+						// TODO inform about problems to deliver email
+						e.printStackTrace();
+					}
 			
 			
 			Set<User> admins = userDAO.getUserByIds(message.getAdminIds());
 			
+			if (admins != null)
 			for (User u : admins){
 				try {
 					RequestModule.getInstance().createAdministrateExperimentRequest((RegisteredUser)user.getUser(), (RegisteredUser)u, experiment);

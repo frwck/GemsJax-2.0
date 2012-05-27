@@ -42,7 +42,9 @@ public class RegistrationAnswerMessage extends SystemMessage {
 		 * That means, that the email failed the {@link FieldVerifier#isValidEmail(String)} check.
 		 * This is mapped to {@link CommunicationConstants.Registration#FAIL_INVALID_EMAIL}
 		 */
-		FAIL_INVALID_EMAIL
+		FAIL_INVALID_EMAIL,
+		
+		FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE
 	}
 	
 	
@@ -92,6 +94,11 @@ public class RegistrationAnswerMessage extends SystemMessage {
 		if (answereStatusAsString.equals(CommunicationConstants.Registration.FAIL_INVALID_EMAIL))
 			return RegistrationAnswerStatus.FAIL_INVALID_EMAIL;
 		
+		if (answereStatusAsString.equals(CommunicationConstants.Registration.FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE))
+			return RegistrationAnswerStatus.FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE;
+		
+		
+		
 		return null;
 	}
 	
@@ -105,6 +112,7 @@ public class RegistrationAnswerMessage extends SystemMessage {
 			case FAIL_USERNAME: return CommunicationConstants.Registration.FAIL_USERNAME;
 			case FAIL_INVALID_EMAIL: return CommunicationConstants.Registration.FAIL_INVALID_EMAIL;
 			case FAIL_INVALID_USERNAME: return CommunicationConstants.Registration.FAIL_INVALID_USERNAME;
+			case FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE: return CommunicationConstants.Registration.FAIL_EXPERIMENT_DISPLAYED_NAME_IN_USE;
 		}
 		
 		return null;

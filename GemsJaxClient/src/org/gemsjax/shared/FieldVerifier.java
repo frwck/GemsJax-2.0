@@ -125,4 +125,16 @@ public class FieldVerifier {
 		return true;
 	}
 	
+	
+	public static boolean isValidDisplayedName(String name){
+		if (isEmpty(name))
+			return false;
+		
+		if (name.contains("<")|| name.contains(">"))
+			return false;
+		
+		return true;
+		
+	}
+	
 }

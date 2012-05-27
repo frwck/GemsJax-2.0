@@ -16,19 +16,19 @@
 	<inherits name="com.smartgwt.SmartGwt" />
 
 	<inherits name="com.google.gwt.i18n.I18N" />
-	<inherits name='com.google.gwt.xml.XML'/>
+	<inherits name='com.google.gwt.xml.XML' />
 	<inherits name="com.google.gwt.http.HTTP" />
-	
-	<inherits name="com.google.common.collect.Collect"/>
+
+	<inherits name="com.google.common.collect.Collect" />
 
 	<!-- Development tool -->
 	<inherits name="com.smartgwt.tools.SmartGwtTools" />
-	
-	
-	<inherits name="gwtupload.GWTUpload"/>
-  	<!-- Load dinamically predefined styles in the library when the application starts -->
-  	<stylesheet src="Upload.css"/>
-	
+
+
+	<inherits name="gwtupload.GWTUpload" />
+	<!-- Load dinamically predefined styles in the library when the application starts -->
+	<stylesheet src="Upload.css" />
+
 	<!-- Smart GWT Design -->
 	<!--  <inherits name="com.smartclient.theme.silverwave.SilverWave"/> -->
 
@@ -44,8 +44,10 @@
 
 	<!-- Development mode -->
 	<set-property name="compiler.emulatedStack" value="true" />
-	<set-configuration-property name="compiler.emulatedStack.recordFileNames" value="true" />
-	<set-configuration-property name="compiler.emulatedStack.recordLineNumbers" value="true" />
+	<set-configuration-property
+		name="compiler.emulatedStack.recordFileNames" value="true" />
+	<set-configuration-property
+		name="compiler.emulatedStack.recordLineNumbers" value="true" />
 	<!--  <inherits name="com.google.gwt.junit.JUnit"/> -->
 
 

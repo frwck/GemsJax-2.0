@@ -12,6 +12,7 @@ import org.gemsjax.server.persistence.dao.exception.InvitationException;
 import org.gemsjax.server.persistence.dao.exception.MoreThanOneExcpetion;
 import org.gemsjax.server.persistence.dao.exception.NotFoundException;
 import org.gemsjax.server.persistence.dao.exception.UsernameInUseException;
+import org.gemsjax.shared.communication.message.experiment.ExperimentGroupDTO;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;
@@ -53,7 +54,7 @@ public interface ExperimentDAO {
 	 * @throws ArgumentException 
 	 * @throws DAOException 
 	 */
-	public abstract Set<ExperimentInvitation> createExperimentInvitations(ExperimentGroup group, List<String> emails, List<String> verificationCodes ) throws ArgumentException, DAOException;
+	public abstract Set<ExperimentInvitation> createExperimentInvitations(ExperimentGroup group, List<String> emails) throws ArgumentException, DAOException;
 
 	
 	/**
@@ -96,7 +97,7 @@ public interface ExperimentDAO {
 	 * @param experimentGroups
 	 */
 	public abstract void addExperimentGroups(Experiment experiment,
-			Set<ExperimentGroup> experimentGroups) throws ArgumentException;
+			Set<ExperimentGroupDTO> experimentGroups) throws ArgumentException;
 
 	public abstract void deleteExperimentGroup(ExperimentGroup group)
 			throws ArgumentException, DAOException;

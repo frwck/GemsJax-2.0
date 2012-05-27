@@ -8,6 +8,8 @@ import org.gemsjax.shared.collaboration.command.CommandImpl;
 import org.gemsjax.shared.experiment.Experiment;
 import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.experiment.ExperimentInvitation;
+import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.model.Model;
 import org.gemsjax.shared.user.ExperimentUser;
 
 public class ExperimentGroupImpl implements ExperimentGroup{
@@ -21,6 +23,8 @@ public class ExperimentGroupImpl implements ExperimentGroup{
 	private Set<ExperimentInvitation> experimentInvitations;
 	
 	private Experiment experiment;
+	private MetaModel metaModel;
+	private Model model;
 	
 	private String name;
 	
@@ -120,5 +124,31 @@ public class ExperimentGroupImpl implements ExperimentGroup{
 		else
 			return super.hashCode();
 	}
+
+
+
+	public MetaModel getMetaModel() {
+		return metaModel;
+	}
+
+
+
+	public void setMetaModel(MetaModel metaModel) {
+		this.metaModel = metaModel;
+	}
+
+
+
+	public Model getModel() {
+		return model;
+	}
+
+
+
+	public void setModel(Model model) {
+		this.model = model;
+	}
+
+
 	
 }

@@ -3,10 +3,13 @@ package org.gemsjax.server;
 
 import java.io.File;
 
+
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.gemsjax.server.communication.MailSender;
+import org.gemsjax.server.communication.servlet.ExperimentServlet;
 import org.gemsjax.server.communication.servlet.FileServlet;
 import org.gemsjax.server.communication.servlet.IconServlet;
 import org.gemsjax.server.communication.servlet.LiveCommunicationWebSocketServlet;
@@ -21,9 +24,9 @@ public class GemsJaxServer {
 	public static void main(String[] args) {
 
 
-	     if (args.length !=1 )
+	     if (args.length !=3 )
 	     {
-	    	 System.out.println("Wrong argument count ("+args.length+"): \nThe first parameter is the path to the war folder");
+	    	 System.out.println("Wrong argument count ("+args.length+"): \nThe 1. parameter is the path to the war folder, the 2. mail username, 3. mail password");
 	    	 return;
 	     }
 
@@ -33,6 +36,13 @@ public class GemsJaxServer {
 
 
 	     String warUrl = args[0];
+	     // SETUP MAIL
+	     MailSender.setUsername(args[1]);
+	     MailSender.setPassword(args[2]);
+	     
+	     
+	     
+	     
 	     if (!warUrl.endsWith(""+File.separatorChar))
 	    	 warUrl+=File.separatorChar;
 
@@ -56,6 +66,7 @@ public class GemsJaxServer {
 	        // Add the GemsJaxServlet (WebSocket Communication)
 	        ServletContextHandler servletContext = new ServletContextHandler(ServletContextHandler.SESSIONS);
 	        servletContext.setContextPath("/");
+	        servletContext.addServlet(new ServletHolder(new ExperimentServlet()),ServletPaths.EXPERIMENT+"/*");
 	        servletContext.addServlet(new ServletHolder(new FileServlet(warUrl,"GemsJax.html")),"/*");
 	        servletContext.addServlet(new ServletHolder( new LiveCommunicationWebSocketServlet()),"/servlets/liveCommunication");
 	        servletContext.addServlet(new ServletHolder( new RegistrationServlet()),"/servlets/registration");

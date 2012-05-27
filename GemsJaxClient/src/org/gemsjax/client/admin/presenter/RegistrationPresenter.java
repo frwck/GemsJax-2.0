@@ -87,7 +87,7 @@ public class RegistrationPresenter extends Presenter implements NewRegistrationR
 		try {
 			
 			eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.SHOW, this));
-			module.doRegisttraion(URL.encode(view.getUsername()), URL.encode(view.getPassword()), URL.encode(view.getEmail()));
+			module.doRegistration(URL.encode(view.getUsername()), URL.encode(view.getPassword()), URL.encode(view.getEmail()));
 			
 		} catch (IOException e) {
 			e.printStackTrace();
