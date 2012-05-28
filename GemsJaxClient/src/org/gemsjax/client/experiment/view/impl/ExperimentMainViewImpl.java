@@ -28,6 +28,7 @@ public class ExperimentMainViewImpl implements ExperimentMainView{
 	
 	private void createUI()
 	{
+		TabEnviroment.getInstance().setTabBarPosition(Side.TOP);
 		TabEnviroment.getInstance().setTabBarAlign(Side.LEFT);
 		TabEnviroment.getInstance().setWidth100();
 		TabEnviroment.getInstance().setHeight("*");

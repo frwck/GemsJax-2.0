@@ -102,6 +102,7 @@ public class ExperimentAuthenticationPresenter extends Presenter implements Logo
 		if (event.getSource()== loginView.getLoginButton()){
 			
 			try {
+				eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.SHOW, this));
 				authenticationModule.doExperimentLogin(verificationCode, loginView.getPassword());
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -5,6 +5,7 @@ import org.gemsjax.client.admin.tabs.LoadingTab;
 import org.gemsjax.client.admin.widgets.Title;
 
 import com.smartgwt.client.types.Overflow;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -22,11 +23,12 @@ public class ExperimentDescriptionTab extends LoadingTab {
 		Title t = new Title("Description");
 		t.setWidth100();
 		
-		Label label = new Label(description);
+		Label label = new Label("<p align=\"justify\">"+description+"</p>");
 		label.setHeight("*");
 		label.setWidth100();
 		label.setWrap(true);
 		label.setStyleName("ExperimentDescription");
+		label.setValign(VerticalAlignment.TOP);
 		
 		
 		label.setOverflow(Overflow.SCROLL);

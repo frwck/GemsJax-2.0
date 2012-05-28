@@ -165,7 +165,6 @@ public class ExperimentController implements EntryPoint, EstablishedListener, Lo
 		
 		ExperimentUserImpl user = (ExperimentUserImpl) event.getAuthenticatedUser();
 		
-		TabEnviroment.getInstance().setTabBarAlign(Side.LEFT);
 			
 		TabEnviroment.getInstance().addTab(new ExperimentDescriptionTab(language, "Description", user.getExperimentDescription() ));
 		
