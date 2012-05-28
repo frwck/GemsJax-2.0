@@ -88,7 +88,7 @@ public class ExperimentLoginViewImpl extends VLayout implements ExperimentLoginV
 		welcomeLabel.setStyleName("loginWelcomeLabel");
 		
 		
-		String txt = "<p align=\"justify\"> aTo participate in the experiment enter the password, that you have specified on the first time you clicked on the experiment invitations e-mail link." +
+		String txt = "<p align=\"justify\">To participate in the experiment enter the password, that you have specified on the first time you clicked on the experiment invitations e-mail link." +
 				"Notice that you should always use the link that has been sent to you to guarantee a correct login</p>";
 		Label descriptionLabel = new Label(txt);
 		descriptionLabel.setWrap(true);
