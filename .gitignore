@@ -6,3 +6,6 @@
 /GemsJaxClient/.classpath
 /GemsJaxClient/.project
 /GemsJaxClient/war/icons
+/GemsJaxClient/war/org.gemsjax.experiment
+/GemsJaxClient/war/org.gemsjax.experimentregistration
+/GemsJaxClient/war/gemsjax
