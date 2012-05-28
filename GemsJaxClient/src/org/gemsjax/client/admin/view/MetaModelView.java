@@ -326,6 +326,8 @@ public interface MetaModelView extends CollaborateableView{
 	public void showLoading();
 	
 	public void showContent();
+	
+	public void setCanClose(boolean close);
 
 	/**
 	 * Remove all Drawables from the Canvas

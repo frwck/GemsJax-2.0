@@ -81,8 +81,8 @@ public class ExperimentRegistrationPresenter extends Presenter implements ClickH
 
 	@Override
 	public void onRegistrationSuccessful() {
-		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
 		view.showSuccessful();
+//		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
 		
 	}
 

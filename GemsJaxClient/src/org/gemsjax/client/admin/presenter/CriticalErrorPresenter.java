@@ -34,8 +34,9 @@ public class CriticalErrorPresenter extends Presenter implements CriticalErrorHa
 			case LIVE_CONNECTION_CLOSED: view.setErrorText("The live connection to the server has been lost!"); break;
 			case INITIAL_ALL_FRIENDS: view.setErrorText("Could not load your friends."); break;
 			case INITAIL_NOTIFICATION_REQUEST: view.setErrorText("Could not load your notifications or requests"); break;
-			case AUTHENTICATION: view.setErrorText("You are not authenticated. Log in!");
-			case EXPERIMENT_VERIFICATION: view.setErrorText("Incorrect experiment URL! Please only use the URL of your experiment invitation e-mail");
+			case AUTHENTICATION: view.setErrorText("You are not authenticated. Log in!");break;
+			case EXPERIMENT_VERIFICATION: view.setErrorText("Incorrect experiment URL! Please only use the URL of your experiment invitation e-mail"); break;
+			case CANVAS_NOT_SUPPORTED: view.setErrorText("HTML5 Canvas element is not supported by your browser"); break;
 		}
 		
 		view.show();

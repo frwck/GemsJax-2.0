@@ -31,7 +31,8 @@ public class CriticalErrorEvent extends GwtEvent<CriticalErrorHandler> {
 		 */
 		AUTHENTICATION,
 		
-		EXPERIMENT_VERIFICATION
+		EXPERIMENT_VERIFICATION,
+		CANVAS_NOT_SUPPORTED
 	}
 	
 	

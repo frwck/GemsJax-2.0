@@ -309,12 +309,12 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 				
 				p = new MetaModelPresenter(eventBus,view , mm,  module);
 				collaborations.put(collaborateableId, p);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} catch (CanvasSupportException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
+				eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.CANVAS_NOT_SUPPORTED));
+			} catch (IOException e) {
+				e.printStackTrace();
+				eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.LIVE_CONNECTION_CLOSED));
 			}
 		}
 		

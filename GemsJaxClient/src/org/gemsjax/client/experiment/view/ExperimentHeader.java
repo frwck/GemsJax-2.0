@@ -33,7 +33,7 @@ public class ExperimentHeader extends HLayout{
 		userBox.removeMembers(userBox.getMembers());
 		
 		userBox.addMember(userBox.getBorderLeft());
-		userBox.addMember(userBox.new UserBoxItem("Hello "+userName));
+		userBox.addMember(userBox.new UserBoxItem(userName));
 		userBox.addMember(userBox.new UserBoxItemSeparator());
 		userBox.addMember((UserBoxMenuItem)userBox.getLogoutItem());
 		userBox.addMember(userBox.getBorderRight());
@@ -52,23 +52,25 @@ public class ExperimentHeader extends HLayout{
 		logo.setHeight(40);
 		logo.setMargin(5);
 		
-		Canvas spacer = new Canvas();
-		spacer.setWidth("*");
+//		Canvas spacer = new Canvas();
+//		spacer.setWidth("*");
 		
 		String txt = experimentName+"<b> &raquo;</b> "+experimentGroupName+ "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+
 				"<b>Start:</b> "+DateTimeFormat.getMediumDateTimeFormat().format(startDate)+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <b>End:</b>"+DateTimeFormat.getMediumDateTimeFormat().format(endDate);
 		
 		Label expDetails = new Label(txt);
+		expDetails.setStyleName("ExperimentHeaderInfo");
 		expDetails.setPadding(10);
 		expDetails.setHeight100();
 		expDetails.setWidth("*");
+		expDetails.setAlign(Alignment.CENTER);
 		
 		
 		
 		// Add Members
 		this.addMember(logo);
 		this.addMember(expDetails);
-		this.addMember(spacer);
+//		this.addMember(spacer);
 		this.addMember(userBox);
 	}
 	

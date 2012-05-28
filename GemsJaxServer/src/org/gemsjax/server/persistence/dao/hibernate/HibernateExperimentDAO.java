@@ -438,11 +438,27 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 				u.setPasswordHash(passwordHash);
 				u.setExperimentGroup(experimentGroup);
 				
+				
+				
 				session.save(u);
 				
-				experimentGroup.getParticipants().add(u);
 				
+				
+				u.getCollaborateables().add(experimentGroup.getMetaModel());
+				experimentGroup.getMetaModel().getUsers().add(u);
+				
+				if (experimentGroup.getModel()!=null)
+					u.getCollaborateables().add(experimentGroup.getModel());
+				
+				
+				session.update(u);
+				session.update(experimentGroup.getMetaModel());
+				
+				experimentGroup.getParticipants().add(u);
 				session.update(experimentGroup);
+				
+				
+				
 				
 			t.commit();	
 			session.flush();

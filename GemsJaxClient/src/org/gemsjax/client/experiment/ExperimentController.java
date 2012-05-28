@@ -4,26 +4,37 @@ import java.io.IOException;
 
 import org.gemsjax.client.admin.AdminApplicationController;
 import org.gemsjax.client.admin.UserLanguage;
+import org.gemsjax.client.admin.adminui.TabEnviroment;
 import org.gemsjax.client.admin.presenter.CriticalErrorPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
+import org.gemsjax.client.admin.presenter.MetaModelPresenter;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent.CriticalErrorType;
 import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
 import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
+import org.gemsjax.client.admin.view.MetaModelView;
 import org.gemsjax.client.admin.view.implementation.CriticalErrorViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
 import org.gemsjax.client.admin.view.implementation.LogoutViewImpl;
+import org.gemsjax.client.admin.view.implementation.MetaModelViewImpl;
+import org.gemsjax.client.canvas.CanvasSupportException;
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
 import org.gemsjax.client.communication.channel.AuthenticationChannel;
+import org.gemsjax.client.communication.channel.CollaborationChannel;
 import org.gemsjax.client.experiment.presenter.ExperimentAuthenticationPresenter;
 import org.gemsjax.client.experiment.presenter.ExperimentMainPresenter;
+import org.gemsjax.client.experiment.view.ExperimentDescriptionTab;
+import org.gemsjax.client.experiment.view.ExperimentModelPlaceHolder;
 import org.gemsjax.client.experiment.view.impl.ExperimentLoginViewImpl;
 import org.gemsjax.client.experiment.view.impl.ExperimentMainViewImpl;
 import org.gemsjax.client.module.AuthenticationModule;
+import org.gemsjax.client.module.CollaborationModule;
 import org.gemsjax.client.tests.TestRunner;
 import org.gemsjax.client.tests.testcases.CollaborationFileMessageTest;
 import org.gemsjax.client.util.Console;
 import org.gemsjax.shared.communication.CommunicationConnection.EstablishedListener;
+import org.gemsjax.shared.metamodel.MetaModel;
+import org.gemsjax.shared.metamodel.impl.MetaModelImpl;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -150,10 +161,41 @@ public class ExperimentController implements EntryPoint, EstablishedListener, Lo
 
 	@Override
 	public void onLoginSuccessful(LoginSuccessfulEvent event) {
-		ExperimentMainViewImpl mainView = new ExperimentMainViewImpl(language, (ExperimentUserImpl) event.getAuthenticatedUser());
+		
+		ExperimentUserImpl user = (ExperimentUserImpl) event.getAuthenticatedUser();
+		
+		ExperimentMainViewImpl mainView = new ExperimentMainViewImpl(language, user);
 	
 		ExperimentMainPresenter p = new ExperimentMainPresenter(eventBus, mainView);
 	
+		
+		TabEnviroment.getInstance().addTab(new ExperimentDescriptionTab(language, "Description", user.getExperimentDescription() ));
+		
+		
+		MetaModel mm = new MetaModelImpl(user.getMetaModelId(), "Metamodel");
+		
+		CollaborationModule module = new CollaborationModule(authenticationModule.getCurrentlyAuthenticatedUser(), mm, new CollaborationChannel(WebSocketCommunicationConnection.getInstance(), mm));
+		MetaModelViewImpl view;
+		try {
+			view = new MetaModelViewImpl("Metamodel", language);
+			MetaModelPresenter pr = new MetaModelPresenter(eventBus,view , mm,  module);
+			view.setCanClose(false);
+			
+			
+			//TODO replace with working implementation
+			TabEnviroment.getInstance().addTab(new ExperimentModelPlaceHolder());
+			TabEnviroment.getInstance().redraw();
+			
+		} catch (CanvasSupportException e) {
+			e.printStackTrace();
+			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.CANVAS_NOT_SUPPORTED));
+		} catch (IOException e) {
+			e.printStackTrace();
+			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.LIVE_CONNECTION_CLOSED));
+		}
+			
+		
+		
 	}
 	
 	
