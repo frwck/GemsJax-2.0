@@ -15,6 +15,7 @@ import org.gemsjax.client.admin.view.LoginView;
 import org.gemsjax.client.admin.view.LogoutView;
 import org.gemsjax.client.communication.channel.AuthenticationChannel;
 import org.gemsjax.client.communication.channel.handler.AuthenticationChannelHandler;
+import org.gemsjax.client.experiment.ExperimentUserImpl;
 import org.gemsjax.client.module.AuthenticationModule;
 import org.gemsjax.client.module.handler.AuthenticationModuleHandler;
 import org.gemsjax.shared.FieldVerifier;
@@ -205,6 +206,13 @@ public class AuthenticationPresenter extends Presenter implements LogoutRequired
 		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
 		loginView.setLoginButtonEnabled(true);
 		loginView.showLoginFailed();
+	}
+
+
+	@Override
+	public void onExperimentLoginSuccessful(ExperimentUserImpl user) {
+		// Not neede, since no experiment login would be done by this presenter
+		
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import org.gemsjax.client.communication.channel.handler.AuthenticationChannelHandler;
 import org.gemsjax.client.communication.parser.SystemMessageParser;
+import org.gemsjax.client.experiment.ExperimentUserImpl;
 import org.gemsjax.client.user.RegisteredUserImpl;
 import org.gemsjax.shared.RegExFactory;
 import org.gemsjax.shared.communication.CommunicationConnection;
@@ -191,6 +192,11 @@ public class AuthenticationChannel implements InputChannel, OutputChannel{
 	public void onMessageRecieved(Message msg) {
 		if (msg instanceof ExperimentLoginSuccessfulMessage){
 			
+			ExperimentUserImpl user = new ExperimentUserImpl((ExperimentLoginSuccessfulMessage) msg);
+			
+			
+			for(AuthenticationChannelHandler h : handlers)
+				h.onExperimentLoginSuccessful(user);
 		}
 	}
 

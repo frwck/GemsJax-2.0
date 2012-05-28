@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.gemsjax.client.communication.channel.AuthenticationChannel;
 import org.gemsjax.client.communication.channel.handler.AuthenticationChannelHandler;
+import org.gemsjax.client.experiment.ExperimentUserImpl;
 import org.gemsjax.client.module.handler.AuthenticationModuleHandler;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
 import org.gemsjax.shared.communication.message.system.LogoutMessage;
@@ -133,6 +134,14 @@ public class AuthenticationModule implements AuthenticationChannelHandler {
 	{
 		for (AuthenticationModuleHandler h: handlers)
 			h.onParseError(e);
+	}
+
+	@Override
+	public void onExperimentLoginSuccessful(ExperimentUserImpl user) {
+		
+		for (AuthenticationModuleHandler h: handlers)
+			h.onExperimentLoginSuccessful(user);
+		
 	}
 	
 

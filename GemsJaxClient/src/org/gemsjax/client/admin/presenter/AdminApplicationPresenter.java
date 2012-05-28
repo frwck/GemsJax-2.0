@@ -89,7 +89,7 @@ public class AdminApplicationPresenter extends Presenter implements QuickSearchH
 
 	@Override
 	public void onLoginSuccessful(LoginSuccessfulEvent event) {
-		authenticatedUser = event.getAuthenticatedUser();
+		authenticatedUser = (RegisteredUser) event.getAuthenticatedUser();
 		view.setUser(authenticatedUser);
 		view.show();
 	}

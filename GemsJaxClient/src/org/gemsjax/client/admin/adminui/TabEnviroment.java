@@ -27,7 +27,7 @@ public class TabEnviroment extends TabSet{
 		
 		this.setTabBarPosition(Side.TOP);
 		
-		this.draw();
+		//this.draw();
 	}
 
 	

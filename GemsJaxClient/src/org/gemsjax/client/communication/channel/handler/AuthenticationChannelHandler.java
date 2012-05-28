@@ -1,5 +1,6 @@
 package org.gemsjax.client.communication.channel.handler;
 
+import org.gemsjax.client.experiment.ExperimentUserImpl;
 import org.gemsjax.shared.communication.CommunicationConnection;
 import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
@@ -26,6 +27,8 @@ public interface AuthenticationChannelHandler {
 	 * @param answerStatus
 	 */
 	public void onLoginAnswer(LoginAnswerStatus answerStatus, RegisteredUser authenticatedUser, long unreadNotificationRequest);
+	
+	public void onExperimentLoginSuccessful(ExperimentUserImpl user);
 	
 	/**
 	 * If an unexpected parse error occures in the observed {@link AuthenticationChannel} while receiving an parsing a {@link InputMessage}

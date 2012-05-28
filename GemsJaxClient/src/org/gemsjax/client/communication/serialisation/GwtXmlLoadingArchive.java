@@ -73,6 +73,8 @@ public class GwtXmlLoadingArchive implements XmlArchive {
 			primitivDataTypes.add(Short.class.getName());
 			primitivDataTypes.add(Character.class.getName());
 			primitivDataTypes.add(Long.class.getName());
+			
+			primitivDataTypes.add("java.sql.Date");
 
 		}
 
@@ -135,6 +137,9 @@ public class GwtXmlLoadingArchive implements XmlArchive {
 				result = new Holder<T>((T) new Long(Long.parseLong(content)));
 			else
 			if (xmlClass.equals(Date.class.getName()))
+				result = new Holder<T>((T) new Date(Long.parseLong(content)));
+			else
+			if (xmlClass.equals("java.sql.Date"))
 				result = new Holder<T>((T) new Date(Long.parseLong(content)));
 			else
 			if (xmlClass.equals(Boolean.class.getName()))

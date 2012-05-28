@@ -27,11 +27,14 @@ import org.gemsjax.shared.communication.channel.InputMessage;
 import org.gemsjax.shared.communication.channel.OutputChannel;
 import org.gemsjax.shared.communication.message.CommunicationError;
 import org.gemsjax.shared.communication.message.Message;
+import org.gemsjax.shared.communication.message.system.ExperimentLoginSuccessfulMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage;
 import org.gemsjax.shared.communication.message.system.LoginAnswerMessage.LoginAnswerStatus;
 import org.gemsjax.shared.communication.message.system.LoginMessage;
 import org.gemsjax.shared.communication.message.system.SystemErrorMessage;
 import org.gemsjax.shared.communication.message.system.SystemMessage;
+import org.gemsjax.shared.experiment.Experiment;
+import org.gemsjax.shared.experiment.ExperimentGroup;
 import org.gemsjax.shared.user.ExperimentUser;
 import org.gemsjax.shared.user.RegisteredUser;
 import org.gemsjax.shared.user.User;
@@ -90,13 +93,22 @@ public class UserAuthenticationChannel implements InputChannel, OutputChannel{
 						if (ou == null)
 						{  // should never be reached
 							UnexpectedErrorLogger.severe("- Could not create a OnlineUser (is null): \n\t"+msg+"\n");
+							
 							send(new LoginAnswerMessage(LoginAnswerStatus.FAIL));
 						}
 						else
 						{
 							OnlineUserManager.getInstance().addOnlineUser(ou);
+							ExperimentGroup exGr = u.getExperimentGroup();
+							Experiment ex = exGr.getExperiment();
 							
-							send(new LoginAnswerMessage(ou.getId(), u.getExperimentGroup().getId(), u.getDisplayedName())); 
+							ExperimentLoginSuccessfulMessage sucMsg = new ExperimentLoginSuccessfulMessage(ex.getName(), exGr.getName(), ex.getDescription(), exGr.getStartDate(), exGr.getEndDate(), u.getDisplayedName());
+							sucMsg.setUserId(u.getId());
+							sucMsg.setMetaModelId(exGr.getMetaModel().getId());
+							if (exGr.getModel()!=null)
+							sucMsg.setModelId(exGr.getModel().getId());
+							
+							send(sucMsg);
 							communicationConnection.deregisterInputChannel(this);
 						}
 					

@@ -206,6 +206,8 @@ public class WebSocketCommunicationConnection implements CommunicationConnection
 		objectFactory.register(LinkedHashMap.class.getName(), new LinkedHashMapInstantiator());
 		objectFactory.register("org.hibernate.collection.PersistentMap", new LinkedHashMapInstantiator());
 		objectFactory.register("org.hibernate.collection.PersistentList", new LinkedListInstantiator());
+		objectFactory.register("java.sql.Date", new LinkedListInstantiator());
+		
 		
 		// ExperimentRegistration 
 		objectFactory.register(NewExperimentRegistrationMessage.class.getName(), new NewExperimentRegistrationMessageInstantiator());

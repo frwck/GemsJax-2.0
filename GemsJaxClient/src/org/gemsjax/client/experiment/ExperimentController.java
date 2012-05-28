@@ -1,31 +1,130 @@
 package org.gemsjax.client.experiment;
 
+import java.io.IOException;
+
+import org.gemsjax.client.admin.AdminApplicationController;
 import org.gemsjax.client.admin.UserLanguage;
 import org.gemsjax.client.admin.presenter.CriticalErrorPresenter;
 import org.gemsjax.client.admin.presenter.LoadingPresenter;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent;
 import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent.CriticalErrorType;
+import org.gemsjax.client.admin.presenter.event.LoginSuccessfulEvent;
+import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
 import org.gemsjax.client.admin.view.implementation.CriticalErrorViewImpl;
 import org.gemsjax.client.admin.view.implementation.LoadingViewImpl;
+import org.gemsjax.client.admin.view.implementation.LogoutViewImpl;
 import org.gemsjax.client.communication.WebSocketCommunicationConnection;
+import org.gemsjax.client.communication.channel.AuthenticationChannel;
+import org.gemsjax.client.experiment.presenter.ExperimentAuthenticationPresenter;
+import org.gemsjax.client.experiment.presenter.ExperimentMainPresenter;
+import org.gemsjax.client.experiment.view.impl.ExperimentLoginViewImpl;
+import org.gemsjax.client.experiment.view.impl.ExperimentMainViewImpl;
+import org.gemsjax.client.module.AuthenticationModule;
+import org.gemsjax.client.tests.TestRunner;
+import org.gemsjax.client.tests.testcases.CollaborationFileMessageTest;
+import org.gemsjax.client.util.Console;
+import org.gemsjax.shared.communication.CommunicationConnection.EstablishedListener;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.GWT.UncaughtExceptionHandler;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
+import com.google.gwt.event.shared.UmbrellaException;
+import com.smartgwt.client.core.KeyIdentifier;
+import com.smartgwt.client.util.KeyCallback;
+import com.smartgwt.client.util.Page;
+import com.smartgwt.client.util.SC;
 
-public class ExperimentController implements EntryPoint {
+public class ExperimentController implements EntryPoint, EstablishedListener, LoginSuccessfulHandler{
 
 	private LoadingPresenter loadingPresenter;
 	private CriticalErrorPresenter errorPresenter;
 	private EventBus eventBus;
 	private UserLanguage language = GWT.create(UserLanguage.class);
 	
+	private AuthenticationModule authenticationModule ;
+	
 	
 	@Override
 	public void onModuleLoad() {
 		
+		
+		try {
+			WebSocketCommunicationConnection webSocket = WebSocketCommunicationConnection.getInstance();
+			webSocket.addEstablishedListener(this);
+			webSocket.connect();
+				
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+	}
+
+
+	@Override
+	public void onEstablished() {
+		start();
+	}
+	
+	
+	private void start(){
+		KeyIdentifier debugKey = new KeyIdentifier();
+		debugKey.setAltKey(true);
+		debugKey.setKeyName("C");
+	
+		Page.registerKey(debugKey, new KeyCallback() {
+			public void execute(String keyName) {
+				SC.showConsole();
+				SC.debugger();
+			}
+		});
+		
+	
+		
+		
+		KeyIdentifier testRunnerKey = new KeyIdentifier();
+		testRunnerKey.setAltKey(true);
+		testRunnerKey.setKeyName("T");
+	
+		Page.registerKey(testRunnerKey, new KeyCallback() {
+			public void execute(String keyName) {
+				new TestRunner(new CollaborationFileMessageTest());
+			}
+		});
+		
+		
+		
+		
+		GWT.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+			
+			@Override
+			public void onUncaughtException(Throwable e) {
+				
+				if (e instanceof UmbrellaException)
+					e = e.getCause();
+				
+				String msg =e.toString() + " "+e.getLocalizedMessage() +" "+ e.getMessage()+" \n";
+				
+				for (StackTraceElement el : e.getStackTrace())
+					msg += el.toString() + "\n";
+				
+				
+				e.printStackTrace();
+				
+				Console.logException(e);
+				SC.say(msg);
+				SC.logWarn(msg);
+		
+			}
+		});
+	
+	
+	
 		eventBus = new SimpleEventBus();
+		eventBus.addHandler(LoginSuccessfulEvent.TYPE, this);
 		
 		// Loading Presenter is needed
 		loadingPresenter = new LoadingPresenter(eventBus, new LoadingViewImpl());
@@ -40,10 +139,24 @@ public class ExperimentController implements EntryPoint {
 		if (verificationCode == null)
 			eventBus.fireEvent(new CriticalErrorEvent(CriticalErrorType.EXPERIMENT_VERIFICATION));
 		else{
-			
-		}
+			authenticationModule = new AuthenticationModule(new AuthenticationChannel(WebSocketCommunicationConnection.getInstance()));
 		
-
+			ExperimentAuthenticationPresenter authenticationPresenter = new ExperimentAuthenticationPresenter(eventBus, new ExperimentLoginViewImpl(language), new LogoutViewImpl(language), authenticationModule, verificationCode);
+		
+		}
+	
 	}
+
+
+	@Override
+	public void onLoginSuccessful(LoginSuccessfulEvent event) {
+		ExperimentMainViewImpl mainView = new ExperimentMainViewImpl(language, (ExperimentUserImpl) event.getAuthenticatedUser());
+	
+		ExperimentMainPresenter p = new ExperimentMainPresenter(eventBus, mainView);
+	
+	}
+	
+	
+	
 
 }

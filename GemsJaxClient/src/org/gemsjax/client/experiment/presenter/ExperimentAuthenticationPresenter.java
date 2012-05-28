@@ -11,6 +11,7 @@ import org.gemsjax.client.admin.presenter.event.CriticalErrorEvent.CriticalError
 import org.gemsjax.client.admin.presenter.event.LoadingAnimationEvent.LoadingAnimationEventType;
 import org.gemsjax.client.admin.presenter.handler.LogoutRequiredHandler;
 import org.gemsjax.client.admin.view.LogoutView;
+import org.gemsjax.client.experiment.ExperimentUserImpl;
 import org.gemsjax.client.experiment.view.ExperimentLoginView;
 import org.gemsjax.client.module.AuthenticationModule;
 import org.gemsjax.client.module.handler.AuthenticationModuleHandler;
@@ -108,6 +109,16 @@ public class ExperimentAuthenticationPresenter extends Presenter implements Logo
 			}
 			
 		}
+		
+	}
+
+
+	@Override
+	public void onExperimentLoginSuccessful(ExperimentUserImpl user) {
+		loginView.hide();
+		loginView.resetView();
+		eventBus.fireEvent(new LoginSuccessfulEvent(user, 0));
+		eventBus.fireEvent(new LoadingAnimationEvent(LoadingAnimationEventType.HIDE, this));
 		
 	}
 	

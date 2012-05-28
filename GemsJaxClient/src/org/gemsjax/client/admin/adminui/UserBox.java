@@ -7,6 +7,7 @@ import com.smartgwt.client.widgets.events.MouseOverHandler;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.AnimationEffect;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
@@ -36,7 +37,7 @@ public class UserBox extends HStack {
 	 * @author Hannes Dorfmann
 	 *
 	 */
-	private class UserBoxItem extends Label 
+	public class UserBoxItem extends Label 
 	{
 		/**
 		 * Create a new UserBoxItem with the CSS Style userbox-item (defined in /css/GemsJax.css) and do some other styling things like Centering, Padding
@@ -81,7 +82,7 @@ public class UserBox extends HStack {
 	 * @author Hannes Dorfmann
 	 *
 	 */
-	private class UserBoxMenuItem extends UserBoxItem implements MouseOverHandler, MouseOutHandler
+	public class UserBoxMenuItem extends UserBoxItem implements MouseOverHandler, MouseOutHandler
 	{
 		private static final String defaultStyle = "userbox-menuitem";
 		private static final String hoverStyle = "userbox-menuitem-hover";
@@ -142,7 +143,7 @@ public class UserBox extends HStack {
 	 * @author Hannes Dorfmann
 	 *
 	 */
-	private class UserBoxItemSeparator extends Img
+	public class UserBoxItemSeparator extends Img
 	{
 		public UserBoxItemSeparator()
 		{
@@ -196,6 +197,7 @@ public class UserBox extends HStack {
 	private UserBoxItem welcomeItem;
 	private UserLanguage language;
 	private NotificationCountLabel notificationCountLabel;
+	private Img borderLeft, borderRight;
 	
 	public UserBox(UserLanguage language)
 	{
@@ -203,8 +205,8 @@ public class UserBox extends HStack {
 		this.language = language;
 		// notificationItem
 		
-		Img borderLeft = new Img("/images/userbox_left_border.png");
-		Img borderRight = new Img("/images/userbox_right_border.png");
+		borderLeft = new Img("/images/userbox_left_border.png");
+		borderRight = new Img("/images/userbox_right_border.png");
 		
 		borderRight.setWidth(7);
 		borderRight.setHeight(37);
@@ -291,6 +293,13 @@ public class UserBox extends HStack {
 		return logoutItem;
 	}
 	
+	public Canvas getBorderLeft(){
+		return borderLeft;
+	}
+	
+	public Canvas getBorderRight(){
+		return borderRight;
+	}
 	
 	
 }

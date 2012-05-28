@@ -2,6 +2,7 @@ package org.gemsjax.client.admin.presenter.event;
 
 import org.gemsjax.client.admin.presenter.handler.LoginSuccessfulHandler;
 import org.gemsjax.shared.user.RegisteredUser;
+import org.gemsjax.shared.user.User;
 
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -15,7 +16,7 @@ public class LoginSuccessfulEvent extends GwtEvent<LoginSuccessfulHandler>{
 	
 	public static Type<LoginSuccessfulHandler>TYPE = new Type<LoginSuccessfulHandler>();
 	
-	private RegisteredUser authenticatedUser;
+	private User authenticatedUser;
 	private long unreadNotificationRequestCount;
 	
 
@@ -23,7 +24,7 @@ public class LoginSuccessfulEvent extends GwtEvent<LoginSuccessfulHandler>{
 	 * 
 	 * @param authenticatedUser The {@link RegisteredUser} that is authenticated from now on
 	 */
-	public LoginSuccessfulEvent(RegisteredUser authenticatedUser, long unreadNotificationRequestCount )
+	public LoginSuccessfulEvent(User authenticatedUser, long unreadNotificationRequestCount )
 	{
 		this.authenticatedUser = authenticatedUser;
 		this.unreadNotificationRequestCount= unreadNotificationRequestCount;
@@ -33,7 +34,7 @@ public class LoginSuccessfulEvent extends GwtEvent<LoginSuccessfulHandler>{
 	 * Get the authenticated user
 	 * @return {@link RegisteredUser}
 	 */
-	public RegisteredUser getAuthenticatedUser()
+	public User getAuthenticatedUser()
 	{
 		return authenticatedUser;
 	}

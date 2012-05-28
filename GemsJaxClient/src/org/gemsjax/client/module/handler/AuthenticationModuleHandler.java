@@ -1,5 +1,6 @@
 package org.gemsjax.client.module.handler;
 
+import org.gemsjax.client.experiment.ExperimentUserImpl;
 import org.gemsjax.client.module.AuthenticationModule;
 import org.gemsjax.shared.communication.message.system.LogoutMessage.LogoutReason;
 import org.gemsjax.shared.user.RegisteredUser;
@@ -23,6 +24,9 @@ public interface AuthenticationModuleHandler {
 	 * Is called, if the last submited authentication has failed
 	 */
 	public void onLoginFailed();
+	
+	
+	public void onExperimentLoginSuccessful(ExperimentUserImpl user);
 	
 	/**
 	 * Called, if an error occurres while parsing
