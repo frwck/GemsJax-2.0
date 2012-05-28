@@ -43,6 +43,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.SimpleEventBus;
 import com.google.gwt.event.shared.UmbrellaException;
 import com.smartgwt.client.core.KeyIdentifier;
+import com.smartgwt.client.types.Side;
 import com.smartgwt.client.util.KeyCallback;
 import com.smartgwt.client.util.Page;
 import com.smartgwt.client.util.SC;
@@ -164,23 +165,22 @@ public class ExperimentController implements EntryPoint, EstablishedListener, Lo
 		
 		ExperimentUserImpl user = (ExperimentUserImpl) event.getAuthenticatedUser();
 		
-		ExperimentMainViewImpl mainView = new ExperimentMainViewImpl(language, user);
-	
-		ExperimentMainPresenter p = new ExperimentMainPresenter(eventBus, mainView);
-	
-		
+		TabEnviroment.getInstance().setTabBarAlign(Side.LEFT);
+			
 		TabEnviroment.getInstance().addTab(new ExperimentDescriptionTab(language, "Description", user.getExperimentDescription() ));
 		
 		
 		MetaModel mm = new MetaModelImpl(user.getMetaModelId(), "Metamodel");
 		
-		CollaborationModule module = new CollaborationModule(authenticationModule.getCurrentlyAuthenticatedUser(), mm, new CollaborationChannel(WebSocketCommunicationConnection.getInstance(), mm));
+		CollaborationModule module = new CollaborationModule(user, mm, new CollaborationChannel(WebSocketCommunicationConnection.getInstance(), mm));
 		MetaModelViewImpl view;
 		try {
 			view = new MetaModelViewImpl("Metamodel", language);
 			MetaModelPresenter pr = new MetaModelPresenter(eventBus,view , mm,  module);
 			view.setCanClose(false);
 			
+			ExperimentMainViewImpl mainView = new ExperimentMainViewImpl(language, user);
+			ExperimentMainPresenter p = new ExperimentMainPresenter(eventBus, mainView);
 			
 			//TODO replace with working implementation
 			TabEnviroment.getInstance().addTab(new ExperimentModelPlaceHolder());

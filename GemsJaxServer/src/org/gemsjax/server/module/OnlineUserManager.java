@@ -156,8 +156,13 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 		//ou.getHttpSession().invalidate();
 		
 		// unbind Channel Handlers
-		ou.getLogoutChannel().removeLogoutChannelHandler(this);
-		ou.getFriendChannel().removeFriendsChanneslHandler(FriendModule.getInstance());
+		if(ou.getLogoutChannel()!=null)
+			ou.getLogoutChannel().removeLogoutChannelHandler(this);
+		
+		if (ou.getFriendChannel()!=null)
+			ou.getFriendChannel().removeFriendsChanneslHandler(FriendModule.getInstance());
+		
+		// TODO unbind other handlers
 		
 		CollaborationModule.getInstance().unSubscribeAllOf(ou);
 		
@@ -176,6 +181,7 @@ public class OnlineUserManager implements LogoutChannelHandler, ClosedListener {
 	@Override
 	public void onClose(CommunicationConnection connection) {
 		if (connection instanceof LiveWebSocketConnection){
+			
 			OnlineUser ou = connectionOnlineUserMap.get(connection);
 			
 			if (ou != null)
