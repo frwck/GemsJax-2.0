@@ -484,3 +484,10 @@ This is the CSS style for the class Title
 	font-size: 14px;	
 	text-align: center;
 }
+
+.ReplayModeBar{
+	position: absolute;
+	background-color: #e2e1d6;
+	border: 1px solid;
+	border-color: #575753;
+}

@@ -11,7 +11,9 @@ import org.gemsjax.shared.metamodel.MetaBaseType;
 public class SubscribeCollaborateableSuccessfulMessage extends ReferenceableCollaborationMessage implements Serializable{
 
 	private List<Transaction> transactions;
-	private List<Collaborator> collaborators;
+	private List<Collaborator> onlineCollaborators;
+	private List<Collaborator> allCollaborators;
+	
 	
 	private List<MetaBaseType> metaBaseTypes;
 	
@@ -20,14 +22,16 @@ public class SubscribeCollaborateableSuccessfulMessage extends ReferenceableColl
 	public SubscribeCollaborateableSuccessfulMessage(){
 		
 		transactions = new LinkedList<Transaction>();
-		collaborators = new LinkedList<Collaborator>();
+		onlineCollaborators = new LinkedList<Collaborator>();
+		allCollaborators = new LinkedList<Collaborator>();
 		
 	}
 	
 	public SubscribeCollaborateableSuccessfulMessage(String referneceId){
 		super(referneceId);
 		transactions = new LinkedList<Transaction>();
-		collaborators = new LinkedList<Collaborator>();
+		onlineCollaborators = new LinkedList<Collaborator>();
+		allCollaborators = new LinkedList<Collaborator>();
 	}
 	
 	
@@ -41,7 +45,8 @@ public class SubscribeCollaborateableSuccessfulMessage extends ReferenceableColl
 	public void serialize(Archive a) throws Exception {
 		super.serialize(a);
 		transactions = a.serialize("transactions", transactions).value;
-		collaborators = a.serialize("collaborators", collaborators).value;
+		onlineCollaborators = a.serialize("collaborators", onlineCollaborators).value;
+		allCollaborators = a.serialize("allCollaborators", allCollaborators).value;
 		collaborateableId = a.serialize("collaborateableId", collaborateableId).value;
 		metaBaseTypes = a.serialize("metaBaseTypes", metaBaseTypes).value;
 	}
@@ -54,11 +59,11 @@ public class SubscribeCollaborateableSuccessfulMessage extends ReferenceableColl
 	}
 
 	public List<Collaborator> getCollaborators() {
-		return collaborators;
+		return onlineCollaborators;
 	}
 
 	public void setCollaborators(List<Collaborator> collaborators) {
-		this.collaborators = collaborators;
+		this.onlineCollaborators = collaborators;
 	}
 
 	public int getCollaborateableId() {
@@ -75,6 +80,14 @@ public class SubscribeCollaborateableSuccessfulMessage extends ReferenceableColl
 
 	public void setMetaBaseTypes(List<MetaBaseType> metaBaseTypes) {
 		this.metaBaseTypes = metaBaseTypes;
+	}
+
+	public List<Collaborator> getAllCollaborators() {
+		return allCollaborators;
+	}
+
+	public void setAllCollaborators(List<Collaborator> allCollaborators) {
+		this.allCollaborators = allCollaborators;
 	}
 	
 

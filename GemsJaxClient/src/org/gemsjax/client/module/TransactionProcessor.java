@@ -66,11 +66,17 @@ public class TransactionProcessor {
 	private List<Transaction> history;
 	private User user;
 	private Collaborateable collaborateable;
+	private Transaction currentReplayTransaction;
+	private int currentReplayTransactionIndex;
+	
+	private boolean replayMode;
 	
 	public TransactionProcessor(User user, Collaborateable collaborateable){
 		history = new LinkedList<Transaction>();
 		this.user = user;
 		this.collaborateable = collaborateable;
+		replayMode = false;
+		currentReplayTransactionIndex = -1;
 	}
 	
 	
@@ -134,7 +140,118 @@ public class TransactionProcessor {
 			
 		}
 		
+		
+		
+		// If its in replay mode, then adjust currentReplayTransactionIndex
+		if (replayMode)
+			adjustIndexOfCurrentTransaction();
+		
+		
 	}
+	
+	
+	
+	private void setCurrentReplayTransactionToLast(){
+		
+		if (!history.isEmpty()){
+			currentReplayTransaction = history.get(history.size()-1);
+			currentReplayTransactionIndex = history.size()-1;
+		}
+		else{
+			currentReplayTransaction = null;
+			currentReplayTransactionIndex = -1;
+		}
+	}
+	
+	
+	public int getHistorySize(){
+		return history.size();
+	}
+	
+	
+	
+	private int adjustIndexOfCurrentTransaction(){
+		for (int i = 0; i<history.size(); i++)
+			if (history.get(i) == currentReplayTransaction)
+				return i;
+		
+		return -1;
+	}
+	
+	
+	public int getCurrentReplayTransactionIndex(){
+		return currentReplayTransactionIndex;
+	}
+	
+	public Transaction getCurrentReplayTransaction(){
+		return currentReplayTransaction;
+	}
+
+
+	public boolean isReplayMode() {
+		return replayMode;
+	}
+
+
+	/**
+	 * If argument is true, then the replay mode will be activated
+	 * @param replayMode
+	 */
+	public void setReplayMode(boolean replayMode) {
+		this.replayMode = replayMode;
+		
+		if (replayMode)
+			setCurrentReplayTransactionToLast();
+		else
+		{
+			// Bring to the latest state
+			
+			for (int i = currentReplayTransactionIndex; i<history.size(); i++)
+				try {
+					history.get(i).commit();
+				} catch (ManipulationException e) {
+					e.printStackTrace();
+				}
+		}
+			
+		
+	}
+	
+	
+	
+	public void replayModeStepBack(){
+		
+		if (replayMode && currentReplayTransactionIndex>0){
+			try {
+				currentReplayTransaction.rollback();
+			} catch (ManipulationException e) {
+				e.printStackTrace();
+			}
+			currentReplayTransactionIndex--;
+			currentReplayTransaction = history.get(currentReplayTransactionIndex);
+		}
+		
+	}
+	
+	
+	
+	public void replayModeStepForward(){
+		if (replayMode && currentReplayTransactionIndex<history.size()-1){
+					
+					try {
+						currentReplayTransaction.commit();
+					} catch (ManipulationException e) {
+						e.printStackTrace();
+					}
+					currentReplayTransactionIndex++;
+					currentReplayTransaction = history.get(currentReplayTransactionIndex);
+		}
+	}
+	
+	
+	
+	
+	
 	
 	/*
 	public static void main(String args[]){

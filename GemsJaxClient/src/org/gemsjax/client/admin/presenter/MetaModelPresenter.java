@@ -130,6 +130,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			@Override
 			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
 				view.setCanvasEditingMode(EditingMode.CREATE_INHERITANCE);
+				module.setReplayMode(false);
 			}
 		});
 		
@@ -138,6 +139,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			@Override
 			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
 				view.setCanvasEditingMode(EditingMode.CREATE_CLASS);
+				module.setReplayMode(false);
 			}
 		});
 		
@@ -146,6 +148,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			@Override
 			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
 				view.setCanvasEditingMode(EditingMode.CREATE_RELATION);
+				module.setReplayMode(false);
 			}
 		});
 		
@@ -154,6 +157,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			@Override
 			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
 				view.setCanvasEditingMode(EditingMode.NORMAL);
+				module.setReplayMode(false);
 			}
 		});
 		
@@ -163,8 +167,23 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			@Override
 			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
 				view.setCanvasEditingMode(EditingMode.CREATE_CONTAINMENT);
+
+				module.setReplayMode(false);
 			}
 		});
+		
+		view.getReplayModeButton().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
+			
+			@Override
+			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
+				if (view.getCanvasEditingMode()== EditingMode.REPLAY_MODE)
+					return;
+				
+				module.setReplayMode(true);
+				view.setCanvasEditingMode(EditingMode.REPLAY_MODE);
+			}
+		});
+		
 		
 		view.addMetaClassPropertiesListener(this);
 		view.addMetaConnectionPropertiesListener(this);
@@ -174,6 +193,24 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		view.addCreateMetaInheritanceHandler(this);
 		
 		view.addCloseClickHandler(this);
+		
+		// Replay staff
+		view.getReplayModeBackButton().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
+			
+			@Override
+			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
+				module.replayModeStepBack();
+			}
+		});
+		
+		view.getReplayModeForwardButton().addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
+			
+			@Override
+			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
+				module.replayModeStepForward();
+			}
+		});
+		
 	}
 	
 	
@@ -846,6 +883,29 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 	public void onCollaborateableUpdated() {
 		view.clearDrawables();
 		generateDrawables();
+		
+		
+		if (module.getReplayModeCurrentIndex()<=0)
+				view.getReplayModeBackButton().disable();
+		
+		if (module.getReplayModeCurrentIndex()>= module.getHistorySize()-1)
+			view.getReplayModeForwardButton().disable();
+		
+		if (module.getReplayModeCurrentIndex()>0 && module.getReplayModeCurrentIndex()<module.getHistorySize()-1)
+		{
+			view.getReplayModeBackButton().enable();
+			view.getReplayModeBackButton().enable();
+		}
+		
+		
+
+		String details = "--------";
+		if (module.getHistorySize()>0){
+			details = ""+(module.getReplayModeCurrentIndex()+1)+" / "+module.getHistorySize()+" by "+module.getReplayModeCurrentTransactionUser();
+		}
+		
+		view.setReplayModeInteractionDetails(details);
+		
 	}
 	
 

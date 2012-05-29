@@ -33,10 +33,13 @@ import org.gemsjax.shared.metamodel.MetaModelElement;
 
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.types.AnimationEffect;
+import com.smartgwt.client.widgets.Button;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
 import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.events.CloseClickHandler;
 
@@ -77,7 +80,7 @@ class CollaboratorListRecord extends ListGridRecord{
 public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 
 	private TipNotification tipNotification;
-	private BigMenuButton mouseButton, newClassButton, newRelationButton, newInheritanceButton, newContainmentButton;
+	private BigMenuButton mouseButton, newClassButton, newRelationButton, newInheritanceButton, newContainmentButton, replayModeButton;
 	private MetaModelCanvas canvas;
 	
 	private TwoColumnLayout layout;
@@ -98,8 +101,13 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	private Set<MetaClassPropertiesListener> classPropertiesListeners;
 	private Set<MetaConnectionPropertiesListener> connectionPropertiesListeners;
 	
+	private Button replayBackButton;
+	private Button replayForwardButton;
+	private Label replayInteractionDetails;
+	private HLayout replayModeBar;
 	
-	public MetaModelViewImpl(String title, UserLanguage language) throws CanvasSupportException 
+	
+	public MetaModelViewImpl(String title, UserLanguage language, boolean enableReplayMode) throws CanvasSupportException 
 	{
 		super(title, language);
 		attributeManipulationListeners = new LinkedHashSet<MetaModelView.MetaAttributeManipulationListener>();
@@ -112,7 +120,9 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		layout.setWidth100();
 		layout.setHeight100();
 		
-		generateToolStrip(language);
+		generateToolStrip(language, enableReplayMode);
+		
+		generateReplayModeStaff();
 		
 		metaDetailPlaceHolder = new VLayout();
 		metaDetailPlaceHolder.setWidth100();
@@ -168,7 +178,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 
 	}
 	
-	private void generateToolStrip(UserLanguage language)
+	private void generateToolStrip(UserLanguage language, boolean replayMode)
 	{
 		
 		VerticalBigMenuButtonBar toolbar = new VerticalBigMenuButtonBar(100,10);
@@ -181,7 +191,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		newRelationButton = new BigMenuButton(language.MetaModelToolbarRelation(),"/images/icons/relation.png"); 
 		newInheritanceButton = new BigMenuButton(language.MetaModelToolbarInheritance(),"/images/icons/inheritance.png"); 	
 		newContainmentButton = new BigMenuButton(language.MetaModelToolbarContainment(),"/images/icons/containment.png"); 	
-		
+		replayModeButton =new BigMenuButton("Replay","/images/icons/replay.png");
 		
 		mouseButton.setHeight(90);
 		newClassButton.setHeight(90);
@@ -197,12 +207,43 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		toolbar.addMember(newInheritanceButton);
 		toolbar.addMember(newContainmentButton);
 		
+		if (replayMode)
+			toolbar.addMember(replayModeButton);
+		
+		
 		
 	    layout.setLeftColumn(toolbar, true);
 	    
 	    
 	}
 
+	
+	private void generateReplayModeStaff(){
+		int bottomPositionSpacer = 100;
+		replayBackButton = new Button("<");
+		replayBackButton.setWidth(15);
+		replayBackButton.setHeight100();
+		replayForwardButton = new Button(">");
+		replayForwardButton.setWidth(15);
+		replayForwardButton.setHeight100();
+		replayInteractionDetails = new Label();
+		replayInteractionDetails.setWidth("*");
+		replayInteractionDetails.setHeight100();
+		replayModeBar = new HLayout();
+		replayModeBar.setWidth("50%");
+		replayModeBar.setHeight(25);
+		replayModeBar.setPageLeft((Window.getClientWidth()-replayModeBar.getWidth())/2);
+		replayModeBar.setPageTop((Window.getClientHeight()-replayModeBar.getHeight()) -bottomPositionSpacer);
+		replayModeBar.setStyleName("ReplayModeBar");
+		replayModeBar.setMembersMargin(5);
+		
+		replayModeBar.addMember(replayBackButton);
+		replayModeBar.addMember(replayForwardButton);
+		replayModeBar.addMember(replayInteractionDetails);
+		
+	}
+	
+	
 	@Override
 	public HasClickHandlers getNewMetaClassButton() {
 		return newClassButton;
@@ -226,7 +267,11 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 	@Override
 	public void setCanvasEditingMode(EditingMode mode) {
 		
-		 // Remove the previous displayed TipNotification
+		// Hide  ReplayModeBar if already displayed
+		 if (canvas.getEditingMode() == EditingMode.REPLAY_MODE && mode != canvas.getEditingMode())
+			 hideReplayModeBar();
+		 
+		 
 		 canvas.setEditingMode(mode); 
 		 
 		// if (tipNotification.isVisible())
@@ -250,10 +295,24 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 				NotificationManager.getInstance().showTipNotification(new TipNotification("Select the class which should be extended", null, 2000, NotificationPosition.BOTTOM_CENTERED));
 				break;						
 			case READ_ONLY: break;// TODO: what to do when it has been set to READ_ONLY
+			case REPLAY_MODE:
+				replayModeButton.setActive(true);
+				showReplayModeBar();
+				break;
 			default: Window.alert("Error: the mode is set to "+mode); break;
 		}
 		
 		
+	}
+	
+	
+	
+	private void showReplayModeBar(){
+		replayModeBar.animateShow(AnimationEffect.WIPE);
+	}
+	
+	private void hideReplayModeBar(){
+		replayModeBar.animateHide(AnimationEffect.WIPE);
 	}
 
 	@Override
@@ -480,6 +539,32 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		
 		NotificationManager.getInstance().showTipNotification(new TipNotification("Inheritance already exists", clazz.getName()+" already inherits from "+superClass.getName(), 2000, NotificationPosition.CENTER));
 		
+	}
+
+	@Override
+	public HasClickHandlers getReplayModeButton() {
+		return replayModeButton;
+	}
+
+	@Override
+	public Button getReplayModeBackButton() {
+		return replayBackButton;
+	}
+
+	@Override
+	public Button getReplayModeForwardButton() {
+		return replayForwardButton;
+	}
+
+	@Override
+	public void setReplayModeInteractionDetails(String details) {
+		replayInteractionDetails.setContents(details);
+		
+	}
+	
+	@Override
+	public EditingMode getCanvasEditingMode(){
+		return canvas.getEditingMode();
 	}
 	
 }

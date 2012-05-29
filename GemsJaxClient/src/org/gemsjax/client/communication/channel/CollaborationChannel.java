@@ -100,7 +100,7 @@ public class CollaborationChannel implements InputChannel, OutputChannel {
 			}
 			
 			for (CollaborationChannelHandler h: handlers)
-				h.onSubscribeSuccessful(m.getReferenceId(), m.getTransactions(), m.getCollaborators(), m.getMetaBaseTypes());
+				h.onSubscribeSuccessful(m.getReferenceId(), m.getTransactions(), m.getCollaborators(), m.getAllCollaborators(),  m.getMetaBaseTypes());
 		}
 		else
 		if (msg instanceof SubscribeCollaborateableErrorMessage && ((SubscribeCollaborateableErrorMessage)msg).getCollaborateableId() == collaborateableId)

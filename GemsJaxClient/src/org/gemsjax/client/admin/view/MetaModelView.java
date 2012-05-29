@@ -20,6 +20,7 @@ import org.gemsjax.shared.metamodel.MetaClass;
 import org.gemsjax.shared.metamodel.MetaConnection;
 import org.gemsjax.shared.metamodel.MetaModelElement;
 
+import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.events.HasClickHandlers;
 import com.smartgwt.client.widgets.tab.events.CloseClickHandler;
 
@@ -281,6 +282,13 @@ public interface MetaModelView extends CollaborateableView{
 	
 	public HasClickHandlers getNewContainmentButton();
 	
+	public HasClickHandlers getReplayModeButton();
+	
+	public Button getReplayModeBackButton();
+	public Button getReplayModeForwardButton();
+	public void setReplayModeInteractionDetails(String username);
+	
+	
 	
 	/**
 	 * Set the {@link MetaModelCanvas} to the {@link EditingMode}. 
@@ -373,4 +381,5 @@ public interface MetaModelView extends CollaborateableView{
 	public void removeCreateMetaInheritanceHandler(CreateMetaInheritanceHandler h);
 	
 	public void showMetaInheritanceAlreadyExists(MetaClass clazz, MetaClass superClass);
+	EditingMode getCanvasEditingMode();
 }

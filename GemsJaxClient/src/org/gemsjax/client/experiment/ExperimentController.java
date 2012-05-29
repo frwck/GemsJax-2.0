@@ -174,7 +174,7 @@ public class ExperimentController implements EntryPoint, EstablishedListener, Lo
 		CollaborationModule module = new CollaborationModule(user, mm, new CollaborationChannel(WebSocketCommunicationConnection.getInstance(), mm));
 		MetaModelViewImpl view;
 		try {
-			view = new MetaModelViewImpl("Metamodel", language);
+			view = new MetaModelViewImpl("Metamodel", language, false);
 			MetaModelPresenter pr = new MetaModelPresenter(eventBus,view , mm,  module);
 			view.setCanClose(false);
 			

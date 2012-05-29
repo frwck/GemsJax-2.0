@@ -305,7 +305,7 @@ public class AdminApplicationController  implements ShowMetaModelRequiredHandler
 			
 			try {
 			
-				MetaModelView view = new MetaModelViewImpl(name, language);
+				MetaModelView view = new MetaModelViewImpl(name, language, true);
 				
 				p = new MetaModelPresenter(eventBus,view , mm,  module);
 				collaborations.put(collaborateableId, p);

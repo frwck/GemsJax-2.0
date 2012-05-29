@@ -23,7 +23,7 @@ public interface CollaborationChannelHandler {
 	public void onCollaboratorLeft(Collaborator c);
 
 	void onSubscribeSuccessful(String referenceId,
-			List<Transaction> transactions, List<Collaborator> collaborators,
+			List<Transaction> transactions, List<Collaborator> onlineCollaborators, List<Collaborator> allCollaborators,
 			List<MetaBaseType> optionalMetaBaseTypes);
 	
 }

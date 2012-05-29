@@ -1,9 +1,11 @@
 package org.gemsjax.client.module;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import org.gemsjax.client.communication.channel.CollaborationChannel;
@@ -32,9 +34,11 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	private CollaborationChannel channel;
 	private Set<CollaborationModuleHandler> handlers;
 	private TransactionProcessor transactionProcessor;
-	private Set<Collaborator> collaborators;
+	private Set<Collaborator> onlineCollaborators;
+	private Map<Integer, Collaborator> allCollaborators;
 	
 	private List<MetaBaseType> metaBaseTypes;
+	
 	
 	private User user;
 	private static int moduleIdCounter = 0;
@@ -50,7 +54,8 @@ public class CollaborationModule implements CollaborationChannelHandler{
 		this.channel = channel;
 		
 		this.handlers = new LinkedHashSet<CollaborationModuleHandler>();
-		this.collaborators = new LinkedHashSet<Collaborator>();
+		this.onlineCollaborators = new LinkedHashSet<Collaborator>();
+		allCollaborators = new LinkedHashMap<Integer, Collaborator>();
 		
 		this.metaBaseTypes = new LinkedList<MetaBaseType>();
 		
@@ -150,12 +155,43 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	}
 	
 	
-	public void historyStepBack(){
-		
+	public void setReplayMode(boolean replayView){
+		transactionProcessor.setReplayMode(replayView);
 	}
 	
-	public void historyStepForward(){
+	
+	public int getHistorySize(){
+		return transactionProcessor.getHistorySize();
+	}
+	
+	
+	public int getReplayModeCurrentIndex(){
+		return transactionProcessor.getCurrentReplayTransactionIndex();
+	}
+	
+	public String getReplayModeCurrentTransactionUser(){
 		
+		Transaction t = transactionProcessor.getCurrentReplayTransaction();
+		
+		if (t == null)
+			return "unknown";
+		
+		int uid = t.getUserId();
+		Collaborator c = allCollaborators.get(uid);
+		
+		if (c == null)
+			return "unknown";
+		else
+			return c.getDisplayedName();
+	}
+	
+	
+	public void replayModeStepBack(){
+		transactionProcessor.replayModeStepBack();
+	}
+	
+	public void replayModeStepForward(){
+		transactionProcessor.replayModeStepForward();
 	}
 	
 	@Override
@@ -188,7 +224,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 
 	@Override
 	public void onSubscribeSuccessful(String referenceId,
-			List<Transaction> transactions, List<Collaborator> collaborators, List<MetaBaseType> optionalMetaBaseTypes) {
+			List<Transaction> transactions, List<Collaborator> collaborators, List<Collaborator> allCollaborators, List<MetaBaseType> optionalMetaBaseTypes) {
 		
 		if (subscribeReferenceId.equals(referenceId)){
 			
@@ -204,7 +240,10 @@ public class CollaborationModule implements CollaborationChannelHandler{
 					}
 			}
 			
-			this.collaborators.addAll(collaborators);
+			this.onlineCollaborators.addAll(collaborators);
+			
+			for (Collaborator c : allCollaborators)
+				this.allCollaborators.put(c.getUserId(), c);
 			
 			
 			for (Transaction t : transactions){
@@ -252,7 +291,9 @@ public class CollaborationModule implements CollaborationChannelHandler{
 
 	@Override
 	public void onCollaboratorJoined(Collaborator c) {
-		collaborators.add(c);
+		onlineCollaborators.add(c);
+		allCollaborators.put(c.getUserId(), c);
+		
 		for(CollaborationModuleHandler h : handlers)
 			h.onCollaboratorJoined(c);
 	}
@@ -260,7 +301,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 
 	@Override
 	public void onCollaboratorLeft(Collaborator c) {
-		collaborators.remove(c);
+		onlineCollaborators.remove(c);
 		for (CollaborationModuleHandler h : handlers)
 			h.onCollaboratorLeft(c);
 	}

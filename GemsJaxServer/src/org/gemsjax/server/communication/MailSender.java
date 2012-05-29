@@ -58,7 +58,7 @@ public class MailSender {
 	public static void sendExperimentInvitation(String receiver, String verificationCode) throws MessagingException{
 		String url = ServletPaths.SERVER_URL+ServletPaths.EXPERIMENT+"/"+verificationCode;
 		String link ="<a href=\""+url+"\">" +url+ "</a>";
-		MailSender.send(receiver, "Experiment Invitation", "Hello,<br /> you have been invited to participate on a GemsJax modelling experiment. <br /><br />To participate click on this link: <br />"+link, "noreply@GemsJax.org");
+		MailSender.send(receiver, "Experiment Invitation", "Hello,<br /> you have been invited to participate in a GemsJax modelling experiment. <br /><br />To participate click on this link: <br />"+link, "noreply@GemsJax.org");
 	}
 	
 }

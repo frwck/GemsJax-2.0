@@ -195,6 +195,14 @@ public class CollaborationModule implements CollaborationChannelHandler{
 						collaborators.add(new Collaborator(u.getId(), u.getUser().getDisplayedName()));
 				
 				m.setCollaborators(collaborators);
+				
+				
+				List<Collaborator> allCollaborators = new LinkedList<Collaborator>();
+				for (User u : c.getUsers())
+					allCollaborators.add(new Collaborator(u.getId(), u.getDisplayedName()));
+				
+				m.setAllCollaborators(allCollaborators);
+				
 				sender.getCollaborationChannel().send(m);
 				
 			}
