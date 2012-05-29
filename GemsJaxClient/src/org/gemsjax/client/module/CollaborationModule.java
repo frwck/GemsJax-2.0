@@ -157,6 +157,7 @@ public class CollaborationModule implements CollaborationChannelHandler{
 	
 	public void setReplayMode(boolean replayView){
 		transactionProcessor.setReplayMode(replayView);
+		fireUpdated();
 	}
 	
 	
