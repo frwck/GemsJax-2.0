@@ -92,7 +92,8 @@ public class TransactionProcessor {
 
 			history.add(t);
 			try {
-				t.commit();
+				if (!replayMode)
+					t.commit();
 			} catch (ManipulationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -114,7 +115,8 @@ public class TransactionProcessor {
 				else
 				{
 					try {
-						current.rollback();
+						if (!replayMode)
+							current.rollback();
 					} catch (ManipulationException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -131,7 +133,8 @@ public class TransactionProcessor {
 			for (int i = insertedIndex;i<history.size();i++){
 				Transaction current = history.get(i);
 				try {
-					current.commit();
+					if (!replayMode)
+						current.commit();
 				} catch (ManipulationException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -204,14 +207,8 @@ public class TransactionProcessor {
 			setCurrentReplayTransactionToLast();
 		else
 		{
-			// Bring to the latest state
-			
-			for (int i = currentReplayTransactionIndex; i<history.size(); i++)
-				try {
-					history.get(i).commit();
-				} catch (ManipulationException e) {
-					e.printStackTrace();
-				}
+			// TODO support it
+			leaveReplayStepToLast();
 		}
 			
 		
@@ -221,14 +218,17 @@ public class TransactionProcessor {
 	
 	public void replayModeStepBack(){
 		
-		if (replayMode && currentReplayTransactionIndex>0){
+		if (replayMode && currentReplayTransactionIndex>=0){
 			try {
 				currentReplayTransaction.rollback();
 			} catch (ManipulationException e) {
 				e.printStackTrace();
 			}
 			currentReplayTransactionIndex--;
-			currentReplayTransaction = history.get(currentReplayTransactionIndex);
+			if (currentReplayTransactionIndex<0)
+				currentReplayTransaction = null;
+			else
+				currentReplayTransaction = history.get(currentReplayTransactionIndex);
 		}
 		
 	}
@@ -236,19 +236,35 @@ public class TransactionProcessor {
 	
 	
 	public void replayModeStepForward(){
-		if (replayMode && currentReplayTransactionIndex<history.size()-1){
+		if (replayMode && currentReplayTransactionIndex<=history.size()-1){
 					
+			currentReplayTransactionIndex++;
+			currentReplayTransaction = history.get(currentReplayTransactionIndex);
+			
 					try {
 						currentReplayTransaction.commit();
 					} catch (ManipulationException e) {
 						e.printStackTrace();
 					}
-					currentReplayTransactionIndex++;
-					currentReplayTransaction = history.get(currentReplayTransactionIndex);
 		}
 	}
 	
 	
+	private void leaveReplayStepToLast(){
+		
+		if (!history.isEmpty())
+			while(currentReplayTransactionIndex<history.size()-1){
+				
+				currentReplayTransactionIndex++;
+				currentReplayTransaction = history.get(currentReplayTransactionIndex);
+				
+						try {
+							currentReplayTransaction.commit();
+						} catch (ManipulationException e) {
+							e.printStackTrace();
+						}
+			}
+	}
 	
 	
 	

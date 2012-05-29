@@ -137,7 +137,7 @@ public class MetaModelImpl extends CollaborateableImpl implements MetaModel{
 	@Override
 	public void removeMetaClass(MetaClass metaClass) {
 		metaClasses.remove(metaClass);
-		idMap.remove(metaClass).getID();
+		idMap.remove(metaClass.getID());
 	}
 
 		

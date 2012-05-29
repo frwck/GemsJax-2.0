@@ -896,7 +896,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 	
 	private void updateReplayBarElements(){
 
-		if (module.getReplayModeCurrentIndex()<=0)
+		if (module.getReplayModeCurrentIndex()<0)
 				view.getReplayModeBackButton().disable();
 		else
 			view.getReplayModeBackButton().enable();
