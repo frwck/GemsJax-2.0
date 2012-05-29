@@ -181,6 +181,8 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 				
 				module.setReplayMode(true);
 				view.setCanvasEditingMode(EditingMode.REPLAY_MODE);
+				
+				updateReplayBarElements();
 			}
 		});
 		
@@ -200,6 +202,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			@Override
 			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
 				module.replayModeStepBack();
+				onCollaborateableUpdated();
 			}
 		});
 		
@@ -208,6 +211,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 			@Override
 			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
 				module.replayModeStepForward();
+				onCollaborateableUpdated();
 			}
 		});
 		
@@ -884,19 +888,33 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		view.clearDrawables();
 		generateDrawables();
 		
-		
+		updateReplayBarElements();
+				
+	}
+	
+	
+	
+	private void updateReplayBarElements(){
+
 		if (module.getReplayModeCurrentIndex()<=0)
 				view.getReplayModeBackButton().disable();
+		else
+			view.getReplayModeBackButton().enable();
+		
 		
 		if (module.getReplayModeCurrentIndex()>= module.getHistorySize()-1)
 			view.getReplayModeForwardButton().disable();
+		else
+			view.getReplayModeForwardButton().enable();
 		
-		if (module.getReplayModeCurrentIndex()>0 && module.getReplayModeCurrentIndex()<module.getHistorySize()-1)
+		
+		/*
+		if (module.getReplayModeCurrentIndex()>=0 && module.getReplayModeCurrentIndex()<(module.getHistorySize()-1))
 		{
 			view.getReplayModeBackButton().enable();
 			view.getReplayModeBackButton().enable();
 		}
-		
+		*/
 		
 
 		String details = "--------";
@@ -905,7 +923,7 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 		}
 		
 		view.setReplayModeInteractionDetails(details);
-		
+
 	}
 	
 
@@ -1030,6 +1048,8 @@ public class MetaModelPresenter extends CollaborationPresenter implements ClickH
 
 	@Override
 	public void onCloseClick(TabCloseClickEvent event) {
+		
+		view.hideReplayModeBar();
 		
 		try {
 			module.unsubscribe();

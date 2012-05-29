@@ -382,4 +382,5 @@ public interface MetaModelView extends CollaborateableView{
 	
 	public void showMetaInheritanceAlreadyExists(MetaClass clazz, MetaClass superClass);
 	EditingMode getCanvasEditingMode();
+	public void hideReplayModeBar();
 }

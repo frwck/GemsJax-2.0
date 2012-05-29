@@ -230,7 +230,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		replayInteractionDetails.setWidth("*");
 		replayInteractionDetails.setHeight100();
 		replayModeBar = new HLayout();
-		replayModeBar.setWidth("50%");
+		replayModeBar.setWidth(Window.getClientWidth()/2);
 		replayModeBar.setHeight(25);
 		replayModeBar.setPageLeft((Window.getClientWidth()-replayModeBar.getWidth())/2);
 		replayModeBar.setPageTop((Window.getClientHeight()-replayModeBar.getHeight()) -bottomPositionSpacer);
@@ -311,7 +311,7 @@ public class MetaModelViewImpl extends LoadingTab implements MetaModelView{
 		replayModeBar.animateShow(AnimationEffect.WIPE);
 	}
 	
-	private void hideReplayModeBar(){
+	public void hideReplayModeBar(){
 		replayModeBar.animateHide(AnimationEffect.WIPE);
 	}
 

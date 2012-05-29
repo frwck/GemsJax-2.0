@@ -310,7 +310,7 @@ public class HibernateExperimentDAO implements ExperimentDAO {
 		
 		MetaModelImpl collaborateable = new MetaModelImpl();
 		
-		collaborateable.setName(group.getName());
+		collaborateable.setName("Experiment - "+group.getExperiment().getName()+" - "+group.getName());
 		collaborateable.setOwner(experimentOwner);
 		collaborateable.setPublicPermission(Permission.PRIVATE);
 	
